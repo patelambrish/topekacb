@@ -1,0 +1,19 @@
+{
+  "name": "TopekaCB",
+  "version": "0.0.0",
+  "authors": [
+    "Topeka Christmas Bureau Devlopement Team <Nick.Xidis@se2.com, Susan.Enneking@gmail.com>"
+  ],
+  "description": "\"Topeka Christmas Bureau Adoption Management\"",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "toastr": "~2.0.2",
+    "angular": "~1.2.16",
+    "angular-resource": "~1.2.16",
+    "angular-route": "~1.2.16",
+    "bootstrap": "~3.1.1",
+    "angular-mocks": "~1.2.16"
+  }
+}

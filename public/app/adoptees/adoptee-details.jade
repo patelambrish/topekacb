@@ -1,0 +1,12 @@
+.container
+  h1 {{adoptee.name}}
+  .row
+    .col-md-6
+      h3(ng-show="adoptee.isSingleParent") Single Parent
+      h3 Enrolled on {{adoptee.enrolled | date}}
+
+    .col-md-6
+      .panel.panel-primary
+        .panel-heading Tags
+        .panel-body
+          div(ng-repeat="tag in adoptee.tags") {{tag}}
