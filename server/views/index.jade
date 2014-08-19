@@ -5,17 +5,19 @@ block main-content
     .container
       .navbar-header
         a.navbar-brand(href="/") Topeka Christmas Bureau
-          h6 -Family Adoption Managment
+          h6 -Family Adoption Management
       .navbar-collapse.collapse
         ul.nav.navbar-nav
           li
             a(href="/") Home
           li
             a(href="/adoptees") Adoptees
+          li
+            a(href="/adopters") Adopters
         div(ng-include="'/partials/account/navbar-login'")
 
   section.content
     div(ng-view)
 
   footer.container.text-center
-    p &copy; 2014 Topeka Christmas Bureau.
+    p &copy; 2014 Topeka Christmas Bureau.  Powered by folks at se<sup>2</sup>
