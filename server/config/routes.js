@@ -11,10 +11,10 @@ module.exports = function(app) {
   app.post('/api/users', users.createUser);
   app.put('/api/users', users.updateUser);
 
-  app.get('/api/adoptees', adoptees.getAdoptees);
+  app.get('/api/adoptees', auth.requiresRole('user'), adoptees.getAdoptees);
     app.get('/api/adoptees/:id', adoptees.getAdopteeById);
 
-  app.get('/api/adopters', adopters.getAdopters);
+  app.get('/api/adopters', auth.requiresRole('user'), adopters.getAdopters);
     app.get('/api/adopters/:id', adopters.getAdopterById);
 
   app.get('/partials/*', function(req, res) {

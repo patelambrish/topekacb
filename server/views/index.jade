@@ -5,9 +5,9 @@ block main-content
     .container
       .navbar-header
         a.navbar-brand(href="/") Topeka Christmas Bureau
-          h6 -Family Adoption Management
-      .navbar-collapse.collapse
-        ul.nav.navbar-nav
+          h6 Family Adoption Management
+      .navbar-collapse.collapse(ng-controller="mvNavBarLoginCtrl")
+        ul.nav.navbar-nav(ng-show="identity.isAuthenticated()")
           li
             a(href="/") Home
           li
@@ -20,4 +20,4 @@ block main-content
     div(ng-view)
 
   footer.container.text-center
-    p &copy; 2014 Topeka Christmas Bureau.  Powered by folks at se<sup>2</sup>
+    p &copy; 2014 Topeka Christmas Bureau.  Powered by volunteers at <img src="/image/se2logoSmall.png" />

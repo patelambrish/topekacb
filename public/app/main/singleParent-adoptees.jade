@@ -1,6 +1,0 @@
-.panel.panel-primary
-  .panel-heading.text-center Single Parent Adoptees
-  .panel-body
-    .row(ng-repeat="adoptee in adoptees | filter:{isSingleParent:true}")
-      .col-md-12
-        a(href="/adoptees/{{adoptee._id}}") {{adoptee.name}}

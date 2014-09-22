@@ -1,7 +1,0 @@
-.panel.panel-primary
-  .panel-heading.text-center New Adoptee
-  .panel-body
-    .row(ng-repeat="adoptee in adoptees | orderBy:'enrolled':true | limitTo:10")
-      .col-md-3 {{adoptee.enrolled | date:'MMM d'}}
-      .col-md-9
-        a(href="/adoptees/{{adoptee._id}}") {{adoptee.name}}
