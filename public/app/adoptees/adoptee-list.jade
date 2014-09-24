@@ -9,9 +9,9 @@
     thead
       tr
         th Name
-        th Enroll Date
+        th Create Date
     tbody
       tr(ng-repeat="adoptee in adoptees | filter:searchText | orderBy:sortOrder")
         td
-          a(href="/adoptees/{{adoptee._id}}") {{adoptee.name}}
-        td {{adoptee.enrolled | date}}
+          a(href="/adoptees/{{adoptee._id}}") {{adoptee.lastName}}, {{adoptee.firstName}}
+        td {{adoptee.createDate | date}}

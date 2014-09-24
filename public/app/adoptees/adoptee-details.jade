@@ -1,12 +1,11 @@
 .container
-  h3 {{adoptee.name}}
+  h3 {{adoptee.lastName}}, {{adoptee.firstName}}
   .row
     .col-md-6
-      h3(ng-show="adoptee.isSingleParent") Single Parent
-      h3 Enrolled on {{adoptee.enrolled | date}}
+      h3 Created on {{adoptee.createDate | date}}
 
     .col-md-6
       .panel.panel-primary
-        .panel-heading Tags
+        .panel-heading Phone Number(s)
         .panel-body
-          div(ng-repeat="tag in adoptee.tags") {{tag}}
+          div(ng-repeat="tag in adoptee.phones") {{phone.type}} {{phone.number}} {{phone.name}}
