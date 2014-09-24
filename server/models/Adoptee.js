@@ -72,8 +72,8 @@ function createDefaultAdoptees() {
     if(collection.length === 0) {
       Adoptee.create({firstName: 'Jane', lastName: 'Seymour', gender: 'Female',
           birthDate: new Date('01/21/1958'), createDate: new Date('01/21/2014'), ssnLastFour: 9998,
-          phones: [{phone: {type: 'Home', name: 'Jane', number: '785 865 8111'}},
-                   {phone: {type: 'Cell1', name: 'Jane', number: '785 550 2111'}}]
+          phones: [{type: 'Home', name: 'Jane', number: '785 865 8111'},
+                    {type: 'Cell1', name: 'Jane', number: '785 550 2111'}]
       });
       Adoptee.create({firstName: 'Mark', lastName: 'Lark', gender: 'Male', birthDate: new Date('07/09/1985'), createDate: new Date('09/01/2014'), ssnLastFour: 9997});
       Adoptee.create({firstName: 'James', lastName: 'Brown', gender: 'Male', birthDate: new Date('11/26/1978'), createDate: new Date('06/21/2014'), ssnLastFour: 0909});
