@@ -1,9 +1,4 @@
-var auth = require('./auth'),
-  users = require('../controllers/users'),
-  adoptees = require('../controllers/adoptees'),
-  adopters = require('../controllers/adopters'),
-  mongoose = require('mongoose'),
-  User = mongoose.model('User');
+var auth = require('./auth'), users = require('../controllers/users'), adoptees = require('../controllers/adoptees'), adopters = require('../controllers/adopters'), mongoose = require('mongoose'), User = mongoose.model('User'), passport = require('passport');
 
 module.exports = function(app) {
 
@@ -12,10 +7,10 @@ module.exports = function(app) {
   app.put('/api/users', users.updateUser);
 
   app.get('/api/adoptees', auth.requiresRole('user'), adoptees.getAdoptees);
-    app.get('/api/adoptees/:id', adoptees.getAdopteeById);
+  app.get('/api/adoptees/:id', adoptees.getAdopteeById);
 
   app.get('/api/adopters', auth.requiresRole('user'), adopters.getAdopters);
-    app.get('/api/adopters/:id', adopters.getAdopterById);
+  app.get('/api/adopters/:id', adopters.getAdopterById);
 
   app.get('/partials/*', function(req, res) {
     res.render('../../public/app/' + req.params[0]);
@@ -32,9 +27,26 @@ module.exports = function(app) {
     res.send(404);
   });
 
+  app.get('/auth/facebook', passport.authenticate('facebook'));
+
+  app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    failureRedirect: '/', successRedirect: '/'
+  }));
+
   app.get('*', function(req, res) {
+    var rUser;
+    if(req.user) {
+      rUser = {
+        username: req.user.username,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        id: req.user._id,
+        roles: req.user.roles
+      };
+    }
     res.render('index', {
-      bootstrappedUser: req.user
+      bootstrappedUser : rUser
     });
   });
+
 }

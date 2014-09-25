@@ -6,14 +6,16 @@ block main-content
       .navbar-header
         a.navbar-brand(href="/") Topeka Christmas Bureau
           h6 Family Adoption Management
-      .navbar-collapse.collapse(ng-controller="mvNavBarLoginCtrl")
-        ul.nav.navbar-nav(ng-show="identity.isAuthenticated()")
+      .navbar-collapse.collapse(data-ng-controller="mvNavBarLoginCtrl")
+        ul.nav.navbar-nav(ng-if="identity.isAuthenticated()")
           li
             a(href="/") Home
           li
             a(href="/adoptees") Adoptees
           li
             a(href="/adopters") Adopters
+          li
+            a(href="/admin/users" data-ng-if="identity.isAuthorized('admin')") Users 
         div(ng-include="'/partials/account/navbar-login'")
 
   section.content

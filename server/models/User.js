@@ -9,10 +9,13 @@ var userSchema = mongoose.Schema({
     required: '{PATH} is required!',
     unique:true
   },
-  salt: {type:String, required:'{PATH} is required!'},
-  hashed_pwd: {type:String, required:'{PATH} is required!'},
-  roles: [String]
+  salt: {type:String},
+  hashed_pwd: {type:String},
+  roles: [String],
+  facebook: {},
+  active: {type: Boolean, required:'{PATH} is required!'}
 });
+
 userSchema.methods = {
   authenticate: function(passwordToMatch) {
     return encrypt.hashPwd(this.salt, passwordToMatch) === this.hashed_pwd;
@@ -29,15 +32,15 @@ function createDefaultUsers() {
       var salt, hash;
       salt = encrypt.createSalt();
       hash = encrypt.hashPwd(salt, 'susan');
-      User.create({firstName:'Susan',lastName:'Enneking',username:'susan.enneking@se2.com', salt: salt, hashed_pwd: hash, roles: ['admin', 'user']});
+      User.create({firstName:'Susan',lastName:'Enneking',username:'susan.enneking@se2.com', salt: salt, hashed_pwd: hash, roles: ['admin', 'user'], active: true});
       salt = encrypt.createSalt();
       hash = encrypt.hashPwd(salt, 'nick');
-      User.create({firstName:'Nick',lastName:'Xidis',username:'nick.xidis@se2.com', salt: salt, hashed_pwd: hash, roles: ['user']});
+      User.create({firstName:'Nick',lastName:'Xidis',username:'nick.xidis@se2.com', salt: salt, hashed_pwd: hash, roles: ['user'], active: true});
       salt = encrypt.createSalt();
       hash = encrypt.hashPwd(salt, 'ambrish');
-      User.create({firstName:'Ambrish',lastName:'Patel',username:'ambrish.patel@se2.com', salt: salt, hashed_pwd: hash, roles: ['user']});
+      User.create({firstName:'Ambrish',lastName:'Patel',username:'ambrish.patel@se2.com', salt: salt, hashed_pwd: hash, roles: ['user'], active: true});
     }
   })
-};
+}
 
 exports.createDefaultUsers = createDefaultUsers;

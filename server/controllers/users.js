@@ -2,7 +2,8 @@ var User = require('mongoose').model('User'),
     encrypt = require('../utilities/encryption');
 
 exports.getUsers = function(req, res) {
-  User.find({}).exec(function(err, collection) {
+  console.log(req.query);
+  User.find({},{username: 1, firstName:1, lastName:1, active:1, facebook: 1, roles: 1}).exec(function(err, collection) {
     res.send(collection);
   })
 };
