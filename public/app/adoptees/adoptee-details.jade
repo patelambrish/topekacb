@@ -1,11 +1,38 @@
 .container
-  h3 {{adoptee.lastName}}, {{adoptee.firstName}}
-  .row
-    .col-md-6
-      h3 Created on {{adoptee.createDate | date}}
-
-    .col-md-6
-      .panel.panel-primary
-        .panel-heading Phone Number(s)
-        .panel-body
-          div(ng-repeat="phone in adoptee.phones") {{phone.type}} {{phone.number}} {{phone.name}}
+    .well
+        form.form-horizontal(name="adopteeForm")
+            fieldset
+                legend Adoptee
+                .form-group
+                    .row
+                        label.col-md-3(for="lastName") Last Name
+                        label.col-md-2(for="firstName") First Name
+                        label.col-md-1(for="middleInitial") MI
+                        label.col-md-2(for="birthDate") Birth Date
+                        label.col-md-2(for="ssnLastFour") SSN (last 4 digits)
+                        label.col-md-2(for="gender") Gender
+                    .row
+                        .col-md-3
+                            input.form-control(name="adoptee.lasttName", type="text", placeholder="Last Name !!Required!!", ng-model="adoptee.lastName", required)
+                        .col-md-2
+                            input.form-control(name="adoptee.firstName", type="text", placeholder="First Name !!Required!!", ng-model="adoptee.firstName", required)
+                        .col-md-1
+                            input.form-control(name="adoptee.middleInitial", type="text", placeholder="MI", ng-model="adoptee.middleInitial")
+                        .col-md-2
+                            input.form-control(name="adoptee.birthDate", type="date", placeholder="Birth Date", ng-model="adoptee.birthDate")
+                        .col-md-2
+                            input.form-control(name="adoptee.ssnLastFour", type="text", placeholder="SSN (Last 4 digits)", ng-model="adoptee.ssnLastFour")
+                        .col-md-2
+                            select.form-control(name="adoptee.gender", type="select", placeholder="Gender", ng-model="adoptee.gender" ng-options="gender.name for gender in genders")
+                .form-group
+                    .row
+                        label.col-md-2(for="email") Email
+                    .row
+                        .col-md-2
+                            input.form-control(name="adoptee.email", type="email", placeholder="Email", ng-model="adoptee.email")
+                .form-group
+                    .col-md-10.col-md-offset-2
+                        .pull-right
+                            button.btn.btn-primary(ng-click="update()", ng-disabled="signupForm.$invalid") Submit
+                            | &nbsp;
+                            a.btn.btn-default(href="/") Cancel

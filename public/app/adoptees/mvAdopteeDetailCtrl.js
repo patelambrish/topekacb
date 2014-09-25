@@ -3,6 +3,10 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvCache
     collection.forEach(function(adoptee) {
       if(adoptee._id === $routeParams.id) {
         $scope.adoptee = adoptee;
+        $scope.genders = [
+              {name:'Male'},
+              {name:'Female'}
+          ];
       }
     })
   })
