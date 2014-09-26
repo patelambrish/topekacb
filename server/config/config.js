@@ -12,7 +12,7 @@ module.exports = {
   },
   production: {
     rootPath: rootPath,
-    db: 'mongodb://senneking:topekaCb@ds999999.mongolab.com:999999/topekaCb',
+    db: process.env.MONGOHQ_URL,
     port: process.env.PORT || 80
   }
 }
