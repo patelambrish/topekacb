@@ -8,7 +8,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name : ['topekacb-test'],
+  app_name : ['local-dev'],
   /**
    * Your New Relic license key.
    */
