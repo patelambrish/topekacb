@@ -13,6 +13,9 @@ module.exports = {
   production: {
     rootPath: rootPath,
     db: process.env.MONGOHQ_URL,
-    port: process.env.PORT || 80
+    port: process.env.PORT || 80,
+    faceBookClientID : '276073369254615',
+    faceBookClientSecret : '4ad58d5239bea4c36e47caedafe59625',
+    faceBookCallbackURL : 'http://localhost:3030/auth/facebook/callback'
   }
 }
