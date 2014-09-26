@@ -26,13 +26,59 @@
                             select.form-control(name="adoptee.gender", type="select", placeholder="Gender", ng-model="adoptee.gender" ng-options="gender.name for gender in genders")
                 .form-group
                     .row
-                        label.col-md-2(for="email") Email
+                        label.col-md-6(for="adoptee.address.homeAddress") Home Address
+                        label.col-md-3(for="adoptee.address.zip") Zip Code
+                        label.col-md-3(for="adoptee.address.city") City
                     .row
-                        .col-md-2
+                        .col-md-6
+                            input.form-control(name="adoptee.address.homeAddress", type="text", placeholder="Home address !!Required!!", ng-model="adoptee.address.homeAddress", required)
+                        .col-md-3
+                            input.form-control(name="adoptee.address.zip", type="text", placeholder="Zip code", ng-model="adoptee.address.zip")
+                        .col-md-3
+                            input.form-control(name="adoptee.address.city", type="text", placeholder="City", ng-model="adoptee.address.city")
+                .form-group
+                        .row
+                            label.col-md-4(for="adoptee.homePhone.number") Home Phone
+                            label.col-md-4(for="adoptee.cell1Phone.number") Cell Phone 1
+                            label.col-md-4(for="adoptee.cell1Phone.name") Cell Phone 1 Contact
+                        .row
+                            .col-md-4
+                                input.form-control(name="adoptee.homePhone.number", type="phone", placeholder="Home phone number" ng-model="adoptee.homePhone.number")
+                            .col-md-4
+                                input.form-control(name="adoptee.cell1Phone.number", type="phone", placeholder="Cell 1 phone number" ng-model="adoptee.cell1Phone.number")
+                            .col-md-4
+                                input.form-control(name="adoptee.cell1Phone.name", type="phone", placeholder="Cell 1 contact" ng-model="adoptee.cell1Phone.name")
+                .form-group
+                    .row
+                        label.col-md-4()
+                        label.col-md-4(for="adoptee.cell2Phone.number") Cell Phone 2
+                        label.col-md-4(for="adoptee.cell2Phone.name") Cell Phone 2 Contact
+                    .row
+                        .col-md-4
+                        .col-md-4
+                            input.form-control(name="adoptee.cell2Phone.number", type="phone", placeholder="Cell 2 phone number" ng-model="adoptee.cell2Phone.number")
+                        .col-md-4
+                            input.form-control(name="adoptee.cell2Phone.name", type="phone", placeholder="Cell 2 contact" ng-model="adoptee.cell2Phone.name")
+                .form-group
+                    .row
+                        label.col-md-4()
+                        label.col-md-4(for="adoptee.otherPhone.number") Other Phone
+                        label.col-md-4(for="adoptee.otherPhone.name") Other Phone Contact
+                    .row
+                        .col-md-4
+                        .col-md-4
+                            input.form-control(name="adoptee.otherPhone.number", type="phone", placeholder="Other phone number" ng-model="adoptee.otherPhone.number")
+                        .col-md-4
+                            input.form-control(name="adoptee.otherPhone.name", type="phone", placeholder="Other contact" ng-model="adoptee.otherPhone.name")
+                .form-group
+                    .row
+                        label.col-md-4(for="email") Email
+                    .row
+                        .col-md-4
                             input.form-control(name="adoptee.email", type="email", placeholder="Email", ng-model="adoptee.email")
                 .form-group
                     .col-md-10.col-md-offset-2
                         .pull-right
                             button.btn.btn-primary(ng-click="update()", ng-disabled="signupForm.$invalid") Submit
                             | &nbsp;
-                            a.btn.btn-default(href="/") Cancel
+                            a.btn.btn-default(href="/adoptees") Cancel

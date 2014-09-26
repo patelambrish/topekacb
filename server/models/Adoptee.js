@@ -1,12 +1,6 @@
 var mongoose = require('mongoose');
 
-var phoneTypes = ['Home',
-    'Cell1',
-    'Cell2',
-    'Other']
-
 var phone = {
-    type: {type: String, enum: phoneTypes},
     name: {type: String},
     number: {type: String}
 }
@@ -36,14 +30,15 @@ var adopteeSchema = mongoose.Schema({
     _adopterId: { type: mongoose.Schema.Types.ObjectId, ref: 'Adopter' },
     householdType: {type:String, enum: householdTypes},
     address: {
-        homeAddress: {type: String},
+        homeAddress: {type: String, required:'{PATH} is required!'},
         city: {type: String},
         state: {type: String, enum: states},
         zip: {type: String}
     },
-    phones: [
-        phone
-    ],
+    homePhone: {type: phone},
+    cell1Phone: {type: phone},
+    cell2Phone: {type: phone},
+    otherPhone: {type: phone},
     email: {type: String},
     fax: {type: String},
     status: {type: String, enum: adopteeStates},
@@ -72,11 +67,18 @@ function createDefaultAdoptees() {
     if(collection.length === 0) {
       Adoptee.create({firstName: 'Jane', lastName: 'Seymour', gender: 'Female',
           birthDate: new Date('01/21/1958'), createDate: new Date('01/21/2014'), ssnLastFour: 9998,
-          phones: [{type: 'Home', name: 'Jane', number: '785 865 8111'},
-                    {type: 'Cell1', name: 'Jane', number: '785 550 2111'}]
+          homePhone: {name: 'Jane', number: '785 865 8111'},
+          cell1Phone: {name: 'John', number: '888 888 8888'},
+          address: {homeAddress: '599 W. 8th Street', city: 'Topeka', state: 'KS'}
       });
-      Adoptee.create({firstName: 'Mark', lastName: 'Lark', gender: 'Male', birthDate: new Date('07/09/1985'), createDate: new Date('09/01/2014'), ssnLastFour: 9997});
-      Adoptee.create({firstName: 'James', lastName: 'Brown', gender: 'Male', birthDate: new Date('11/26/1978'), createDate: new Date('06/21/2014'), ssnLastFour: 0909});
+      Adoptee.create({firstName: 'Mark', lastName: 'Lark', gender: 'Male', birthDate: new Date('07/09/1985'),
+          createDate: new Date('09/01/2014'), ssnLastFour: 9997,
+          address: {homeAddress: '1212 W. MacVicar Street', city: 'Topeka', state: 'KS', zip: '66614'}
+      });
+      Adoptee.create({firstName: 'James', lastName: 'Brown', gender: 'Male', birthDate: new Date('11/26/1978'),
+          createDate: new Date('06/21/2014'), ssnLastFour: 0909,
+          address: {homeAddress: '901 W. 6th Street', city: 'Topeka', state: 'KS', zip: '66607'}
+      });
     }
   })
 }
