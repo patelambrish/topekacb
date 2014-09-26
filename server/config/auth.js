@@ -7,7 +7,12 @@ exports.authenticate = function(req, res, next) {
     if(!user) { res.send({success:false})}
     req.logIn(user, function(err) {
       if(err) {return next(err);}
-      res.send({success:true, user: user});
+      res.send({success:true, user: {username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        id: user._id,
+        roles: user.roles
+      }});
     })
   })
   auth(req, res, next);
@@ -31,4 +36,4 @@ exports.requiresRole = function(role) {
       next();
     }
   }
-}
+};
