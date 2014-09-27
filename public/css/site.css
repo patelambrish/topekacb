@@ -33,3 +33,49 @@ footer p {
 .toast-success {
   background-color: #778dc1;
 }
+
+/* latest bootstrap (v3.2.0) supplements */
+.btn-toolbar {
+    margin-left: -5px;
+}
+.btn-toolbar .btn-group, 
+.btn-toolbar .input-group {
+    float: left;
+}
+.btn-toolbar > .btn, 
+.btn-toolbar > .btn-group, 
+.btn-toolbar > .input-group {
+    margin-left: 5px;
+}
+.form-inline .input-group {
+    display: inline-table;
+    vertical-align: middle;
+}
+.input-group .form-control {
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+/* custom toolbar classes */
+.btn-toolbar > .input-group-filter {
+    width: 15em;
+} 
+.btn-toolbar > .input-group-sort,
+.btn-toolbar > .input-group-sort .dropdown-menu {
+    width: 22em;
+}
+.btn-toolbar > .input-group-sort > input[disabled]{
+    /* restore default field styling since disabled is the default state for this input */
+    cursor: default;
+    background-color: transparent;
+}
+.input-group-page {
+    display: inline-table;
+    width: 14em;
+}
+.btn-add {
+    border-radius: 100%;
+}
