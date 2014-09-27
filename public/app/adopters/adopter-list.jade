@@ -2,19 +2,50 @@
    Created by Susan on 8/19/2014.
 
 .container.top-padding-med
-    .pull-right
-        form.form-inline
-            .form-group
-                input.form-control(ng-model="searchText", placeholder="Filter")
-            .form-group.margin-left-med
-                select.form-control(ng-model="sortOrder", ng-options="item.value as item.text for item in sortOptions")
-    table.table.table-hover.table-striped.table-condensed
-        thead
-            tr
-                th Name
-                th Enroll Date
-        tbody
-            tr(ng-repeat="adopter in adopters | filter:searchText | orderBy:sortOrder")
-                td
-                    a(href="/adopters/{{adopter._id}}") {{adopter.name}}
-                td {{adopter.enrolled | date}}
+    form
+        .btn-toolbar
+            .input-group.input-group-filter
+                input.form-control(type="text", placeholder="Filter", ng-model="query", ng-change="applyFilter(query)")
+
+            .input-group.input-group-sort
+                .input-group-addon Sort By:
+                input.form-control(type="text", ng-model="sort.text", disabled)
+                .input-group-btn
+                    button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown")
+                        i.caret
+                    ul.dropdown-menu.pull-right
+                        li(ng-repeat="option in sort.options", ng-class="{active: sort.text == option.text}")
+                            a(href="", ng-click="applySort(option)") {{option.text}}
+    br/
+
+    .panel.panel-default
+        .panel-heading
+            h3.panel-title.clearfix Adopters
+                a.pull-right.btn.btn-default.btn-lg.btn-add(href="/adopters/edit") &plus;
+
+        table.table.table-hover.table-striped
+            colgroup
+                col.col-sm-6
+                col.col-sm-6
+            thead
+                tr
+                    th Name
+                    th Enroll Date
+                    th Status
+            tbody
+                tr(ng-repeat="adopter in adopters | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size")
+                    td
+                        a(ng-href="/adopters/edit/{{adopter._id}}") {{adopter.name}}
+                    td {{adopter.enrolled | date}}
+                    td {{adopter.status}}
+    
+    ul.pager
+        li.previous(ng-class="{disabled: page.current == 1}")
+            a(href="" ng-click="applyPage(page.previous)") Previous
+        li 
+            .input-group.input-group-page
+                .input-group-addon Page
+                input.form-control(type="number", min="1", max="{{page.total}}", ng-model="page.current", ng-change="applyPage(page.current)")
+                .input-group-addon of {{page.total}}
+        li.next(ng-class="{disabled: page.current == page.total}")
+            a(href="" ng-click="applyPage(page.next)") Next
