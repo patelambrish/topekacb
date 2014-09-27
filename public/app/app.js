@@ -1,4 +1,7 @@
-angular.module('app', ['ngResource', 'ngRoute']);
+angular.module('app', ['ngResource', 
+                       'ngRoute', 
+                       'newrelic-timing'
+                       ]);
 
 angular.module('app').config(function($routeProvider, $locationProvider) {
   var routeRoleChecks = {
