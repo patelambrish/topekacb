@@ -11,6 +11,7 @@ module.exports = function(app) {
 
   app.get('/api/adopters', auth.requiresRole('user'), adopters.getAdopters);
   app.get('/api/adopters/:id', adopters.getAdopterById);
+  app.get('/api/adopters/edit/:id', auth.requiresRole('adopter'), adopters.getAdopterById);
 
   app.get('/partials/*', function(req, res) {
     res.render('../../public/app/' + req.params[0]);
