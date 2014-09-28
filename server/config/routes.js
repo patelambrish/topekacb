@@ -1,4 +1,11 @@
-var auth = require('./auth'), users = require('../controllers/users'), adoptees = require('../controllers/adoptees'), adopters = require('../controllers/adopters'), mongoose = require('mongoose'), User = mongoose.model('User'), passport = require('passport');
+var auth = require('./auth'),
+    users = require('../controllers/users'),
+    adoptees = require('../controllers/adoptees'),
+    adopters = require('../controllers/adopters'),
+    states = require('../controllers/states'),
+    mongoose = require('mongoose'),
+    User = mongoose.model('User'),
+    passport = require('passport');
 
 module.exports = function(app) {
 
@@ -10,8 +17,10 @@ module.exports = function(app) {
   app.get('/api/adoptees/:id', adoptees.getAdopteeById);
 
   app.get('/api/adopters', auth.requiresRole('user'), adopters.getAdopters);
-  app.get('/api/adopters/:id', adopters.getAdopterById);
-  app.get('/api/adopters/edit/:id', auth.requiresRole('adopter'), adopters.getAdopterById);
+  app.get('/api/adopters/:id', auth.requiresRole('adopter'), adopters.getAdopterById);
+  app.post('/api/adopters', auth.requiresRole('adopter'), adopters.saveAdopter);
+
+  app.get('/api/states', states.getStates);
 
   app.get('/partials/*', function(req, res) {
     res.render('../../public/app/' + req.params[0]);
@@ -50,4 +59,4 @@ module.exports = function(app) {
     });
   });
 
-}
+};
