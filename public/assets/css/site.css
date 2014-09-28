@@ -1,5 +1,11 @@
+@media (max-width: 992px) and (min-width: 768px) {
+  .navbar-form .form-control {
+    width: 10em; } }
+@media (min-width: 992px) {
+  .navbar-form .form-control {
+    width: auto; } }
 body {
-  padding-top: 69px; }
+  padding-top: 100px; }
 
 .navbar-header a.navbar-brand {
   margin-top: -15px;
