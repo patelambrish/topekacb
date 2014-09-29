@@ -1,0 +1,58 @@
+@import "bootstrap-overrides";
+
+body {
+  padding-top: 100px;
+}
+.navbar-header a.navbar-brand {
+  margin-top: -15px;
+  margin-bottom: -20px;
+}
+.navbar-header a.navbar-brand h6 {
+  color: #ccc;
+}
+footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+footer p {
+  border-top: 1px solid #00529b;
+}
+.navbar-form .form-group {
+  margin-left: 10px;
+}
+.navbar-form button {
+  margin-left: 10px;
+}
+.top-padding-med {
+  padding-top: 10px;
+}
+.margin-left-med {
+  margin-left: 10px;
+}
+.toast-top-right {
+  top: 70px;
+}
+.toast-success {
+  background-color: #778dc1;
+}
+.border-row {
+  border-bottom: 1px solid #00529b;
+}
+.btn-toolbar > .input-group-filter {
+  width: 15em;
+}
+.btn-toolbar > .input-group-sort > input[disabled] {
+  cursor: default;
+  background-color: transparent;
+}
+.btn-toolbar > .input-group-sort,
+.btn-toolbar > .input-group-sort .dropdown-menu {
+  width: 22em;
+}
+.input-group-page {
+  display: inline-table;
+  width: 14em;
+}
+.btn-add {
+  border-radius: 100%;
+}
