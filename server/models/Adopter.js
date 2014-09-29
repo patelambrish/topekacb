@@ -1,28 +1,27 @@
 var mongoose = require('mongoose'),
-    entityTypes = ['Individual', 'Organization', 'Deptartment'],
-    statuses = ['In Process', 'Not Matched', 'Matched'],
-    states = ['KS', 'MO', 'NE', 'OK', 'CO'],
-    phoneTypes = ['Daytime', 'Alternate', 'Fax'],
-    adopterSchema = mongoose.Schema({
-      entity: { type: String, enum: entityTypes },
+    Schema = mongoose.Schema,
+    Adopter = mongoose.model('Adopter', Schema({
+      entity: { type: String, enum: ['Individual', 'Organization', 'Deptartment'] },
       name: { type: String, required: '{PATH} is required!' },
       org: String,
       dept: String,
       address: {
           street: { type: String, required: '{PATH} is required!' },
           city: String,
-          state: { type: String, enum: states },
+          state: { type: String, enum: ['KS', 'MO', 'NE', 'OK', 'CO'] },
           zip: String
       },
-      phones: [{ name: { type: String, enum: phoneTypes }, number: String }],
+      phones: [{
+        name: { type: String, enum: ['Daytime', 'Alternate', 'Fax'] },
+        number: String
+      }],
       email: String,
-      status: { type: String, enum: statuses },
+      status: { type: String, enum: ['In Process', 'Not Matched', 'Matched'] },
       createDate: Date,
-      _createUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-      modifyDate: Date,
-      _modifyUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-    }),
-    Adopter = mongoose.model('Adopter', adopterSchema);
+      createdBy: { type: Schema.Types.ObjectId, ref: 'User'},
+      updateDate: Date,
+      updatedBy: { type: Schema.Types.ObjectId, ref: 'User'}
+    }));
 
 function createDefaultAdopters() {
   Adopter.find({}).exec(function(err, collection) {

@@ -2,11 +2,29 @@
  * Created by Susan on 8/19/2014.
  */
 angular.module('app').
-  filter("startFrom", function() {
+  filter('startFrom', function() {
     return function(array, start) {
       start = parseInt(start, 10);
       
       return (angular.isArray(array) || angular.isString(array)) && start ? array.slice(start) : array;
+    };
+  }).
+  filter('fullName', function() {
+    return function(data, format) {
+      if(!data) {
+        return;
+      }
+      
+      var fName = data.firstName || '',
+          lName = data.lastName || '';
+          
+      format = format || 'ltr';
+
+      if(format === 'ltr') {
+        return fName && lName ? lName + ', ' + fName : lName + fName;
+      } else {
+        return fName && lName ? fName + ' ' + lName : lName + fName;
+      }
     };
   }).
   controller('mvAdopterListCtrl', function($scope, $filter, mvAdopter) {

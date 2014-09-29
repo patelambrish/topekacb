@@ -28,7 +28,7 @@
               input.form-control(type="text", name="city", placeholder="City", ng-model="adopter.address.city")
           .col-sm-2
             .form-group
-              select.form-control(name="state", ng-model="adopter.address.state" ng-options="s as s for s in states")
+              select.form-control(name="state", ng-model="adopter.address.state" ng-options="s for s in states")
                 option(disabled value="") State
           .col-sm-3.col-md-2
             .form-group

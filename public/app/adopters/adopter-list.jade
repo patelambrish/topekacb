@@ -37,13 +37,13 @@
               | {{adopter.name}}<span ng-if="adopter.org">,</span>
               | {{adopter.org}}<span ng-if="adopter.dept">,</span>
               | {{adopter.dept}}
-          td {{adopter.status || 'In Process'}}
+          td {{adopter.status}}
           td
-            time {{adopter.enrolled | date}}&nbsp;
-            | by {{adopter.enrolledBy || 'Edge, Missy'}}
-            p.small.text-muted(ng-if="adopter.modified") Modified:&nbsp;
-              time {{adopter.modified | date}}&nbsp;
-              | by {{adopter.modifiedBy || 'Thomas, Bryan'}}
+            time {{adopter.createDate | date}}&nbsp;
+            | by {{adopter.createdBy | fullName}}
+            p.small.text-muted(ng-if="adopter.updateDate") Modified:&nbsp;
+              time {{adopter.updateDate | date}}&nbsp;
+              | by {{adopter.updatedBy | fullName}}
   
   ul.pager
     li.previous(ng-class="{disabled: page.current == 1}")

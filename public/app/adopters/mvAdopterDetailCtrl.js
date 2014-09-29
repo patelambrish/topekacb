@@ -7,12 +7,12 @@ angular.module('app').
     $scope.entityTypes = ['Individual', 'Organization', 'Deptartment'];
 
     if($routeParams.id !== '0') {
-      console.log($routeParams.id);
       $scope.adopter = mvAdopter.get({ _id: $routeParams.id });
-      console.log($scope.adopter);
     } else {
       $scope.adopter = new mvAdopter({
-        entity: 'Individual'
+        entity: 'Individual',
+        status: 'In Process',
+        address:  { state: 'KS' }
       });
     }
     
