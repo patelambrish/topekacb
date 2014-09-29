@@ -27,7 +27,7 @@
     aria-hidden="true")
     div.modal-dialog
       div.modal-content
-        form(name="userForm"
+        form(name="userForm" id="userForm"
           class="form-horizontal"
           novalidate)
           div.modal-header
@@ -79,17 +79,20 @@
                       data-select-on-focus="true")
                     span(class="help-block" 
                       data-ng-show="userForm.userName.$invalid && userForm.userName.$dirty") Username is required
-              div(class="form-group")
+              div(class="form-group"
+              	data-ng-class="{'has-error': userForm.password.$invalid && userForm.password.$dirty}")
                   label(class="col-sm-4 control-label") Password 
                     span(title="Required") *
                   div(class="col-sm-8")
                     input(class="form-control" 
                       data-ng-model="selectedUser.password" 
                       name="password" 
-                      required 
+                      data-ng-required="!selectedUser.facebook.id" 
                       type="password" 
                       data-ng-disabled="selectedUser.facebook.id"
-                      data-select-on-focus="true")                    
+                      data-select-on-focus="true")
+                    span(class="help-block" 
+                      data-ng-show="userForm.password.$invalid && userForm.password.$dirty") Password is required
               div(class="form-group" 
                 data-ng-class="{'has-error': userForm.roles.$invalid && userForm.roles.$dirty}")
                 label(class="col-sm-4 control-label") Roles 
@@ -99,7 +102,7 @@
                     label
                       input(type="checkbox"                        
                         data-ng-model="r.selected") 
-                         {{r.name}}
+                      {{r.name}}
               div(class="form-group" 
                 data-ng-class="{'has-error': userForm.active.$invalid && userForm.active.$dirty}")
                 label(class="col-sm-4 control-label") Active 
@@ -114,4 +117,6 @@
               class="btn btn-default" 
               data-dismiss="modal" data-ng-click="cancel()") Close
             button(type="button" 
-              class="btn btn-primary") Save Changes
+              class="btn btn-primary" 
+              data-ng-click="saveUser()"
+              data-ng-disabled="userForm.$invalid || (roles | filter: {selected:true} : true).length===0") Save Changes
