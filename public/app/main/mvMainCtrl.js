@@ -1,5 +1,4 @@
-angular.module('app').controller('mvMainCtrl', ['$scope', 'mvCachedAdoptees', 'mvNotifier', 'mvSharedContext', function($scope, mvCachedAdoptees, mvNotifier, mvSharedContext) {
-  $scope.adoptees = mvCachedAdoptees.query();
+angular.module('app').controller('mvMainCtrl', ['$scope', 'mvNotifier', 'mvSharedContext', function($scope, mvNotifier, mvSharedContext) {
   if(mvSharedContext.message()) {
   	mvNotifier.notify(mvSharedContext.message());
   	mvSharedContext.clearContext();

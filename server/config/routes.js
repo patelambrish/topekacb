@@ -7,7 +7,8 @@ module.exports = function(app) {
 	app.put('/api/users', users.updateUser);
 
 	app.get('/api/adoptees', auth.requiresRole('user'), adoptees.getAdoptees);
-	app.get('/api/adoptees/:id', adoptees.getAdopteeById);
+	app.get('/api/adoptees/:id', auth.requiresRole('user'), adoptees.getAdopteeById);
+    app.put('/api/adoptees', auth.requiresRole('user'), adoptees.updateAdoptee);
 
 	app.get('/api/adopters', auth.requiresRole('user'), adopters.getAdopters);
 	app.get('/api/adopters/:id', adopters.getAdopterById);

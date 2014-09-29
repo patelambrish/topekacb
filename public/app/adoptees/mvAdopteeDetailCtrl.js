@@ -1,5 +1,5 @@
-angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvCachedAdoptees, $routeParams) {
-  mvCachedAdoptees.query().$promise.then(function(collection) {
+angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, $q, $routeParams) {
+  mvAdoptee.query().$promise.then(function(collection) {
     collection.forEach(function(adoptee) {
       if(adoptee._id === $routeParams.id) {
         $scope.adoptee = adoptee;
@@ -23,8 +23,17 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvCache
                 $scope.selectedLanguage = language;
             }
          });
-
       }
     })
-  })
+  });
+  $scope.update = function(){
+      var dfd = $q.defer();
+      var adoptee = $scope.adoptee;
+      mvAdoptee.updateAdoptee(adoptee).then(function(retVal) {
+          dfd.resolve();
+      }, function(response) {
+          dfd.reject(response.data.reason);
+      })
+      return dfd.promise;
+    }
 });
