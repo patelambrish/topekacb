@@ -1,4 +1,4 @@
-angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, $q, $routeParams) {
+angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, $routeParams,  mvNotifier) {
   mvAdoptee.query().$promise.then(function(collection) {
     collection.forEach(function(adoptee) {
       if(adoptee._id === $routeParams.id) {
@@ -27,13 +27,9 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
     })
   });
   $scope.update = function(){
-      var dfd = $q.defer();
       var adoptee = $scope.adoptee;
-      mvAdoptee.updateAdoptee(adoptee).then(function(retVal) {
-          dfd.resolve();
-      }, function(response) {
-          dfd.reject(response.data.reason);
+      mvAdoptee.updateAdoptee(adoptee).$promise.then(function(retVal) {
+          mvNotifier.notify(retVal.message);
       })
-      return dfd.promise;
     }
 });
