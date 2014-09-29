@@ -12,7 +12,10 @@ module.exports = {
   },
   production: {
     rootPath: rootPath,
-    db: 'mongodb://senneking:topekaCb@ds999999.mongolab.com:999999/topekaCb',
-    port: process.env.PORT || 80
+    db: process.env.MONGOHQ_URL,
+    port: process.env.PORT || 80,
+    faceBookClientID : '276073369254615',
+    faceBookClientSecret : '4ad58d5239bea4c36e47caedafe59625',
+    faceBookCallbackURL : 'http://localhost:3030/auth/facebook/callback'
   }
 }

@@ -13,6 +13,7 @@
   "author": "Topeka Christmas Bureau Development Team (using MEAN Skeleton by Joe Eames)",
   "license": "BSD-2-Clause",
   "dependencies": {
+    "newrelic": "^1.11.0",
     "body-parser": "~1.2.0",
     "cookie-parser": "^1.1.0",
     "express": "~4.2.0",

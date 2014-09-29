@@ -1,3 +1,5 @@
+var newrelic = require('newrelic');
+
 var express = require('express'),
     stylus = require('stylus'),
     logger = require('morgan'),
@@ -5,7 +7,6 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     passport = require('passport');
-
 
 module.exports = function(app, config) {
   function compile(str, path) {
@@ -27,4 +28,7 @@ module.exports = function(app, config) {
     }
   ));
   app.use(express.static(config.rootPath + '/public'));
+
+  app.locals.newrelic = newrelic;
+
 }
