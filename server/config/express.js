@@ -1,3 +1,5 @@
+var newrelic = require('newrelic');
+
 var express = require('express'),
     logger = require('morgan'),
     bodyParser = require('body-parser'),
@@ -15,4 +17,7 @@ module.exports = function(app, config) {
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(express.static(config.rootPath + '/public'));
+
+  app.locals.newrelic = newrelic;
+
 }

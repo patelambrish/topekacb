@@ -1,5 +1,5 @@
-angular.module('app').controller('mvAdopteeListCtrl', function($scope, mvCachedAdoptees) {
-  $scope.adoptees = mvCachedAdoptees.query();
+angular.module('app').controller('mvAdopteeListCtrl', function($scope, mvAdoptee) {
+  $scope.adoptees = mvAdoptee.query();
 
   $scope.sortOptions = [{value:"name",text: "Sort by Name"},
     {value: "created",text: "Sort by Create Date"}];
