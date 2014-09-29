@@ -1,10 +1,70 @@
 /**
  * Created by Susan on 8/19/2014.
  */
-angular.module('app').controller('mvAdopterListCtrl', function($scope, mvCachedAdopters) {
-    $scope.adopters = mvCachedAdopters.query();
+angular.module('app').
+  filter('startFrom', function() {
+    return function(array, start) {
+      start = parseInt(start, 10);
+      
+      return (angular.isArray(array) || angular.isString(array)) && start ? array.slice(start) : array;
+    };
+  }).
+  filter('fullName', function() {
+    return function(data, format) {
+      if(!data) {
+        return;
+      }
+      
+      var fName = data.firstName || '',
+          lName = data.lastName || '';
+          
+      format = format || 'ltr';
 
-    $scope.sortOptions = [{value:"name",text: "Sort by Name"},
-        {value: "enrolled",text: "Sort by Enroll Date"}];
-    $scope.sortOrder = $scope.sortOptions[0].value;
-});
+      if(format === 'ltr') {
+        return fName && lName ? lName + ', ' + fName : lName + fName;
+      } else {
+        return fName && lName ? fName + ' ' + lName : lName + fName;
+      }
+    };
+  }).
+  controller('mvAdopterListCtrl', function($scope, $filter, mvAdopter) {
+    var adopters = mvAdopter.query();
+
+    $scope.sort = {
+      value: '-enrolled',
+      text: 'Enroll Date: Recent to Old',
+      options: [
+        {value: 'name', text: 'Name'},
+        {value: 'enrolled', text: 'Enroll Date: Old to Recent'},
+        {value: '-enrolled', text: 'Enroll Date: Recent to Old'}
+      ]
+    };
+    
+    $scope.page = {
+      current: 1,
+      total: 1,
+      previous: 1,
+      next: 1,
+      size: 10
+    };
+    
+    $scope.applySort = function(sortOption) {
+      angular.extend($scope.sort, sortOption);
+    };
+    
+    $scope.applyFilter = function(query) {
+      adopters.$promise.then(function() {
+        $scope.adopters = $filter('filter')(adopters, query);
+        $scope.applyPage(1);
+      });
+    };
+    
+    $scope.applyPage = function(page) {
+      $scope.page.current = page;
+      $scope.page.total = Math.ceil($scope.adopters.length / $scope.page.size);
+      $scope.page.previous = page > 1 ? page - 1 : page;
+      $scope.page.next = page < $scope.page.total ? page + 1 : page;
+    };
+    
+    $scope.applyFilter();
+  });

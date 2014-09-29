@@ -13,18 +13,18 @@
   "author": "Topeka Christmas Bureau Development Team (using MEAN Skeleton by Joe Eames)",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "newrelic": "^1.11.0",
     "body-parser": "~1.2.0",
+    "chance": "^0.6.1",
     "cookie-parser": "^1.1.0",
     "express": "~4.2.0",
     "express-session": "^1.2.1",
     "jade": "~1.3.1",
     "mongoose": "^3.8.11",
     "morgan": "~1.0.1",
+    "newrelic": "^1.11.0",
     "passport": "^0.2.0",
-    "passport-local": "^1.0.0",
-    "stylus": "~0.45.0",
-    "passport-facebook": "~1.0.3"
+    "passport-facebook": "~1.0.3",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "karma": "^0.12.16",

@@ -1,22 +1,22 @@
+<<<<<<< HEAD
 .navbar-right
-  form.navbar-form(ng-hide="identity.isAuthenticated()"
-  	name="loginForm")
-    ul.nav.navbar-nav     
-    .form-group
-      input.form-control(placeholder="Email", ng-model="username", data-ng-required="true")
-    .form-group
-      input.form-control(type="password", placeholder="Password", ng-model="password", data-ng-required="true")
-    button.btn.btn-primary(ng-click="signin(username, password)" data-ng-disabled="loginForm.$invalid") Sign In
-    button.btn.btn-primary(ng-click="loginViaFacebook()") Sign In Via Facebook
-  ul.nav.navbar-nav.navbar-right(ng-show="identity.isAuthenticated()")
-    li.dropdown
-      a.dropdown-toggle(href="", data-toggle="dropdown")
-        | {{identity.currentUser.firstName + " " + identity.currentUser.lastName}}
-        b.caret
-      ul.dropdown-menu
-        li(ng-show="identity.currentUser.isAdmin()")
-          a(href="/admin/users") User Admin
-        //li
-        //  a(href="/profile") Profile
-        li
-          a(href="", ng-click="signout()") Sign Out
+form.navbar-form.navbar-right(ng-hide="identity.isAuthenticated()")
+  .form-group
+    input.form-control(placeholder="Email", ng-model="username")
+  .form-group
+    input.form-control(type="password", placeholder="Password", ng-model="password")
+  button.btn.btn-primary(ng-click="signin(username, password)") Sign In
+  a(href="/signup")
+    button.btn.btn-primary() Sign Up
+ul.nav.navbar-nav.navbar-right(ng-show="identity.isAuthenticated()")
+  li.dropdown
+    a.dropdown-toggle(href="", data-toggle="dropdown")
+      | {{identity.currentUser.firstName + " " + identity.currentUser.lastName}}
+      b.caret
+    ul.dropdown-menu
+      li(ng-show="identity.currentUser.isAdmin()")
+        a(href="/admin/users") User Admin
+      li
+        a(href="/profile") Profile
+      li
+        a(href="", ng-click="signout()") Sign Out
