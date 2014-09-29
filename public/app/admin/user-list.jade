@@ -1,7 +1,12 @@
 .container
-  button(class="btn btn-primary pull-right" 
-    data-toggle="modal" 
-    data-target="#userModal" data-ng-click="newUser()") New User
+  .pull-right
+    form.form-inline
+      .form-group
+        input.form-control(ng-model="searchText", placeholder="Filter")
+      .form-group.margin-left-med
+        button(class="btn btn-primary pull-right" 
+          data-toggle="modal" 
+          data-target="#userModal" data-ng-click="newUser()") New User
   table.table.table-hover.table-striped.table-condensed
     thead
       tr
@@ -11,7 +16,7 @@
         th Facebook?
         th Roles
     tbody      
-      tr(ng-repeat="user in users" ng-click="selectUser(user)"
+      tr(ng-repeat="user in users | filter: searchText" ng-click="selectUser(user)"
         data-toggle="modal" 
         data-target="#userModal")
         td {{user.firstName + ' ' + user.lastName}}
