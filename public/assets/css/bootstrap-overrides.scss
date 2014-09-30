@@ -1,0 +1,13 @@
+@import "../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
+
+@media(max-width: $screen-md) and (min-width: $screen-sm) {
+  .navbar-form .form-control {
+    width: 10em;
+  }
+}
+
+@media(min-width: $screen-md) {
+  .navbar-form .form-control {
+    width: auto;
+  }
+}
