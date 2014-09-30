@@ -86,7 +86,8 @@ function createDefaultAdoptees() {
       });
       Adoptee.create({firstName: 'James', lastName: 'Brown', gender: 'Male', birthDate: new Date('11/26/1978'),
           createDate: new Date('06/21/2014'), ssnLastFour: 0909,
-          address: {homeAddress: '901 W. 6th Street', city: 'Topeka', state: 'KS', zip: '66607'}
+          address: {homeAddress: '901 W. 6th Street', city: 'Topeka', state: 'KS', zip: '66607'},
+          story: "James Brown's story"
       });
     }
   })
