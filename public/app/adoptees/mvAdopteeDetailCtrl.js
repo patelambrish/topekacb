@@ -7,6 +7,8 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
               {name:'Male'},
               {name:'Female'}
           ];
+        $scope.clothingSizeOptions = ['A', 'J', 'C'];
+        $scope.shoeSizeOptions = ['A', 'C'];
         $scope.selectedGender;
         $scope.genders.forEach(function(gender){
               if (gender.name == adoptee.gender)  {

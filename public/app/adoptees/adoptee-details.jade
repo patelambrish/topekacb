@@ -168,24 +168,35 @@
                             table.table.table-striped
                               thead
                                 tr.row-fluid
-                                  th.col-md-3 Name (first last)
+                                  th.col-md-2 Name (first last)
                                   th.col-md-1 SSN (last 4)
                                   th.col-md-1 Age
-                                  th.col-md-1 Gender
+                                  th.col-md-2 Gender
                                   th.col-md-1 Shirt Size
                                   th.col-md-1 Pants Size
                                   th.col-md-1 Shoe Size
                                   th.col-md-3 Wish List
                               tbody
                                 tr.row-fluid(ng-repeat="householdMember in adoptee.householdMembers")
-                                  td.div.col-md-3
+                                  td.div.col-md-2
                                     input.form-control(name="member.name", type="text", placeholder="Name", ng-model="member.name")
                                   td.div.col-md-1
-                                    input.form-control(name="member.ssnLastFour", type="number", placeholder="ssn last 4",  ng-model="member.ssnLastFour")
+                                    input.form-control(name="member.ssnLastFour", type="number", placeholder="ssn", max="9999",  ng-model="member.ssnLastFour")
                                   td.div.col-md-1
-                                    input.form-control(name="member.age", type="number", placeholder="age", ng-model="member.age")
+                                    input.form-control(name="member.age", type="number", min="0", max="110", placeholder="age", ng-model="member.age")
+                                  td.div.col-md-2
+                                    select.form-control(name="member.gender", type="select", placeholder="Gender", ng-model="member.gender" ng-options="mg.name for mg in genders")
                                   td.div.col-md-1
-                                    input.form-control(name="member.gender", type="select", placeholder="Gender", ng-model="member.gender" ng-options="['M', 'F']")
+                                    select.form-control(name="member.shirtSizeType", type="select", ng-model="member.shirtSizeType" ng-options="szt for szt in clothingSizeOptions")
+                                    input.form-control(name="member.shirtSize", type="number", min="0", max="30", ng-model="member.shirtSize")
+                                  td.div.col-md-1
+                                    select.form-control(name="member.pantSizeType", type="select", ng-model="member.pantSizeType" ng-options="pzt for pzt in clothingSizeOptions")
+                                    input.form-control(name="member.pantSize", type="number", min="0", max="30", ng-model="member.pantSize")
+                                  td.div.col-md-1
+                                    select.form-control(name="member.shoeSizeType", type="select", ng-model="member.shoeSizeType" ng-options="szt for szt in shoeSizeOptions")
+                                    input.form-control(name="member.shoeSize", type="number", min="0", max="20", ng-model="member.shoeSize")
+                                  td.div.col-md-3
+                                    textarea.form-control(name="member.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="member.wishList")
                .form-group
                 .col-md-10.col-md-offset-2
                     .pull-right
