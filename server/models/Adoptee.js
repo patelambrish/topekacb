@@ -3,24 +3,43 @@ var mongoose = require('mongoose');
 var phone = {
     name: {type: String},
     number: {type: String}
-}
+};
+
 var languages = [
     'Spanish',
     'Spanish/English spoken by'
 ];
+
+var clothingSizeTypes = ['A', 'J', 'C'];
+var shoeSizeTypes = ['A', 'C'];
+
+var householdMember = {
+    name: {type: String},
+    ssnLastFour: {type: Number, max: 9999},
+    age: {type: Number, max: 99},
+    gender: {type: String, enum: genders},
+    pantSizeType: {type: String, enum: clothingSizeTypes},
+    pantSize: {type: Number, max: 99},
+    shirtSizeType: {type: String, enum: clothingSizeTypes},
+    shirtSize: {type: Number, max: 99},
+    shoeSizeType: {type: String, enum: shoeSizeTypes},
+    shoeSize: {type: Number, max: 99},
+    wishList: {type: String}
+};
+
 var householdTypes = ['Single',
     'Adult Only',
     'Single Mom with Children',
     'Single Dad with Children',
     'Married Couple with Children',
     'Adult with Children',
-    'Grandparents (only) with Children']
-var states = ['KS', 'MO', 'NE', 'OK', 'CO'] //most of the current records have null states...most addresses are topeka, state no displayed
+    'Grandparents (only) with Children'];
+var states = ['KS', 'MO', 'NE', 'OK', 'CO'];  //most of the current records have null states...most addresses are topeka, state no displayed
 
 var adopteeStates = ['In Process',
     'Not Matched',
-    'Matched']
-var genders = ['Male', 'Female']
+    'Matched'];
+var genders = ['Male', 'Female'];
 
 var adopteeSchema = mongoose.Schema({
     firstName: {type:String, required:'{PATH} is required!'},
@@ -58,6 +77,7 @@ var adopteeSchema = mongoose.Schema({
     story: {type: String},
     volunteerComment: {type: String},
     internalComment: {type: String},
+    householdMembers: [householdMember],
     createDate: {type: Date},
     _createUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     modifyDate: {type: Date},
@@ -74,7 +94,8 @@ function createDefaultAdoptees() {
           cell1Phone: {name: 'John', number: '888 888 8888'},
           address: {homeAddress: '599 W. 8th Street', city: 'Topeka', state: 'KS'},
           language: 'Spanish',
-          householdType: 'Single'
+          householdType: 'Single',
+          householdMembers: []
       });
       Adoptee.create({firstName: 'Mark', lastName: 'Lark', gender: 'Male', birthDate: new Date('07/09/1985'),
           createDate: new Date('09/01/2014'), ssnLastFour: 9997,
@@ -82,15 +103,17 @@ function createDefaultAdoptees() {
           householdType: 'Single Dad with Children',
           isVeteran: true,
           language: 'Spanish/English spoken by',
-          englishSpeaker: 'Mary'
+          englishSpeaker: 'Mary',
+          householdMembers: []
       });
       Adoptee.create({firstName: 'James', lastName: 'Brown', gender: 'Male', birthDate: new Date('11/26/1978'),
           createDate: new Date('06/21/2014'), ssnLastFour: 0909,
           address: {homeAddress: '901 W. 6th Street', city: 'Topeka', state: 'KS', zip: '66607'},
-          story: "James Brown's story"
+          story: "James Brown's story",
+          householdMembers: []
       });
     }
-  })
+  });
 }
 
 exports.createDefaultAdoptees = createDefaultAdoptees;

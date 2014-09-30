@@ -24,12 +24,20 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
             }
          });
       }
-    })
+    });
   });
   $scope.update = function(){
       var adoptee = $scope.adoptee;
       mvAdoptee.updateAdoptee(adoptee).$promise.then(function(retVal) {
           mvNotifier.notify(retVal.message);
-      })
-    }
+      });
+    };
+  $scope.addHouseholdMember = function(){
+      var adoptee = $scope.adoptee;
+      if (!adoptee.householdMembers)
+      {
+        adoptee.householdMembers = [];
+      }
+      adoptee.householdMembers.push({householdMember: {}});
+  };
 });

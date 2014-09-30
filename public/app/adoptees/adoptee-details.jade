@@ -162,6 +162,30 @@
                         .form-group
                             .row-fluid.top-padding-med
                                 h4 Household Members
+                        .form-group
+                            button.btn.btn-primary
+                              i.glyphicon.glyphicon-plus-sign.pull-left(ng-click="addHouseholdMember()")
+                            table.table.table-striped
+                              thead
+                                tr.row-fluid
+                                  th.col-md-3 Name (first last)
+                                  th.col-md-1 SSN (last 4)
+                                  th.col-md-1 Age
+                                  th.col-md-1 Gender
+                                  th.col-md-1 Shirt Size
+                                  th.col-md-1 Pants Size
+                                  th.col-md-1 Shoe Size
+                                  th.col-md-3 Wish List
+                              tbody
+                                tr.row-fluid(ng-repeat="householdMember in adoptee.householdMembers")
+                                  td.div.col-md-3
+                                    input.form-control(name="member.name", type="text", placeholder="Name", ng-model="member.name")
+                                  td.div.col-md-1
+                                    input.form-control(name="member.ssnLastFour", type="number", placeholder="ssn last 4",  ng-model="member.ssnLastFour")
+                                  td.div.col-md-1
+                                    input.form-control(name="member.age", type="number", placeholder="age", ng-model="member.age")
+                                  td.div.col-md-1
+                                    input.form-control(name="member.gender", type="select", placeholder="Gender", ng-model="member.gender" ng-options="['M', 'F']")
                .form-group
                 .col-md-10.col-md-offset-2
                     .pull-right
