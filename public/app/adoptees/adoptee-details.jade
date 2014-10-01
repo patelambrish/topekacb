@@ -171,11 +171,12 @@
                                   th.col-md-2 Name (first last)
                                   th.col-md-1 SSN (last 4)
                                   th.col-md-1 Age
-                                  th.col-md-2 Gender
+                                  th.col-md-1 Gender
                                   th.col-md-1 Shirt Size
                                   th.col-md-1 Pants Size
                                   th.col-md-1 Shoe Size
                                   th.col-md-3 Wish List
+                                  th.col-md-1 Delete
                               tbody
                                 tr.row-fluid(ng-repeat="householdMember in adoptee.householdMembers")
                                   td.div.col-md-2
@@ -184,7 +185,7 @@
                                     input.form-control(name="householdMember.ssnLastFour", type="number", placeholder="ssn", max="9999",  ng-model="householdMember.ssnLastFour")
                                   td.div.col-md-1
                                     input.form-control(name="householdMember.age", type="number", min="0", max="110", placeholder="age", ng-model="householdMember.age")
-                                  td.div.col-md-2
+                                  td.div.col-md-1
                                     select.form-control(name="householdMember.gender", type="select", placeholder="Gender", ng-model="householdMember.gender" ng-options="g for g in genders")
                                   td.div.col-md-1
                                     select.form-control(name="householdMember.shirtSizeType", type="select", ng-model="householdMember.shirtSizeType" ng-options="szt for szt in clothingSizeTypes")
@@ -197,6 +198,9 @@
                                     input.form-control(name="householdMember.shoeSize", type="number", min="0", max="20", ng-model="householdMember.shoeSize")
                                   td.div.col-md-3
                                     textarea.form-control(name="householdMember.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="householdMember.wishList")
+                                  td.div.col-md-1
+                                      button.btn.btn-primary
+                                        i.glyphicon.glyphicon-remove-sign(ng-click="deleteHouseholdMember()")
                .form-group
                 .col-md-10.col-md-offset-2
                     .pull-right
