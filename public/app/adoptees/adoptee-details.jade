@@ -29,7 +29,7 @@
                                 .col-md-2
                                     input.form-control(name="adoptee.ssnLastFour", type="text", placeholder="SSN (Last 4 digits)", ng-model="adoptee.ssnLastFour")
                                 .col-md-2
-                                    select.form-control(name="adoptee.gender", type="select", placeholder="Gender", ng-model="selectedGender" ng-options="g.name for g in genders")
+                                    select.form-control(name="adoptee.gender", type="select", placeholder="Gender", ng-model="adoptee.gender" ng-options="g for g in genders")
                         .form-group
                             .row
                                 label.col-md-6(for="adoptee.address.homeAddress") Home Address *
@@ -110,8 +110,8 @@
                             p If adults in the household do NOT speak english, please select one of the following
                         .row
                             .col-md-6
-                                select.form-control(name="adoptee.language", type="select", placeholder="Language", ng-model="selectedLanguage" ng-options="l.name for l in languages")
-                            .col-md-5(ng-hide="selectedLanguage.name != 'Spanish/English spoken by'")
+                                select.form-control(name="adoptee.language", type="select", placeholder="Language", ng-model="adoptee.language" ng-options="l for l in languages")
+                            .col-md-5(ng-hide="adoptee.language != 'Spanish/English spoken by'")
                                 label.col-md-4(for="adoptee.englishSpeaker") English speaker
                                 input(name="adoptee.englishSpeaker",type="text" ng-model="adoptee.englishSpeaker")
                         .row.top-padding-med
@@ -185,15 +185,15 @@
                                   td.div.col-md-1
                                     input.form-control(name="householdMember.age", type="number", min="0", max="110", placeholder="age", ng-model="householdMember.age")
                                   td.div.col-md-2
-                                    select.form-control(name="householdMember.gender", type="select", placeholder="Gender", ng-model="householdMember.gender" ng-options="mg.name for mg in genders")
+                                    select.form-control(name="householdMember.gender", type="select", placeholder="Gender", ng-model="householdMember.gender" ng-options="g for g in genders")
                                   td.div.col-md-1
-                                    select.form-control(name="householdMember.shirtSizeType", type="select", ng-model="householdMember.shirtSizeType" ng-options="szt for szt in clothingSizeOptions")
+                                    select.form-control(name="householdMember.shirtSizeType", type="select", ng-model="householdMember.shirtSizeType" ng-options="szt for szt in clothingSizeTypes")
                                     input.form-control(name="householdMember.shirtSize", type="number", min="0", max="30", ng-model="householdMember.shirtSize")
                                   td.div.col-md-1
-                                    select.form-control(name="householdMember.pantSizeType", type="select", ng-model="householdMember.pantSizeType" ng-options="pzt for pzt in clothingSizeOptions")
+                                    select.form-control(name="householdMember.pantSizeType", type="select", ng-model="householdMember.pantSizeType" ng-options="pzt for pzt in clothingSizeTypes")
                                     input.form-control(name="householdMember.pantSize", type="number", min="0", max="30", ng-model="householdMember.pantSize")
                                   td.div.col-md-1
-                                    select.form-control(name="householdMember.shoeSizeType", type="select", ng-model="householdMember.shoeSizeType" ng-options="szt for szt in shoeSizeOptions")
+                                    select.form-control(name="householdMember.shoeSizeType", type="select", ng-model="householdMember.shoeSizeType" ng-options="szt for szt in shoeSizeTypes")
                                     input.form-control(name="householdMember.shoeSize", type="number", min="0", max="20", ng-model="householdMember.shoeSize")
                                   td.div.col-md-3
                                     textarea.form-control(name="householdMember.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="householdMember.wishList")

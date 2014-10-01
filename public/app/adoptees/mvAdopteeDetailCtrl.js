@@ -3,28 +3,10 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
     collection.forEach(function(adoptee) {
       if(adoptee._id === $routeParams.id) {
         $scope.adoptee = adoptee;
-        $scope.genders = [
-              {name:'Male'},
-              {name:'Female'}
-          ];
-        $scope.clothingSizeOptions = ['A', 'J', 'C'];
-        $scope.shoeSizeOptions = ['A', 'C'];
-        $scope.selectedGender;
-        $scope.genders.forEach(function(gender){
-              if (gender.name == adoptee.gender)  {
-                  $scope.selectedGender = gender;
-              }
-        });
-        $scope.languages = [
-              {name:'Spanish'},
-              {name:'Spanish/English spoken by'}
-          ];
-        $scope.selectedLanguage;
-        $scope.languages.forEach(function(language){
-            if (language.name == adoptee.language)  {
-                $scope.selectedLanguage = language;
-            }
-         });
+        $scope.genders = ['Male','Female'];
+        $scope.clothingSizeTypes = ['A', 'J', 'C'];
+        $scope.shoeSizeTypes = ['A', 'C'];
+        $scope.languages = ['Spanish','Spanish/English spoken by'];
       }
     });
   });
