@@ -47,3 +47,7 @@ exports.saveAdopter = function(req, res) {
       res.send(adopter);
     });
 };
+
+exports.getEnums = function(req, res) {
+  res.send(Adopter.getEnumValues());
+};

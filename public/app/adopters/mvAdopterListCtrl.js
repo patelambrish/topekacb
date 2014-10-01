@@ -35,8 +35,8 @@ angular.module('app').
       text: 'Enroll Date: Recent to Old',
       options: [
         {value: 'name', text: 'Name'},
-        {value: 'enrolled', text: 'Enroll Date: Old to Recent'},
-        {value: '-enrolled', text: 'Enroll Date: Recent to Old'}
+        {value: 'createDate', text: 'Enroll Date: Old to Recent'},
+        {value: '-createDate', text: 'Enroll Date: Recent to Old'}
       ]
     };
     
