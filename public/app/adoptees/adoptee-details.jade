@@ -179,24 +179,24 @@
                               tbody
                                 tr.row-fluid(ng-repeat="householdMember in adoptee.householdMembers")
                                   td.div.col-md-2
-                                    input.form-control(name="member.name", type="text", placeholder="Name", ng-model="member.name")
+                                    input.form-control(name="householdhouseholdMember.name", type="text", placeholder="Name", ng-model="householdMember.name")
                                   td.div.col-md-1
-                                    input.form-control(name="member.ssnLastFour", type="number", placeholder="ssn", max="9999",  ng-model="member.ssnLastFour")
+                                    input.form-control(name="householdMember.ssnLastFour", type="number", placeholder="ssn", max="9999",  ng-model="householdMember.ssnLastFour")
                                   td.div.col-md-1
-                                    input.form-control(name="member.age", type="number", min="0", max="110", placeholder="age", ng-model="member.age")
+                                    input.form-control(name="householdMember.age", type="number", min="0", max="110", placeholder="age", ng-model="householdMember.age")
                                   td.div.col-md-2
-                                    select.form-control(name="member.gender", type="select", placeholder="Gender", ng-model="member.gender" ng-options="mg.name for mg in genders")
+                                    select.form-control(name="householdMember.gender", type="select", placeholder="Gender", ng-model="householdMember.gender" ng-options="mg.name for mg in genders")
                                   td.div.col-md-1
-                                    select.form-control(name="member.shirtSizeType", type="select", ng-model="member.shirtSizeType" ng-options="szt for szt in clothingSizeOptions")
-                                    input.form-control(name="member.shirtSize", type="number", min="0", max="30", ng-model="member.shirtSize")
+                                    select.form-control(name="householdMember.shirtSizeType", type="select", ng-model="householdMember.shirtSizeType" ng-options="szt for szt in clothingSizeOptions")
+                                    input.form-control(name="householdMember.shirtSize", type="number", min="0", max="30", ng-model="householdMember.shirtSize")
                                   td.div.col-md-1
-                                    select.form-control(name="member.pantSizeType", type="select", ng-model="member.pantSizeType" ng-options="pzt for pzt in clothingSizeOptions")
-                                    input.form-control(name="member.pantSize", type="number", min="0", max="30", ng-model="member.pantSize")
+                                    select.form-control(name="householdMember.pantSizeType", type="select", ng-model="householdMember.pantSizeType" ng-options="pzt for pzt in clothingSizeOptions")
+                                    input.form-control(name="householdMember.pantSize", type="number", min="0", max="30", ng-model="householdMember.pantSize")
                                   td.div.col-md-1
-                                    select.form-control(name="member.shoeSizeType", type="select", ng-model="member.shoeSizeType" ng-options="szt for szt in shoeSizeOptions")
-                                    input.form-control(name="member.shoeSize", type="number", min="0", max="20", ng-model="member.shoeSize")
+                                    select.form-control(name="householdMember.shoeSizeType", type="select", ng-model="householdMember.shoeSizeType" ng-options="szt for szt in shoeSizeOptions")
+                                    input.form-control(name="householdMember.shoeSize", type="number", min="0", max="20", ng-model="householdMember.shoeSize")
                                   td.div.col-md-3
-                                    textarea.form-control(name="member.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="member.wishList")
+                                    textarea.form-control(name="householdMember.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="householdMember.wishList")
                .form-group
                 .col-md-10.col-md-offset-2
                     .pull-right
