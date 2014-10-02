@@ -22,17 +22,19 @@ exports.updateAdoptee = function(req, res){
     if(!id) {
         id = new mongoose.Types.ObjectId();
         update.createDate = new Date();
-        update.createdBy = userId;
+        update.createUser = userId;
     } else {
         delete update._id;
-        update.modifiedDate = new Date();
-        update.modifiedBy = userId;
+        update.modifyDate = new Date();
+        update.modifyUser = userId;
     }
+
+    update.birthDate = new Date(update.birthDate);
     delete update.__v; //todo:  tried .select('-__v') with error on put  more research required
     Adoptee.
         findByIdAndUpdate(id, update, options).
-        populate('createdBy', 'firstName lastName').
-        populate('modifiedBy', 'firstName lastName').
+        populate('createUser', 'firstName lastName').
+        populate('modifyUser', 'firstName lastName').
         exec(function(err, adoptee) {
             if(err) { res.status(400); return res.send({error:err.toString()});}
             return res.send({message: "Adoptee successfully updated!"})
