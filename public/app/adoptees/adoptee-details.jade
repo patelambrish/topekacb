@@ -9,6 +9,8 @@
                         a(data-toggle="tab" href="#householdMembersGiftList") Household Members - Gift List
                 div.tab-content
                     div.tab-pane.fade.in.active(id="householdInformation")
+                        .row-fluid.top-padding-med
+                          h4 Adoptee Information
                         .form-group
                             .row.top-padding-med
                                 label.col-md-3(for="lastName") Last Name *
@@ -19,7 +21,7 @@
                                 label.col-md-2(for="gender") Gender
                             .row
                                 .col-md-3
-                                    input.form-control(name="adoptee.lasttName", type="text", placeholder="Last Name !!Required!!", ng-model="adoptee.lastName", required)
+                                    input.form-control(name="adoptee.lastName", type="text", placeholder="Last Name !!Required!!", ng-model="adoptee.lastName", required)
                                 .col-md-2
                                     input.form-control(name="adoptee.firstName", type="text", placeholder="First Name !!Required!!", ng-model="adoptee.firstName", required)
                                 .col-md-1
@@ -82,30 +84,37 @@
                             .row
                                 .col-md-4
                                     input.form-control(name="adoptee.email", type="email", placeholder="Email", ng-model="adoptee.email")
-                        .row
-                            h5.border-row
+                        .row-fluid.top-padding-med
+                          h4 Additional Information Information
                         .row
                             p Please check the option(s) that apply to one or more members of this household
                         .form-group
                             .row-fluid
-                                .div.col-sm-2
+                                div.col-md-3
                                     label.control-label(for="adoptee.isDisabled") Disabled
                                     input.checkbox-inline(name="adoptee.isDisabled", type="checkbox", ng-model="adoptee.isDisabled")
-                                .div.col-sm-2
+                                div.col-md-3
                                     label.control-label(for="adoptee.isSenior") Senior 60+
                                     input.checkbox-inline(name="adoptee.isSenior", type="checkbox", ng-model="adoptee.isSenior")
-                                .div.col-sm-2
+                                div.col-md-3
                                     label.control-label(for="adoptee.isVeteran") Veteran
                                     input.checkbox-inline(name="adoptee.isVeteran", type="checkbox", ng-model="adoptee.isVeteran")
-                                .div.col-sm-2
+                                div.col-md-3
                                     label.control-label(for="adoptee.isHomebound") Homebound
                                     input.checkbox-inline(name="adoptee.isHomebound", type="checkbox", ng-model="adoptee.isHomebound")
-                                .div.col-sm-2
+                            .row-fluid
+                                div.col-md-3
                                     label.control-label(for="adoptee.isDiabetic") Diabetic
                                     input.checkbox-inline(name="adoptee.isDiabetic", type="checkbox", ng-model="adoptee.isDiabetic")
-                                .div.col-sm-2
-                                    label.control-label(for="adoptee.isAllergic") Homebound
+                                div.col-md-3
+                                    label.control-label(for="adoptee.isDogOwner") Dog(s)
+                                    input.checkbox-inline(name="adoptee.isDogOwner", type="checkbox", ng-model="adoptee.isDogOwner")
+                                div.col-md-3
+                                    label.control-label(for="adoptee.isAllergic") Food Alergy
                                     input.checkbox-inline(name="adoptee.isAllergic", type="checkbox", ng-model="adoptee.isAllergic")
+                                div.col-md-4(ng-hide="!adoptee.isAllergic")
+                                  label.control-label(for="adoptee.englishSpeaker") Foods
+                                  input(name="adoptee.reactionFoods",type="text" ng-model="adoptee.reactionFoods")
                         .form-group.row
                             p If adults in the household do NOT speak english, please select one of the following
                         .row
@@ -192,7 +201,7 @@
                                     input.form-control(name="householdMember.shirtSize", type="number", min="0", max="30", ng-model="householdMember.shirtSize")
                                   td.div.col-md-1
                                     select.form-control(name="householdMember.pantSizeType", type="select", ng-model="householdMember.pantSizeType" ng-options="pzt for pzt in clothingSizeTypes")
-                                    input.form-control(name="householdMember.pantSize", type="number", min="0", max="30", ng-model="householdMember.pantSize")
+                                    input.form-control(name="householdMember.pantSize", type="number", min="0", max="99", ng-model="householdMember.pantSize")
                                   td.div.col-md-1
                                     select.form-control(name="householdMember.shoeSizeType", type="select", ng-model="householdMember.shoeSizeType" ng-options="szt for szt in shoeSizeTypes")
                                     input.form-control(name="householdMember.shoeSize", type="number", min="0", max="20", ng-model="householdMember.shoeSize")
@@ -200,10 +209,10 @@
                                     textarea.form-control(name="householdMember.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="householdMember.wishList")
                                   td.div.col-md-1
                                       button.btn.btn-primary
-                                        i.glyphicon.glyphicon-remove-sign(ng-click="deleteHouseholdMember()")
+                                        i.glyphicon.glyphicon-remove-sign(ng-click="deleteHouseholdMember(householdMember)")
                .form-group
                 .col-md-10.col-md-offset-2
                     .pull-right
-                        button.btn.btn-primary(ng-click="update()", ng-disabled="adopteeForm.$invalid") Submit
+                        button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update()") Submit
                         | &nbsp;
                         a.btn.btn-default(href="/adoptees") Cancel

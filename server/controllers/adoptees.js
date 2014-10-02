@@ -1,4 +1,5 @@
-var Adoptee = require('mongoose').model('Adoptee');
+var mongoose = require('mongoose'),
+    Adoptee = mongoose.model('Adoptee');
 
 exports.getAdoptees = function(req, res) {
   Adoptee.find({}).exec(function(err, collection) {
@@ -17,11 +18,14 @@ exports.updateAdoptee = function(req, res){
         id = update._id,
         options = { upsert: true },
         userId = req.user ? req.user._id : null;
+    console.log(update);
     if(!id) {
+        console.log('no id');
         id = new mongoose.Types.ObjectId();
         update.createDate = new Date();
         update.createdBy = userId;
     } else {
+        delete update._id;
         update.modifiedDate = new Date();
         update.modifiedBy = userId;
     }
@@ -31,7 +35,7 @@ exports.updateAdoptee = function(req, res){
         populate('createdBy', 'firstName lastName').
         populate('modifiedBy', 'firstName lastName').
         exec(function(err, adoptee) {
-            if(err) { res.status(400); return res.send({message:err.toString()});}
+            if(err) { res.status(400); return res.send({error:err.toString()});}
             return res.send({message: "Adoptee successfully updated!"})
         });
 
