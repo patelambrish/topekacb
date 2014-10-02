@@ -26,12 +26,12 @@ angular.module('app').
   }).
   controller('mvAdopteeListCtrl', function($scope, $filter, mvAdoptee) {
     var adoptees = mvAdoptee.query();
-
+    if ($scope.reso)
     $scope.sort = {
       value: '-createDate',
       text: 'Create Date: Recent to Old',
       options: [
-        {value: 'lastName', text: 'Name'},
+        {value: 'lastName, firstName', text: 'Name'},
         {value: 'createDate', text: 'Create Date: Old to Recent'},
         {value: '-createDate', text: 'Create Date: Recent to Old'}
       ]
