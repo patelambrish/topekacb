@@ -18,9 +18,8 @@ exports.updateAdoptee = function(req, res){
         id = update._id,
         options = { upsert: true },
         userId = req.user ? req.user._id : null;
-    console.log(update);
+
     if(!id) {
-        console.log('no id');
         id = new mongoose.Types.ObjectId();
         update.createDate = new Date();
         update.createdBy = userId;

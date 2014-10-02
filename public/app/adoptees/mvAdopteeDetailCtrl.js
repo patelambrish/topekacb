@@ -2,16 +2,19 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
     $scope.genders = ['Male','Female'];
     $scope.clothingSizeTypes = ['A', 'J', 'C'];
     $scope.shoeSizeTypes = ['A', 'C'];
-    $scope.languages = ['Spanish','Spanish/English spoken by'];
+    $scope.languages = ['','Spanish','Spanish/English spoken by'];
+    $scope.adopteeTitle = '';
     if($routeParams.id !== '0') {
-      $scope.adoptee = mvAdoptee.get({ _id: $routeParams.id });
-      } else {
+        $scope.adoptee = mvAdoptee.get({ _id: $routeParams.id });
+    }
+    else {
       $scope.adoptee = new mvAdoptee({
         householdMembers: []
       });
+      $scope.adopteeTitle = 'New Adoptee';
     }
-      
-  $scope.update = function(){
+
+    $scope.update = function(){
       var adoptee = $scope.adoptee;
       mvAdoptee.updateAdoptee(adoptee).$promise.then(function(retVal) {
         if (retVal.error){
@@ -21,16 +24,16 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
           mvNotifier.notify(retVal.message);
         }
       });
-  };
-    
-  $scope.addHouseholdMember = function(){
+    };
+
+    $scope.addHouseholdMember = function(){
       var adoptee = $scope.adoptee;
       if (!adoptee.householdMembers)
       {
         adoptee.householdMembers = [];
       }
       adoptee.householdMembers.push({householdMember: {}});
-  };
+    };
   
     $scope.deleteHouseholdMember = function(householdMember){
       var adoptee = $scope.adoptee;
@@ -39,6 +42,6 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
       {
         adoptee.householdMembers.splice(i,1);
       }
-  };
+    };
 
 });

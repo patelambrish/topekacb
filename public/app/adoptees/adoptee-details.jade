@@ -1,16 +1,20 @@
 .container
     .well
+        h4.row
+            .col-md-3 Adoptee: {{adopteeTitle || adoptee.firstName + ' ' + adoptee.lastName}}
+            .col-md-1.badge {{adopteeTitle || 'L-122'}}
+            .col-md-8.pull-right Adopter:
         form.form-horizontal(name="adopteeForm")
             fieldset
                 ul.nav.nav-tabs
                     li.active
                         a(data-toggle="tab" href="#householdInformation") Household Information
                     li
-                        a(data-toggle="tab" href="#householdMembersGiftList") Household Members - Gift List
+                        a(data-toggle="tab" href="#householdMembersGiftList", ng-show="adoptee.firstName && adoptee.lastName && adoptee.address.homeAddress") Household Members - Gift List
                 div.tab-content
                     div.tab-pane.fade.in.active(id="householdInformation")
                         .row.top-padding-med
-                            h4 Adoptee Information
+                            h4.col-md-12 Adoptee Information
                         .row.top-padding-med
                             label.col-md-3(for="lastName") Last Name *
                             label.col-md-2(for="firstName") First Name *
@@ -79,7 +83,7 @@
                             .col-md-4
                                 input.form-control(name="adoptee.email", type="email", placeholder="Email", ng-model="adoptee.email")
                         .row.top-padding-med
-                            h4 Additional Information
+                            h4.col-md-12 Additional Information
                         .row.top-padding-med
                             .col-md-12
                                 p Please check the option(s) that apply to one or more members of this household
@@ -144,9 +148,9 @@
                             .col-md-3
                                 input.radio-inline(name="adoptee.householdType", type="radio", ng-model="adoptee.householdType" value="Grandparents (only) with Children")
                                 label.control-label(for="adoptee.householdType") &nbsp Grandparents (only) w/Children
-                    div.tab-pane.fade(id="householdMembersGiftList")
+                    .tab-pane.fade.in(id="householdMembersGiftList", ng-show="adoptee.firstName && adoptee.lastName && adoptee.address.homeAddress")
                         .row.top-padding-med
-                            h4 Comments
+                            h4.col-md-12 Comments
                         .row.top-padding-med
                             .col-md-12
                                 label.col-md-12 Your Story: Feel free to share your story for adoption in a few sentences (optional)
@@ -162,7 +166,7 @@
                             .col-md-6
                                 textarea.form-control(name="adoptee.internalComment", type="textarea", rows="4", ng-model="adoptee.internalComment")
                         .row.top-padding-med
-                            h4 Household Members
+                            h4.col-md-12 Household Members
                         button.btn.btn-primary
                           i.glyphicon.glyphicon-plus-sign.pull-left(ng-click="addHouseholdMember()")
                         table.table.table-striped
