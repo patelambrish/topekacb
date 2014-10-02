@@ -9,17 +9,17 @@ var auth = require('./auth'),
 
 module.exports = function(app) {
 
-  app.get('/api/users', auth.requiresRole('admin'), users.getUsers);
-  app.post('/api/users', users.createUser);
-  app.put('/api/users', users.updateUser);
+  app.get('/api/users', auth.requiresRole(['admin']), users.getUsers);
+  app.post('/api/users', auth.requiresRole(['admin']), users.createUser);
+  app.put('/api/users', auth.requiresRole(['admin']), users.updateUser);
 
-  app.get('/api/adoptees', auth.requiresRole('user'), adoptees.getAdoptees);
-  app.get('/api/adoptees/:id', adoptees.getAdopteeById);
-  app.put('/api/adoptees', auth.requiresRole('user'), adoptees.updateAdoptee);
+  app.get('/api/adoptees', auth.requiresRole(['observer','user','manager']), adoptees.getAdoptees);
+  app.get('/api/adoptees/:id', auth.requiresRole(['observer','user','manager']), adoptees.getAdopteeById);
+  app.put('/api/adoptees', auth.requiresRole(['user','manager']), adoptees.updateAdoptee);
 
-  app.get('/api/adopters', auth.requiresRole('user'), adopters.getAdopters);
-  app.get('/api/adopters/:id', auth.requiresRole('adopter'), adopters.getAdopterById);
-  app.post('/api/adopters', auth.requiresRole('adopter'), adopters.saveAdopter);
+  app.get('/api/adopters', auth.requiresRole(['observer','user','manager']), adopters.getAdopters);
+  app.get('/api/adopters/:id', auth.requiresRole(['observer','user','manager']), adopters.getAdopterById);
+  app.post('/api/adopters', auth.requiresRole(['user','manager']), adopters.saveAdopter);
 
   app.get('/api/states', states.getStates);
 
@@ -41,7 +41,7 @@ module.exports = function(app) {
   app.get('/auth/facebook', passport.authenticate('facebook'));
 
   app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    failureRedirect: '/', successRedirect: '/'
+    failureRedirect: '/facebook/You are registerd. Please contact system administrator!', successRedirect: '/facebook/You have successfully signed in!'
   }));
 
   app.get('*', function(req, res) {
