@@ -1,6 +1,3 @@
-/**
- * Created by Susan on 8/19/2014.
- */
 angular.module('app').
   filter('startFrom', function() {
     return function(array, start) {

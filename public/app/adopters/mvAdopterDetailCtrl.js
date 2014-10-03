@@ -1,6 +1,3 @@
-/**
- * Created by Susan on 8/19/2014.
- */
 angular.module('app').
 	controller('mvAdopterDetailCtrl', function($scope, $routeParams, mvAdopter) {
     $scope.enums = mvAdopter.enums({ _id: $routeParams.id });

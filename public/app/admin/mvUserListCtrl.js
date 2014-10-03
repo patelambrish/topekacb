@@ -9,37 +9,30 @@ function($scope, mvUser, $filter, mvAuth, mvNotifier) {
 	getUsers();
 
 	var roles = [{
-		name : 'admin'
+		name : 'Admin - User Administration', value: 'admin'
 	}, {
-		name : 'user'
+		name : 'User - Adoptee, Adopter data entry and Matching', value: 'user'
 	}, {
-		name : 'adoptee'
+		name : 'Manager - Allow Delete', value: 'manager'
 	}, {
-		name : 'adopter'
+		name : 'Observer - Readonly', value: 'observer'
 	}], originalUser = {};
 
+	$scope.roles = [];
+
+	angular.copy(roles, $scope.roles);
+
 	function mapRoles() {
-		$scope.roles = [];
+		//$scope.roles = [];
 		angular.copy(roles, $scope.roles);
 		angular.forEach($scope.selectedUser.roles, function(role) {
 			angular.forEach($scope.roles, function(r) {
-				if (role === r.name) {
+				if (role === r.value) {
 					r.selected = true;
 				}
 			});
 		});
 	}
-
-	function reverseMapRoles() {
-		var selectedRoles = $filter('filter')($scope.roles, {
-			selected : true
-		}, true), userRoles = [];
-		angular.forEach(selectedRoles, function(role) {
-			userRoles.push(role.name);
-		});
-
-	}
-
 
 	$scope.selectUser = function(user) {
 		if (user._id) {
@@ -51,7 +44,7 @@ function($scope, mvUser, $filter, mvAuth, mvNotifier) {
 
 	$scope.newUser = function() {
 		var newUser = new mvUser();
-		newUser.roles = {};
+		newUser.roles = [];
 		newUser.active = true;
 		$scope.selectUser(newUser);
 	};
@@ -62,12 +55,11 @@ function($scope, mvUser, $filter, mvAuth, mvNotifier) {
 		}
 	};
 
-
 	function setUserRoles() {
 		var assignRoles = $filter('filter')($scope.roles, {selected:true}, true);
 		$scope.selectedUser.roles =[];
 		angular.forEach(assignRoles, function(r){
-			$scope.selectedUser.roles.push(r.name);
+			$scope.selectedUser.roles.push(r.value);
 		});
 	}
 

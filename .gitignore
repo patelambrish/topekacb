@@ -1,5 +1,7 @@
 .idea
 node_modules
-npm-debug.log
+.log
 public/Thumbs.db
 .sass-cache
+*.css
+newrelic_agent.log

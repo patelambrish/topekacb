@@ -1,10 +1,10 @@
 .navbar-right
-form.navbar-form.navbar-right(ng-hide="identity.isAuthenticated()")
+form.navbar-form.navbar-right(ng-hide="identity.isAuthenticated()" name="loginForm")
   .form-group
-    input.form-control(placeholder="Email", ng-model="username")
+    input.form-control(placeholder="Username", ng-model="username", required)
   .form-group
-    input.form-control(type="password", placeholder="Password", ng-model="password")
-  button.btn.btn-primary(ng-click="signin(username, password)") Sign In
+    input.form-control(type="password", placeholder="Password", ng-model="password" required)
+  button.btn.btn-primary(ng-click="signin(username, password)" data-ng-disabled="loginForm.$invalid") Sign In
   button.btn.btn-primary(ng-click="loginViaFacebook()") Sign In via Facebook
   //a(href="/signup")
   //  button.btn.btn-primary() Sign Up

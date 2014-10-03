@@ -1,4 +1,5 @@
-var Adoptee = require('mongoose').model('Adoptee');
+var mongoose = require('mongoose'),
+    Adoptee = mongoose.model('Adoptee');
 
 exports.getAdoptees = function(req, res) {
   Adoptee.find({}).exec(function(err, collection) {
@@ -12,23 +13,31 @@ exports.getAdopteeById = function(req, res) {
     })
 };
 exports.updateAdoptee = function(req, res){
-    var adopteeUpdates = req.body;
-    Adoptee.findOne({_id: adopteeUpdates._id}).exec(function(err, curAdoptee) {
-        curAdoptee.firstName = adopteeUpdates.firstName;
-        curAdoptee.lastName = adopteeUpdates.lastName;
-        curAdoptee.middleInitial = adopteeUpdates.middleInitial;
-        curAdoptee.birthDate = new Date(adopteeUpdates.birthDate);
-        curAdoptee.ssnLastFour = adopteeUpdates.ssnLastFour;
-        curAdoptee.gender = adopteeUpdates.gender;
-        curAdoptee.homeAddress = adopteeUpdates.homeAddress;
-        curAdoptee.zip = adopteeUpdates.zip;
-        curAdoptee.city = adopteeUpdates.city;
-        curAdoptee.homePhone = adopteeUpdates.homePhone;
-        curAdoptee.cell1Phone = adopteeUpdates.cell1Phone;
-        curAdoptee.cell2Phone = adopteeUpdates.cell2Phone;
-        curAdoptee.save(function(err){
-            if(err) { res.status(400); return res.send({message:err.toString()});}
+    var userId = req.user ? req.user._id : null;
+    var update = req.body,
+        id = update._id,
+        options = { upsert: true },
+        userId = req.user ? req.user._id : null;
+
+    if(!id) {
+        id = new mongoose.Types.ObjectId();
+        update.createDate = new Date();
+        update.createUser = userId;
+    } else {
+        delete update._id;
+        update.modifyDate = new Date();
+        update.modifyUser = userId;
+    }
+
+    update.birthDate = new Date(update.birthDate);
+    delete update.__v; //todo:  tried .select('-__v') with error on put  more research required
+    Adoptee.
+        findByIdAndUpdate(id, update, options).
+        populate('createUser', 'firstName lastName').
+        populate('modifyUser', 'firstName lastName').
+        exec(function(err, adoptee) {
+            if(err) { res.status(400); return res.send({error:err.toString()});}
             return res.send({message: "Adoptee successfully updated!"})
-            });
-        })
+        });
+
     }
