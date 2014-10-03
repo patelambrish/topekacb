@@ -1,4 +1,4 @@
-angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, $routeParams,  mvNotifier) {
+angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, $routeParams,  mvNotifier, $location) {
     $scope.genders = ['Male','Female'];
     $scope.clothingSizeTypes = ['A', 'J', 'C'];
     $scope.shoeSizeTypes = ['A', 'C'];
@@ -22,6 +22,7 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
         }
         else{
           mvNotifier.notify(retVal.message);
+          $location.path('/adoptees');
         }
       });
     };

@@ -8,9 +8,9 @@
             fieldset
                 ul.nav.nav-tabs
                     li.active
-                        a(data-toggle="tab" href="#householdInformation") Household Information
+                        a(data-toggle="tab" data-target="#householdInformation") Household Information
                     li
-                        a(data-toggle="tab" href="#householdMembersGiftList", ng-show="adoptee.firstName && adoptee.lastName && adoptee.address.homeAddress") Household Members - Gift List
+                        a(data-toggle="tab" data-target="#householdMembersGiftList", ng-show="adoptee.firstName && adoptee.lastName && adoptee.address.homeAddress") Household Members - Gift List
                 div.tab-content
                     div.tab-pane.fade.in.active(id="householdInformation")
                         .row.top-padding-med
