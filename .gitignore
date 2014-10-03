@@ -3,4 +3,3 @@ node_modules
 npm-debug.log
 public/Thumbs.db
 .sass-cache
-*.css

@@ -45,11 +45,11 @@
                 select.form-control(name="phone-name{{$index}}", ng-model="p.name", ng-options="e for e in enums.phone")
             .col-sm-1
               .form-group
-                button.btn.btn-link(href="", ng-click="deletePhone(p)", tabindex="-1"): i.glyphicon.glyphicon-remove
+                a.btn(href="", ng-click="deletePhone(p)", tabindex="-1"): i.glyphicon.glyphicon-remove
           .row
             .col-sm-12
               .form-group
-                button.btn.btn-link(href="", ng-click="addPhone()") Add new
+                a.btn(href="", ng-click="addPhone()") Add new
         fieldset
           legend Notification Method
           .row
@@ -65,4 +65,4 @@
         fieldset
           legend Adoption Options
     .panel-footer.clearfix
-      button.btn.btn-primary.pull-right(ng-click="save()") Save
+      a.btn.btn-primary.pull-right(href="/adopters" ng-click="save()") Save

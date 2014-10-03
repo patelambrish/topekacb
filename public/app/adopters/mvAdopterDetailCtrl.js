@@ -35,7 +35,7 @@ angular.module('app').
         array = ($scope.adopter.phones = []);
       }
       
-      array.push({ name: $scope.enum.phone[0] });
+      array.push({ name: $scope.enums.phone[0] });
     };
     
     $scope.setNotify = function(n) {

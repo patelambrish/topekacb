@@ -18,11 +18,11 @@
               a(href="", ng-click="applySort(option)") {{option.text}}
   br/
 
-  .panel.panel-default
+  .panel.panel-default(ng-class="{busy: busy()}")
     .panel-heading
       h3.panel-title.clearfix Adopters
         a.pull-right(href="/adopters/0")
-          i.glyphicon.glyphicon-plus-sign
+          i.glyphicon.glyphicon-plus
 
     table.table.table-hover.table-striped
       thead

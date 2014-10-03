@@ -48,6 +48,10 @@ angular.module('app').
       size: 10
     };
     
+    $scope.busy = function() {
+      return !adopters.$resolved;
+    };
+    
     $scope.applySort = function(sortOption) {
       angular.extend($scope.sort, sortOption);
     };

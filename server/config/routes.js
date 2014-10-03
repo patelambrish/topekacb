@@ -18,9 +18,9 @@ module.exports = function(app) {
   app.put('/api/adoptees', auth.requiresRole('user'), adoptees.updateAdoptee);
 
   app.get('/api/adopters', auth.requiresRole('user'), adopters.getAdopters);
-  app.get('/api/adopters/:id', auth.requiresRole('adopter'), adopters.getAdopterById);
-  app.get('/api/adopters/:id/enums', auth.requiresRole('adopter'), adopters.getEnums);
-  app.post('/api/adopters', auth.requiresRole('adopter'), adopters.saveAdopter);
+  app.get('/api/adopters/:id', auth.requiresRole('user'), adopters.getAdopterById);
+  app.get('/api/adopters/:id/enums', auth.requiresRole('user'), adopters.getEnums);
+  app.post('/api/adopters', auth.requiresRole('user'), adopters.saveAdopter);
 
   app.get('/api/states', states.getStates);
 
