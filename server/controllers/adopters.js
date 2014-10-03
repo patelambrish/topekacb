@@ -34,6 +34,8 @@ exports.saveAdopter = function(req, res) {
     update.createDate = new Date();
     update.createdBy = userId;
   } else {
+    delete update.createDate;
+    delete update.createdBy;
     update.updateDate = new Date();
     update.updatedBy = userId;
   }
@@ -44,6 +46,11 @@ exports.saveAdopter = function(req, res) {
     populate('updatedBy', 'firstName lastName').
     select('-__v').
     exec(function(err, adopter) {
+      console.log(err);
       res.send(adopter);
     });
+};
+
+exports.getEnums = function(req, res) {
+  res.send(Adopter.getEnumValues());
 };

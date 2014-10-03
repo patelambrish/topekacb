@@ -3,13 +3,13 @@
     small {{adopter.org}}
   .panel.panel-default
     .panel-heading
-      h3.panel-title Adopter Information
+      h2.panel-title Adopter
     .panel-body
-      form
+      form(novalidate)
         .row
           .col-sm-3
             .form-group
-              select.form-control(name="name", ng-model="adopter.entity", required, ng-options="t for t in entityTypes")
+              select.form-control(name="name", ng-model="adopter.entity", required, ng-options="e for e in enums.entity")
           .col-sm-4.col-md-3(ng-class="{'col-sm-6 col-md-5': adopter.entity == 'Individual'}")
             .form-group
               input.form-control(type="text", name="name", placeholder="Name", ng-model="adopter.name", required)
@@ -19,19 +19,50 @@
           .col-sm-4.col-md-3(ng-show="adopter.entity == 'Deptartment'")
             .form-group
               input.form-control(type="text", name="dept", placeholder="Deptartment", ng-model="adopter.dept", required)
-        .row
-          .col-sm-4
-            .form-group
-              input.form-control(type="text", name="address", placeholder="Address", ng-model="adopter.address.street")
-          .col-sm-3.col-md-4
-            .form-group
-              input.form-control(type="text", name="city", placeholder="City", ng-model="adopter.address.city")
-          .col-sm-2
-            .form-group
-              select.form-control(name="state", ng-model="adopter.address.state" ng-options="s for s in states")
-                option(disabled value="") State
-          .col-sm-3.col-md-2
-            .form-group
-              input.form-control(type="text", name="zip", placeholder="Zip", ng-model="adopter.address.zip")
+        fieldset
+          legend Address
+          .row
+            .col-sm-4
+              .form-group
+                input.form-control(type="text", name="address", placeholder="Address", ng-model="adopter.address.street")
+            .col-sm-3.col-md-4
+              .form-group
+                input.form-control(type="text", name="city", placeholder="City", ng-model="adopter.address.city")
+            .col-sm-2
+              .form-group
+                select.form-control(name="state", ng-model="adopter.address.state" ng-options="e for e in enums.state")
+                  option(disabled value="") State
+            .col-sm-3.col-md-2
+              .form-group
+                input.form-control(type="text", name="zip", placeholder="Zip", ng-model="adopter.address.zip")
+        fieldset
+          legend Phone
+          .row(ng-repeat="p in adopter.phones")
+            .col-sm-3: .form-group
+              input.form-control(type="text", name="phone-number{{$index}}", placeholder="Phone", ng-model="p.number")
+            .col-sm-3
+              .form-group
+                select.form-control(name="phone-name{{$index}}", ng-model="p.name", ng-options="e for e in enums.phone")
+            .col-sm-1
+              .form-group
+                a.btn(href="", ng-click="deletePhone(p)", tabindex="-1"): i.glyphicon.glyphicon-remove
+          .row
+            .col-sm-12
+              .form-group
+                a.btn(href="", ng-click="addPhone()") Add new
+        fieldset
+          legend Notification Method
+          .row
+            .col-sm-6
+              .form-group
+                label.checkbox-inline(ng-repeat="e in enums.notification")
+                  input(type="checkbox", value="{{e}}", ng-click="setNotify(e)", ng-checked="adopter.notification.indexOf(e) > -1")
+                  {{e}}
+                p Method for receiving household information
+            .col-sm-6
+              .form-group
+                input.form-control(type="text", name="email", placeholder="Email", ng-model="adopter.email", ng-show="adopter.notification.indexOf('Email') > -1")
+        fieldset
+          legend Adoption Options
     .panel-footer.clearfix
-      button.btn.btn-primary.pull-right(ng-click="save()") Save
+      a.btn.btn-primary.pull-right(href="/adopters" ng-click="save()") Save

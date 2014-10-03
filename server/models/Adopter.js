@@ -5,7 +5,17 @@ var mongoose = require('mongoose'),
     stateEnum = ['KS', 'MO', 'NE', 'OK', 'CO'],
     phoneEnum = ['Daytime', 'Alternate', 'Fax'],
     statusEnum = ['In Process', 'Not Matched', 'Matched'],
-    Adopter = mongoose.model('Adopter', Schema({
+    notifyEnum = ['Email', 'Fax', 'Pickup', 'Postal Mail'],
+    householdEnum = [
+      'Single', 'Adult Only', 'Single Mom with Children', 'Single Dad with Children',
+      'Married Couple with Children', 'Adult with Children', 'Grandparents (only) with Children'
+    ],
+    genderEnum = ['Male', 'Female'],
+    ageEnum = ['Age 0-7', 'Age 8-12', 'Age 13-18', 'No Pref.'],
+    specialEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound', 'Spanish Speaking'],
+    languageEnum = ['Spanish', 'Spanish/English spoken by'],
+    sizeEnum = ['NB', '3M', '6M', '12M', '18M', '24M', '2T', '3T', '4T', 'XS', 'S', 'M', 'L', 'XL'],
+    adopterSchema = new Schema({
       entity: { type: String, enum: entityEnum },
       name: { type: String, required: '{PATH} is required!' },
       org: String,
@@ -21,14 +31,41 @@ var mongoose = require('mongoose'),
         number: String
       }],
       email: String,
+      notification: [{ type: String, enum: notifyEnum }],
+      criteria: {
+        household: { type: String, enum: householdEnum },
+        childAge: { type: String, enum: ageEnum },
+        special: { type: String, enum: specialEnum },
+        comment: String
+      },
       status: { type: String, enum: statusEnum },
       createDate: Date,
       createdBy: { type: Schema.Types.ObjectId, ref: 'User'},
       updateDate: Date,
       updatedBy: { type: Schema.Types.ObjectId, ref: 'User'}
-    }));
+    });
+
+adopterSchema.static('getEnumValues', function() {
+  return {
+    age: ageEnum,
+    entity: entityEnum,
+    gender: genderEnum,
+    household: householdEnum,
+    language: languageEnum,
+    notification: notifyEnum,
+    phone: phoneEnum,
+    size: sizeEnum,
+    special: specialEnum,
+    state: stateEnum,
+    status: statusEnum
+  };
+});
+
+mongoose.model('Adopter', adopterSchema);
 
 function createDefaultAdopters() {
+  var Adopter = mongoose.model('Adopter');
+
   Adopter.
   find({}).
   exec(function(err, collection) {
@@ -101,6 +138,7 @@ function generateAdopters(users) {
           number: chance.phone()
         }],
         email: chance.email(),
+        notification: chance.pick(notifyEnum, 2),
         status: chance.pick(statusEnum),
         createDate: chance.date({month: 8, year: 2014}),
         createdBy: chance.pick(users),

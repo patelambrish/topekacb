@@ -32,8 +32,8 @@ angular.module('app').
       text: 'Enroll Date: Recent to Old',
       options: [
         {value: 'name', text: 'Name'},
-        {value: 'enrolled', text: 'Enroll Date: Old to Recent'},
-        {value: '-enrolled', text: 'Enroll Date: Recent to Old'}
+        {value: 'createDate', text: 'Enroll Date: Old to Recent'},
+        {value: '-createDate', text: 'Enroll Date: Recent to Old'}
       ]
     };
     
@@ -43,6 +43,10 @@ angular.module('app').
       previous: 1,
       next: 1,
       size: 10
+    };
+    
+    $scope.busy = function() {
+      return !adopters.$resolved;
     };
     
     $scope.applySort = function(sortOption) {
