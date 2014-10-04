@@ -2,23 +2,26 @@
   h1 {{adopter.name || 'New Adopter'}}&nbsp;
     small {{adopter.org}}
   .panel.panel-default
-    .panel-heading
-      h2.panel-title Adopter
+    .panel-heading.clearfix
+      h3.panel-title.pull-left Adopter Information
+      a.pull-right(href="", confirm-click="delete()", confirm-class="btn btn-danger btn-xs", confirm-text="Confirm Delete", ng-disabled="busy()", ng-if="permission.delete")
+        i.glyphicon.glyphicon-remove
     .panel-body
       form(novalidate)
-        .row
-          .col-sm-3
-            .form-group
-              select.form-control(name="name", ng-model="adopter.entity", required, ng-options="e for e in enums.entity")
-          .col-sm-4.col-md-3(ng-class="{'col-sm-6 col-md-5': adopter.entity == 'Individual'}")
-            .form-group
-              input.form-control(type="text", name="name", placeholder="Name", ng-model="adopter.name", required)
-          .col-sm-4.col-md-3(ng-show="adopter.entity == 'Organization' || adopter.entity == 'Deptartment'")
-            .form-group
-              input.form-control(type="text", name="org", placeholder="Organization", ng-model="adopter.org", required)
-          .col-sm-4.col-md-3(ng-show="adopter.entity == 'Deptartment'")
-            .form-group
-              input.form-control(type="text", name="dept", placeholder="Deptartment", ng-model="adopter.dept", required)
+        fieldset
+          .row
+            .col-sm-3
+              .form-group
+                select.form-control(name="name", ng-model="adopter.entity", required, ng-options="e for e in enums.entity")
+            .col-sm-4.col-md-3(ng-class="{'col-sm-6 col-md-5': adopter.entity == 'Individual'}")
+              .form-group
+                input.form-control(type="text", name="name", placeholder="Name", ng-model="adopter.name", required)
+            .col-sm-4.col-md-3(ng-show="adopter.entity == 'Organization' || adopter.entity == 'Deptartment'")
+              .form-group
+                input.form-control(type="text", name="org", placeholder="Organization", ng-model="adopter.org", required)
+            .col-sm-4.col-md-3(ng-show="adopter.entity == 'Deptartment'")
+              .form-group
+                input.form-control(type="text", name="dept", placeholder="Deptartment", ng-model="adopter.dept", required)
         fieldset
           legend Address
           .row
@@ -45,11 +48,11 @@
                 select.form-control(name="phone-name{{$index}}", ng-model="p.name", ng-options="e for e in enums.phone")
             .col-sm-1
               .form-group
-                a.btn(href="", ng-click="deletePhone(p)", tabindex="-1"): i.glyphicon.glyphicon-remove
+                a.btn.btn-link(href="", ng-click="deletePhone(p)", tabindex="-1"): i.glyphicon.glyphicon-remove
           .row
             .col-sm-12
               .form-group
-                a.btn(href="", ng-click="addPhone()") Add new
+                a.btn.btn-link(href="", ng-click="addPhone()") Add new
         fieldset
           legend Notification Method
           .row
@@ -64,5 +67,7 @@
                 input.form-control(type="text", name="email", placeholder="Email", ng-model="adopter.email", ng-show="adopter.notification.indexOf('Email') > -1")
         fieldset
           legend Adoption Options
-    .panel-footer.clearfix
-      a.btn.btn-primary.pull-right(href="/adopters" ng-click="save()") Save
+    .panel-footer
+      .btn-toolbar.text-right
+        button.btn.btn-primary(ng-click="save()", ng-disabled="busy()") Save
+      

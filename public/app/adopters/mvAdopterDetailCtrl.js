@@ -1,6 +1,9 @@
 angular.module('app').
-	controller('mvAdopterDetailCtrl', function($scope, $routeParams, mvAdopter) {
+	controller('mvAdopterDetailCtrl', function($scope, $routeParams, $location, mvAdopter, mvIdentity) {
     $scope.enums = mvAdopter.enums({ _id: $routeParams.id });
+    $scope.permission = {
+      delete: mvIdentity.isAuthorized('manager')
+    };
 
     if($routeParams.id !== '0') {
       $scope.adopter = mvAdopter.get({ _id: $routeParams.id });
@@ -12,8 +15,20 @@ angular.module('app').
       });
     }
     
+    $scope.busy = function() {
+      return !$scope.adopter.$resolved;
+    };
+    
     $scope.save = function() {
-      $scope.adopter.$save();
+      mvAdopter.save($scope.adopter, function() {
+        $location.path('/adopters');
+      });
+    };
+    
+    $scope.delete = function() {
+      mvAdopter.remove({ _id: $routeParams.id }, function() {
+        $location.path('/adopters');
+      });
     };
     
     $scope.deletePhone = function(phone) {
