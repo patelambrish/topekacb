@@ -11,7 +11,8 @@ angular.module('app').
       $scope.adopter = new mvAdopter({
         entity: 'Individual',
         status: 'In Process',
-        address:  { state: 'KS' }
+        address:  { state: 'KS' },
+        phones: [{}]
       });
     }
     
@@ -51,11 +52,11 @@ angular.module('app').
     };
     
     $scope.setNotify = function(n) {
-      var array = $scope.adopter.notification,
+      var array = $scope.adopter.notifyMethods,
           index;
           
       if(!angular.isArray(array)) {
-        array = ($scope.adopter.notification = []);
+        array = ($scope.adopter.notifyMethods = []);
       }
       
       index = array.indexOf(n);

@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     entityEnum = ['Individual', 'Organization', 'Deptartment'],
     stateEnum = ['KS', 'MO', 'NE', 'OK', 'CO'],
-    phoneEnum = ['Daytime', 'Alternate', 'Fax'],
+    phoneEnum = ['Home', 'Mobile', 'Alternate', 'Fax'],
     statusEnum = ['In Process', 'Not Matched', 'Matched'],
     notifyEnum = ['Email', 'Fax', 'Pickup', 'Postal Mail'],
     householdEnum = [
@@ -11,9 +11,8 @@ var mongoose = require('mongoose'),
       'Married Couple with Children', 'Adult with Children', 'Grandparents (only) with Children'
     ],
     genderEnum = ['Male', 'Female'],
-    ageEnum = ['Age 0-7', 'Age 8-12', 'Age 13-18', 'No Pref.'],
-    specialEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound', 'Spanish Speaking'],
-    languageEnum = ['Spanish', 'Spanish/English spoken by'],
+    ageEnum = ['Age 0-7', 'Age 8-12', 'Age 13-18'],
+    specialEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'],
     sizeEnum = ['NB', '3M', '6M', '12M', '18M', '24M', '2T', '3T', '4T', 'XS', 'S', 'M', 'L', 'XL'],
     adopterSchema = new Schema({
       entity: { type: String, enum: entityEnum },
@@ -31,11 +30,12 @@ var mongoose = require('mongoose'),
         number: String
       }],
       email: String,
-      notification: [{ type: String, enum: notifyEnum }],
+      notifyMethods: [{ type: String, enum: notifyEnum }],
       criteria: {
-        household: { type: String, enum: householdEnum },
-        childAge: { type: String, enum: ageEnum },
-        special: { type: String, enum: specialEnum },
+        count: Number,
+        households: [{ type: String, enum: householdEnum }],
+        childAges: [{ type: String, enum: ageEnum }],
+        special: [{ type: String, enum: specialEnum }],
         comment: String
       },
       status: { type: String, enum: statusEnum },
@@ -51,8 +51,7 @@ adopterSchema.static('getEnumValues', function() {
     entity: entityEnum,
     gender: genderEnum,
     household: householdEnum,
-    language: languageEnum,
-    notification: notifyEnum,
+    notify: notifyEnum,
     phone: phoneEnum,
     size: sizeEnum,
     special: specialEnum,
@@ -93,7 +92,7 @@ function generateAdopters(users) {
       entity: 'Deptartment',
       name: 'Miles Vorkosigan', org: 'Dendarii', dept: 'Mercenaries',
       address: { street: '123 Vorkosigan Surlough', city: 'Vorbar Sultana', state: 'KS', zip: '12345' },
-      phones: [{ name: 'Daytime', number: '7858658111' }, { name: 'Alternate', number: '8888888888' }],
+      phones: [{ name: 'Home', number: '7858658111' }, { name: 'Alternate', number: '8888888888' }],
       createDate: new Date('01/21/2014'),
       createdBy: chance.pick(users)
   });
@@ -102,7 +101,7 @@ function generateAdopters(users) {
       entity: 'Organization',
       name: 'Honor Harrington', org: 'RMN',
       address: { street: '123 Craggy Hollow', city: 'Duchy of Shadow Vale', state: 'KS', zip: '12345' },
-      phones: [{ name: 'Daytime', number: '3169456591' }, { name: 'Alternate', number: '3165223401' }],
+      phones: [{ name: 'Home', number: '3169456591' }, { name: 'Alternate', number: '3165223401' }],
       createDate: new Date('01/21/2014'),
       createdBy: chance.pick(users)
   });
@@ -111,7 +110,7 @@ function generateAdopters(users) {
       entity: 'Individual',
       name: 'Prince Roger Ramius Sergei Alexander Chiang McClintock',
       address: { street: '123 Empire Palace', city: 'New Madrid', state: 'KS', zip: '12345' },
-      phones: [{ name: 'Daytime', number: '3168796541' }, { name: 'Alternate', number: '3165643218' }],
+      phones: [{ name: 'Home', number: '3168796541' }, { name: 'Alternate', number: '3165643218' }],
       createDate: new Date('01/21/2014'),
       createdBy: chance.pick(users)
   });
@@ -131,14 +130,21 @@ function generateAdopters(users) {
           zip: chance.zip()
         },
         phones: [{
-          name: chance.pick(phoneEnum),
+          name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
           number: chance.phone()
         }, {
-          name: chance.pick(phoneEnum),
+          name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
           number: chance.phone()
         }],
         email: chance.email(),
-        notification: chance.pick(notifyEnum, 2),
+        notifyMethods: chance.pick(notifyEnum, 2),
+        criteria: {
+          count: (entity === 'Individual' ? chance.d4() : chance.d12()),
+          households: chance.unique(chance.pick, chance.d4(), householdEnum, 1),
+          childAges: chance.pick(ageEnum, 1),
+          special: chance.unique(chance.pick, chance.d4(), specialEnum, 1),
+          comment: chance.sentence()
+        },
         status: chance.pick(statusEnum),
         createDate: chance.date({month: 8, year: 2014}),
         createdBy: chance.pick(users),

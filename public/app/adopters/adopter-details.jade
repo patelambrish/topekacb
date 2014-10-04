@@ -46,7 +46,7 @@
             .col-sm-3
               .form-group
                 select.form-control(name="phone-name{{$index}}", ng-model="p.name", ng-options="e for e in enums.phone")
-            .col-sm-1
+            .col-sm-1(ng-if="!$first")
               .form-group
                 a.btn.btn-link(href="", ng-click="deletePhone(p)", tabindex="-1"): i.glyphicon.glyphicon-remove
           .row
@@ -58,16 +58,16 @@
           .row
             .col-sm-6
               .form-group
-                label.checkbox-inline(ng-repeat="e in enums.notification")
-                  input(type="checkbox", value="{{e}}", ng-click="setNotify(e)", ng-checked="adopter.notification.indexOf(e) > -1")
+                label.checkbox-inline(ng-repeat="e in enums.notify")
+                  input(type="checkbox", value="{{e}}", ng-click="setNotify(e)", ng-checked="adopter.notifyMethods.indexOf(e) > -1")
                   {{e}}
                 p Method for receiving household information
             .col-sm-6
               .form-group
-                input.form-control(type="text", name="email", placeholder="Email", ng-model="adopter.email", ng-show="adopter.notification.indexOf('Email') > -1")
+                input.form-control(type="text", name="email", placeholder="Email", ng-model="adopter.email", ng-show="adopter.notifyMethods.indexOf('Email') > -1")
         fieldset
           legend Adoption Options
+          .row
     .panel-footer
       .btn-toolbar.text-right
         button.btn.btn-primary(ng-click="save()", ng-disabled="busy()") Save
-      
