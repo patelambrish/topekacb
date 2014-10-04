@@ -283,3 +283,7 @@
 {"name":"newrelic","hostname":"Bryan-PC","pid":5512,"component":"express","level":40,"msg":"Unrecognized version NaN of Express detected; not instrumenting","time":"2014-10-04T22:57:22.021Z","v":0}
 {"name":"newrelic","hostname":"Bryan-PC","pid":5512,"component":"new_relic_response","level":30,"msg":"Reporting to: https://rpm.newrelic.com/accounts/778968/applications/5160985","time":"2014-10-04T22:57:23.760Z","v":0}
 {"name":"newrelic","hostname":"Bryan-PC","pid":5512,"component":"collector_api","level":30,"msg":"Connected to collector-104.newrelic.com:443 with agent run ID 1191059610.","time":"2014-10-04T22:57:23.761Z","v":0}
+{"name":"newrelic","hostname":"Bryan-PC","pid":5372,"level":30,"msg":"Starting New Relic for Node.js connection process.","time":"2014-10-04T23:14:37.042Z","v":0}
+{"name":"newrelic","hostname":"Bryan-PC","pid":5372,"component":"express","level":40,"msg":"Unrecognized version NaN of Express detected; not instrumenting","time":"2014-10-04T23:14:37.441Z","v":0}
+{"name":"newrelic","hostname":"Bryan-PC","pid":5372,"component":"new_relic_response","level":30,"msg":"Reporting to: https://rpm.newrelic.com/accounts/778968/applications/5160985","time":"2014-10-04T23:14:39.243Z","v":0}
+{"name":"newrelic","hostname":"Bryan-PC","pid":5372,"component":"collector_api","level":30,"msg":"Connected to collector-104.newrelic.com:443 with agent run ID 1191077213.","time":"2014-10-04T23:14:39.243Z","v":0}

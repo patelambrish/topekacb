@@ -60,7 +60,7 @@
               .form-group
                 label.checkbox-inline(ng-repeat="e in enums.notify")
                   input(type="checkbox", value="{{e}}", ng-click="setNotify(e)", ng-checked="adopter.notifyMethods.indexOf(e) > -1")
-                  {{e}}
+                  | {{e}}
                 p Method for receiving household information
             .col-sm-6
               .form-group
