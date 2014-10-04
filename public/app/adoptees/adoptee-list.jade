@@ -30,7 +30,7 @@
       tbody
         tr(ng-repeat="adoptee in adoptees | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size")
           td
-            a(ng-href="/adoptees/{{adoptee._id}}")
+            a(ng-href="/adoptees/{{adoptee._id}}").
               {{adoptee.lastName}}, {{adoptee.firstName}}
           td {{adoptee.number}}
           td
