@@ -2,7 +2,7 @@
     .well
         h4.row
             .col-md-3 Adoptee: {{adopteeTitle || adoptee.firstName + ' ' + adoptee.lastName}}
-            .col-md-1.badge {{adopteeTitle || 'L-122'}}
+            .col-md-1.badge {{adopteeTitle || adoptee.site.name.substring(0,1) + '-' + adoptee.applicationNumber}}
             .col-md-8.pull-right Adopter:
         form.form-horizontal(name="adopteeForm")
             fieldset

@@ -5,9 +5,20 @@ var phone = {
     number: {type: String}
 };
 
+var site = {
+    value: {type: String},
+    name: {type: String},
+};
+
 var languages = [
     'Spanish',
     'Spanish/English spoken by'
+];
+
+var sites = [
+    {value: 'L', name: 'Lets Help'},
+    {value: 'A', name: 'Antioch Center'},
+    {value: 'O', name: 'Other'}
 ];
 
 var clothingSizeTypes = ['A', 'J', 'C'];
@@ -64,7 +75,6 @@ var adopteeSchema = mongoose.Schema({
     email: {type: String},
     fax: {type: String},
     status: {type: String, enum: adopteeStates},
-    applicationNumber: {type: String},
     language: {type: String, enum: languages},
     englishSpeaker: {type: String},
     isDisabled: {type: Boolean},
@@ -78,6 +88,8 @@ var adopteeSchema = mongoose.Schema({
     volunteerComment: {type: String},
     internalComment: {type: String},
     householdMembers: [householdMember],
+    applicationNumber: {type: Number},
+    site: {type: site, enum: sites},
     createDate: {type: Date},
     _createUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     modifyDate: {type: Date},
@@ -95,6 +107,8 @@ function createDefaultAdoptees() {
           address: {homeAddress: '599 W. 8th Street', city: 'Topeka', state: 'KS'},
           language: 'Spanish',
           householdType: 'Single',
+          site: sites[0],
+          applicationNumber: 1,
           householdMembers: []
       });
       Adoptee.create({firstName: 'Mark', lastName: 'Lark', gender: 'Male', birthDate: new Date('07/09/1985'),
@@ -104,12 +118,16 @@ function createDefaultAdoptees() {
           isVeteran: true,
           language: 'Spanish/English spoken by',
           englishSpeaker: 'Mary',
+          site: sites[1],
+          applicationNumber: 2,
           householdMembers: []
       });
       Adoptee.create({firstName: 'James', lastName: 'Brown', gender: 'Male', birthDate: new Date('11/26/1978'),
           createDate: new Date('06/21/2014'), ssnLastFour: 0909,
           address: {homeAddress: '901 W. 6th Street', city: 'Topeka', state: 'KS', zip: '66607'},
           story: "James Brown's story",
+          site: sites[2],
+          applicationNumber: 3,
           householdMembers: []
       });
     }

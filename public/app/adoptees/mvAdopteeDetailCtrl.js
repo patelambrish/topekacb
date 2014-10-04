@@ -1,4 +1,4 @@
-angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, $routeParams,  mvNotifier, $location) {
+angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, mvAdopteeApplicationCounter, $routeParams,  mvNotifier, $location) {
     $scope.genders = ['Male','Female'];
     $scope.clothingSizeTypes = ['A', 'J', 'C'];
     $scope.shoeSizeTypes = ['A', 'C'];
@@ -16,15 +16,24 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
 
     $scope.update = function(){
       var adoptee = $scope.adoptee;
-      mvAdoptee.updateAdoptee(adoptee).$promise.then(function(retVal) {
+      mvAdopteeApplicationCounter.getNextSequence().$promise.then(function(retVal){
         if (retVal.error){
           mvNotifier.error(retVal.error);
         }
         else{
-          mvNotifier.notify(retVal.message);
-          $location.path('/adoptees');
-        }
+          adoptee.applicationNumber = retVal.seq;
+          mvAdoptee.updateAdoptee(adoptee).$promise.then(function(retVal) {
+          if (retVal.error){
+            mvNotifier.error(retVal.error);
+          }
+          else{
+            mvNotifier.notify(retVal.message);
+            $location.path('/adoptees');
+          }
+        });
+       }
       });
+
     };
 
     $scope.addHouseholdMember = function(){

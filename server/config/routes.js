@@ -3,6 +3,7 @@ var auth = require('./auth'),
     adoptees = require('../controllers/adoptees'),
     adopters = require('../controllers/adopters'),
     states = require('../controllers/states'),
+    adopteeApplicationCounter = require('../controllers/adopteeApplicationCounter'),
     mongoose = require('mongoose'),
     User = mongoose.model('User'),
     passport = require('passport');
@@ -23,7 +24,9 @@ module.exports = function(app) {
   app.post('/api/adopters', auth.requiresRole(['user','manager']), adopters.saveAdopter);
 
   app.get('/api/states', states.getStates);
-
+  
+  app.get('/api/adopteeapplicationcounter', adopteeApplicationCounter.getNextSequence);
+  
   app.get('/partials/*', function(req, res) {
     res.render('../../public/app/' + req.params[0]);
   });
