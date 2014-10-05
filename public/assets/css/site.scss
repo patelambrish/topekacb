@@ -1,21 +1,104 @@
 @import "bootstrap-overrides";
+@import "material/material.design";
+@import "//roboto-webfont.googlecode.com/svn/trunk/roboto.all.css";
+
+html {
+  position: relative;
+  min-height: 100%;
+}
 
 body {
-  padding-top: 100px;
+  margin-bottom: 56px;
+  //margin-bottom: 40px;
 }
+
+.content {
+  padding-top: 56px;
+}
+
 .navbar-header a.navbar-brand {
-  margin-top: -15px;
+  margin-top: -18px;
   margin-bottom: -20px;
+  
+  img {
+    height: 56px;
+  }
+  
 }
 .navbar-header a.navbar-brand h6 {
   color: #ccc;
 }
-footer {
-  padding-left: 15px;
-  padding-right: 15px;
+.navbar {
+  border-bottom: none;
+  @include box-shadow(0px 4px 8px 0px $color-grey-900);
 }
-footer p {
-  border-top: 1px solid #00529b;
+
+.backdrop {
+    background-image: url("../image/tree.jpg");
+    background-size: cover;
+    padding: 0;
+}
+
+.jumbo-banner {
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  height: 350px;
+  box-shadow: inset 1px -20px 90px -6px rgba(0,0,0,.8);
+  
+  .container-fluid {
+    padding-top: 240px;
+  }
+  
+  h1, h3 {
+   color: $color-grey-50;
+  }
+}
+
+.jumbo-content {
+  height: 200px;
+  padding-top: 20px;
+  color: $color-grey-700;
+  h1,h2,h4, h3 {
+   color: $color-grey-700;
+  }
+  //@include box-shadow(50px -70px 300px 0px $color-grey-1000);
+  img {
+    height: 180px;
+    opacity: .85;
+  }
+  //@include box-shadow(0px 2px 4px 0px $color-grey-600);
+
+}
+
+.jumbotron {
+  color: #bdbdbd;
+  font-family: Roboto;
+  margin: 0;
+  h1, h3{
+    //font-weight: bold;
+    margin: 0;
+  }
+
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  height: 56px;
+  background: #00529b;
+  width: 100%;
+  margin: 0;
+  .container-fluid {
+    padding: 0;
+  }
+}
+.footer p {
+  margin: 0;
+  color: $color-grey-50;
+}
+
+.footer img {
+  padding-top: 5px;
 }
 .navbar-form .form-group {
   margin-left: 10px;
@@ -33,7 +116,7 @@ footer p {
   top: 70px;
 }
 .toast-success {
-  background-color: #778dc1;
+  background-color: $color-grey-900;
 }
 .btn-toolbar > .input-group-filter {
   width: 15em;
@@ -54,8 +137,9 @@ footer p {
   border-radius: 100%;
 }
 .pace .pace-progress {
-  top: 55px;
-  background: #EFB22D;
+  top: 56px;
+  background:#003e75;
+  height: 5px;
 }
 .busy {
   opacity: .65;
