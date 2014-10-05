@@ -15,3 +15,12 @@
 label + .checkbox {
   margin-top: 0;
 }
+
+.table-hover {
+  > tbody > tr:hover {
+    > td,
+    > th {
+      cursor: pointer;
+    }
+  }
+}

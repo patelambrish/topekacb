@@ -21,19 +21,18 @@
       a.pull-right(href="/adopters/0")
         i.glyphicon.glyphicon-plus
 
-    table.table.table-hover.table-striped
+    table.table.table-hover
       thead
         tr
           th Name
           th Status
           th Enroll Date
       tbody
-        tr(ng-repeat="adopter in adopters | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size")
+        tr(ng-repeat="adopter in adopters | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size", ng-click="select(adopter)")
           td
-            a(ng-href="/adopters/{{adopter._id}}")
-              | {{adopter.name}}<span ng-if="adopter.org">,</span>
-              | {{adopter.org}}<span ng-if="adopter.dept">,</span>
-              | {{adopter.dept}}
+            | {{adopter.name}}<span ng-if="adopter.org">,</span>
+            | {{adopter.org}}<span ng-if="adopter.dept">,</span>
+            | {{adopter.dept}}
           td {{adopter.status}}
           td
             time {{adopter.createDate | date}}&nbsp;
