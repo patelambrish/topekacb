@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
       'Married Couple with Children', 'Adult with Children', 'Grandparents (only) with Children'
     ],
     genderEnum = ['Male', 'Female'],
-    ageEnum = ['Age 0-7', 'Age 8-12', 'Age 13-18'],
+    ageEnum = ['0 - 7', '8 - 12', '13 - 18'],
     specialEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'],
     sizeEnum = ['NB', '3M', '6M', '12M', '18M', '24M', '2T', '3T', '4T', 'XS', 'S', 'M', 'L', 'XL'],
     adopterSchema = new Schema({
@@ -66,94 +66,75 @@ function createDefaultAdopters() {
   var Adopter = mongoose.model('Adopter');
 
   Adopter.
-  find({}).
-  exec(function(err, collection) {
-    var User = mongoose.model('User');
-
-    if(collection.length === 0) {
-      console.log('populating default adopters...');
-      User.
-        find({}).
-        select('_id').
-        exec(function(err, users) {
-          Adopter.create(generateAdopters(users), function(err) { console.log(err);});
-        });
-    }
-  });
+    count({}).
+    exec(function(err, count) {
+      if(count === 0) {
+        generateAdopters(4000);
+      } else {
+        console.log('found ' + count + ' adopters.');
+      }
+    });
 }
 
-function generateAdopters(users) {
-  var chance = new Chance(),
-      entity,
-      status,
-      data = [];
-  
-  data.push({
-      entity: 'Deptartment',
-      name: 'Miles Vorkosigan', org: 'Dendarii', dept: 'Mercenaries',
-      address: { street: '123 Vorkosigan Surlough', city: 'Vorbar Sultana', state: 'KS', zip: '12345' },
-      phones: [{ name: 'Home', number: '7858658111' }, { name: 'Alternate', number: '8888888888' }],
-      createDate: new Date('01/21/2014'),
-      createdBy: chance.pick(users)
-  });
+function generateAdopters(count) {
+  var User = mongoose.model('User'),
+      Adopter = mongoose.model('Adopter');
 
-  data.push({
-      entity: 'Organization',
-      name: 'Honor Harrington', org: 'RMN',
-      address: { street: '123 Craggy Hollow', city: 'Duchy of Shadow Vale', state: 'KS', zip: '12345' },
-      phones: [{ name: 'Home', number: '3169456591' }, { name: 'Alternate', number: '3165223401' }],
-      createDate: new Date('01/21/2014'),
-      createdBy: chance.pick(users)
-  });
+  console.log('populating default adopters...');
 
-  data.push({
-      entity: 'Individual',
-      name: 'Prince Roger Ramius Sergei Alexander Chiang McClintock',
-      address: { street: '123 Empire Palace', city: 'New Madrid', state: 'KS', zip: '12345' },
-      phones: [{ name: 'Home', number: '3168796541' }, { name: 'Alternate', number: '3165643218' }],
-      createDate: new Date('01/21/2014'),
-      createdBy: chance.pick(users)
-  });
-  
-  for(var i = 1; i <= 2000; i++) {
-    entity = chance.pick(entityEnum);
-    status = chance.pick(statusEnum);
-    data.push({
-        entity: entity,
-        name: chance.name(),
-        org: (entity !== 'Individual' ? chance.capitalize(chance.word()) : null),
-        dept: (entity === 'Deptartment' ? chance.capitalize(chance.word()) : null),
-        address: {
-          street: chance.address({short_suffix: true}),
-          city: chance.city(),
-          state: chance.pick(stateEnum),
-          zip: chance.zip()
-        },
-        phones: [{
-          name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
-          number: chance.phone()
-        }, {
-          name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
-          number: chance.phone()
-        }],
-        email: chance.email(),
-        notifyMethods: chance.pick(notifyEnum, 2),
-        criteria: {
-          count: (entity === 'Individual' ? chance.d4() : chance.d12()),
-          households: chance.unique(chance.pick, chance.d4(), householdEnum, 1),
-          childAges: chance.pick(ageEnum, 1),
-          special: chance.unique(chance.pick, chance.d4(), specialEnum, 1),
-          comment: chance.sentence()
-        },
-        status: chance.pick(statusEnum),
-        createDate: chance.date({month: 8, year: 2014}),
-        createdBy: chance.pick(users),
-        updateDate: (status !== 'In Process' ? chance.date({month: 9, year: 2014}) : null),
-        updatedBy: (status !== 'In Process' ? chance.pick(users) : null)
+  User.
+    find({}).
+    select('_id').
+    exec(function(err, users) {
+      var chance = new Chance(),
+          data = [],
+          entity, status, i;
+
+      for(i = 1; i <= count; i++) {
+        entity = chance.pick(entityEnum);
+        status = chance.pick(statusEnum);
+
+        data.push({
+            entity: entity,
+            name: chance.name(),
+            org: (entity !== 'Individual' ? chance.capitalize(chance.word()) : null),
+            dept: (entity === 'Deptartment' ? chance.capitalize(chance.word()) : null),
+            address: {
+              street: chance.address({short_suffix: true}),
+              city: chance.city(),
+              state: chance.pick(stateEnum),
+              zip: chance.zip()
+            },
+            phones: [{
+              name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
+              number: chance.phone()
+            }, {
+              name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
+              number: chance.phone()
+            }],
+            email: chance.email(),
+            notifyMethods: chance.pick(notifyEnum, 2),
+            criteria: {
+              count: (entity === 'Individual' ? chance.d4() : chance.d12()),
+              households: chance.unique(chance.pick, chance.d4(), householdEnum, 1),
+              childAges: chance.pick(ageEnum, 1),
+              special: chance.unique(chance.pick, chance.d4(), specialEnum, 1),
+              comment: chance.sentence()
+            },
+            status: chance.pick(statusEnum),
+            createDate: chance.date({month: 8, year: 2014}),
+            createdBy: chance.pick(users),
+            updateDate: (status !== 'In Process' ? chance.date({month: 9, year: 2014}) : null),
+            updatedBy: (status !== 'In Process' ? chance.pick(users) : null)
+        });
+      }
+
+      Adopter.
+        create(data).
+        then(function() {
+          console.log('created ' + data.length + ' adopters.');
+        });
     });
-  }
-  
-  return data;
 }
 
 exports.createDefaultAdopters = createDefaultAdopters;

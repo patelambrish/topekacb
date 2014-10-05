@@ -1,52 +1,75 @@
 var mongoose = require('mongoose'),
     Adopter = mongoose.model('Adopter');
 
-exports.getAdopters = function(req, res) {
+exports.getAdopters = function(req, res, next) {
   Adopter.
     find({}).
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
     select('-__v').
     exec(function(err, collection) {
+      if(err) {
+        console.log(err);
+        return next(err);
+      }
       res.send(collection);
     });
 };
 
-exports.getAdopterById = function(req, res) {
+exports.getAdopterById = function(req, res, next) {
   Adopter.
     findById(req.params.id).
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
     select('-__v').
     exec(function(err, adopter) {
+      if(err) {
+        console.log(err);
+        return next(err);
+      }
       res.send(adopter);
     });
 };
 
-exports.saveAdopter = function(req, res) {
-  var update = req.body,
-      id = update._id,
+exports.saveAdopter = function(req, res, next) {
+  var data = req.body,
+      id = data._id,
       options = { upsert: true },
       userId = req.user ? req.user._id : null;
       
   if(!id) {
     id = new mongoose.Types.ObjectId();
-    update.createDate = new Date();
-    update.createdBy = userId;
+    data.createDate = new Date();
+    data.createdBy = userId;
   } else {
-    delete update.createDate;
-    delete update.createdBy;
-    update.updateDate = new Date();
-    update.updatedBy = userId;
+    delete data.createDate;
+    delete data.createdBy;
+    data.updateDate = new Date();
+    data.updatedBy = userId;
   }
   
   Adopter.
-    findByIdAndUpdate(id, update, options).
+    findByIdAndUpdate(id, data, options).
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
     select('-__v').
     exec(function(err, adopter) {
-      console.log(err);
+      if(err) {
+        console.log(err);
+        return next(err);
+      }
+      res.send(adopter);
+    });
+};
+
+exports.deleteAdopter = function(req, res, next) {
+  Adopter.
+    findByIdAndRemove(req.params.id).
+    exec(function(err, adopter) {
+      if(err) {
+        console.log(err);
+        return next(err);
+      }
       res.send(adopter);
     });
 };
