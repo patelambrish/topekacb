@@ -1,5 +1,5 @@
 angular.module('app').
-	controller('mvAdopterDetailCtrl', function($scope, $routeParams, $location, mvAdopter, mvIdentity) {
+	controller('mvAdopterDetailCtrl', function($scope, $routeParams, $location, mvAdopter, mvIdentity, mvNotifier) {
     $scope.enums = mvAdopter.enums({ _id: $routeParams.id });
     $scope.permission = {
       delete: mvIdentity.isAuthorized('manager')
@@ -22,12 +22,14 @@ angular.module('app').
     
     $scope.save = function() {
       mvAdopter.save($scope.adopter, function() {
+        mvNotifier.notify($scope.adopter.name + ' successfully saved!');
         $location.path('/adopters');
       });
     };
     
     $scope.delete = function() {
       mvAdopter.remove({ _id: $routeParams.id }, function() {
+        mvNotifier.notify($scope.adopter.name + ' was deleted.');
         $location.path('/adopters');
       });
     };
