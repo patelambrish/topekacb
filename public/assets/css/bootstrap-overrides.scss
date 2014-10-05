@@ -11,3 +11,7 @@
     width: auto;
   }
 }
+
+label + .checkbox {
+  margin-top: 0;
+}

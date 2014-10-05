@@ -4,6 +4,9 @@
 @media (min-width: 992px) {
   .navbar-form .form-control {
     width: auto; } }
+label + .checkbox {
+  margin-top: 0; }
+
 body {
   padding-top: 100px; }
 

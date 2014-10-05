@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
       'Married Couple with Children', 'Adult with Children', 'Grandparents (only) with Children'
     ],
     genderEnum = ['Male', 'Female'],
-    ageEnum = ['Age 0-7', 'Age 8-12', 'Age 13-18'],
+    ageEnum = ['0 - 7', '8 - 12', '13 - 18'],
     specialEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'],
     sizeEnum = ['NB', '3M', '6M', '12M', '18M', '24M', '2T', '3T', '4T', 'XS', 'S', 'M', 'L', 'XL'],
     adopterSchema = new Schema({

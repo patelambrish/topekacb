@@ -7,7 +7,7 @@
       a.pull-right(href="", confirm-click="delete()", confirm-class="btn btn-danger btn-xs", confirm-text="Confirm Delete", ng-disabled="busy()", ng-if="permission.delete")
         i.glyphicon.glyphicon-remove
     .panel-body
-      form(novalidate)
+      form(role="form" novalidate)
         fieldset
           .row
             .col-sm-3
@@ -41,14 +41,16 @@
         fieldset
           legend Phone
           .row(ng-repeat="p in adopter.phones")
-            .col-sm-3: .form-group
-              input.form-control(type="text", name="phone-number{{$index}}", placeholder="Phone", ng-model="p.number")
+            .col-sm-3
+              .form-group
+                input.form-control(type="text", name="phone-number{{$index}}", placeholder="Phone", ng-model="p.number")
             .col-sm-3
               .form-group
                 select.form-control(name="phone-name{{$index}}", ng-model="p.name", ng-options="e for e in enums.phone")
-            .col-sm-1(ng-if="!$first")
+            .col-sm-3
               .form-group
-                a.btn.btn-link(href="", ng-click="deletePhone(p)", tabindex="-1"): i.glyphicon.glyphicon-remove
+                a.btn.btn-link(href="", tabindex="-1", ng-click="deletePhone(p)")
+                  i.glyphicon.glyphicon-remove
           .row
             .col-sm-12
               .form-group
@@ -59,15 +61,43 @@
             .col-sm-6
               .form-group
                 label.checkbox-inline(ng-repeat="e in enums.notify")
-                  input(type="checkbox", value="{{e}}", ng-click="setNotify(e)", ng-checked="adopter.notifyMethods.indexOf(e) > -1")
+                  input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.notifyMethods, e)", ng-checked="adopter.notifyMethods.indexOf(e) > -1")
                   | {{e}}
-                p Method for receiving household information
+                p.help-block Method for receiving household information
             .col-sm-6
               .form-group
                 input.form-control(type="text", name="email", placeholder="Email", ng-model="adopter.email", ng-show="adopter.notifyMethods.indexOf('Email') > -1")
         fieldset
           legend Adoption Options
           .row
+            .col-sm-4
+              .form-group
+                input.form-control(type="number", name="count", placeholder="Number of households", min="1", ng-model="adopter.criteria.count")
+          .row
+            .col-sm-7
+              .form-group
+                label Household types
+                .checkbox(ng-repeat="e in enums.household")
+                  label
+                    input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.criteria.households, e)", ng-checked="adopter.criteria.households.indexOf(e) > -1")
+                    | {{e}}
+            .col-sm-5
+              .form-group
+                label Children's ages
+                .checkbox(ng-repeat="e in enums.age")
+                  label
+                    input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.criteria.childAges, e)", ng-checked="adopter.criteria.childAges.indexOf(e) > -1")
+                    | {{e}}
+              .form-group
+                label Additional options
+                .checkbox(ng-repeat="e in enums.special")
+                  label
+                    input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.criteria.special, e)", ng-checked="adopter.criteria.special.indexOf(e) > -1")
+                    | {{e}}
+          .row
+            .col-sm-12
+              textarea.form-control(rows="3", placeholder="Comments", ng-model="adopter.criteria.comment")
     .panel-footer
       .btn-toolbar.text-right
         button.btn.btn-primary(ng-click="save()", ng-disabled="busy()") Save
+        button.btn.btn-default(ng-click="cancel()", ng-disabled="busy()") Cancel

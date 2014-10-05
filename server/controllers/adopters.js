@@ -1,13 +1,13 @@
 var mongoose = require('mongoose'),
     Adopter = mongoose.model('Adopter');
 
-exports.getAdopters = function(req, res) {
+exports.getAdopters = function(req, res, next) {
   Adopter.
     find({}).
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
     select('-__v').
-    exec(function(err, collection, next) {
+    exec(function(err, collection) {
       if(err) {
         console.log(err);
         return next(err);
@@ -16,13 +16,13 @@ exports.getAdopters = function(req, res) {
     });
 };
 
-exports.getAdopterById = function(req, res) {
+exports.getAdopterById = function(req, res, next) {
   Adopter.
     findById(req.params.id).
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
     select('-__v').
-    exec(function(err, adopter, next) {
+    exec(function(err, adopter) {
       if(err) {
         console.log(err);
         return next(err);
@@ -31,7 +31,7 @@ exports.getAdopterById = function(req, res) {
     });
 };
 
-exports.saveAdopter = function(req, res) {
+exports.saveAdopter = function(req, res, next) {
   var data = req.body,
       id = data._id,
       options = { upsert: true },
@@ -53,7 +53,7 @@ exports.saveAdopter = function(req, res) {
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
     select('-__v').
-    exec(function(err, adopter, next) {
+    exec(function(err, adopter) {
       if(err) {
         console.log(err);
         return next(err);
@@ -62,10 +62,10 @@ exports.saveAdopter = function(req, res) {
     });
 };
 
-exports.deleteAdopter = function(req, res) {
+exports.deleteAdopter = function(req, res, next) {
   Adopter.
     findByIdAndRemove(req.params.id).
-    exec(function(err, adopter, next) {
+    exec(function(err, adopter) {
       if(err) {
         console.log(err);
         return next(err);
