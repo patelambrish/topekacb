@@ -28,7 +28,7 @@ angular.module('app').
     var adopters = mvAdopter.query();
 
     $scope.sort = {
-      value: '-enrolled',
+      value: '-createDate',
       text: 'Enroll Date: Recent to Old',
       options: [
         {value: 'name', text: 'Name'},

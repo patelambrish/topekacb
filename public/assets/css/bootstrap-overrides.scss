@@ -25,3 +25,9 @@ label + .checkbox {
     }
   }
 }
+
+.panel-footer {
+  > .pager {
+    margin: 0;
+  }
+}
