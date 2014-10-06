@@ -3,6 +3,7 @@ var auth = require('./auth'),
     adoptees = require('../controllers/adoptees'),
     adopters = require('../controllers/adopters'),
     states = require('../controllers/states'),
+    adopteeApplicationCounter = require('../controllers/adopteeApplicationCounter'),
     mongoose = require('mongoose'),
     User = mongoose.model('User'),
     passport = require('passport');
@@ -24,7 +25,9 @@ module.exports = function(app) {
   app.del('/api/adopters/:id', auth.requiresRole(['manager']), adopters.deleteAdopter);
 
   app.get('/api/states', states.getStates);
-
+  
+  app.get('/api/adopteeapplicationcounter', adopteeApplicationCounter.getNextSequence);
+  
   app.get('/partials/*', function(req, res) {
     res.render('../../public/app/' + req.params[0]);
   });
@@ -43,7 +46,7 @@ module.exports = function(app) {
   app.get('/auth/facebook', passport.authenticate('facebook'));
 
   app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    failureRedirect: '/facebook/You are registerd. Please contact system administrator!', successRedirect: '/facebook/You have successfully signed in!'
+    failureRedirect: '/facebook/You are registered. Please contact system administrator!', successRedirect: '/facebook/You have successfully signed in!'
   }));
 
   app.get('*', function(req, res) {

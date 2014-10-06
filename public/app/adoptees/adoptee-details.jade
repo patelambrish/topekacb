@@ -2,15 +2,15 @@
     .well
         h4.row
             .col-md-3 Adoptee: {{adopteeTitle || adoptee.firstName + ' ' + adoptee.lastName}}
-            .col-md-1.badge {{adopteeTitle || 'L-122'}}
+            .col-md-1.badge {{adopteeTitle || adoptee.site + '-' + adoptee.applicationNumber}}
             .col-md-8.pull-right Adopter:
-        form.form-horizontal(name="adopteeForm")
+        form.form-horizontal(name="adopteeForm", ng-show="(adopteeTitle && isCurrentSiteSet) || adoptee.site")
             fieldset
                 ul.nav.nav-tabs
                     li.active
-                        a(data-toggle="tab" href="#householdInformation") Household Information
+                        a(data-toggle="tab" data-target="#householdInformation") Household Information
                     li
-                        a(data-toggle="tab" href="#householdMembersGiftList", ng-show="adoptee.firstName && adoptee.lastName && adoptee.address.homeAddress") Household Members - Gift List
+                        a(data-toggle="tab" data-target="#householdMembersGiftList", ng-show="adoptee.firstName && adoptee.lastName && adoptee.address.homeAddress") Household Members - Gift List
                 div.tab-content
                     div.tab-pane.fade.in.active(id="householdInformation")
                         .row.top-padding-med
@@ -211,3 +211,24 @@
                         button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update()") Submit
                         | &nbsp;
                         a.btn.btn-default(href="/adoptees") Cancel
+    .modal.fade(id="siteModal", tabindex="-1", role="dialog")
+        .modal-dialog
+            .modal-content
+                form(name="siteForm" id="siteForm", class="form-horizontal", novalidate)
+                    .modal-header
+                        h4.modal-title Select Site
+                    div.modal-body
+                        .row
+                            .col-md-12
+                                input.radio-inline(name="siteOptions", type="radio", ng-model="adoptee.site" value="L")
+                                label.control-label(for="adoptee.site") &nbsp Let's Help
+                        .row
+                            .col-md-12
+                                input.radio-inline(name="siteOptions", type="radio", ng-model="adoptee.site" value="A")
+                                label.control-label(for="adoptee.site") &nbsp Antioch Center
+                        .row
+                            .col-md-12
+                                input.radio-inline(name="siteOptions", type="radio", ng-model="adoptee.site" value="O")
+                                label.control-label(for="adoptee.site") &nbsp Other
+                    div.modal-footer
+                        button.btn.btn-default(data-ng-click="saveSite(adoptee.site)", data-ng-disabled="siteForm.$invalid || (adoptee.site | filter: {selected:true} : true).length===0") Save
