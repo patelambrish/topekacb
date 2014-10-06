@@ -31,7 +31,7 @@ angular.module('app').
       value: '-createDate',
       text: 'Create Date: Recent to Old',
       options: [
-        {value: 'lastName, firstName', text: 'Name'},
+        {value: ['lastName', 'firstName'], text: 'Name'},
         {value: 'createDate', text: 'Create Date: Old to Recent'},
         {value: '-createDate', text: 'Create Date: Recent to Old'}
       ]
@@ -46,7 +46,7 @@ angular.module('app').
     };
     
     $scope.busy = function() {
-      return !adopters.$resolved;
+      return !adoptees.$resolved;
     };
 
     $scope.applySort = function(sortOption) {
