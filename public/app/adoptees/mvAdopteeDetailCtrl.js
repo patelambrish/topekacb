@@ -4,6 +4,8 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
     $scope.shoeSizeTypes = ['A', 'C'];
     $scope.languages = ['','Spanish','Spanish/English spoken by'];
     $scope.adopteeTitle = '';
+    $scope.site = '';
+
     if($routeParams.id !== '0') {
         $scope.adoptee = mvAdoptee.get({ _id: $routeParams.id });
     }
@@ -16,24 +18,21 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
 
     $scope.update = function(){
       var adoptee = $scope.adoptee;
-      mvAdopteeApplicationCounter.getNextSequence().$promise.then(function(retVal){
-        if (retVal.error){
-          mvNotifier.error(retVal.error);
-        }
-        else{
-          adoptee.applicationNumber = retVal.seq;
-          mvAdoptee.updateAdoptee(adoptee).$promise.then(function(retVal) {
-          if (retVal.error){
-            mvNotifier.error(retVal.error);
-          }
-          else{
-            mvNotifier.notify(retVal.message);
-            $location.path('/adoptees');
-          }
-        });
-       }
-      });
-
+      if (adoptee.applicationNumber)
+      {
+            $scope.adopteeUpdate();
+      } else {
+          mvAdopteeApplicationCounter.getNextSequence().$promise.then(function (retVal) {
+              if (retVal.error) {
+                  mvNotifier.notify(retVal.error);
+              }
+              else {
+                  adoptee.applicationNumber = retVal.seq;
+                  adoptee.site = $scope.getCurrentSite();
+                  $scope.adopteeUpdate();
+              }
+          });
+      }
     };
 
     $scope.addHouseholdMember = function(){
@@ -46,12 +45,28 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
     };
   
     $scope.deleteHouseholdMember = function(householdMember){
-      var adoptee = $scope.adoptee;
-      var i = adoptee.householdMembers.indexOf(householdMember);
-      if (i != -1)
-      {
-        adoptee.householdMembers.splice(i,1);
-      }
+        var adoptee = $scope.adoptee;
+        var i = adoptee.householdMembers.indexOf(householdMember);
+        if (i != -1)
+        {
+            adoptee.householdMembers.splice(i,1);
+        }
     };
 
+    $scope.saveSite = function(site){
+        console.log(site);
+        $scope.closeModal(site);
+    };
+
+    $scope.adopteeUpdate = function(){
+        mvAdoptee.updateAdoptee($scope.adoptee).$promise.then(function (retVal) {
+            if (retVal.error) {
+                mvNotifier.notify(retVal.error);
+            }
+            else {
+                mvNotifier.notify(retVal.message);
+                $location.path('/adoptees');
+            }
+        });
+    }
 });

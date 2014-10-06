@@ -15,11 +15,7 @@ var languages = [
     'Spanish/English spoken by'
 ];
 
-var sites = [
-    {value: 'L', name: 'Lets Help'},
-    {value: 'A', name: 'Antioch Center'},
-    {value: 'O', name: 'Other'}
-];
+var sites = ['L', 'A', 'O'];
 
 var clothingSizeTypes = ['A', 'J', 'C'];
 var shoeSizeTypes = ['A', 'C'];
@@ -45,7 +41,7 @@ var householdTypes = ['Single',
     'Married Couple with Children',
     'Adult with Children',
     'Grandparents (only) with Children'];
-var states = ['KS', 'MO', 'NE', 'OK', 'CO'];  //most of the current records have null states...most addresses are topeka, state no displayed
+var states = ['KS'];  //todo:  use states from db...not on input form, though
 
 var adopteeStates = ['In Process',
     'Not Matched',
@@ -89,7 +85,7 @@ var adopteeSchema = mongoose.Schema({
     internalComment: {type: String},
     householdMembers: [householdMember],
     applicationNumber: {type: Number},
-    site: {type: site, enum: sites},
+    site: {type: String, enum: sites},
     createDate: {type: Date},
     _createUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     modifyDate: {type: Date},
@@ -107,7 +103,7 @@ function createDefaultAdoptees() {
           address: {homeAddress: '599 W. 8th Street', city: 'Topeka', state: 'KS'},
           language: 'Spanish',
           householdType: 'Single',
-          site: sites[0],
+          site: 'O',
           applicationNumber: 1,
           householdMembers: []
       });
@@ -118,7 +114,7 @@ function createDefaultAdoptees() {
           isVeteran: true,
           language: 'Spanish/English spoken by',
           englishSpeaker: 'Mary',
-          site: sites[1],
+          site: 'L',
           applicationNumber: 2,
           householdMembers: []
       });
@@ -126,7 +122,7 @@ function createDefaultAdoptees() {
           createDate: new Date('06/21/2014'), ssnLastFour: 0909,
           address: {homeAddress: '901 W. 6th Street', city: 'Topeka', state: 'KS', zip: '66607'},
           story: "James Brown's story",
-          site: sites[2],
+          site: 'A',
           applicationNumber: 3,
           householdMembers: []
       });

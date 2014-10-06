@@ -45,7 +45,7 @@ module.exports = function(app) {
   app.get('/auth/facebook', passport.authenticate('facebook'));
 
   app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    failureRedirect: '/facebook/You are registerd. Please contact system administrator!', successRedirect: '/facebook/You have successfully signed in!'
+    failureRedirect: '/facebook/You are registered. Please contact system administrator!', successRedirect: '/facebook/You have successfully signed in!'
   }));
 
   app.get('*', function(req, res) {
