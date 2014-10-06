@@ -137,8 +137,15 @@ body {
   top: 56px;
   background: #003e75;
   height: 5px; }
+  .pace .pace-progress .pace-progress-inner {
+    -webkit-box-shadow: none;
+    box-shadow: none; }
+
+.pace .pace-activity {
+  top: 73px;
+  left: 50%;
+  border-top-color: #00529B;
+  border-left-color: #00529B; }
 
 .busy {
   opacity: .65; }
-
-/*# sourceMappingURL=site.css.map */

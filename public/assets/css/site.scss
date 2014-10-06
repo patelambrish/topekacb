@@ -128,10 +128,22 @@ body {
 .btn-add {
   border-radius: 100%;
 }
-.pace .pace-progress {
-  top: 56px;
-  background:#003e75;
-  height: 5px;
+.pace {
+  .pace-progress {
+    top: 56px;
+    background:#003e75;
+    height: 5px;
+    
+    .pace-progress-inner {
+      @include box-shadow(none);
+    }
+  }
+}
+.pace .pace-activity {
+  top: 73px;
+  left: 50%;
+  border-top-color: #00529B;
+  border-left-color: #00529B;
 }
 .busy {
   opacity: .65;
