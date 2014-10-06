@@ -65,7 +65,6 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
             }
             else {
                 mvNotifier.notify(retVal.message);
-                $location.path('/adoptees');
             }
         });
     }
