@@ -1,21 +1,96 @@
 @import "bootstrap-overrides";
+@import "material/material.design";
+
+html {
+  position: relative;
+  min-height: 100%;
+}
 
 body {
-  padding-top: 100px;
+  margin-bottom: 56px;
 }
+
+.content {
+  padding-top: 56px;
+}
+
 .navbar-header a.navbar-brand {
-  margin-top: -15px;
+  margin-top: -18px;
   margin-bottom: -20px;
+  
+  img {
+    height: 56px;
+  }
+  
 }
-.navbar-header a.navbar-brand h6 {
-  color: #ccc;
+
+.navbar {
+  border-bottom: none;
+  @include box-shadow(0px 4px 8px 0px $color-grey-900);
 }
-footer {
-  padding-left: 15px;
-  padding-right: 15px;
+
+.jumbo-banner {
+  background-image: url("../image/tree-lg.jpg");
+  background-repeat: no-repeat;
+  padding: 0;
+  margin: 0;
+  height: 350px;
+  @include box-shadow(inset 1px -20px 90px -6px rgba(0,0,0,.8));
+  
+  .container-fluid {
+    padding-top: 240px;
+  }
+  
+  h1 {
+    -webkit-text-stroke: 1px #B22D0A;
+    text-shadow: 1px 1px 3px #000;
+  }
+
+  h1, h3 {
+    color: $color-grey-50;
+  }
 }
-footer p {
-  border-top: 1px solid #00529b;
+
+.jumbo-content {
+  padding-top: 20px;
+  color: $color-grey-700;
+
+  h1, h2, h3, h4 {
+   color: $color-grey-700;
+  }
+
+  img {
+    padding: 0 40px;
+  }
+}
+
+.jumbotron {
+  color: #bdbdbd;
+  margin: 0;
+
+  h1, h2, h3 {
+    margin-top: 0;
+  }
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  height: 56px;
+  background: #00529b;
+  width: 100%;
+  margin: 0;
+  .container-fluid {
+    padding: 0;
+  }
+}
+.footer p {
+  margin: 0;
+  color: $color-grey-50;
+}
+
+.footer img {
+  padding-top: 5px;
 }
 .navbar-form .form-group {
   margin-left: 10px;
@@ -33,7 +108,7 @@ footer p {
   top: 70px;
 }
 .toast-success {
-  background-color: #778dc1;
+  background-color: $color-grey-900;
 }
 .btn-toolbar > .input-group-filter {
   width: 15em;
@@ -54,8 +129,9 @@ footer p {
   border-radius: 100%;
 }
 .pace .pace-progress {
-  top: 55px;
-  background: #EFB22D;
+  top: 56px;
+  background:#003e75;
+  height: 5px;
 }
 .busy {
   opacity: .65;

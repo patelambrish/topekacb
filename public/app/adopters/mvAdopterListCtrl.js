@@ -24,11 +24,11 @@ angular.module('app').
       }
     };
   }).
-  controller('mvAdopterListCtrl', function($scope, $filter, mvAdopter) {
+  controller('mvAdopterListCtrl', function($scope, $filter, $location, mvAdopter) {
     var adopters = mvAdopter.query();
 
     $scope.sort = {
-      value: '-enrolled',
+      value: '-createDate',
       text: 'Enroll Date: Recent to Old',
       options: [
         {value: 'name', text: 'Name'},
@@ -65,6 +65,10 @@ angular.module('app').
       $scope.page.total = Math.ceil($scope.adopters.length / $scope.page.size);
       $scope.page.previous = page > 1 ? page - 1 : page;
       $scope.page.next = page < $scope.page.total ? page + 1 : page;
+    };
+    
+    $scope.select = function(adopter) {
+      $location.path('/adopters/' + adopter._id);
     };
     
     $scope.applyFilter();

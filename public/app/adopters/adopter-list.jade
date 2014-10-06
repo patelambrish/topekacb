@@ -1,39 +1,37 @@
-.container.top-padding-med
-  form
-    .btn-toolbar
-      .input-group.input-group-filter
-        input.form-control(type="text", placeholder="Filter", ng-model="query", ng-change="applyFilter(query)")
-
-      .input-group.input-group-sort
-        .input-group-addon Sort By:
-        input.form-control(type="text", ng-model="sort.text", disabled)
-        .input-group-btn
-          button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown")
-            i.glyphicon.glyphicon-chevron-down
-          ul.dropdown-menu.pull-right
-            li(ng-repeat="option in sort.options", ng-class="{active: sort.text == option.text}")
-              a(href="", ng-click="applySort(option)") {{option.text}}
-  br/
-
+.container
+  .page-header
+    h1 Adopters
   .panel.panel-default(ng-class="{busy: busy()}")
-    .panel-heading
-      h3.panel-title.clearfix Adopters
-        a.pull-right(href="/adopters/0")
-          i.glyphicon.glyphicon-plus
+    .panel-heading.clearfix
+      form.pull-left
+        .btn-toolbar
+          .input-group.input-group-filter
+            input.form-control(type="text", placeholder="Filter", ng-model="query", ng-change="applyFilter(query)")
+    
+          .input-group.input-group-sort
+            .input-group-addon Sort By:
+            input.form-control(type="text", ng-model="sort.text", disabled)
+            .input-group-btn
+              button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown")
+                i.glyphicon.glyphicon-chevron-down
+              ul.dropdown-menu.pull-right
+                li(ng-repeat="option in sort.options", ng-class="{active: sort.text == option.text}")
+                  a(href="", ng-click="applySort(option)") {{option.text}}
+      a.btn.btn-link.pull-right(href="/adopters/0")
+        i.glyphicon.glyphicon-plus
 
-    table.table.table-hover.table-striped
+    table.table.table-hover
       thead
         tr
           th Name
           th Status
           th Enroll Date
       tbody
-        tr(ng-repeat="adopter in adopters | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size")
+        tr(ng-repeat="adopter in adopters | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size", ng-click="select(adopter)")
           td
-            a(ng-href="/adopters/{{adopter._id}}")
-              | {{adopter.name}}<span ng-if="adopter.org">,</span>
-              | {{adopter.org}}<span ng-if="adopter.dept">,</span>
-              | {{adopter.dept}}
+            | {{adopter.name}}<span ng-if="adopter.org">,</span>
+            | {{adopter.org}}<span ng-if="adopter.dept">,</span>
+            | {{adopter.dept}}
           td {{adopter.status}}
           td
             time {{adopter.createDate | date}}&nbsp;
@@ -41,14 +39,14 @@
             p.small.text-muted(ng-if="adopter.updateDate") Modified:&nbsp;
               time {{adopter.updateDate | date}}&nbsp;
               | by {{adopter.updatedBy | fullName}}
-  
-  ul.pager
-    li.previous(ng-class="{disabled: page.current == 1}")
-      a(href="" ng-click="applyPage(page.previous)") Previous
-    li
-      .input-group.input-group-page
-        .input-group-addon Page
-        input.form-control(type="number", min="1", max="{{page.total}}", ng-model="page.current", ng-change="applyPage(page.current)")
-        .input-group-addon of {{page.total}}
-    li.next(ng-class="{disabled: page.current == page.total}")
-      a(href="" ng-click="applyPage(page.next)") Next
+    .panel-footer
+      ul.pager
+        li.previous(ng-class="{disabled: page.current == 1}")
+          a(href="" ng-click="applyPage(page.previous)") Previous
+        li
+          .input-group.input-group-page
+            .input-group-addon Page
+            input.form-control(type="number", min="1", max="{{page.total}}", ng-model="page.current", ng-change="applyPage(page.current)")
+            .input-group-addon of {{page.total}}
+        li.next(ng-class="{disabled: page.current == page.total}")
+          a(href="" ng-click="applyPage(page.next)") Next
