@@ -32,8 +32,6 @@ exports.updateAdoptee = function(req, res){
           update.modifyDate = new Date();
           update._modifyUser = userId;
       }
-  
-      console.log(update.birthDate);
       delete update.__v; //todo:  tried .select('-__v') with error on put  more research required
       Adoptee.
           findByIdAndUpdate(id, update, options).
