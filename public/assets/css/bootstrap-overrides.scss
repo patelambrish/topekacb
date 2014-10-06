@@ -5,23 +5,13 @@
   .navbar-form .form-control {
     width: 10em;
   }
-
-  // .jumbo-banner {
-  //   height: 300px;
-  //   .container-fluid {
-  //     padding-top: 180px;
-  //   }
-  // }
 }
 
 @media(min-width: $screen-md) {
   .navbar-form .form-control {
     width: auto;
   }
-
 }
-
-
 
 label + .checkbox {
   margin-top: 0;

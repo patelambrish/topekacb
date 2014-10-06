@@ -14,7 +14,12 @@ angular.module('app').
         entity: 'Individual',
         status: 'In Process',
         address:  { state: 'KS' },
-        phones: [{}]
+        phones: [{}],
+        criteria: {
+          childAges: [],
+          households: [],
+          special: []
+        }
       });
 
       $scope.master = angular.copy($scope.adopter);

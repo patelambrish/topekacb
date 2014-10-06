@@ -1,9 +1,9 @@
 .container
-  h1 {{adopter.name || 'New Adopter'}}&nbsp;
-    small {{adopter.org}}
+  .page-header
+    h1 Edit Adopter
   .panel.panel-default
     .panel-heading.clearfix
-      h3.panel-title.pull-left Adopter Information
+      h3.panel-title.pull-left {{adopter.name}}
       a.pull-right(href="", confirm-click="delete()", confirm-class="btn btn-danger btn-xs", confirm-text="Confirm Delete", ng-disabled="busy()", ng-if="permission.delete")
         i.glyphicon.glyphicon-remove
     .panel-body
