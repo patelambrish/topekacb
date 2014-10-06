@@ -11,6 +11,10 @@ angular.module('app').factory('mvSite', function($window) {
         isCurrentSiteSet: function()
         {
             return !!currentSite;
+        },
+        clear: function()
+        {
+            currentSite = null;
         }
     }
 })
