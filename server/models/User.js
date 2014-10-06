@@ -41,6 +41,7 @@ function createDefaultUsers() {
       User.create({firstName:'Ambrish',lastName:'Patel',username:'ambrish.patel@se2.com', salt: salt, hashed_pwd: hash, roles: ['user'], active: true});
     }
   })
+  console.log('Users Created');
 }
 
 exports.createDefaultUsers = createDefaultUsers;
