@@ -18,6 +18,7 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
 
     $scope.update = function(){
       var adoptee = $scope.adoptee;
+      console.log(adoptee.birthDate);
       if (adoptee.applicationNumber)
       {
             $scope.adopteeUpdate();

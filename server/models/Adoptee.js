@@ -55,7 +55,11 @@ var adopteeSchema = mongoose.Schema({
     birthDate: {type: Date},
     ssnLastFour: {type: Number, max: 9999},
     gender: {type: String, enum: genders},
-    //_agentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent' },
+    agent: {
+      agency: {type: String},
+      agentName: {type: String},
+      agentPhone: {type: String}
+    },
     _adopterId: { type: mongoose.Schema.Types.ObjectId, ref: 'Adopter' },
     householdType: {type:String, enum: householdTypes},
     address: {
@@ -106,6 +110,7 @@ function createDefaultAdoptees() {
           language: 'Spanish',
           householdType: 'Single',
           site: 'O',
+          agent: {agency: "Some Agency", agentName: "Tom Agent", agentPhone: "785 232 8892"},
           applicationNumber: 1,
           householdMembers: [],
           _createUser: users[0]._id
@@ -128,7 +133,6 @@ function createDefaultAdoptees() {
           story: "James Brown's story",
           site: 'A',
           applicationNumber: 3,
-          birthDate: new Date('12/03/1975'),
           householdMembers: [],
           _createUser: users[0]._id
       });
