@@ -33,7 +33,7 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
 		templateUrl : '/partials/adoptees/adoptee-list',
 		controller : 'mvAdopteeListCtrl'
 	}).when('/adoptees/:id', {
-		templateUrl : '/partials/adoptees/select-site',
+		templateUrl : '/partials/adoptees/adoptee-details',
 		controller : 'mvAdopteeDetailCtrl'
 	}).when('/adopters', {
 		templateUrl : '/partials/adopters/adopter-list',

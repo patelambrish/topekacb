@@ -1,7 +1,7 @@
 angular.module('app').directive('mvSiteDirective',
     function(mvSite) {
         return {
-            templateUrl : '/partials/adoptees/adoptee-details',
+            templateUrl : '/partials/adoptees/adoptee-sites',
             link: function(scope, element) {
                 scope.isCurrentSiteSet = mvSite.isCurrentSiteSet();
                 scope.getCurrentSite = function(){
