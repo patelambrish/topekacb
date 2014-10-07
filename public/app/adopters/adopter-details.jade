@@ -1,103 +1,111 @@
 .container
   .page-header
     h1 Edit Adopter
-  .panel.panel-default
-    .panel-heading.clearfix
-      h3.panel-title.pull-left {{adopter.name}}
-      a.pull-right(href="", confirm-click="delete()", confirm-class="btn btn-danger btn-xs", confirm-text="Confirm Delete", ng-disabled="busy()", ng-if="permission.delete")
-        i.glyphicon.glyphicon-remove
-    .panel-body
-      form(role="form" novalidate)
-        fieldset
-          .row
-            .col-sm-3
-              .form-group
-                select.form-control(name="name", ng-model="adopter.entity", required, ng-options="e for e in enums.entity")
-            .col-sm-4.col-md-3(ng-class="{'col-sm-6 col-md-5': adopter.entity == 'Individual'}")
-              .form-group
-                input.form-control(type="text", name="name", placeholder="Name", ng-model="adopter.name", required)
-            .col-sm-4.col-md-3(ng-show="adopter.entity == 'Organization' || adopter.entity == 'Deptartment'")
-              .form-group
-                input.form-control(type="text", name="org", placeholder="Organization", ng-model="adopter.org", required)
-            .col-sm-4.col-md-3(ng-show="adopter.entity == 'Deptartment'")
-              .form-group
-                input.form-control(type="text", name="dept", placeholder="Deptartment", ng-model="adopter.dept", required)
-        fieldset
-          legend Address
-          .row
-            .col-sm-4
-              .form-group
-                input.form-control(type="text", name="address", placeholder="Address", ng-model="adopter.address.street")
-            .col-sm-3.col-md-4
-              .form-group
-                input.form-control(type="text", name="city", placeholder="City", ng-model="adopter.address.city")
-            .col-sm-2
-              .form-group
-                select.form-control(name="state", ng-model="adopter.address.state" ng-options="e for e in enums.state")
-                  option(disabled value="") State
-            .col-sm-3.col-md-2
-              .form-group
-                input.form-control(type="text", name="zip", placeholder="Zip", ng-model="adopter.address.zip")
-        fieldset
-          legend Phone
-          .row(ng-repeat="p in adopter.phones")
-            .col-sm-3
-              .form-group
-                input.form-control(type="text", name="phone-number{{$index}}", placeholder="Phone", ng-model="p.number")
-            .col-sm-3
-              .form-group
-                select.form-control(name="phone-name{{$index}}", ng-model="p.name", ng-options="e for e in enums.phone")
-            .col-sm-3
-              .form-group
-                a.btn.btn-link(href="", tabindex="-1", ng-click="deletePhone(p)")
-                  i.glyphicon.glyphicon-remove
-          .row
-            .col-sm-12
-              .form-group
-                a.btn.btn-link(href="", ng-click="addPhone()") Add new
-        fieldset
-          legend Notification Method
-          .row
-            .col-sm-6
-              .form-group
-                label.checkbox-inline(ng-repeat="e in enums.notify")
-                  input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.notifyMethods, e)", ng-checked="adopter.notifyMethods.indexOf(e) > -1")
-                  | {{e}}
-                p.help-block Method for receiving household information
-            .col-sm-6
-              .form-group
-                input.form-control(type="text", name="email", placeholder="Email", ng-model="adopter.email", ng-show="adopter.notifyMethods.indexOf('Email') > -1")
-        fieldset
-          legend Adoption Options
-          .row
-            .col-sm-4
-              .form-group
-                input.form-control(type="number", name="count", placeholder="Number of households", min="1", ng-model="adopter.criteria.count")
-          .row
-            .col-sm-7
-              .form-group
-                label Household types
-                .checkbox(ng-repeat="e in enums.household")
-                  label
-                    input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.criteria.households, e)", ng-checked="adopter.criteria.households.indexOf(e) > -1")
+  form(role="form", name="form")
+    .panel.panel-default
+      .panel-heading.clearfix
+        h3.panel-title.pull-left {{adopter.name}}
+        a.pull-right(href="", confirm-click="delete()", confirm-class="btn btn-danger btn-xs", confirm-text="Confirm Delete", ng-disabled="busy()", ng-if="permission.delete")
+          i.glyphicon.glyphicon-remove
+      .panel-body
+          fieldset
+            .row
+              .col-sm-3
+                .form-group
+                  select.form-control(ng-model="adopter.entity", ng-options="e for e in enums.entity")
+              .col-sm-4.col-md-3(ng-class="{'col-sm-6 col-md-5': adopter.entity == 'Individual'}")
+                .form-group(ng-class="{'has-error': form.name.$invalid && (submitted || form.name.$dirty)}")
+                  input.form-control(type="text", name="name", placeholder="Name", required, ng-model="adopter.name")
+                  // p.help-block(ng-show="form.name.$invalid && (submitted || form.name.$dirty)") Enter adopter's name.
+              .col-sm-4.col-md-3(ng-if="adopter.entity == 'Organization' || adopter.entity == 'Deptartment'")
+                .form-group(ng-class="{'has-error': form.org.$invalid && (submitted || form.org.$dirty)}")
+                  input.form-control(type="text", name="org", placeholder="Organization", required, ng-model="adopter.org")
+                  // p.help-block(ng-show="form.org.$invalid && (submitted || form.org.$dirty)") Enter adopter's organization or select individual.
+              .col-sm-4.col-md-3(ng-if="adopter.entity == 'Deptartment'")
+                .form-group(ng-class="{'has-error': form.dept.$invalid && (submitted || form.dept.$dirty)}")
+                  input.form-control(type="text", name="dept", placeholder="Deptartment", required, ng-model="adopter.dept")
+                  // p.help-block(ng-show="form.dept.$invalid && (submitted || form.dept.$dirty)") Enter adopter's deptartment or select individual.
+          fieldset
+            legend Address
+            .row
+              .col-sm-4
+                .form-group
+                  input.form-control(type="text", name="address", placeholder="Address", ng-model="adopter.address.street")
+              .col-sm-3.col-md-4
+                .form-group
+                  input.form-control(type="text", name="city", placeholder="City", ng-model="adopter.address.city")
+              .col-sm-2
+                .form-group
+                  select.form-control(name="state", ng-model="adopter.address.state" ng-options="e for e in enums.state")
+                    option(disabled value="") State
+              .col-sm-3.col-md-2
+                .form-group
+                  input.form-control(type="text", name="zip", placeholder="Zip", ng-model="adopter.address.zip")
+          fieldset
+            legend Phone
+            .row(ng-repeat="p in adopter.phones", ng-form="phoneForm", ng-class="{'has-error': phoneForm.number.$invalid && (submitted || phoneForm.number.$dirty)}")
+              .col-sm-3
+                .form-group
+                  input.form-control(type="text", name="number", placeholder="Phone", ng-model="p.number", ng-required="$first")
+              .col-sm-3
+                .form-group
+                  select.form-control(name="name", ng-model="p.name", ng-options="e for e in enums.phone")
+              .col-sm-6
+                // p.help-block(ng-show="phoneForm.number.$invalid && (submitted || phoneForm.number.$dirty)") Enter at least one phone number.
+                .form-group(ng-hide="$first")
+                  a.btn.btn-link(href="", tabindex="-1", ng-click="deletePhone(p)")
+                    i.glyphicon.glyphicon-remove
+            .row
+              .col-sm-12
+                .form-group
+                  a.btn.btn-link(href="", ng-click="addPhone()") Add new
+          fieldset
+            legend Notification Method
+            .row
+              .col-sm-6
+                .form-group
+                  label.checkbox-inline(ng-repeat="e in enums.notify")
+                    input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.notifyMethods, e)", ng-checked="adopter.notifyMethods.indexOf(e) > -1")
                     | {{e}}
-            .col-sm-5
-              .form-group
-                label Children's ages
-                .checkbox(ng-repeat="e in enums.age")
-                  label
-                    input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.criteria.childAges, e)", ng-checked="adopter.criteria.childAges.indexOf(e) > -1")
-                    | {{e}}
-              .form-group
-                label Additional options
-                .checkbox(ng-repeat="e in enums.special")
-                  label
-                    input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.criteria.special, e)", ng-checked="adopter.criteria.special.indexOf(e) > -1")
-                    | {{e}}
-          .row
-            .col-sm-12
-              textarea.form-control(rows="3", placeholder="Comments", ng-model="adopter.criteria.comment")
-    .panel-footer
-      .btn-toolbar.text-right
-        button.btn.btn-primary(ng-click="save()", ng-disabled="busy()") Save
-        button.btn.btn-default(ng-click="cancel()", ng-disabled="busy()") Cancel
+                  p.help-block Method for receiving household information
+              .col-sm-6
+                .form-group(ng-class="{'has-error': form.email.$invalid && (submitted || form.email.$dirty)}")
+                  input.form-control(type="email", name="email", placeholder="Email", required, ng-model="adopter.email", ng-if="adopter.notifyMethods.indexOf('Email') > -1")
+                  // p.help-block(ng-show="form.email.$error.required && (submitted || form.email.$dirty)") Enter an email or remove as notification method.
+                  // p.help-block(ng-show="form.email.$error.email && (submitted || form.email.$dirty)") This email is invalid.
+          fieldset
+            legend Adoption Options
+            .row
+              .col-sm-4
+                .form-group <!-- (ng-class="{'has-error': form.count.$invalid && (submitted || form.count.$dirty)}") -->
+                  input.form-control(type="number", name="count", placeholder="Number of households", min="1", ng-model="adopter.criteria.count")
+                  // p.help-block(ng-show="form.count.$invalid && (submitted || form.count.$dirty)") This number is invalid.
+            .row
+              .col-sm-7
+                .form-group
+                  label Household types
+                  .checkbox(ng-repeat="e in enums.household")
+                    label
+                      input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.criteria.households, e)", ng-checked="adopter.criteria.households.indexOf(e) > -1")
+                      | {{e}}
+              .col-sm-5
+                .form-group
+                  label Children's ages
+                  .checkbox(ng-repeat="e in enums.age")
+                    label
+                      input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.criteria.childAges, e)", ng-checked="adopter.criteria.childAges.indexOf(e) > -1")
+                      | {{e}}
+                .form-group
+                  label Additional options
+                  .checkbox(ng-repeat="e in enums.special")
+                    label
+                      input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.criteria.special, e)", ng-checked="adopter.criteria.special.indexOf(e) > -1")
+                      | {{e}}
+            .row
+              .col-sm-12
+                textarea.form-control(rows="3", placeholder="Comments", ng-model="adopter.criteria.comment")
+      .panel-footer
+        .btn-toolbar.text-right
+          button.btn.btn-primary(ng-click="savePlus(form.$valid)") Save and New
+          button.btn.btn-primary(ng-click="save(form.$valid)") Save
+          button.btn.btn-default(ng-click="cancel()", ng-disabled="busy()") Cancel

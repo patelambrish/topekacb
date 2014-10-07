@@ -19,7 +19,23 @@ body {
   margin-bottom: -20px;
   
   img {
-    height: 56px;
+    height: 54px;
+    display: inline-block;
+    background-color: #00417a;
+    padding-left: 8px;
+    padding-right: 8px;
+    // opacity: .75;
+  }
+  .logo-text {
+    display: none;
+    vertical-align: middle;
+    margin-left: 15px;
+    color: #FDB945;
+    .subtext {
+      font-size: .75em;
+      color: white;
+      
+    }
   }
   
 }
@@ -128,10 +144,22 @@ body {
 .btn-add {
   border-radius: 100%;
 }
-.pace .pace-progress {
-  top: 56px;
-  background:#003e75;
-  height: 5px;
+.pace {
+  .pace-progress {
+    top: 56px;
+    background:#003e75;
+    height: 5px;
+    
+    .pace-progress-inner {
+      @include box-shadow(none);
+    }
+  }
+}
+.pace .pace-activity {
+  top: 73px;
+  left: 50%;
+  border-top-color: #00529B;
+  border-left-color: #00529B;
 }
 .busy {
   opacity: .65;

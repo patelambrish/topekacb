@@ -10,11 +10,13 @@ angular.module('app').
     };
     
     $scope.create = function() {
+      $scope.submitted = false;
       $scope.adopter = new mvAdopter({
         entity: 'Individual',
         status: 'In Process',
-        address:  { state: 'KS' },
-        phones: [{}],
+        address:  { city: 'Topeka', state: 'KS' },
+        phones: [{ name: 'Home' }],
+        notifyMethods: [],
         criteria: {
           childAges: [],
           households: [],
@@ -26,6 +28,7 @@ angular.module('app').
     };
 
     $scope.get = function() {
+      $scope.submitted = false;
       $scope.adopter = mvAdopter.get({ _id: $routeParams.id });
       $scope.adopter.$promise.
         then(function(data) {
@@ -33,11 +36,27 @@ angular.module('app').
         });
     };
     
-    $scope.save = function() {
-      mvAdopter.save($scope.adopter, function() {
-        mvNotifier.notify($scope.adopter.name + ' successfully saved!');
-        $location.path('/adopters');
-      });
+    $scope.save = function(valid) {
+      $scope.submitted = true;
+      
+      if(valid) {
+        mvAdopter.save($scope.adopter, function() {
+          mvNotifier.notify($scope.adopter.name + ' successfully saved!');
+          $location.path('/adopters');
+        });
+      }
+    };
+    
+    $scope.savePlus = function(valid) {
+      $scope.submitted = true;
+
+      if(valid) {
+        mvAdopter.save($scope.adopter, function() {
+          mvNotifier.notify($scope.adopter.name + ' successfully saved!');
+          $location.path('/adopters/0');
+          $scope.create();
+        });
+      }
     };
     
     $scope.delete = function() {
