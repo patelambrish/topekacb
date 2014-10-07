@@ -1,0 +1,14 @@
+form(name="adopterSearchForm" novalidate)
+  div(class="row")
+    div(class="col-md-4")
+      div(class="form-group")
+        input(type="text" data-ng-model="filter.name" class="form-control pull-left" placeholder="Adopter Name")        
+    div(class="col-md-4")
+      div(class="form-group")
+        select.form-control(ng-model="filter.status", ng-options="e for e in enums.status")
+    div(class="col-md-4")      
+      div(class="pull-right form-group")
+        //button(type="button" class="btn btn-default" data-ng-click="reset()") Reset
+        //| &nbsp;
+        button(type="button" class="btn btn-primary" data-ng-click="search()") Search
+    
