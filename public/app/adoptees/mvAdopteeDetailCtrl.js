@@ -1,4 +1,4 @@
-angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, mvAdopteeApplicationCounter, $routeParams,  mvNotifier, $location) {
+angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, mvAdopteeApplicationCounter, $routeParams,  mvNotifier, $location, $filter) {
     $scope.genders = ['Male','Female'];
     $scope.clothingSizeTypes = ['A', 'J', 'C'];
     $scope.shoeSizeTypes = ['A', 'C'];
@@ -15,7 +15,15 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
     }
 
     if($routeParams.id !== '0') {
-        $scope.adoptee = mvAdoptee.get({ _id: $routeParams.id });
+        mvAdoptee.get({ _id: $routeParams.id }).$promise.then(function(retVal){
+          if (retVal.error){
+            mvNotifier.notify(retVal.error);
+          }
+          else{
+            $scope.adoptee = retVal;
+            $scope.adoptee.birthDate = $filter('date')($scope.adoptee.birthDate, 'yyyy-MM-dd');
+          }
+         });
     }
     else {
         $scope.setNewAdoptee();
@@ -23,6 +31,7 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
 
     $scope.update = function(newFlag){
       $scope.newFlag = newFlag;
+      console.log($scope.testDate);
       var adoptee = $scope.adoptee;
       if (adoptee.applicationNumber)
       {
@@ -78,6 +87,7 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
                 }
                 else{
                     $scope.adoptee = retVal;
+                    $scope.adoptee.birthDate = $filter('date')($scope.adoptee.birthDate, 'yyyy-MM-dd');
                 }
             }
         });
