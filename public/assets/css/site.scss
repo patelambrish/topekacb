@@ -19,7 +19,23 @@ body {
   margin-bottom: -20px;
   
   img {
-    height: 56px;
+    height: 54px;
+    display: inline-block;
+    background-color: #00417a;
+    padding-left: 8px;
+    padding-right: 8px;
+    // opacity: .75;
+  }
+  .logo-text {
+    display: none;
+    vertical-align: middle;
+    margin-left: 15px;
+    color: #FDB945;
+    .subtext {
+      font-size: .75em;
+      color: white;
+      
+    }
   }
   
 }
