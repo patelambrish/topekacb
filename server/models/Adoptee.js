@@ -8,7 +8,7 @@ var phone = {
 
 var site = {
     value: {type: String},
-    name: {type: String},
+    name: {type: String}
 };
 
 var languages = [

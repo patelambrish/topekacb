@@ -42,3 +42,12 @@ exports.updateAdoptee = function(req, res){
               return res.send(adoptee);
       });
 }
+
+exports.deleteAdoptee = function(req, res){
+    Adoptee.
+        findByIdAndRemove(req.params.id).
+        exec(function(err, adoptee) {
+            if(err) { res.status(400); return res.send({error:err.toString()});}
+            return res.send(adoptee);
+        });
+}
