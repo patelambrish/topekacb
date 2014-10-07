@@ -6,19 +6,24 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
     $scope.adopteeTitle = '';
     $scope.site = '';
 
+    $scope.setNewAdoptee = function(){
+        $scope.adoptee = new mvAdoptee({
+            householdMembers: [],
+            address: {city: 'Topeka'}
+        });
+        $scope.adopteeTitle = 'New Adoptee';
+    }
+
     if($routeParams.id !== '0') {
         $scope.adoptee = mvAdoptee.get({ _id: $routeParams.id });
     }
     else {
-      $scope.adoptee = new mvAdoptee({
-        householdMembers: []
-      });
-      $scope.adopteeTitle = 'New Adoptee';
+        $scope.setNewAdoptee();
     }
 
-    $scope.update = function(){
+    $scope.update = function(newFlag){
+      $scope.newFlag = newFlag;
       var adoptee = $scope.adoptee;
-      console.log(adoptee.birthDate);
       if (adoptee.applicationNumber)
       {
             $scope.adopteeUpdate();
@@ -31,6 +36,7 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
                   adoptee.applicationNumber = retVal.seq;
                   adoptee.site = $scope.getCurrentSite();
                   $scope.adopteeUpdate();
+
               }
           });
       }
@@ -55,7 +61,6 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
     };
 
     $scope.saveSite = function(site){
-        console.log(site);
         $scope.closeModal(site);
     };
 
@@ -65,8 +70,17 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
                 mvNotifier.notify(retVal.error);
             }
             else {
-                mvNotifier.notify(retVal.message);
+                mvNotifier.notify(retVal.firstName + ' ' + retVal.lastName + ' successfully saved!');
+                $scope.adopteeTitle = '';
+                if ($scope.newFlag) {
+                    $location.path('/adoptees/0');
+                    $scope.setNewAdoptee();
+                }
+                else{
+                    $scope.adoptee = retVal;
+                }
             }
         });
     }
+
 });

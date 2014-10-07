@@ -208,7 +208,9 @@
                .form-group
                 .col-md-10.col-md-offset-2
                     .pull-right
-                        button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update()") Submit
+                        button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update(true)") Save and New
+                        | &nbsp;
+                        button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update(false)") Save
                         | &nbsp;
                         a.btn.btn-default(href="/adoptees") Cancel
     .modal.fade(id="siteModal", tabindex="-1", role="dialog")

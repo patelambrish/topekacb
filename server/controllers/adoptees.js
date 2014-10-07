@@ -32,13 +32,13 @@ exports.updateAdoptee = function(req, res){
           update.modifyDate = new Date();
           update._modifyUser = userId;
       }
-      delete update.__v; //todo:  tried .select('-__v') with error on put  more research required
+      delete update.__v;
       Adoptee.
           findByIdAndUpdate(id, update, options).
           populate('createUser', 'firstName lastName').
           populate('modifyUser', 'firstName lastName').
           exec(function(err, adoptee) {
               if(err) { res.status(400); return res.send({error:err.toString()});}
-              return res.send({message: "Adoptee successfully updated!"});
+              return res.send(adoptee);
       });
 }
