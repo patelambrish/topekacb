@@ -55,7 +55,11 @@ var adopteeSchema = mongoose.Schema({
     birthDate: {type: Date},
     ssnLastFour: {type: Number, max: 9999},
     gender: {type: String, enum: genders},
-    //_agentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent' },
+    agent: {
+      agency: {type: String},
+      agentName: {type: String},
+      agentPhone: {type: String}
+    },
     _adopterId: { type: mongoose.Schema.Types.ObjectId, ref: 'Adopter' },
     householdType: {type:String, enum: householdTypes},
     address: {
@@ -96,6 +100,8 @@ var Adoptee = mongoose.model('Adoptee', adopteeSchema);
 function createDefaultAdoptees() {
   Adoptee.find({}).exec(function(err, collection) {
     if(collection.length === 0) {
+      var user = mongoose.model('User');
+      user.find({}).exec(function(err, users){
       Adoptee.create({firstName: 'Jane', lastName: 'Seymour', gender: 'Female',
           birthDate: new Date('01/21/1958'), createDate: new Date('01/21/2014'), ssnLastFour: 9998,
           homePhone: {name: 'Jane', number: '785 865 8111'},
@@ -104,8 +110,10 @@ function createDefaultAdoptees() {
           language: 'Spanish',
           householdType: 'Single',
           site: 'O',
+          agent: {agency: "Some Agency", agentName: "Tom Agent", agentPhone: "785 232 8892"},
           applicationNumber: 1,
-          householdMembers: []
+          householdMembers: [],
+          _createUser: users[0]._id
       });
       Adoptee.create({firstName: 'Mark', lastName: 'Lark', gender: 'Male', birthDate: new Date('07/09/1985'),
           createDate: new Date('09/01/2014'), ssnLastFour: 9997,
@@ -116,7 +124,8 @@ function createDefaultAdoptees() {
           englishSpeaker: 'Mary',
           site: 'L',
           applicationNumber: 2,
-          householdMembers: []
+          householdMembers: [],
+          _createUser: users[0]._id
       });
       Adoptee.create({firstName: 'James', lastName: 'Brown', gender: 'Male', birthDate: new Date('11/26/1978'),
           createDate: new Date('06/21/2014'), ssnLastFour: 0909,
@@ -124,10 +133,12 @@ function createDefaultAdoptees() {
           story: "James Brown's story",
           site: 'A',
           applicationNumber: 3,
-          householdMembers: []
+          householdMembers: [],
+          _createUser: users[0]._id
       });
-    }
-  });
+    });
+  }
+ });
+ console.log('Adoptees Created');
 }
-
 exports.createDefaultAdoptees = createDefaultAdoptees;

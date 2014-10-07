@@ -3,7 +3,10 @@ var mongoose = require('mongoose'),
     AdopteeApplicationCounter = mongoose.model('AdopteeApplicationCounter');
 
 exports.getAdoptees = function(req, res) {
-  Adoptee.find({}).exec(function(err, collection) {
+  Adoptee.find({}).
+    populate('_createUser', 'firstName lastName').
+    populate('_modifyUser', 'firstName lastName').
+    exec(function(err, collection) {
     res.send(collection);
   })
 };
@@ -23,14 +26,12 @@ exports.updateAdoptee = function(req, res){
       if(!id) {
           id = new mongoose.Types.ObjectId();
           update.createDate = new Date();
-          update.createUser = userId;
+          update._createUser = userId;
       } else {
           delete update._id;
           update.modifyDate = new Date();
-          update.modifyUser = userId;
+          update._modifyUser = userId;
       }
-  
-      update.birthDate = new Date(update.birthDate);
       delete update.__v; //todo:  tried .select('-__v') with error on put  more research required
       Adoptee.
           findByIdAndUpdate(id, update, options).

@@ -18,6 +18,7 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
 
     $scope.update = function(){
       var adoptee = $scope.adoptee;
+      console.log(adoptee.birthDate);
       if (adoptee.applicationNumber)
       {
             $scope.adopteeUpdate();
@@ -65,7 +66,6 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
             }
             else {
                 mvNotifier.notify(retVal.message);
-                $location.path('/adoptees');
             }
         });
     }
