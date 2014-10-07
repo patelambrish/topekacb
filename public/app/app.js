@@ -50,7 +50,10 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
 				$location.path('/');
 			}]
 		}
-	}).otherwise({
+	}).when('/match', {
+		templateUrl: 'partials/matching/match',
+		controller: 'mvMatchCtrl'
+	}).	otherwise({
 		redirectTo : '/'
 	});
 });
