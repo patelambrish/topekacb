@@ -9,7 +9,7 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
 		},
 		user : {
 			auth : function(mvAuth) {
-				return mvAuth.authorizeAuthenticatedUserForRoute()
+				return mvAuth.authorizeAuthenticatedUserForRoute('user')
 			}
 		}
 	}
