@@ -90,7 +90,7 @@ var adopteeSchema = mongoose.Schema({
     reactionFoods: {type: String},
     isDogOwner: {type: Boolean},
     householdMembers: [householdMember],
-    applicationNumber: {type: Number},
+    applicationNumber: {type: Number, index: {unique: true, dropDups: true}},
     site: {type: String, enum: sites},
     createDate: {type: Date},
     _createUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
