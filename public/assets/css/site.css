@@ -164,3 +164,11 @@ body {
 
 .busy {
   opacity: .65; }
+
+table td.tool {
+  text-align: right;
+  width: 130px; }
+  table td.tool a {
+    margin-right: 21px; }
+
+/*# sourceMappingURL=site.css.map */
