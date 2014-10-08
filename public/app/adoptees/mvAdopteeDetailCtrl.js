@@ -1,11 +1,18 @@
-angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, mvAdopteeApplicationCounter, $routeParams,  mvNotifier, $location, $filter) {
+angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, mvAdopteeApplicationCounter, $routeParams,  mvNotifier, $location, $filter, common) {
     $scope.genders = ['Male','Female'];
     $scope.clothingSizeTypes = ['A', 'J', 'C'];
     $scope.shoeSizeTypes = ['A', 'C'];
     $scope.languages = ['','Spanish','Spanish/English spoken by'];
     $scope.adopteeTitle = '';
     $scope.site = '';
-
+    $scope.specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound']
+    $scope.householdTypes = ['Single',
+        'Adult Only',
+        'Single Mom with Children',
+        'Single Dad with Children',
+        'Married Couple with Children',
+        'Adult with Children',
+        'Grandparents (only) with Children'];
     $scope.setNewAdoptee = function(){
         $scope.adoptee = new mvAdoptee({
             householdMembers: [],
@@ -31,7 +38,6 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
 
     $scope.update = function(newFlag){
       $scope.newFlag = newFlag;
-      console.log($scope.testDate);
       var adoptee = $scope.adoptee;
       if (adoptee.applicationNumber)
       {
@@ -92,5 +98,5 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
             }
         });
     }
-
+    $scope.setFlags = common.setFlags;
 });

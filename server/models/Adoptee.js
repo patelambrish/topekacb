@@ -42,12 +42,13 @@ var householdTypes = ['Single',
     'Married Couple with Children',
     'Adult with Children',
     'Grandparents (only) with Children'];
-var states = ['KS'];  //todo:  use states from db...not on input form, though
+var states = ['KS'];
 
 var adopteeStates = ['In Process',
     'Not Matched',
     'Matched'];
 var genders = ['Male', 'Female'];
+var specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound']
 
 var adopteeSchema = mongoose.Schema({
     firstName: {type:String, required:'{PATH} is required!'},
@@ -62,7 +63,6 @@ var adopteeSchema = mongoose.Schema({
       agentPhone: {type: String}
     },
     _adopterId: { type: mongoose.Schema.Types.ObjectId, ref: 'Adopter' },
-    householdType: {type:String, enum: householdTypes},
     address: {
         homeAddress: {type: String, required:'{PATH} is required!'},
         city: {type: String},
@@ -78,16 +78,17 @@ var adopteeSchema = mongoose.Schema({
     status: {type: String, enum: adopteeStates},
     language: {type: String, enum: languages},
     englishSpeaker: {type: String},
-    isDisabled: {type: Boolean},
-    isSenior: {type: Boolean},
-    isVeteran: {type: Boolean},
-    isHomebound: {type: Boolean},
+    criteria: {
+        story: {type: String},
+        volunteerComment: {type: String},
+        internalComment: {type: String},
+        specialNeeds: [{type: String, enum: specialNeedsEnum}],
+        householdType: {type:String, enum: householdTypes}
+    },
     isDiabetic: {type: Boolean},
     isAllergic: {type: Boolean},
     reactionFoods: {type: String},
-    story: {type: String},
-    volunteerComment: {type: String},
-    internalComment: {type: String},
+    isDogOwner: {type: Boolean},
     householdMembers: [householdMember],
     applicationNumber: {type: Number},
     site: {type: String, enum: sites},
@@ -163,6 +164,7 @@ function generateAdoptees(count) {
         allergic = chance.bool({likelihood: 30});
         site = chance.pick(sites, 1);
 
+
         data.push({
           firstName: chance.first({ gender: gender }),
           middleInitial: chance.character({alpha: true, casing: 'upper'}),
@@ -175,7 +177,6 @@ function generateAdoptees(count) {
             agentName: chance.name(),
             agentPhone: chance.phone()
           } || undefined,
-          householdType: chance.pick(householdTypes, 1),
           address: {
               homeAddress: chance.address({short_suffix: true}),
               city: 'Topeka',
@@ -191,16 +192,17 @@ function generateAdoptees(count) {
           status: status,
           language: hispanic && language || undefined,
           englishSpeaker: language === languages[1] && chance.first() || undefined,
-          isDisabled: chance.bool({likelihood: 20}),
-          isSenior: chance.bool({likelihood: 15}),
-          isVeteran: chance.bool({likelihood: 30}),
-          isHomebound: chance.bool({likelihood: 5}),
           isDiabetic: chance.bool({likelihood: 10}),
+          isDogOwner: chance.bool({likelihood: 40}),
           isAllergic: allergic,
           reactionFoods: allergic && [].concat(chance.pick(allergens, chance.d4())).join(', ') || undefined,
-          story: chance.paragraph(),
-          volunteerComment: chance.bool() && chance.sentence(2) || undefined,
-          internalComment: chance.bool() && chance.sentence() || undefined,
+          criteria: {
+              story: chance.paragraph(),
+              volunteerComment: chance.bool() && chance.sentence(2) || undefined,
+              internalComment: chance.bool() && chance.sentence() || undefined,
+              householdType: chance.pick(householdTypes, 1),
+              specialNeeds: chance.pick(specialNeedsEnum, chance.d4())
+          },
           householdMembers: chance.n(chance.child, chance.d4()),
           applicationNumber: i,
           site: site,

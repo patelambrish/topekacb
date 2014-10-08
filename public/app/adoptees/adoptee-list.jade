@@ -24,6 +24,7 @@
       thead
         tr
           th Name
+          th Status
           th Number
           th Create Date
           th(ng-if="permission.delete") Delete Adoptee
@@ -32,6 +33,7 @@
           td
             a(href="", ng-click="select(adoptee)")
                 | {{adoptee.lastName}}, {{adoptee.firstName}}
+          td {{adoptee.status}}
           td {{adoptee.site + '-' + adoptee.applicationNumber}}
           td
             time {{adoptee.createDate | date}}&nbsp;

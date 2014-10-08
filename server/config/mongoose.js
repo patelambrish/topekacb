@@ -12,11 +12,10 @@ module.exports = function(config) {
   db.once('open', function callback() {
     console.log('topekaCb db opened');
   });
-
   userModel.createDefaultUsers();
+  stateModel.createStates();
   adopteeModel.createDefaultAdoptees();
   adopterModel.createDefaultAdopters();
-  stateModel.createStates();
   adopteeApplicationCounterModel.initializeAdopteeApplicationCounter();
 };
 

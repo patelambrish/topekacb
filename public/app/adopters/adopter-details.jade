@@ -16,10 +16,10 @@
               .col-sm-4.col-md-3(ng-class="{'col-sm-6 col-md-5': adopter.entity == 'Individual'}")
                 .form-group(ng-class="{'has-error': form.name.$invalid && (submitted || form.name.$dirty)}")
                   input.form-control(type="text", name="name", placeholder="Name", required, ng-model="adopter.name")
-              .col-sm-4.col-md-3(ng-if="adopter.entity == 'Organization' || adopter.entity == 'Deptartment'")
+              .col-sm-4.col-md-3(ng-if="adopter.entity == 'Organization' || adopter.entity == 'Department'")
                 .form-group(ng-class="{'has-error': form.org.$invalid && (submitted || form.org.$dirty)}")
                   input.form-control(type="text", name="org", placeholder="Organization", required, ng-model="adopter.org")
-              .col-sm-4.col-md-3(ng-if="adopter.entity == 'Deptartment'")
+              .col-sm-4.col-md-3(ng-if="adopter.entity == 'Department'")
                 .form-group(ng-class="{'has-error': form.dept.$invalid && (submitted || form.dept.$dirty)}")
                   input.form-control(type="text", name="dept", placeholder="Deptartment", required, ng-model="adopter.dept")
           fieldset

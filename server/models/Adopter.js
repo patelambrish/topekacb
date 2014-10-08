@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
     Chance = require('chance'),
     Schema = mongoose.Schema,
-    entityEnum = ['Individual', 'Organization', 'Deptartment'],
+    entityEnum = ['Individual', 'Organization', 'Department'],
     stateEnum = ['KS', 'MO', 'NE', 'OK', 'CO'],
     phoneEnum = ['Home', 'Mobile', 'Alternate', 'Fax'],
     statusEnum = ['In Process', 'Not Matched', 'Matched'],
