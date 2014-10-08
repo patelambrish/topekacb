@@ -2,16 +2,32 @@ var mongoose = require('mongoose'),
     Adopter = mongoose.model('Adopter');
 
 exports.getAdopters = function(req, res, next) {
-  Adopter.
-    find({}).
+  console.log(req.query.filter);
+  var searchFilters, nameRegex, query;
+  if(req.query.filter) {
+  	searchFilters= JSON.parse(req.query.filter);
+  }
+  query = Adopter.find({});
+  if(searchFilters) {
+	if(searchFilters.name) {
+	  nameRegex  = new RegExp(searchFilters.name, 'i');
+	  query = query.where('name').regex(nameRegex);
+	}
+	if(searchFilters.household) {
+	  query = query.where('criteria.household').equals(searchFilters.household);
+	}
+	if(searchFilters.special && searchFilters.special.length>0) {
+	  query = query.where('criteria.special').in(searchFilters.special);
+	}
+	if(searchFilters.status) {
+		query = query.where('status').equals(searchFilters.status);
+	}
+  }
+  query.
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
     select('-__v').
     exec(function(err, collection) {
-      if(err) {
-        console.log(err);
-        return next(err);
-      }
       res.send(collection);
     });
 };
@@ -36,7 +52,7 @@ exports.saveAdopter = function(req, res, next) {
       id = data._id,
       options = { upsert: true },
       userId = req.user ? req.user._id : null;
-      
+
   if(!id) {
     id = new mongoose.Types.ObjectId();
     data.createDate = new Date();
@@ -47,7 +63,7 @@ exports.saveAdopter = function(req, res, next) {
     data.updateDate = new Date();
     data.updatedBy = userId;
   }
-  
+
   Adopter.
     findByIdAndUpdate(id, data, options).
     populate('createdBy', 'firstName lastName').

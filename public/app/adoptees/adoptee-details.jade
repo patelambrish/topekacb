@@ -30,7 +30,7 @@
                             .col-md-1
                                 input.form-control(name="adoptee.middleInitial", type="text", placeholder="MI", ng-model="adoptee.middleInitial")
                             .col-md-2
-                                input.form-control(name="adoptee.birthDate", type="date", placeholder="Birth Date", ng-model="birthDate")
+                                input.form-control(name="adoptee.birthDate", type="date", ng-model="adoptee.birthDate")
                             .col-md-2
                                 input.form-control(name="adoptee.ssnLastFour", type="text", placeholder="SSN (Last 4 digits)", ng-model="adoptee.ssnLastFour")
                             .col-md-2
@@ -208,27 +208,9 @@
                .form-group
                 .col-md-10.col-md-offset-2
                     .pull-right
-                        button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update()") Submit
+                        button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update(true)") Save and New
+                        | &nbsp;
+                        button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update(false)") Save
                         | &nbsp;
                         a.btn.btn-default(href="/adoptees") Cancel
-    .modal.fade(id="siteModal", tabindex="-1", role="dialog")
-        .modal-dialog
-            .modal-content
-                form(name="siteForm" id="siteForm", class="form-horizontal", novalidate)
-                    .modal-header
-                        h4.modal-title Select Site
-                    div.modal-body
-                        .row
-                            .col-md-12
-                                input.radio-inline(name="siteOptions", type="radio", ng-model="adoptee.site" value="L")
-                                label.control-label(for="adoptee.site") &nbsp Let's Help
-                        .row
-                            .col-md-12
-                                input.radio-inline(name="siteOptions", type="radio", ng-model="adoptee.site" value="A")
-                                label.control-label(for="adoptee.site") &nbsp Antioch Center
-                        .row
-                            .col-md-12
-                                input.radio-inline(name="siteOptions", type="radio", ng-model="adoptee.site" value="O")
-                                label.control-label(for="adoptee.site") &nbsp Other
-                    div.modal-footer
-                        button.btn.btn-default(data-ng-click="saveSite(adoptee.site)", data-ng-disabled="siteForm.$invalid || (adoptee.site | filter: {selected:true} : true).length===0") Save
+div(mv-site-directive)
