@@ -52,6 +52,7 @@ function($scope, mvUser, $filter, mvAuth, mvNotifier) {
 	$scope.cancel = function() {
 		if (originalUser._id) {
 			angular.copy(originalUser, $scope.selectedUser);
+			originalUser = {};
 		}
 	};
 
