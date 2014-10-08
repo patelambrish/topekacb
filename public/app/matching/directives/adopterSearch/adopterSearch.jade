@@ -2,22 +2,22 @@ form(name="adopterSearchForm" novalidate)
   div(class="row")
     div(class="col-md-4")
       div(class="form-group")
-        input(type="text" data-ng-model="filter.name" class="form-control pull-left" placeholder="Adopter Name")        
+        input(type="text" data-ng-model="adopterFilter.name" class="form-control pull-left" placeholder="Name, Org or Dept")        
     div(class="col-md-4")
       div(class="form-group")
-        select.form-control(ng-model="filter.status", ng-options="e for e in enums.status")
+        select.form-control(ng-model="adopterFilter.status", ng-options="e for e in adopterEnums.status")
     div(class="col-md-4")      
       div(class="pull-right form-group")
         //button(type="button" class="btn btn-default" data-ng-click="reset()") Reset
         //| &nbsp;
-        button(type="button" class="btn btn-primary" data-ng-click="search()") Search
+        button(type="button" class="btn btn-primary" data-ng-click="searchAdopters()") Search
     div(class="col-md-12")
       .input-group.input-group-sort
             .input-group-addon Sort By:
-            input.form-control(type="text", ng-model="sort.text", disabled)
+            input.form-control(type="text", ng-model="adopterSort.text", disabled)
             .input-group-btn
               button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown")
                 i.glyphicon.glyphicon-chevron-down
               ul.dropdown-menu.pull-right
-                li(ng-repeat="option in sort.options", ng-class="{active: sort.text == option.text}")
-                  a(href="", ng-click="applySort(option)") {{option.text}}
+                li(ng-repeat="option in adopterSort.options", ng-class="{active: sort.text == option.text}")
+                  a(href="", ng-click="applyAdopterSort(option)") {{option.text}}

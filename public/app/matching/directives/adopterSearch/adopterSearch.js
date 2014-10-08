@@ -6,26 +6,25 @@ function(mvAdopter, $filter) {
 		controller : ['$scope',
 		function($scope) {
 			//default page size
-			$scope.limit = 10;
-			$scope.start = 1;
-			$scope.filter = {};
+			$scope.adopterLimit = 10;
+			$scope.adopterStart = 1;
+			$scope.adopterFilter = {};
 			mvAdopter.enums({
 				_id : 0
 			}).$promise.then(function(data) {
-				$scope.enums = data;
+				$scope.adopterEnums = data;
 			});
-			$scope.search = function() {
+			$scope.searchAdopters = function() {
 				mvAdopter.query({
-					filter : $scope.filter,
-					sort : $scope.sort.value,
-					start : $scope.start,
-					limit : $scope.limit
+					filter : $scope.adopterFilter,
+					sort : $scope.adopterSort.value,
+					start : $scope.adopterStart,
+					limit : $scope.adopterLimit
 				}).$promise.then(function(data) {
-					console.log(data);
-					$scope.searchResults = data.data;
+					$scope.adopterSearchResults = data.data;
 				});
 			};
-			$scope.sort = {
+			$scope.adopterSort = {
 				value : 'name',
 				text : 'Name: A to Z',
 				options : [{
@@ -48,10 +47,10 @@ function(mvAdopter, $filter) {
 					text : '# of households - Low to High'
 				}]
 			};
-			$scope.applySort = function(sortOption) {
-				angular.extend($scope.sort, sortOption);
-				$scope.start = 1;
-				$scope.search();
+			$scope.applyAdopterSort = function(sortOption) {
+				angular.extend($scope.adopterSort, sortOption);
+				$scope.adopterStart = 1;
+				$scope.searchAdopters();
 			};
 		}]
 
