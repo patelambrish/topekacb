@@ -15,13 +15,6 @@ var mongoose = require('mongoose'),
     specialEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'],
     sizeEnum = ['NB', '3M', '6M', '12M', '18M', '24M', '2T', '3T', '4T', 'XS', 'S', 'M', 'L', 'XL'];
 
-var addressSchema = new Schema({
-  street: { type: String, required: '{PATH} is required!' },
-  city: { type: String, default: 'Topeka' },
-  state: { type: String, enum: stateEnum, default: 'KS' },
-  zip: String
-});
-
 var phoneSchema = new Schema({
   name: { type: String, enum: phoneEnum, default: 'Home' },
   number: String
@@ -32,7 +25,12 @@ var adopterSchema = new Schema({
   name: { type: String, required: '{PATH} is required!' },
   org: String,
   dept: String,
-  address: addressSchema,
+  address: {
+    street: { type: String, required: '{PATH} is required!' },
+    city: { type: String, default: 'Topeka' },
+    state: { type: String, enum: stateEnum, default: 'KS' },
+    zip: String
+  },
   phones: [phoneSchema],
   email: String,
   notifyMethods: [{ type: String, enum: notifyEnum }],

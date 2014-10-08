@@ -3,15 +3,21 @@ var mongoose = require('mongoose'),
 
 exports.getAdopters = function(req, res, next) {
   console.log(req.query.filter);
-  var searchFilters, nameRegex, query;
+  var searchFilters, nameRegex, query, queryName, sortParams, sortBy, sortDir ;
   if(req.query.filter) {
   	searchFilters= JSON.parse(req.query.filter);
   }
   query = Adopter.find({});
   if(searchFilters) {
 	if(searchFilters.name) {
-	  nameRegex  = new RegExp(searchFilters.name, 'i');
-	  query = query.where('name').regex(nameRegex);
+	  queryName = searchFilters.name;
+	  //nameRegex  = new RegExp(searchFilters.name, 'i');
+	  query = Adopter.find({'$or': [
+	  	{'name' : {'$regex': queryName, '$options': 'i' }},
+	  	{'org' : {'$regex': queryName, '$options': 'i' }},
+	  	{'dept' : {'$regex': queryName, '$options': 'i' }}
+	  ]});
+	  //query = query.where('name').regex(nameRegex);
 	}
 	if(searchFilters.household) {
 	  query = query.where('criteria.household').equals(searchFilters.household);
@@ -22,13 +28,35 @@ exports.getAdopters = function(req, res, next) {
 	if(searchFilters.status) {
 		query = query.where('status').equals(searchFilters.status);
 	}
+	if(req.query.sort) {
+		//sortParams = req.query.sort.split(",");
+		//sortBy = sortParams[0];
+		//if(sortParams.length > 1) {
+		//	sortDir = sortParams[1];
+		//}
+		//else {
+		//	sortDir = "asc";
+		//}
+		sortBy = req.query.sort; //(sortDir === 'asc') ? sortBy : '-' + sortBy;
+	}
+	else {
+		sortBy = "name";
+	}
+	//console.log(sortBy);
+	query = query.sort(sortBy);
+	if(req.query.start && req.query.limit) {
+		query = query.skip(req.query.start).limit(req.query.start);
+	}
   }
   query.
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
     select('-__v').
     exec(function(err, collection) {
-      res.send(collection);
+      Adopter.count({}, function(err, cnt) {
+      	res.send({data: collection, totalCount: cnt});
+      });
+      //res.send(collection);
     });
 };
 
