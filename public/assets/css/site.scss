@@ -164,3 +164,14 @@ body {
 .busy {
   opacity: .65;
 }
+
+table {
+  td.tool {
+    text-align: right;
+    width: 130px;
+
+    a {
+      margin-right: 21px;
+    }
+  }
+}

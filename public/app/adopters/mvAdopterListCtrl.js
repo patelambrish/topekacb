@@ -24,8 +24,12 @@ angular.module('app').
       }
     };
   }).
-  controller('mvAdopterListCtrl', function($scope, $filter, $location, mvAdopter) {
+  controller('mvAdopterListCtrl', function($scope, $filter, $location, mvAdopter, mvIdentity, mvNotifier) {
     var adopters = mvAdopter.query();
+
+    $scope.permission = {
+      delete: mvIdentity.isAuthorized('manager')
+    };
 
     $scope.sort = {
       value: '-createDate',
@@ -70,6 +74,19 @@ angular.module('app').
     $scope.select = function(adopter) {
       $location.path('/adopters/' + adopter._id);
     };
-    
+
+    $scope.delete = function(adopter) {
+      mvAdopter.remove({ _id: adopter._id }, function() {
+        var array = $scope.adopters,
+            index = angular.isArray(array) ? array.indexOf(adopter) : -1;
+  
+        if(index !== -1) {
+          array.splice(index, 1);
+        }
+
+        mvNotifier.notify(adopter.name + ' was deleted.');
+      });
+    };
+
     $scope.applyFilter();
   });

@@ -36,6 +36,8 @@ angular.module('app').
         });
 
         element.on('click', function(e) {
+          e.stopPropagation();
+          
           if(scope.clicked && scope.delayed) {
             scope.$parent.$apply(callback);
             reset();
