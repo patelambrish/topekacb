@@ -483,7 +483,3 @@
 {"name":"newrelic","hostname":"Susan-HP","pid":5600,"component":"express","level":40,"msg":"Unrecognized version NaN of Express detected; not instrumenting","time":"2014-10-06T00:19:20.146Z","v":0}
 {"name":"newrelic","hostname":"Susan-HP","pid":5600,"component":"new_relic_response","level":30,"msg":"Reporting to: https://rpm.newrelic.com/accounts/778968/applications/5160985","time":"2014-10-06T00:19:25.487Z","v":0}
 {"name":"newrelic","hostname":"Susan-HP","pid":5600,"component":"collector_api","level":30,"msg":"Connected to collector-104.newrelic.com:443 with agent run ID 1192641636.","time":"2014-10-06T00:19:25.488Z","v":0}
-{"name":"newrelic","hostname":"NickTrower","pid":6308,"level":30,"msg":"Starting New Relic for Node.js connection process.","time":"2014-10-09T14:24:34.136Z","v":0}
-{"name":"newrelic","hostname":"NickTrower","pid":6308,"component":"express","level":40,"msg":"Unrecognized version NaN of Express detected; not instrumenting","time":"2014-10-09T14:24:34.448Z","v":0}
-{"name":"newrelic","hostname":"NickTrower","pid":6308,"component":"new_relic_response","level":30,"msg":"Reporting to: https://rpm.newrelic.com/accounts/778968/applications/5160985","time":"2014-10-09T14:24:36.043Z","v":0}
-{"name":"newrelic","hostname":"NickTrower","pid":6308,"component":"collector_api","level":30,"msg":"Connected to collector-104.newrelic.com:443 with agent run ID 1198894988.","time":"2014-10-09T14:24:36.045Z","v":0}

@@ -22,7 +22,6 @@ function(mvAdopter, $filter) {
 					limit : $scope.adopterLimit
 				}).$promise.then(function(data) {
 					$scope.adopterSearchResults = data.data;
-					$scope.showAdopterSearchResults = true;
 				});
 			};
 			$scope.adopterSort = {
@@ -55,17 +54,5 @@ function(mvAdopter, $filter) {
 			};
 		}]
 
-	};
-}]);
-
-
-angular.module('app').directive('adopterMatchResults', ['mvAdopter','$filter',
-function(mvAdopter, $filter) {
-	return {
-		templateUrl : '/partials/matching/directives/adopterSearch/adopterSearchResults',
-		restrict: 'A',
-		controller: ['$scope', function($scope) {
-			
-		}]
 	};
 }]);
