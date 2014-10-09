@@ -90,7 +90,7 @@ body {
     padding: 0 40px; }
 
 .jumbotron {
-  color: #bdbdbd;
+  /*color: #bdbdbd;*/
   margin: 0; }
   .jumbotron h1, .jumbotron h2, .jumbotron h3 {
     margin-top: 0; }

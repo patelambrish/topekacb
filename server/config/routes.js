@@ -6,7 +6,8 @@ var auth = require('./auth'),
     adopteeApplicationCounter = require('../controllers/adopteeApplicationCounter'),
     mongoose = require('mongoose'),
     User = mongoose.model('User'),
-    passport = require('passport');
+    passport = require('passport'),
+    messages = require('../controllers/messages');
 
 module.exports = function(app) {
 
@@ -27,9 +28,13 @@ module.exports = function(app) {
   app.del('/api/adopters/:id', auth.requiresRole(['manager']), adopters.deleteAdopter);
 
   app.get('/api/states', states.getStates);
-  
+
   app.get('/api/adopteeapplicationcounter', adopteeApplicationCounter.getNextSequence);
-  
+
+  app.get('/api/messages/:type', messages.getMessage);
+  app.put('/api/messages', auth.requiresRole(['admin']), messages.updateMessage);
+
+
   app.get('/partials/*', function(req, res) {
     res.render('../../public/app/' + req.params[0]);
   });
