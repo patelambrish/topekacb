@@ -1,0 +1,20 @@
+.panel.panel-default(ng-class="{busy: busy()}" ng-show="showAdopterSearchResults")
+    .panel-heading.clearfix Adoper Search Results
+    table.table.table-hover
+      thead
+         tr
+          th Name
+          th Group/Company
+          th Dept Name
+          th 
+      tbody
+        tr(ng-repeat="adopter in adopterSearchResults" ng-click="select(adopter)")
+          td {{adopter.name}}<span ng-if="adopter.org">,</span>
+          td {{adopter.org}}<span ng-if="adopter.dept">,</span>
+          td {{adopter.dept}}
+          td 
+            a(href="adopters/{{adopter._id}}")
+              i(class="glyphicon glyphicon-pencil")
+    .panel-footer.clearfix
+      ul.pager
+       
