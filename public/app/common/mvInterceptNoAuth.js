@@ -1,11 +1,12 @@
-angular.module('app').factory("HttpErrorInterceptorModule", ["$q", "$rootScope", "$location",
-    function($q, $rootScope, $location) {
+angular.module('app').factory("HttpErrorInterceptorModule", ["$q", "$rootScope", "$location", "mvIdentity",
+    function($q, $rootScope, $location, mvIdentity) {
         var success = function(response) {
             // pass through
             return response;
         },
             error = function(response) {
                 if(response.status === 403) {
+                	mvIdentity.currentUser = null;
                     $location.path('/');
                 }
 

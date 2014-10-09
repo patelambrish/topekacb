@@ -1,14 +1,14 @@
-.container.top-padding-med
-  form
-    .btn-toolbar
-      .input-group.input-group-filter
-        input.form-control(type="text", placeholder="Filter", ng-model="searchText")
-  br
-  .panel.panel-default
-    .panel-heading
-      h3.panel-title.clearfix Users
-        a.pull-right(href="#userModal" data-ng-click="newUser()" data-target="#userModal" data-toggle="modal")
-          i.glyphicon.glyphicon-plus-sign
+.container
+  .page-header
+    h1 Users
+  .panel.panel-default(ng-class="{busy: busy()}")
+    .panel-heading.clearfix
+      form.pull-left
+        .btn-toolbar
+          .input-group.input-group-filter
+            input.form-control(type="text", placeholder="Filter", ng-model="searchText")
+      a.btn.btn-link.pull-right(href="#userModal" data-ng-click="newUser()" data-target="#userModal" data-toggle="modal")
+        i.glyphicon.glyphicon-plus
     table.table.table-hover.table-striped.table-condensed
       thead
         tr
