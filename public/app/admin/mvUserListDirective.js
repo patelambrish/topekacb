@@ -11,6 +11,7 @@ function() {
 
 			mdialog.on('show.bs.modal', function() {
 				scope.userForm.$setPristine();
+				scope.$digest();
 			});
 
 		}
