@@ -27,8 +27,10 @@ function(mvAdopter, $filter) {
 					limit : $scope.adopterPage.size
 				}).$promise.then(function(res) {
 					$scope.adopterSearchResults = res;
+					//console.log($scope.adopterSearchResults);
 					$scope.applyPage($scope.adopterPage.current, $scope.adopterSearchResults, $scope.adopterPage);
 				});
+
 			};
 			$scope.adopterSort = {
 				value : 'name',
@@ -60,5 +62,16 @@ function(mvAdopter, $filter) {
 			$scope.getAdopterPage(1);
 		}]
 
+	};
+}]);
+
+angular.module('app').directive('adopterMatchResults', ['mvAdopter','$filter',
+function(mvAdopter, $filter) {
+	return {
+		templateUrl : '/partials/matching/directives/adopterSearch/adopterSearchResults',
+		restrict: 'A',
+		controller: ['$scope', function($scope) {
+			
+		}]
 	};
 }]);

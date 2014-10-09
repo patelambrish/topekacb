@@ -8,14 +8,22 @@
         .panel-heading.clearfix Adopters    
         .panel-body
           div(data-adopter-search)
-    .panel-footer
-      ul.pager
-        li.previous(ng-class="{disabled: adopterPage.current == 1}")
-          a(href="" ng-click="applyAdopterPage(adopterPage.previous)") Previous
-        li
-          .input-group.input-group-page
-            .input-group-addon Page
-            input.form-control(type="number", min="1", max="{{adopterPage.total}}", ng-model="adopterPage.current", ng-change="getAdopterPage(adopterPage.current)")
-            .input-group-addon of {{adopterPage.total}}
-        li.next(ng-class="{disabled: adopterPage.current == adopterPage.total}")
-          a(href="" ng-click="getAdopterPage(adopterPage.next)") Next    
+     div(class="col-md-6")
+      .panel.panel-default(ng-class="{busy: busy()}")
+        .panel-heading.clearfix Adoptee Results  
+        .panel-body 
+          div() Some Adoptee Selection Directive
+   div(class="row")
+    div(class="col-md-6")
+     div(data-adopter-match-results)
+    div(class="col-md-6")
+     .panel.panel-default(ng-class="{busy: busy()}")
+       .panel-heading.clearfix Adoptee Results  
+        panel-body 
+         div() Some Adoptee Criteria Directive
+   div(class="row")
+    div(class="col-md-6")
+      .panel.panel-default(ng-class="{busy: busy()}")
+        .panel-heading.clearfix Adopter Criteria  
+        .panel-body 
+          div() Some Adopter Criteria Directive
