@@ -45,7 +45,7 @@ exports.getAdopters = function(req, res, next) {
 	//console.log(sortBy);
 	query = query.sort(sortBy);
 	if(req.query.start && req.query.limit) {
-		query = query.skip(req.query.start).limit(req.query.start);
+		query = query.skip(req.query.start).limit(req.query.limit);
 	}
   }
   query.
