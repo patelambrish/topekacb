@@ -21,8 +21,13 @@
   }
 }
 
-label + .checkbox {
-  margin-top: 0;
+label {
+  & + .checkbox,
+  & + .radio,
+  & + textarea,
+  & + input {
+    margin-top: 0;
+  }
 }
 
 .table-hover {

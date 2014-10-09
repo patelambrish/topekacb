@@ -168,10 +168,38 @@ body {
 table {
   td.tool {
     text-align: right;
-    width: 130px;
+    //width: 130px;
 
     a {
       margin-right: 21px;
+    }
+  }
+}
+
+input[type=date] {
+  &::-webkit-inner-spin-button,
+  &::-webkit-clear-button {
+    display: none;
+    -webkit-appearance: none;
+  }
+}
+
+.collapse-toggle {
+  .glyphicon-chevron-up {
+      @include transition-transform(0.35s ease);
+  }
+
+  .glyphicon-chevron-down {
+      @include transition-transform(0.35s ease);
+  }
+
+  &.collapsed {
+    .glyphicon-chevron-up {
+      @include rotate(-180deg);
+    }
+
+    .glyphicon-chevron-down {
+      @include rotate(-90deg);
     }
   }
 }

@@ -7,7 +7,7 @@
 @media (min-width: 994px) {
   .navbar-header a.navbar-brand .logo-text {
     display: inline-block !important; } }
-label + .checkbox {
+label + .checkbox, label + .radio, label + textarea, label + input {
   margin-top: 0; }
 
 .table-hover > tbody > tr:hover > td,
@@ -166,9 +166,31 @@ body {
   opacity: .65; }
 
 table td.tool {
-  text-align: right;
-  width: 130px; }
+  text-align: right; }
   table td.tool a {
     margin-right: 21px; }
 
-/*# sourceMappingURL=site.css.map */
+input[type=date]::-webkit-inner-spin-button, input[type=date]::-webkit-clear-button {
+  display: none;
+  -webkit-appearance: none; }
+
+.collapse-toggle .glyphicon-chevron-up {
+  -webkit-transition: -webkit-transform 0.35s ease;
+  -moz-transition: -moz-transform 0.35s ease;
+  -o-transition: -o-transform 0.35s ease;
+  transition: transform 0.35s ease; }
+.collapse-toggle .glyphicon-chevron-down {
+  -webkit-transition: -webkit-transform 0.35s ease;
+  -moz-transition: -moz-transform 0.35s ease;
+  -o-transition: -o-transform 0.35s ease;
+  transition: transform 0.35s ease; }
+.collapse-toggle.collapsed .glyphicon-chevron-up {
+  -webkit-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  -o-transform: rotate(-180deg);
+  transform: rotate(-180deg); }
+.collapse-toggle.collapsed .glyphicon-chevron-down {
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg); }
