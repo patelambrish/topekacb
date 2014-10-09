@@ -1,188 +1,208 @@
 .container
-    .well
-        h4.row
-            .col-md-3 Adoptee: {{adopteeTitle || adoptee.firstName + ' ' + adoptee.lastName}}
-            .col-md-1.badge {{adopteeTitle || adoptee.site + '-' + adoptee.applicationNumber}}
-            .col-md-8.pull-right Adopter:
-        form.form-horizontal(name="adopteeForm", ng-show="(adopteeTitle && isCurrentSiteSet) || adoptee.site")
-            fieldset
-                ul.nav.nav-tabs
-                    li.active
-                        a(data-toggle="tab" data-target="#householdInformation") Household Information
-                    li
-                        a(data-toggle="tab" data-target="#householdMembersGiftList", ng-show="adoptee.firstName && adoptee.lastName && adoptee.address.homeAddress") Household Characteristics and Member Info
-                div.tab-content
-                    div.tab-pane.fade.in.active(id="householdInformation")
-                        .row.top-padding-med
-                            h4.col-md-12 Adoptee Information
-                        .row.top-padding-med
-                            label.col-md-3(for="lastName") Last Name *
-                            label.col-md-2(for="firstName") First Name *
-                            label.col-md-1(for="middleInitial") MI
-                            label.col-md-2(for="birthDate") Birth Date
-                            label.col-md-2(for="ssnLastFour") SSN (last 4 digits)
-                            label.col-md-2(for="gender") Gender
-                        .row
-                            .col-md-3
-                                input.form-control(name="adoptee.lastName", type="text", placeholder="Last Name !!Required!!", ng-model="adoptee.lastName", required)
-                            .col-md-2
-                                input.form-control(name="adoptee.firstName", type="text", placeholder="First Name !!Required!!", ng-model="adoptee.firstName", required)
-                            .col-md-1
-                                input.form-control(name="adoptee.middleInitial", type="text", placeholder="MI", ng-model="adoptee.middleInitial")
-                            .col-md-2
-                                input.form-control(name="adoptee.birthDate", type="date", ng-model="adoptee.birthDate")
-                            .col-md-2
-                                input.form-control(name="adoptee.ssnLastFour", type="text", placeholder="SSN (Last 4 digits)", ng-model="adoptee.ssnLastFour")
-                            .col-md-2
-                                select.form-control(name="adoptee.gender", type="select", placeholder="Gender", ng-model="adoptee.gender" ng-options="g for g in genders")
-                        .row.top-padding-med
-                            label.col-md-6(for="adoptee.address.homeAddress") Home Address *
-                            label.col-md-3(for="adoptee.address.zip") Zip Code
-                            label.col-md-3(for="adoptee.address.city") City
-                        .row
-                            .col-md-6
-                                input.form-control(name="adoptee.address.homeAddress", type="text", placeholder="Home address !!Required!!", ng-model="adoptee.address.homeAddress", required)
-                            .col-md-3
-                                input.form-control(name="adoptee.address.zip", type="text", placeholder="Zip code", ng-model="adoptee.address.zip")
-                            .col-md-3
-                                input.form-control(name="adoptee.address.city", type="text", placeholder="City", ng-model="adoptee.address.city")
-                        .row
-                                label.col-md-4(for="adoptee.homePhone.number") Home Phone
-                                label.col-md-4(for="adoptee.cell1Phone.number") Cell Phone 1
-                                label.col-md-4(for="adoptee.cell1Phone.name") Cell Phone 1 Contact
-                        .row
-                            .col-md-4
-                                input.form-control(name="adoptee.homePhone.number", type="phone", placeholder="Home phone number" ng-model="adoptee.homePhone.number")
-                            .col-md-4
-                                input.form-control(name="adoptee.cell1Phone.number", type="phone", placeholder="Cell 1 phone number" ng-model="adoptee.cell1Phone.number")
-                            .col-md-4
-                                input.form-control(name="adoptee.cell1Phone.name", type="phone", placeholder="Cell 1 contact" ng-model="adoptee.cell1Phone.name")
-                        .row
-                            label.col-md-4()
-                            label.col-md-4(for="adoptee.cell2Phone.number") Cell Phone 2
-                            label.col-md-4(for="adoptee.cell2Phone.name") Cell Phone 2 Contact
-                        .row
-                            .col-md-4
-                            .col-md-4
-                                input.form-control(name="adoptee.cell2Phone.number", type="phone", placeholder="Cell 2 phone number" ng-model="adoptee.cell2Phone.number")
-                            .col-md-4
-                                input.form-control(name="adoptee.cell2Phone.name", type="phone", placeholder="Cell 2 contact", ng-model="adoptee.cell2Phone.name")
-                        .row
-                            label.col-md-4()
-                            label.col-md-4(for="adoptee.otherPhone.number") Other Phone
-                            label.col-md-4(for="adoptee.otherPhone.name") Other Phone Contact
-                        .row
-                            .col-md-4
-                            .col-md-4
-                                input.form-control(name="adoptee.otherPhone.number", type="phone", placeholder="Other phone number", ng-model="adoptee.otherPhone.number")
-                            .col-md-4
-                                input.form-control(name="adoptee.otherPhone.name", type="phone", placeholder="Other contact", ng-model="adoptee.otherPhone.name")
-                        .row.top-padding-med
-                            label.col-md-4(for="email") Email
-                        .row
-                            .col-md-4
-                                input.form-control(name="adoptee.email", type="email", placeholder="Email", ng-model="adoptee.email")
-                        .row.top-padding-med
-                            h4.col-md-12 Additional Information
-                        .row
-                            .col-md-3
-                                label.control-label(for="adoptee.isDiabetic") Diabetic &nbsp
-                                input.checkbox-inline(name="adoptee.isDiabetic", type="checkbox", ng-model="adoptee.isDiabetic")
-                            .col-md-3
-                                label.control-label(for="adoptee.isDogOwner") Dog(s) &nbsp
-                                input.checkbox-inline(name="adoptee.isDogOwner", type="checkbox", ng-model="adoptee.isDogOwner")
-                            .col-md-3
-                                label.control-label(for="adoptee.isAllergic") Food Alergy &nbsp
-                                input.checkbox-inline(name="adoptee.isAllergic", type="checkbox", ng-model="adoptee.isAllergic")
-                            .col-md-3(ng-hide="!adoptee.isAllergic")
-                                label.control-label(for="adoptee.englishSpeaker") Foods &nbsp
-                                input(name="adoptee.reactionFoods", type="text", ng-model="adoptee.reactionFoods")
-                        .row.top-padding-med
-                            .col-md-12
-                                p If adults in the household do NOT speak english, please select one of the following
-                        .row
-                            .col-md-6
-                                select.form-control(name="adoptee.language", type="select", placeholder="Language", ng-model="adoptee.language" ng-options="l for l in languages")
-                            .col-md-5(ng-hide="adoptee.language != 'Spanish/English spoken by'")
-                                label.col-md-4(for="adoptee.englishSpeaker") English speaker
-                                input(name="adoptee.englishSpeaker",type="text" ng-model="adoptee.englishSpeaker")
-                    .tab-pane.fade.in(id="householdMembersGiftList", ng-show="adoptee.firstName && adoptee.lastName && adoptee.address.homeAddress")
-                        .row.top-padding-med
-                            h4.col-md-12 Household Characteristics
-                            .form-group.col-md-6
-                                label.col-md-6 Classification
-                                    .radio(ng-repeat="e in householdTypes")
-                                        label
-                                            input(type="radio", ng-value="e", ng-model="adoptee.criteria.householdType")
-                                            | {{e}}
-                            .form-group.col-md-6
-                                label.col-md-6 Special Needs
-                                    .radio(ng-repeat="e in specialNeedsEnum")
-                                        label
-                                            input(type="checkbox", ng-value="e", ng-click="setFlags(adoptee.criteria.specialNeeds, e)", ng-checked="adoptee.criteria.specialNeeds.indexOf(e) > -1")
-                                            | {{e}}
-                        .row.top-padding-med
-                            h4.col-md-12 Comments
-                        .row.top-padding-med
-                            .col-md-12
-                                label.col-md-12 Your Story: Feel free to share your story for adoption in a few sentences (optional)
-                        .row
-                            .col-md-12
-                                textarea.form-control(name="adoptee.criteria.story" type="textarea", rows="3" ng-model="adoptee.criteria.story")
-                        .row.top-padding-med
-                            label.col-md-6 Volunteer Comment
-                            label.col-md-6 Internal Comment
-                        .row
-                            .col-md-6
-                                textarea.form-control(name="adoptee.criteria.volunteerComment", type="textarea", rows="4", ng-model="adoptee.criteria.volunteerComment")
-                            .col-md-6
-                                textarea.form-control(name="adoptee.criteria.internalComment", type="textarea", rows="4", ng-model="adoptee.criteria.internalComment")
-                        .row.top-padding-med
-                            h4.col-md-12 Household Members
-                        button.btn.btn-primary
-                          i.glyphicon.glyphicon-plus-sign.pull-left(ng-click="addHouseholdMember()")
-                        table.table.table-striped
-                          thead
-                            tr.row-fluid
-                              th.col-md-2 Name (first last)
-                              th.col-md-1 SSN
-                              th.col-md-1 Age
-                              th.col-md-1 Gender
-                              th.col-md-1 Shirt Size
-                              th.col-md-1 Pants Size
-                              th.col-md-1 Shoe Size
-                              th.col-md-3 Wish List
-                              th.col-md-1 Delete
-                          tbody
-                            tr.row-fluid(ng-repeat="householdMember in adoptee.householdMembers")
-                              td.col-md-2
-                                input.form-control(name="householdhouseholdMember.name", type="text", placeholder="Name", ng-model="householdMember.name")
-                              td.col-md-1
-                                input.form-control(name="householdMember.ssnLastFour", type="number", placeholder="ssn", max="9999",  ng-model="householdMember.ssnLastFour")
-                              td.col-md-1
-                                input.form-control(name="householdMember.age", type="number", min="0", max="110", placeholder="age", ng-model="householdMember.age")
-                              td.col-md-1
-                                select.form-control(name="householdMember.gender", type="select", placeholder="Gender", ng-model="householdMember.gender" ng-options="g for g in genders")
-                              td.col-md-1
-                                select.form-control(name="householdMember.shirtSizeType", type="select", ng-model="householdMember.shirtSizeType" ng-options="szt for szt in clothingSizeTypes")
-                                input.form-control(name="householdMember.shirtSize", type="number", min="0", max="30", ng-model="householdMember.shirtSize")
-                              td.col-md-1
-                                select.form-control(name="householdMember.pantSizeType", type="select", ng-model="householdMember.pantSizeType" ng-options="pzt for pzt in clothingSizeTypes")
-                                input.form-control(name="householdMember.pantSize", type="number", min="0", max="99", ng-model="householdMember.pantSize")
-                              td.col-md-1
-                                select.form-control(name="householdMember.shoeSizeType", type="select", ng-model="householdMember.shoeSizeType" ng-options="szt for szt in shoeSizeTypes")
-                                input.form-control(name="householdMember.shoeSize", type="number", min="0", max="20", ng-model="householdMember.shoeSize")
-                              td.col-md-3
-                                textarea.form-control(name="householdMember.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="householdMember.wishList")
-                              td.col-md-1
-                                  button.btn.btn-primary
-                                    i.glyphicon.glyphicon-remove-sign(ng-click="deleteHouseholdMember(householdMember)")
-               .form-group
-                .col-md-10.col-md-offset-2
-                    .pull-right
-                        button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update(true)") Save and New
-                        | &nbsp;
-                        button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update(false)") Save
-                        | &nbsp;
-                        a.btn.btn-default(href="/adoptees") Cancel
+  .page-header
+    h1 {{adopteeTitle || adoptee.firstName + ' ' + adoptee.lastName}}&nbsp;
+      .badge {{adopteeTitle || adoptee.site + '-' + adoptee.applicationNumber}}
+  form(name="adopteeForm", ng-show="(adopteeTitle && isCurrentSiteSet) || adoptee.site")
+    .panel.panel-default
+      .panel-body
+        fieldset
+          legend Adoptee Information
+          .row
+            .col-sm-3
+              .form-group
+                label(for="lastName") Last Name *
+                input.form-control(name="adoptee.lastName", type="text", placeholder="Last Name !!Required!!", ng-model="adoptee.lastName", required)
+            .col-sm-3
+              .form-group
+                label(for="firstName") First Name *
+                input.form-control(name="adoptee.firstName", type="text", placeholder="First Name !!Required!!", ng-model="adoptee.firstName", required)
+            .col-sm-1
+              .form-group
+                label(for="middleInitial") MI
+                input.form-control(name="adoptee.middleInitial", type="text", placeholder="MI", ng-model="adoptee.middleInitial")
+            .col-sm-2
+              .form-group
+                label(for="birthDate") Birth Date
+                input.form-control(name="adoptee.birthDate", type="date", ng-model="adoptee.birthDate")
+            .col-sm-2
+              .form-group
+                label(for="ssnLastFour") SSN (last 4)
+                input.form-control(name="adoptee.ssnLastFour", type="number", placeholder="SSN (Last 4 digits)", ng-model="adoptee.ssnLastFour")
+            .col-sm-1
+              .form-group
+                label(for="gender") Gender
+                select.form-control(name="adoptee.gender", ng-model="adoptee.gender" ng-options="g | limitTo:1 for g in genders")
+                  option(disabled, value="") Sex
+        fieldset
+          legend Address
+          .row
+            .col-sm-4
+              .form-group
+                label(for="adoptee.address.homeAddress") Home Address *
+                input.form-control(name="adoptee.address.homeAddress", type="text", placeholder="Home address !!Required!!", ng-model="adoptee.address.homeAddress", required)
+            .col-sm-3.col-md-4
+              .form-group
+                label(for="adoptee.address.city") City
+                input.form-control(name="adoptee.address.city", type="text", placeholder="City", tabindex="-1", ng-model="adoptee.address.city")
+            .col-sm-2
+              .form-group
+                label(for="adoptee.address.city") State
+                select.form-control(name="state", tabindex="-1", ng-model="adoptee.address.state")
+                  option(disabled value="KS")
+            .col-sm-3.col-md-2
+              .form-group
+                label(for="adoptee.address.zip") Zip Code
+                input.form-control(name="adoptee.address.zip", type="text", placeholder="Zip code", ng-model="adoptee.address.zip")
+        fieldset
+          legend Phone
+          .row
+            .col-sm-4
+              .form-group
+                label(for="adoptee.homePhone.number") Home Phone
+                input.form-control(name="adoptee.homePhone.number", type="phone", placeholder="Home phone number" ng-model="adoptee.homePhone.number")
+            .col-sm-4
+              .form-group
+                label(for="adoptee.cell1Phone.number") Cell Phone 1
+                input.form-control(name="adoptee.cell1Phone.number", type="phone", placeholder="Cell 1 phone number" ng-model="adoptee.cell1Phone.number")
+            .col-sm-4
+              .form-group
+                label(for="adoptee.cell1Phone.name") Cell Phone 1 Contact
+                input.form-control(name="adoptee.cell1Phone.name", type="phone", placeholder="Cell 1 contact" ng-model="adoptee.cell1Phone.name")
+          .row
+            .col-sm-4.col-sm-offset-4
+              .form-group
+                label(for="adoptee.cell2Phone.number") Cell Phone 2
+                input.form-control(name="adoptee.cell2Phone.number", type="phone", placeholder="Cell 2 phone number" ng-model="adoptee.cell2Phone.number")
+            .col-sm-4
+              .form-group
+                label(for="adoptee.cell2Phone.name") Cell Phone 2 Contact
+                input.form-control(name="adoptee.cell2Phone.name", type="phone", placeholder="Cell 2 contact", ng-model="adoptee.cell2Phone.name")
+          .row
+            .col-sm-4.col-sm-offset-4
+              .form-group
+                label(for="adoptee.otherPhone.number") Other Phone
+                input.form-control(name="adoptee.otherPhone.number", type="phone", placeholder="Other phone number", ng-model="adoptee.otherPhone.number")
+            .col-sm-4
+              .form-group
+                label(for="adoptee.otherPhone.name") Other Phone Contact
+                input.form-control(name="adoptee.otherPhone.name", type="phone", placeholder="Other contact", ng-model="adoptee.otherPhone.name")
+        fieldset
+          legend Email
+          .row
+            .col-sm-6
+              .form-group
+                input.form-control(name="adoptee.email", type="email", placeholder="Email", ng-model="adoptee.email")
+        fieldset
+          legend Additional Information
+          .row
+            .col-sm-6
+              .form-group
+                label.checkbox-inline
+                  input(name="adoptee.isDiabetic", type="checkbox", ng-model="adoptee.isDiabetic")
+                  | Diabetic
+                label.checkbox-inline
+                  input(name="adoptee.isDiabetic", type="checkbox", ng-model="adoptee.isDogOwner")
+                  | Has Dog(s)
+                label.checkbox-inline
+                  input(name="adoptee.isDiabetic", type="checkbox", ng-model="adoptee.isAllergic")
+                  | Has Allergies
+            .col-sm-6
+              .form-group(ng-hide="!adoptee.isAllergic")
+                input.form-control(name="adoptee.reactionFoods", type="text", placeholder="Reaction Foods", ng-model="adoptee.reactionFoods")
+          .row
+            .col-sm-6
+              .form-group
+                select.form-control(name="adoptee.language", ng-model="adoptee.language", ng-options="l for l in languages")
+                  option(disabled, value="") Language
+                p.help-block For non-English-speaking households
+            .col-sm-6(ng-hide="adoptee.language != 'Spanish/English spoken by'")
+              .form-group
+                input.form-control(name="adoptee.englishSpeaker", type="text", placeholder="English speaker", ng-model="adoptee.englishSpeaker")
+        fieldset
+          legend Household Characteristics
+          .row
+            .col-sm-7
+              .form-group
+                label Classification
+                .radio(ng-repeat="e in householdTypes")
+                  label
+                    input(type="radio", ng-value="e", ng-model="adoptee.criteria.householdType")
+                    | {{e}}
+            .col-sm-5
+              .form-group
+                label Special Needs
+                .checkbox(ng-repeat="e in specialNeedsEnum")
+                  label
+                    input(type="checkbox", ng-value="e", ng-click="setFlags(adoptee.criteria.specialNeeds, e)", ng-checked="adoptee.criteria.specialNeeds.indexOf(e) > -1")
+                    | {{e}}
+          .row
+            .col-sm-12
+              .form-group
+                label Adoptee's Story
+                textarea.form-control(name="adoptee.criteria.story", type="textarea", rows="3", ng-model="adoptee.criteria.story")
+          .row
+            .col-sm-6
+              .form-group
+                label Volunteer Comment
+                textarea.form-control(name="adoptee.criteria.volunteerComment", type="textarea", rows="4", ng-model="adoptee.criteria.volunteerComment")
+            .col-sm-6
+              .form-group
+                label Internal Comment
+                textarea.form-control(name="adoptee.criteria.internalComment", type="textarea", rows="4", ng-model="adoptee.criteria.internalComment")
+        fieldset
+          legend Household Members
+          .row(ng-repeat="householdMember in adoptee.householdMembers")
+            hr(ng-if="!$first")
+            .col-sm-4
+              .form-group
+                input.form-control(name="householdhouseholdMember.name", type="text", placeholder="Name", ng-model="householdMember.name")
+              .row
+                .col-sm-4
+                  .form-group
+                    input.form-control(name="householdMember.ssnLastFour", type="number", placeholder="SSN", ng-model="householdMember.ssnLastFour")
+                .col-sm-4
+                  .form-group
+                    input.form-control(name="householdMember.age", type="number", min="0", max="110", placeholder="Age", ng-model="householdMember.age")
+                .col-sm-4
+                  .form-group
+                    select.form-control(name="householdMember.gender", ng-model="householdMember.gender", ng-options="g | limitTo:1 for g in genders")
+                      option(disabled, value="") Sex
+            .col-sm-4
+              .row
+                .col-sm-4
+                  .form-group
+                    select.form-control(name="householdMember.shirtSizeType", ng-model="householdMember.shirtSizeType", ng-options="szt for szt in clothingSizeTypes")
+                      option(disabled, value="") Shirt
+                  .form-group
+                    input.form-control(name="householdMember.shirtSize", type="number", min="0", max="30", placeholder="Size", ng-model="householdMember.shirtSize")
+                .col-sm-4
+                  .form-group
+                    select.form-control(name="householdMember.pantSizeType", ng-model="householdMember.pantSizeType" ng-options="pzt for pzt in clothingSizeTypes")
+                      option(disabled, value="") Pants
+                  .form-group
+                    input.form-control(name="householdMember.pantSize", type="number", min="0", max="30", placeholder="Size", ng-model="householdMember.pantSize")
+                .col-sm-4
+                  .form-group
+                    select.form-control(name="householdMember.shoeSizeType", ng-model="householdMember.shoeSizeType" ng-options="szt for szt in shoeSizeTypes")
+                      option(disabled, value="") Shoe
+                  .form-group
+                    input.form-control(name="householdMember.shoeSize", type="number", min="0", max="99", placeholder="Size", ng-model="householdMember.shoeSize")
+            .col-sm-3
+              .form-group
+                textarea.form-control(name="householdMember.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="householdMember.wishList")
+            .col-sm-1
+              .form-group
+                a.btn.btn-link(href="", tabindex="-1", ng-click="deleteHouseholdMember(householdMember)")
+                  i.glyphicon.glyphicon-remove
+          .row
+            .col-sm-12
+              .form-group
+                a.btn.btn-link(href="", ng-click="addHouseholdMember()")
+                  i.glyphicon.glyphicon-plus
+                  | &nbsp;Add new
+      .panel-footer
+        .btn-toolbar.text-right
+          button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update(true)") Save and New
+          button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update(false)") Save
+          button.btn.btn-default(ng-click="cancel()") Cancel
 div(mv-site-directive)

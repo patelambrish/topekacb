@@ -1,11 +1,12 @@
-angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, mvAdopteeApplicationCounter, $routeParams,  mvNotifier, $location, $filter, common) {
+angular.module('app').
+  controller('mvAdopteeDetailCtrl', function($scope, $routeParams, $location, $filter, mvAdoptee, mvAdopteeApplicationCounter, mvNotifier, common) {
     $scope.genders = ['Male','Female'];
     $scope.clothingSizeTypes = ['A', 'J', 'C'];
     $scope.shoeSizeTypes = ['A', 'C'];
-    $scope.languages = ['','Spanish','Spanish/English spoken by'];
+    $scope.languages = ['Spanish','Spanish/English spoken by'];
     $scope.adopteeTitle = '';
     $scope.site = '';
-    $scope.specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound']
+    $scope.specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'];
     $scope.householdTypes = ['Single',
         'Adult Only',
         'Single Mom with Children',
@@ -19,7 +20,7 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
             address: {city: 'Topeka'}
         });
         $scope.adopteeTitle = 'New Adoptee';
-    }
+    };
 
     if($routeParams.id !== '0') {
         mvAdoptee.get({ _id: $routeParams.id }).$promise.then(function(retVal){
@@ -63,7 +64,7 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
       {
         adoptee.householdMembers = [];
       }
-      adoptee.householdMembers.push({householdMember: {}});
+      adoptee.householdMembers.push({});
     };
   
     $scope.deleteHouseholdMember = function(householdMember){
@@ -97,6 +98,12 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
                 }
             }
         });
-    }
+    };
+    
+    $scope.cancel = function() {
+      //$scope.adoptee = angular.copy($scope.master);
+      $location.path('/adoptees');
+    };
+    
     $scope.setFlags = common.setFlags;
-});
+  });
