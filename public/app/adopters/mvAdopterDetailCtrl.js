@@ -12,6 +12,11 @@ angular.module('app').
     $scope.create = function() {
       $scope.submitted = false;
       $scope.adopter = new mvAdopter({
+        entity: 'Individual',
+        address: {
+          city: 'Topeka',
+          state: 'KS'
+        },
         phones: [{ name: 'Home' }],
         notifyMethods: [],
         criteria: {

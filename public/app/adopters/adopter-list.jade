@@ -26,7 +26,7 @@
           th Name
           th Status
           th Create Date
-          th &nbsp;
+          th(ng-if="permission.delete") &nbsp;
       tbody
         tr(ng-repeat="adopter in adopters | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size", ng-click="select(adopter)")
           td
@@ -37,9 +37,9 @@
           td
             time {{adopter.createDate | date}}&nbsp;
             | by {{adopter.createdBy | fullName}}
-          td.tool
-            a(href="", title="Delete this adopter", confirm-click="delete(adopter)", confirm-class="btn btn-danger btn-xs", confirm-text="Confirm Delete", ng-if="permission.delete")
-              i.glyphicon.glyphicon-remove
+          td.tool(ng-if="permission.delete")
+            a(href="", title="Delete this adopter", tabindex="0", confirm-click="delete(adopter)", confirm-icon-class="glyphicon-ok-sign", confirm-reset-trigger="timeout")
+              i.text-danger.glyphicon.glyphicon-remove
     .panel-footer
       ul.pager
         li.previous(ng-class="{disabled: page.current == 1}")
