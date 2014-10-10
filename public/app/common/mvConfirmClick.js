@@ -6,13 +6,11 @@ angular.module('app').
       link: function(scope, element, attrs) {
         var callback = attrs.confirmClick,
             originalText = element.html(),
-            originalIconClass = angular.element(element.find('i')).attr('class'),
             confirmText = attrs.confirmText,
             confirmClass = attrs.confirmClass,
             confirmIconClass = attrs.confirmIconClass,
             resetTrigger = attrs.confirmResetTrigger || 'mouseout',
             confirmPopout = attrs.confirmPopout,
-            popoutId = 'p' + new Date().getTime(),
             timer;
         
         var popoutHtml = 
@@ -20,7 +18,7 @@ angular.module('app').
             '<div class="btn-group btn-group-sm">' +
               '<button class="btn btn-danger"><i class="glyphicon glyphicon-ok"></i> Yes</button>' +
               '<button class="btn btn-default">Cancel</button>' +
-            '</div>'
+            '</div>' +
           '</div>';
 
         scope.clicked = false;
