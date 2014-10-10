@@ -40,7 +40,7 @@
               time {{adoptee.modifyDate | date}}&nbsp;
               | by {{adoptee._modifyUser | fullName}}
           td.tool(ng-if="permission.delete")
-            a(href="", title="Delete this adoptee", tabindex="0", confirm-click="delete(adoptee)", confirm-popout="true")
+            a(href="", title="Delete this adoptee", tabindex="0", confirm-click="delete(adoptee)", confirm-popout="left")
               i.text-danger.glyphicon.glyphicon-remove
     .panel-footer
       ul.pager

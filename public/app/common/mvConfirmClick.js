@@ -74,7 +74,7 @@ angular.module('app').
           element.popover({
             content: popoutHtml,
             html: true,
-            placement: 'bottom',
+            placement: confirmPopout,
             trigger: 'focus'
           });
 
