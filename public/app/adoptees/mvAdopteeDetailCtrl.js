@@ -1,11 +1,12 @@
-angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, mvAdopteeApplicationCounter, $routeParams,  mvNotifier, $location, $filter, common) {
+angular.module('app').
+  controller('mvAdopteeDetailCtrl', function($scope, $routeParams, $location, $filter, cbSites, cbCurrentSite, mvAdoptee, mvAdopteeApplicationCounter, mvNotifier, common) {
+    $scope.sites = cbSites;
     $scope.genders = ['Male','Female'];
     $scope.clothingSizeTypes = ['A', 'J', 'C'];
     $scope.shoeSizeTypes = ['A', 'C'];
-    $scope.languages = ['','Spanish','Spanish/English spoken by'];
+    $scope.languages = ['Spanish','Spanish/English spoken by'];
     $scope.adopteeTitle = '';
-    $scope.site = '';
-    $scope.specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound']
+    $scope.specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'];
     $scope.householdTypes = ['Single',
         'Adult Only',
         'Single Mom with Children',
@@ -15,11 +16,23 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
         'Grandparents (only) with Children'];
     $scope.setNewAdoptee = function(){
         $scope.adoptee = new mvAdoptee({
+            site: cbCurrentSite.get(),
             householdMembers: [],
-            address: {city: 'Topeka'}
+            address: {
+              city: 'Topeka',
+              state: 'KS'
+            }
         });
         $scope.adopteeTitle = 'New Adoptee';
-    }
+    };
+
+    $scope.siteUndefined = function() {
+      return $scope.adoptee && !$scope.adoptee.site;      
+    };
+
+    $scope.onsitechange = function(site) {
+      $scope.adoptee.site = site;
+    };
 
     if($routeParams.id !== '0') {
         mvAdoptee.get({ _id: $routeParams.id }).$promise.then(function(retVal){
@@ -36,7 +49,11 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
         $scope.setNewAdoptee();
     }
 
-    $scope.update = function(newFlag){
+    $scope.update = function(form, newFlag){
+      if(form.$invalid) {
+        $scope.submitted = true;
+        return;
+      }
       $scope.newFlag = newFlag;
       var adoptee = $scope.adoptee;
       if (adoptee.applicationNumber)
@@ -49,7 +66,6 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
               }
               else {
                   adoptee.applicationNumber = retVal.seq;
-                  adoptee.site = $scope.getCurrentSite();
                   $scope.adopteeUpdate();
 
               }
@@ -63,7 +79,7 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
       {
         adoptee.householdMembers = [];
       }
-      adoptee.householdMembers.push({householdMember: {}});
+      adoptee.householdMembers.push({});
     };
   
     $scope.deleteHouseholdMember = function(householdMember){
@@ -75,10 +91,6 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
         }
     };
 
-    $scope.saveSite = function(site){
-        $scope.closeModal(site);
-    };
-
     $scope.adopteeUpdate = function(){
         mvAdoptee.updateAdoptee($scope.adoptee).$promise.then(function (retVal) {
             if (retVal.error) {
@@ -88,15 +100,22 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
                 mvNotifier.notify(retVal.firstName + ' ' + retVal.lastName + ' successfully saved!');
                 $scope.adopteeTitle = '';
                 if ($scope.newFlag) {
-                    $location.path('/adoptees/0');
                     $scope.setNewAdoptee();
+                    $location.path('/adoptees/0');
                 }
                 else{
                     $scope.adoptee = retVal;
                     $scope.adoptee.birthDate = $filter('date')($scope.adoptee.birthDate, 'yyyy-MM-dd');
+                    $location.path('/adoptees');
                 }
             }
         });
-    }
+    };
+    
+    $scope.cancel = function() {
+      //$scope.adoptee = angular.copy($scope.master);
+      $location.path('/adoptees');
+    };
+    
     $scope.setFlags = common.setFlags;
-});
+  });

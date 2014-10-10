@@ -27,12 +27,10 @@
           th Status
           th Number
           th Create Date
-          th(ng-if="permission.delete") Delete Adoptee
+          th(ng-if="permission.delete") &nbsp;
       tbody
-        tr(ng-repeat="adoptee in adoptees | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size")
-          td
-            a(href="", ng-click="select(adoptee)")
-                | {{adoptee.lastName}}, {{adoptee.firstName}}
+        tr(ng-repeat="adoptee in adoptees | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size", ng-click="select(adoptee)")
+          td {{adoptee.lastName}}, {{adoptee.firstName}}
           td {{adoptee.status}}
           td {{adoptee.site + '-' + adoptee.applicationNumber}}
           td
@@ -41,9 +39,9 @@
             p.small.text-muted(ng-if="adoptee.updateDate") Modified:&nbsp;
               time {{adoptee.modifyDate | date}}&nbsp;
               | by {{adoptee._modifyUser | fullName}}
-          td
-            a(href="", confirm-click="delete(adoptee)", confirm-class="btn btn-danger btn-xs", confirm-text="Confirm Delete", ng-disabled="busy()", ng-if="permission.delete")
-                i.glyphicon.glyphicon-remove
+          td.tool(ng-if="permission.delete")
+            a(href="", title="Delete this adoptee", tabindex="0", confirm-click="delete(adoptee)", confirm-popout="left")
+              i.text-danger.glyphicon.glyphicon-remove
     .panel-footer
       ul.pager
         li.previous(ng-class="{disabled: page.current == 1}")
