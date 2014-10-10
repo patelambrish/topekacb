@@ -39,3 +39,12 @@ label + .checkbox {
     margin: 0;
   }
 }
+
+h1 {
+  .badge {
+    &.pull-right {
+      clear: right;
+    }
+
+  }
+}

@@ -149,6 +149,7 @@ body {
     top: 56px;
     background:#003e75;
     height: 5px;
+    z-index: 1050;
     
     .pace-progress-inner {
       @include box-shadow(none);
@@ -160,6 +161,7 @@ body {
   left: 50%;
   border-top-color: #00529B;
   border-left-color: #00529B;
+  z-index: 1050;
 }
 .busy {
   opacity: .65;
@@ -173,5 +175,13 @@ table {
     a {
       margin-right: 21px;
     }
+  }
+}
+
+input[type=date] {
+  &::-webkit-inner-spin-button,
+  &::-webkit-clear-button {
+    display: none;
+    -webkit-appearance: none;
   }
 }

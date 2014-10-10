@@ -1,20 +1,27 @@
-angular.module('app').factory('mvSite', function($window) {
+angular.module('app').
+  value('cbSites', {
+    'L': 'Let\'s Help',
+    'A': 'Antioch',
+    'O': 'Other'
+  }).
+  factory('cbCurrentSite', function(cbSites) {
     var currentSite;
 
     return {
-        getCurrentSite: function(){
-            return currentSite;
-        },
-        setSite: function(site) {
-            currentSite = site;
-        },
-        isCurrentSiteSet: function()
-        {
-            return !!currentSite;
-        },
-        clear: function()
-        {
-            currentSite = null;
-        }
-    }
-})
+      name: function() {
+        return cbSites[currentSite];
+      },
+      get: function() {
+        return currentSite;
+      },
+      set: function(site) {
+        currentSite = site;
+      },
+      exists: function() {
+        return !!currentSite;
+      },
+      clear: function() {
+        currentSite = null;
+      }
+    };
+});

@@ -1,22 +1,13 @@
-.container
-  .modal.fade(id="siteModal", tabindex="-1", role="dialog")
-        .modal-dialog
-            .modal-content
-                form(name="siteForm" id="siteForm", class="form-horizontal", novalidate)
-                    .modal-header
-                        h4.modal-title Select Site
-                    div.modal-body
-                        .row
-                            .col-md-12
-                                input.radio-inline(name="siteOptions", type="radio", ng-model="adoptee.site" value="L")
-                                label.control-label(for="adoptee.site") &nbsp Let's Help
-                        .row
-                            .col-md-12
-                                input.radio-inline(name="siteOptions", type="radio", ng-model="adoptee.site" value="A")
-                                label.control-label(for="adoptee.site") &nbsp Antioch Center
-                        .row
-                            .col-md-12
-                                input.radio-inline(name="siteOptions", type="radio", ng-model="adoptee.site" value="O")
-                                label.control-label(for="adoptee.site") &nbsp Other
-                    div.modal-footer
-                        button.btn.btn-default(data-ng-click="saveSite(adoptee.site)", data-ng-disabled="siteForm.$invalid || (adoptee.site | filter: {selected:true} : true).length===0") Save
+.modal(id="siteModal", tabindex="-1", role="dialog", aria-hidden="true", data-backdrop="static", data-keyboard="false")
+  .modal-dialog.modal-sm
+    form(name="siteForm" id="siteForm", novalidate)
+      .modal-content
+        .modal-header
+          h4.modal-title Select Site
+        .modal-body
+            .radio(ng-repeat="(site, name) in sites")
+              label
+                input(name="siteOptions", type="radio", required, ng-value="site", ng-model="selected.site")
+                | {{name}}
+        .modal-footer
+          button.btn.btn-default(data-dismiss="modal", ng-click="save(selected.site)", ng-disabled="!selected.site") Save
