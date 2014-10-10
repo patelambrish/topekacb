@@ -94,7 +94,7 @@ body {
   margin: 0; }
   .jumbotron h1, .jumbotron h2, .jumbotron h3 {
     margin-top: 0; }
-
+i{color: #000000;}
 .footer {
   position: absolute;
   bottom: 0;
