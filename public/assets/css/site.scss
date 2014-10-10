@@ -17,7 +17,7 @@ body {
 .navbar-header a.navbar-brand {
   margin-top: -18px;
   margin-bottom: -20px;
-  
+
   img {
     height: 54px;
     display: inline-block;
@@ -34,10 +34,10 @@ body {
     .subtext {
       font-size: .75em;
       color: white;
-      
+
     }
   }
-  
+
 }
 
 .navbar {
@@ -52,11 +52,11 @@ body {
   margin: 0;
   height: 350px;
   @include box-shadow(inset 1px -20px 90px -6px rgba(0,0,0,.8));
-  
+
   .container-fluid {
     padding-top: 240px;
   }
-  
+
   h1 {
     -webkit-text-stroke: 1px #B22D0A;
     text-shadow: 1px 1px 3px #000;
@@ -81,7 +81,7 @@ body {
 }
 
 .jumbotron {
-  color: #bdbdbd;
+  /*color: #bdbdbd;*/
   margin: 0;
 
   h1, h2, h3 {

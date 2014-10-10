@@ -1,4 +1,4 @@
-angular.module('app', ['ngResource', 'ngRoute', 'newrelic-timing']);
+angular.module('app', ['ngResource', 'ngRoute', 'newrelic-timing','googlechart','textAngular']);
 
 angular.module('app').config(function($routeProvider, $locationProvider) {
 	var routeRoleChecks = {
@@ -9,7 +9,7 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
 		},
 		user : {
 			auth : function(mvAuth) {
-				return mvAuth.authorizeAuthenticatedUserForRoute('user')
+				return mvAuth.authorizeAuthenticatedUserForRoute()
 			}
 		}
 	}
