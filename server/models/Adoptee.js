@@ -1,4 +1,5 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    Chance = require('chance');
 
 var phone = {
     name: {type: String},
@@ -7,7 +8,7 @@ var phone = {
 
 var site = {
     value: {type: String},
-    name: {type: String},
+    name: {type: String}
 };
 
 var languages = [
@@ -41,12 +42,13 @@ var householdTypes = ['Single',
     'Married Couple with Children',
     'Adult with Children',
     'Grandparents (only) with Children'];
-var states = ['KS'];  //todo:  use states from db...not on input form, though
+var states = ['KS'];
 
 var adopteeStates = ['In Process',
     'Not Matched',
     'Matched'];
 var genders = ['Male', 'Female'];
+var specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound']
 
 var adopteeSchema = mongoose.Schema({
     firstName: {type:String, required:'{PATH} is required!'},
@@ -61,7 +63,6 @@ var adopteeSchema = mongoose.Schema({
       agentPhone: {type: String}
     },
     _adopterId: { type: mongoose.Schema.Types.ObjectId, ref: 'Adopter' },
-    householdType: {type:String, enum: householdTypes},
     address: {
         homeAddress: {type: String, required:'{PATH} is required!'},
         city: {type: String},
@@ -77,18 +78,19 @@ var adopteeSchema = mongoose.Schema({
     status: {type: String, enum: adopteeStates},
     language: {type: String, enum: languages},
     englishSpeaker: {type: String},
-    isDisabled: {type: Boolean},
-    isSenior: {type: Boolean},
-    isVeteran: {type: Boolean},
-    isHomebound: {type: Boolean},
+    criteria: {
+        story: {type: String},
+        volunteerComment: {type: String},
+        internalComment: {type: String},
+        specialNeeds: [{type: String, enum: specialNeedsEnum}],
+        householdType: {type:String, enum: householdTypes}
+    },
     isDiabetic: {type: Boolean},
     isAllergic: {type: Boolean},
     reactionFoods: {type: String},
-    story: {type: String},
-    volunteerComment: {type: String},
-    internalComment: {type: String},
+    isDogOwner: {type: Boolean},
     householdMembers: [householdMember],
-    applicationNumber: {type: Number},
+    applicationNumber: {type: Number, index: {unique: true, dropDups: true}},
     site: {type: String, enum: sites},
     createDate: {type: Date},
     _createUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -98,47 +100,128 @@ var adopteeSchema = mongoose.Schema({
 var Adoptee = mongoose.model('Adoptee', adopteeSchema);
 
 function createDefaultAdoptees() {
-  Adoptee.find({}).exec(function(err, collection) {
-    if(collection.length === 0) {
-      var user = mongoose.model('User');
-      user.find({}).exec(function(err, users){
-      Adoptee.create({firstName: 'Jane', lastName: 'Seymour', gender: 'Female',
-          birthDate: new Date('01/21/1958'), createDate: new Date('01/21/2014'), ssnLastFour: 9998,
-          homePhone: {name: 'Jane', number: '785 865 8111'},
-          cell1Phone: {name: 'John', number: '888 888 8888'},
-          address: {homeAddress: '599 W. 8th Street', city: 'Topeka', state: 'KS'},
-          language: 'Spanish',
-          householdType: 'Single',
-          site: 'O',
-          agent: {agency: "Some Agency", agentName: "Tom Agent", agentPhone: "785 232 8892"},
-          applicationNumber: 1,
-          householdMembers: [],
-          _createUser: users[0]._id
-      });
-      Adoptee.create({firstName: 'Mark', lastName: 'Lark', gender: 'Male', birthDate: new Date('07/09/1985'),
-          createDate: new Date('09/01/2014'), ssnLastFour: 9997,
-          address: {homeAddress: '1212 W. MacVicar Street', city: 'Topeka', state: 'KS', zip: '66614'},
-          householdType: 'Single Dad with Children',
-          isVeteran: true,
-          language: 'Spanish/English spoken by',
-          englishSpeaker: 'Mary',
-          site: 'L',
-          applicationNumber: 2,
-          householdMembers: [],
-          _createUser: users[0]._id
-      });
-      Adoptee.create({firstName: 'James', lastName: 'Brown', gender: 'Male', birthDate: new Date('11/26/1978'),
-          createDate: new Date('06/21/2014'), ssnLastFour: 0909,
-          address: {homeAddress: '901 W. 6th Street', city: 'Topeka', state: 'KS', zip: '66607'},
-          story: "James Brown's story",
-          site: 'A',
-          applicationNumber: 3,
-          householdMembers: [],
-          _createUser: users[0]._id
-      });
+  var Adoptee = mongoose.model('Adoptee');
+
+  Adoptee.
+    count({}).
+    exec(function(err, count) {
+      if(count === 0) {
+        generateAdoptees(4000);
+      } else {
+        console.log('found ' + count + ' adoptees.');
+      }
     });
-  }
- });
- console.log('Adoptees Created');
 }
+
+function generateAdoptees(count) {
+  var User = mongoose.model('User'),
+      Adoptee = mongoose.model('Adoptee');
+
+  console.log('populating default adoptees...');
+
+  User.
+    find({}).
+    select('_id').
+    exec(function(err, users) {
+      var chance = new Chance(),
+          data = [],
+          gender, status, hispanic, language, allergic, site,
+          allergens = ['Peanut','Tree nuts','Milk','Egg','Wheat','Soy','Fish','Shellfish'],
+          i;
+
+      chance.mixin({
+        'contact': function() {
+          return {
+            name: chance.first(),
+            number: chance.phone()
+          };
+        },
+        'child': function() {
+          return {
+            name: chance.first(),
+            ssnLastFour: chance.ssn({ ssnFour: true }),
+            age: chance.age({type: 'child'}),
+            gender: chance.gender(),
+            pantSizeType: chance.pick(clothingSizeTypes, 1),
+            pantSize: chance.integer({min: 7, max: 20}),
+            shirtSizeType: chance.pick(clothingSizeTypes, 1),
+            shirtSize: chance.integer({min: 7, max: 20}),
+            shoeSizeType: chance.pick(shoeSizeTypes, 1),
+            shoeSize: chance.integer({min: 0, max: 7}),
+            wishList: chance.pick([
+              'Lego Duplo', 'Fur Real', 'Elmo', 'Elsa Doll',
+              'Easy-Bake', 'Transformer', 'Simon', 'Scooter',
+              'R/C Crawler', 'Red Rider BB'], 3).join(', ')
+          };
+        }
+      });
+
+      for(i = 1; i <= count; i++) {
+        status = chance.pick(adopteeStates);
+        gender = chance.gender();
+        hispanic = chance.bool({likelihood: 17});
+        language = chance.pick(languages, 1);
+        allergic = chance.bool({likelihood: 30});
+        site = chance.pick(sites, 1);
+
+
+        data.push({
+          firstName: chance.first({ gender: gender }),
+          middleInitial: chance.character({alpha: true, casing: 'upper'}),
+          lastName: chance.last(),
+          birthDate: chance.birthday(),
+          ssnLastFour: chance.ssn({ ssnFour: true }),
+          gender: gender,
+          agent: chance.bool() && {
+            agency: chance.capitalize(chance.word()),
+            agentName: chance.name(),
+            agentPhone: chance.phone()
+          } || undefined,
+          address: {
+              homeAddress: chance.address({short_suffix: true}),
+              city: 'Topeka',
+              state: 'KS',
+              zip: chance.integer({min: 66601, max: 66667})
+          },
+          homePhone: chance.contact(),
+          cell1Phone: chance.bool({likelihood: 70}) && chance.contact() || undefined,
+          cell2Phone: chance.bool({likelihood: 60}) && chance.contact() || undefined,
+          otherPhone: chance.bool({likelihood: 40}) && chance.contact() || undefined,
+          email: chance.email(),
+          fax: chance.bool({likelihood: 10}) && chance.phone() || undefined,
+          status: status,
+          language: hispanic && language || undefined,
+          englishSpeaker: language === languages[1] && chance.first() || undefined,
+          isDiabetic: chance.bool({likelihood: 10}),
+          isDogOwner: chance.bool({likelihood: 40}),
+          isAllergic: allergic,
+          reactionFoods: allergic && [].concat(chance.pick(allergens, chance.d4())).join(', ') || undefined,
+          criteria: {
+              story: chance.paragraph(),
+              volunteerComment: chance.bool() && chance.sentence(2) || undefined,
+              internalComment: chance.bool() && chance.sentence() || undefined,
+              householdType: chance.pick(householdTypes, 1),
+              specialNeeds: chance.pick(specialNeedsEnum, chance.d4())
+          },
+          householdMembers: chance.n(chance.child, chance.d4()),
+          applicationNumber: i,
+          site: site,
+          createDate: chance.date({month: 8, year: 2014}),
+          _createUser: chance.pick(users),
+          modifyDate: (status !== 'In Process' ? chance.date({month: 9, year: 2014}) : null),
+          _modifyUser: (status !== 'In Process' ? chance.pick(users) : null)
+        });
+      }
+
+      Adoptee.
+        create(data).
+        then(function() {
+          console.log('created ' + data.length + ' adoptees.');
+        }).
+        then(null, function(e) {
+          console.log(e);
+        });
+    });
+}
+
 exports.createDefaultAdoptees = createDefaultAdoptees;

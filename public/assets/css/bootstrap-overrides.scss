@@ -1,20 +1,33 @@
 @import "../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
 @import "../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins";
 
-@media(max-width: $screen-md) and (min-width: $screen-sm) {
+@media(max-width: 1105px) and (min-width: $screen-sm) {
   .navbar-form .form-control {
     width: 10em;
   }
 }
 
-@media(min-width: $screen-md) {
+@media(min-width: 1105px) {
   .navbar-form .form-control {
     width: auto;
   }
 }
 
-label + .checkbox {
-  margin-top: 0;
+@media(min-width: $screen-md + 2px) {
+  .navbar-header a.navbar-brand {
+    .logo-text {
+      display: inline-block !important;
+    }
+  }
+}
+
+label {
+  & + .checkbox,
+  & + .radio,
+  & + textarea,
+  & + input {
+    margin-top: 0;
+  }
 }
 
 .table-hover {

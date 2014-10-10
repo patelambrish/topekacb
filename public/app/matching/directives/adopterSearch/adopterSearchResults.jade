@@ -1,0 +1,30 @@
+.panel.panel-default(ng-class="{busy: busy()}")
+    .panel-heading.clearfix Adopter Search Results
+    table.table.table-hover
+      thead
+         tr
+          th Name
+          th Group/Company
+          th Dept Name
+          th 
+      tbody
+        tr(ng-repeat="adopter in adopterSearchResults.data" ng-click="select(adopter)")
+          td {{adopter.name}}<span ng-if="adopter.org">,</span>
+          td {{adopter.org}}<span ng-if="adopter.dept">,</span>
+          td {{adopter.dept}}
+          td 
+            a(href="adopters/{{adopter._id}}")
+              i(class="glyphicon glyphicon-pencil")
+        tr(ng-if="adopterSearchResults.len == 0")
+          td No Data Available
+    .panel-footer
+       ul.pager
+        li.previous(ng-class="{disabled: adopterPage.current == 1}")
+          a(class="editAdopter" href="" ng-click="getAdopterPage(adopterPage.previous)") Previous
+        li
+          .input-group.input-group-page
+            .input-group-addon Page
+            input.form-control(type="number", min="1", max="{{adopterPage.total}}", ng-model="adopterPage.current", ng-change="getAdopterPage(adopterPage.current)")
+            .input-group-addon of {{adopterPage.total}}
+        li.next(ng-class="{disabled: adopterPage.current == adopterPage.total}")
+          a(href="" ng-click="getAdopterPage(adopterPage.next)") Next 

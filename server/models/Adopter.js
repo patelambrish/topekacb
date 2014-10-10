@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
     Chance = require('chance'),
     Schema = mongoose.Schema,
-    entityEnum = ['Individual', 'Organization', 'Deptartment'],
+    entityEnum = ['Individual', 'Organization', 'Department'],
     stateEnum = ['KS', 'MO', 'NE', 'OK', 'CO'],
     phoneEnum = ['Home', 'Mobile', 'Alternate', 'Fax'],
     statusEnum = ['In Process', 'Not Matched', 'Matched'],
@@ -13,37 +13,40 @@ var mongoose = require('mongoose'),
     genderEnum = ['Male', 'Female'],
     ageEnum = ['0 - 7', '8 - 12', '13 - 18'],
     specialEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'],
-    sizeEnum = ['NB', '3M', '6M', '12M', '18M', '24M', '2T', '3T', '4T', 'XS', 'S', 'M', 'L', 'XL'],
-    adopterSchema = new Schema({
-      entity: { type: String, enum: entityEnum },
-      name: { type: String, required: '{PATH} is required!' },
-      org: String,
-      dept: String,
-      address: {
-          street: { type: String, required: '{PATH} is required!' },
-          city: String,
-          state: { type: String, enum: stateEnum },
-          zip: String
-      },
-      phones: [{
-        name: { type: String, enum: phoneEnum },
-        number: String
-      }],
-      email: String,
-      notifyMethods: [{ type: String, enum: notifyEnum }],
-      criteria: {
-        count: Number,
-        households: [{ type: String, enum: householdEnum }],
-        childAges: [{ type: String, enum: ageEnum }],
-        special: [{ type: String, enum: specialEnum }],
-        comment: String
-      },
-      status: { type: String, enum: statusEnum },
-      createDate: Date,
-      createdBy: { type: Schema.Types.ObjectId, ref: 'User'},
-      updateDate: Date,
-      updatedBy: { type: Schema.Types.ObjectId, ref: 'User'}
-    });
+    sizeEnum = ['NB', '3M', '6M', '12M', '18M', '24M', '2T', '3T', '4T', 'XS', 'S', 'M', 'L', 'XL'];
+
+var phoneSchema = new Schema({
+  name: { type: String, enum: phoneEnum, default: 'Home' },
+  number: String
+});
+
+var adopterSchema = new Schema({
+  entity: { type: String, enum: entityEnum, default: 'Individual' },
+  name: { type: String, required: '{PATH} is required!' },
+  org: String,
+  dept: String,
+  address: {
+    street: { type: String, required: '{PATH} is required!' },
+    city: { type: String, default: 'Topeka' },
+    state: { type: String, enum: stateEnum, default: 'KS' },
+    zip: String
+  },
+  phones: [phoneSchema],
+  email: String,
+  notifyMethods: [{ type: String, enum: notifyEnum }],
+  criteria: {
+    count: Number,
+    households: [{ type: String, enum: householdEnum }],
+    childAges: [{ type: String, enum: ageEnum }],
+    special: [{ type: String, enum: specialEnum }],
+    comment: String
+  },
+  status: { type: String, enum: statusEnum, default: 'In Process' },
+  createDate: Date,
+  createdBy: { type: Schema.Types.ObjectId, ref: 'User'},
+  updateDate: Date,
+  updatedBy: { type: Schema.Types.ObjectId, ref: 'User'}
+});
 
 adopterSchema.static('getEnumValues', function() {
   return {

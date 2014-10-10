@@ -17,11 +17,27 @@ body {
 .navbar-header a.navbar-brand {
   margin-top: -18px;
   margin-bottom: -20px;
-  
+
   img {
-    height: 56px;
+    height: 54px;
+    display: inline-block;
+    background-color: #00417a;
+    padding-left: 8px;
+    padding-right: 8px;
+    // opacity: .75;
   }
-  
+  .logo-text {
+    display: none;
+    vertical-align: middle;
+    margin-left: 15px;
+    color: #FDB945;
+    .subtext {
+      font-size: .75em;
+      color: white;
+
+    }
+  }
+
 }
 
 .navbar {
@@ -36,11 +52,11 @@ body {
   margin: 0;
   height: 350px;
   @include box-shadow(inset 1px -20px 90px -6px rgba(0,0,0,.8));
-  
+
   .container-fluid {
     padding-top: 240px;
   }
-  
+
   h1 {
     -webkit-text-stroke: 1px #B22D0A;
     text-shadow: 1px 1px 3px #000;
@@ -65,7 +81,7 @@ body {
 }
 
 .jumbotron {
-  color: #bdbdbd;
+  /*color: #bdbdbd;*/
   margin: 0;
 
   h1, h2, h3 {
@@ -128,11 +144,62 @@ body {
 .btn-add {
   border-radius: 100%;
 }
-.pace .pace-progress {
-  top: 56px;
-  background:#003e75;
-  height: 5px;
+.pace {
+  .pace-progress {
+    top: 56px;
+    background:#003e75;
+    height: 5px;
+
+    .pace-progress-inner {
+      @include box-shadow(none);
+    }
+  }
+}
+.pace .pace-activity {
+  top: 73px;
+  left: 50%;
+  border-top-color: #00529B;
+  border-left-color: #00529B;
 }
 .busy {
   opacity: .65;
+}
+
+table {
+  td.tool {
+    text-align: right;
+    //width: 130px;
+
+    a {
+      margin-right: 21px;
+    }
+  }
+}
+
+input[type=date] {
+  &::-webkit-inner-spin-button,
+  &::-webkit-clear-button {
+    display: none;
+    -webkit-appearance: none;
+  }
+}
+
+.collapse-toggle {
+  .glyphicon-chevron-up {
+      @include transition-transform(0.35s ease);
+  }
+
+  .glyphicon-chevron-down {
+      @include transition-transform(0.35s ease);
+  }
+
+  &.collapsed {
+    .glyphicon-chevron-up {
+      @include rotate(-180deg);
+    }
+
+    .glyphicon-chevron-down {
+      @include rotate(-90deg);
+    }
+  }
 }

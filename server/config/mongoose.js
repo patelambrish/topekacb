@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
     adopteeModel = require('../models/Adoptee'),
     adopterModel = require('../models/Adopter'),
     stateModel = require('../models/State');
+    messageModel = require('../models/Message');
     adopteeApplicationCounterModel = require('../models/AdopteeApplicationCounter');
 
 module.exports = function(config) {
@@ -12,11 +13,11 @@ module.exports = function(config) {
   db.once('open', function callback() {
     console.log('topekaCb db opened');
   });
-
   userModel.createDefaultUsers();
+  stateModel.createStates();
   adopteeModel.createDefaultAdoptees();
   adopterModel.createDefaultAdopters();
-  stateModel.createStates();
   adopteeApplicationCounterModel.initializeAdopteeApplicationCounter();
+  messageModel.createMessages();
 };
 

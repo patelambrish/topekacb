@@ -1,24 +1,44 @@
-angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, mvAdopteeApplicationCounter, $routeParams,  mvNotifier, $location) {
+angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdoptee, mvAdopteeApplicationCounter, $routeParams,  mvNotifier, $location, $filter, common) {
     $scope.genders = ['Male','Female'];
     $scope.clothingSizeTypes = ['A', 'J', 'C'];
     $scope.shoeSizeTypes = ['A', 'C'];
     $scope.languages = ['','Spanish','Spanish/English spoken by'];
     $scope.adopteeTitle = '';
     $scope.site = '';
+    $scope.specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound']
+    $scope.householdTypes = ['Single',
+        'Adult Only',
+        'Single Mom with Children',
+        'Single Dad with Children',
+        'Married Couple with Children',
+        'Adult with Children',
+        'Grandparents (only) with Children'];
+    $scope.setNewAdoptee = function(){
+        $scope.adoptee = new mvAdoptee({
+            householdMembers: [],
+            address: {city: 'Topeka'}
+        });
+        $scope.adopteeTitle = 'New Adoptee';
+    }
 
     if($routeParams.id !== '0') {
-        $scope.adoptee = mvAdoptee.get({ _id: $routeParams.id });
+        mvAdoptee.get({ _id: $routeParams.id }).$promise.then(function(retVal){
+          if (retVal.error){
+            mvNotifier.notify(retVal.error);
+          }
+          else{
+            $scope.adoptee = retVal;
+            $scope.adoptee.birthDate = $filter('date')($scope.adoptee.birthDate, 'yyyy-MM-dd');
+          }
+         });
     }
     else {
-      $scope.adoptee = new mvAdoptee({
-        householdMembers: []
-      });
-      $scope.adopteeTitle = 'New Adoptee';
+        $scope.setNewAdoptee();
     }
 
-    $scope.update = function(){
+    $scope.update = function(newFlag){
+      $scope.newFlag = newFlag;
       var adoptee = $scope.adoptee;
-      console.log(adoptee.birthDate);
       if (adoptee.applicationNumber)
       {
             $scope.adopteeUpdate();
@@ -31,6 +51,7 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
                   adoptee.applicationNumber = retVal.seq;
                   adoptee.site = $scope.getCurrentSite();
                   $scope.adopteeUpdate();
+
               }
           });
       }
@@ -55,7 +76,6 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
     };
 
     $scope.saveSite = function(site){
-        console.log(site);
         $scope.closeModal(site);
     };
 
@@ -65,8 +85,18 @@ angular.module('app').controller('mvAdopteeDetailCtrl', function($scope, mvAdopt
                 mvNotifier.notify(retVal.error);
             }
             else {
-                mvNotifier.notify(retVal.message);
+                mvNotifier.notify(retVal.firstName + ' ' + retVal.lastName + ' successfully saved!');
+                $scope.adopteeTitle = '';
+                if ($scope.newFlag) {
+                    $location.path('/adoptees/0');
+                    $scope.setNewAdoptee();
+                }
+                else{
+                    $scope.adoptee = retVal;
+                    $scope.adoptee.birthDate = $filter('date')($scope.adoptee.birthDate, 'yyyy-MM-dd');
+                }
             }
         });
     }
+    $scope.setFlags = common.setFlags;
 });

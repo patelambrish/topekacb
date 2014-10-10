@@ -6,7 +6,8 @@ var auth = require('./auth'),
     adopteeApplicationCounter = require('../controllers/adopteeApplicationCounter'),
     mongoose = require('mongoose'),
     User = mongoose.model('User'),
-    passport = require('passport');
+    passport = require('passport'),
+    messages = require('../controllers/messages');
 
 module.exports = function(app) {
 
@@ -17,6 +18,8 @@ module.exports = function(app) {
   app.get('/api/adoptees', auth.requiresRole(['observer','user','manager']), adoptees.getAdoptees);
   app.get('/api/adoptees/:id', auth.requiresRole(['observer','user','manager']), adoptees.getAdopteeById);
   app.put('/api/adoptees', auth.requiresRole(['user','manager']), adoptees.updateAdoptee);
+  app.del('/api/adoptees/:id', auth.requiresRole(['manager']), adoptees.deleteAdoptee);
+
 
   app.get('/api/adopters', auth.requiresRole(['observer','user','manager']), adopters.getAdopters);
   app.get('/api/adopters/:id', auth.requiresRole(['observer','user','manager']), adopters.getAdopterById);
@@ -25,9 +28,13 @@ module.exports = function(app) {
   app.del('/api/adopters/:id', auth.requiresRole(['manager']), adopters.deleteAdopter);
 
   app.get('/api/states', states.getStates);
-  
+
   app.get('/api/adopteeapplicationcounter', adopteeApplicationCounter.getNextSequence);
-  
+
+  app.get('/api/messages/:type', messages.getMessage);
+  app.put('/api/messages', auth.requiresRole(['admin']), messages.updateMessage);
+
+
   app.get('/partials/*', function(req, res) {
     res.render('../../public/app/' + req.params[0]);
   });

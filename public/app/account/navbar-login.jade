@@ -13,7 +13,7 @@ ul.nav.navbar-nav.navbar-right(ng-show="identity.isAuthenticated()")
       | {{identity.currentUser.firstName + " " + identity.currentUser.lastName}}
       b.caret
     ul.dropdown-menu
-      li(ng-show="identity.currentUser.isAdmin()")
+      li(ng-show="identity.isAuthorized('admin')")
         a(href="/admin/users") User Admin
       //li
       //  a(href="/profile") Profile

@@ -1,20 +1,33 @@
 .container
   .jumbotron
     .row
-      .col-md-2
-        img(src="/assets/image/cb-logo-sm.png")
       .col-lg-10
-        h1 Topeka Christmas Bureau
+        h2 Shwanee County Christmas Bureau
         br
         br
     .row
       .col-md-4
         img(src="/assets/image/uwlogo-lg.gif")
       .col-md-4
-        img(src="/assets/image/bar-chart.jpg")
+        //img(src="/assets/image/bar-chart.jpg")
+        div(google-chart, chart="chart")
       .col-md-4
-        img(src="/assets/image/pie-chart.jpg")
+        //img(src="/assets/image/pie-chart.jpg")
+        div(google-chart, chart="household")
     .row
       .col-md-4
       .col-lg-8
          p Counts last updated September 21, 2014 12:01 pm
+    .row
+      .col-md-12        
+        div(ta-bind data-ng-model="message.value" data-ng-if="message.value.length")
+        br        
+        div.panel.panel-default(data-ng-if="identity.isAuthorized('admin')")
+          div.panel-heading
+            h4.panel-title
+              a(href="" data-toggle="collapse" data-target="#editMessage") Update Message
+          div.panel-collapse.collapse(id="editMessage")
+            div.panel-body
+              div(text-angular data-ng-model="message.value")        
+              div.pull-right(data-ng-if="identity.isAuthorized('admin')")
+                button.btn.btn-primary(data-ng-click="updateMessage()") Save Changes

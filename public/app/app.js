@@ -1,4 +1,4 @@
-angular.module('app', ['ngResource', 'ngRoute', 'newrelic-timing']);
+angular.module('app', ['ngResource', 'ngRoute', 'newrelic-timing','googlechart','textAngular']);
 
 angular.module('app').config(function($routeProvider, $locationProvider) {
 	var routeRoleChecks = {
@@ -31,16 +31,20 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
 	//})
 	.when('/adoptees', {
 		templateUrl : '/partials/adoptees/adoptee-list',
-		controller : 'mvAdopteeListCtrl'
+		controller : 'mvAdopteeListCtrl',
+		resolve : routeRoleChecks.user
 	}).when('/adoptees/:id', {
-		templateUrl : '/partials/adoptees/select-site',
-		controller : 'mvAdopteeDetailCtrl'
+		templateUrl : '/partials/adoptees/adoptee-details',
+		controller : 'mvAdopteeDetailCtrl',
+		resolve : routeRoleChecks.user
 	}).when('/adopters', {
 		templateUrl : '/partials/adopters/adopter-list',
-		controller : 'mvAdopterListCtrl'
+		controller : 'mvAdopterListCtrl',
+		resolve : routeRoleChecks.user
 	}).when('/adopters/:id', {
 		templateUrl : '/partials/adopters/adopter-details',
-		controller : 'mvAdopterDetailCtrl'
+		controller : 'mvAdopterDetailCtrl',
+		resolve : routeRoleChecks.user
 	}).when('/facebook/:message', {
 		resolve : {
 			data : ['$route', '$location', 'mvSharedContext',
@@ -50,7 +54,11 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
 				$location.path('/');
 			}]
 		}
-	}).otherwise({
+	}).when('/match', {
+		templateUrl: 'partials/matching/match',
+		controller: 'mvMatchCtrl',
+		resolve : routeRoleChecks.user
+	}).	otherwise({
 		redirectTo : '/'
 	});
 });

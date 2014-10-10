@@ -1,0 +1,29 @@
+.container
+  .page-header
+    h1 Matching
+.container.top-padding-med
+  div(class="row")
+    div(class="col-md-6")
+      .panel.panel-default(ng-class="{busy: busy()}")
+        .panel-heading.clearfix Adopters    
+        .panel-body
+          div(data-adopter-search)
+     div(class="col-md-6")
+      .panel.panel-default(ng-class="{busy: busy()}")
+        .panel-heading.clearfix Adoptee Results  
+        .panel-body 
+          div() Some Adoptee Selection Directive
+   div(class="row")
+    div(class="col-md-6")
+     div(data-adopter-match-results)
+    div(class="col-md-6")
+     .panel.panel-default(ng-class="{busy: busy()}")
+       .panel-heading.clearfix Adoptee Results  
+        panel-body 
+         div() Some Adoptee Criteria Directive
+   div(class="row")
+    div(class="col-md-6")
+      .panel.panel-default(ng-class="{busy: busy()}")
+        .panel-heading.clearfix Adopter Criteria  
+        .panel-body 
+          div() Some Adopter Criteria Directive

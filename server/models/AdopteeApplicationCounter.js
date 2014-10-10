@@ -13,7 +13,7 @@ function initializeAdopteeApplicationCounter() {
     if(collection.length === 0) {
       AdopteeApplicationCounter.create({
         _id: 'adopteeApplication',
-        seq: 3});
+        seq: 4000});
     }
   });
 }

@@ -25,7 +25,8 @@
         tr
           th Name
           th Status
-          th Enroll Date
+          th Create Date
+          th(ng-if="permission.delete") &nbsp;
       tbody
         tr(ng-repeat="adopter in adopters | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size", ng-click="select(adopter)")
           td
@@ -36,9 +37,9 @@
           td
             time {{adopter.createDate | date}}&nbsp;
             | by {{adopter.createdBy | fullName}}
-            p.small.text-muted(ng-if="adopter.updateDate") Modified:&nbsp;
-              time {{adopter.updateDate | date}}&nbsp;
-              | by {{adopter.updatedBy | fullName}}
+          td.tool(ng-if="permission.delete")
+            a(href="", title="Delete this adopter", tabindex="0", confirm-click="delete(adopter)", confirm-icon-class="glyphicon-ok-sign", confirm-reset-trigger="timeout")
+              i.text-danger.glyphicon.glyphicon-remove
     .panel-footer
       ul.pager
         li.previous(ng-class="{disabled: page.current == 1}")
