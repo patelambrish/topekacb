@@ -18,16 +18,16 @@ exports.getAdopteeById = function(req, res) {
 };
 
 exports.getAggregateHouseholdTypes = function(req, res){
-  Adoptee.aggregate({$group : { _id: "$householdType", count: {$sum: 1 }}}).exec(function(err,collection){
+  Adoptee.aggregate({$group : { _id: "$criteria.householdType", count: {$sum: 1 }}}).exec(function(err,collection){
         res.send(collection);
-    })     
-}
+    })
+};
 
 exports.getAggregateAdoptedCounts = function(req, res){
   Adoptee.aggregate({$group : { _id: "$status", count: {$sum: 1 }}}).exec(function(err,collection){
         res.send(collection);
-    })     
-}
+    })
+};
 
 
 exports.updateAdoptee = function(req, res){
@@ -54,7 +54,7 @@ exports.updateAdoptee = function(req, res){
               if(err) { res.status(400); return res.send({error:err.toString()});}
               return res.send(adoptee);
       });
-}
+};
 
 exports.deleteAdoptee = function(req, res){
     Adoptee.
@@ -63,4 +63,4 @@ exports.deleteAdoptee = function(req, res){
             if(err) { res.status(400); return res.send({error:err.toString()});}
             return res.send(adoptee);
         });
-}
+};
