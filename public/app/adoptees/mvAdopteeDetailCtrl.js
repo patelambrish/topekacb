@@ -100,12 +100,13 @@ angular.module('app').
                 mvNotifier.notify(retVal.firstName + ' ' + retVal.lastName + ' successfully saved!');
                 $scope.adopteeTitle = '';
                 if ($scope.newFlag) {
-                    $location.path('/adoptees/0');
                     $scope.setNewAdoptee();
+                    $location.path('/adoptees/0');
                 }
                 else{
                     $scope.adoptee = retVal;
                     $scope.adoptee.birthDate = $filter('date')($scope.adoptee.birthDate, 'yyyy-MM-dd');
+                    $location.path('/adoptees');
                 }
             }
         });

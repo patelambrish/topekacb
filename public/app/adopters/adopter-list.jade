@@ -38,7 +38,7 @@
             time {{adopter.createDate | date}}&nbsp;
             | by {{adopter.createdBy | fullName}}
           td.tool(ng-if="permission.delete")
-            a(href="", title="Delete this adopter", tabindex="0", confirm-click="delete(adopter)", confirm-icon-class="glyphicon-ok-sign", confirm-reset-trigger="timeout")
+            a(href="", title="Delete this adopter", tabindex="0", confirm-click="delete(adopter)", confirm-popout="true")
               i.text-danger.glyphicon.glyphicon-remove
     .panel-footer
       ul.pager

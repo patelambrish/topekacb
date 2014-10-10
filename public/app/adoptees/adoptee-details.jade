@@ -14,13 +14,13 @@
           legend Adoptee Information
           .row
             .col-sm-3
-              .form-group
+              .form-group(ng-class="{'has-error': adopteeForm.lastName.$invalid && (submitted || adopteeForm.lastName.$dirty)}")
                 label(for="lastName") Last Name *
-                input.form-control(name="adoptee.lastName", type="text", placeholder="Last Name", ng-model="adoptee.lastName", required)
+                input.form-control(name="lastName", type="text", placeholder="Last Name", ng-model="adoptee.lastName", required)
             .col-sm-3
-              .form-group
+              .form-group(ng-class="{'has-error': adopteeForm.firstName.$invalid && (submitted || adopteeForm.firstName.$dirty)}")
                 label(for="firstName") First Name *
-                input.form-control(name="adoptee.firstName", type="text", placeholder="First Name", ng-model="adoptee.firstName", required)
+                input.form-control(name="firstName", type="text", placeholder="First Name", ng-model="adoptee.firstName", required)
             .col-sm-1
               .form-group
                 label(for="middleInitial") MI
@@ -42,9 +42,9 @@
           legend Address
           .row
             .col-sm-4
-              .form-group
+              .form-group(ng-class="{'has-error': adopteeForm.homeAddress.$invalid && (submitted || adopteeForm.homeAddress.$dirty)}")
                 label(for="adoptee.address.homeAddress") Home Address *
-                input.form-control(name="adoptee.address.homeAddress", type="text", placeholder="Home address", ng-model="adoptee.address.homeAddress", required)
+                input.form-control(name="homeAddress", type="text", placeholder="Home address", ng-model="adoptee.address.homeAddress", required)
             .col-sm-3.col-md-4
               .form-group
                 label(for="adoptee.address.city") City

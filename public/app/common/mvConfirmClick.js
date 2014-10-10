@@ -12,8 +12,17 @@ angular.module('app').
             confirmIconClass = attrs.confirmIconClass,
             resetTrigger = attrs.confirmResetTrigger || 'mouseout',
             confirmPopout = attrs.confirmPopout,
+            popoutId = 'p' + new Date().getTime(),
             timer;
         
+        var popoutHtml = 
+          '<div class="text-center">' +
+            '<div class="btn-group btn-group-sm">' +
+              '<button class="btn btn-danger"><i class="glyphicon glyphicon-ok"></i> Yes</button>' +
+              '<button class="btn btn-default">Cancel</button>' +
+            '</div>'
+          '</div>';
+
         scope.clicked = false;
         scope.delayed = false;
         
@@ -28,6 +37,22 @@ angular.module('app').
 
           scope.clicked = false;
           scope.delayed = false;
+        }
+
+        function popoutHandlers(onoff) {
+            var popoutEl = element.next('.popover');
+
+            popoutEl[onoff]('click', function(e) {
+              e.stopPropagation();
+            });
+
+            popoutEl.find('.btn-danger')[onoff]('click', function() {
+              scope.$parent.$apply(callback);
+            });
+
+            popoutEl.find('.btn-default')[onoff]('click', function() {
+              element.popover('hide');
+            });
         }
         
         if(resetTrigger === 'mouseout') {
@@ -47,15 +72,27 @@ angular.module('app').
         
         if(confirmPopout) {
           element.popover({
-            content: 'Click again to confirm.',
-            placement: 'left',
-            title: 'Confirm delete',
+            content: popoutHtml,
+            html: true,
+            placement: 'bottom',
             trigger: 'focus'
+          });
+
+          element.on('shown.bs.popover', function() {
+            popoutHandlers('on');
+          });
+
+          element.on('hide.bs.popover', function() {
+            popoutHandlers('off');
           });
         }
 
         element.on('click', function(e) {
           e.stopPropagation();
+
+          if(confirmPopout) {
+            return;
+          }
           
           if(scope.clicked && scope.delayed) {
             scope.$parent.$apply(callback);
