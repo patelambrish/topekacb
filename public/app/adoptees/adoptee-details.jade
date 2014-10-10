@@ -1,21 +1,26 @@
 .container
   .page-header
     h1 {{adopteeTitle || adoptee.firstName + ' ' + adoptee.lastName}}&nbsp;
-      .badge {{adopteeTitle || adoptee.site + '-' + adoptee.applicationNumber}}
-  form(name="adopteeForm", ng-show="(adopteeTitle && isCurrentSiteSet) || adoptee.site")
+      small.pull-right(ng-switch="adoptee.site")
+        img(src="/assets/image/antioch.png", ng-switch-when="A")
+        img(src="/assets/image/letshelp.png", ng-switch-when="L")
+        | &nbsp;{{sites[adoptee.site]}}
+      span.badge.pull-right(ng-show="adoptee.applicationNumber") {{adoptee.site + '-' + adoptee.applicationNumber}}
+
+  form(name="adopteeForm")
     .panel.panel-default
       .panel-body
-        fieldset
+        fieldset(ng-disabled="siteUndefined()")
           legend Adoptee Information
           .row
             .col-sm-3
               .form-group
                 label(for="lastName") Last Name *
-                input.form-control(name="adoptee.lastName", type="text", placeholder="Last Name !!Required!!", ng-model="adoptee.lastName", required)
+                input.form-control(name="adoptee.lastName", type="text", placeholder="Last Name", ng-model="adoptee.lastName", required)
             .col-sm-3
               .form-group
                 label(for="firstName") First Name *
-                input.form-control(name="adoptee.firstName", type="text", placeholder="First Name !!Required!!", ng-model="adoptee.firstName", required)
+                input.form-control(name="adoptee.firstName", type="text", placeholder="First Name", ng-model="adoptee.firstName", required)
             .col-sm-1
               .form-group
                 label(for="middleInitial") MI
@@ -27,19 +32,19 @@
             .col-sm-2
               .form-group
                 label(for="ssnLastFour") SSN (last 4)
-                input.form-control(name="adoptee.ssnLastFour", type="number", placeholder="SSN (Last 4 digits)", ng-model="adoptee.ssnLastFour")
+                input.form-control(name="adoptee.ssnLastFour", type="number", placeholder="SSN (last 4)", ng-model="adoptee.ssnLastFour")
             .col-sm-1
               .form-group
                 label(for="gender") Gender
                 select.form-control(name="adoptee.gender", ng-model="adoptee.gender" ng-options="g | limitTo:1 for g in genders")
-                  option(disabled, value="") Sex
-        fieldset
+                  option(disabled, value="") &ndash;
+        fieldset(ng-disabled="siteUndefined()")
           legend Address
           .row
             .col-sm-4
               .form-group
                 label(for="adoptee.address.homeAddress") Home Address *
-                input.form-control(name="adoptee.address.homeAddress", type="text", placeholder="Home address !!Required!!", ng-model="adoptee.address.homeAddress", required)
+                input.form-control(name="adoptee.address.homeAddress", type="text", placeholder="Home address", ng-model="adoptee.address.homeAddress", required)
             .col-sm-3.col-md-4
               .form-group
                 label(for="adoptee.address.city") City
@@ -48,12 +53,12 @@
               .form-group
                 label(for="adoptee.address.city") State
                 select.form-control(name="state", tabindex="-1", ng-model="adoptee.address.state")
-                  option(disabled value="KS")
+                  option(disabled value="KS") KS
             .col-sm-3.col-md-2
               .form-group
                 label(for="adoptee.address.zip") Zip Code
                 input.form-control(name="adoptee.address.zip", type="text", placeholder="Zip code", ng-model="adoptee.address.zip")
-        fieldset
+        fieldset(ng-disabled="siteUndefined()")
           legend Phone
           .row
             .col-sm-4
@@ -86,13 +91,13 @@
               .form-group
                 label(for="adoptee.otherPhone.name") Other Phone Contact
                 input.form-control(name="adoptee.otherPhone.name", type="phone", placeholder="Other contact", ng-model="adoptee.otherPhone.name")
-        fieldset
+        fieldset(ng-disabled="siteUndefined()")
           legend Email
           .row
             .col-sm-6
               .form-group
                 input.form-control(name="adoptee.email", type="email", placeholder="Email", ng-model="adoptee.email")
-        fieldset
+        fieldset(ng-disabled="siteUndefined()")
           legend Additional Information
           .row
             .col-sm-6
@@ -118,7 +123,7 @@
             .col-sm-6(ng-hide="adoptee.language != 'Spanish/English spoken by'")
               .form-group
                 input.form-control(name="adoptee.englishSpeaker", type="text", placeholder="English speaker", ng-model="adoptee.englishSpeaker")
-        fieldset
+        fieldset(ng-disabled="siteUndefined()")
           legend Household Characteristics
           .row
             .col-sm-7
@@ -149,7 +154,7 @@
               .form-group
                 label Internal Comment
                 textarea.form-control(name="adoptee.criteria.internalComment", type="textarea", rows="4", ng-model="adoptee.criteria.internalComment")
-        fieldset
+        fieldset(ng-disabled="siteUndefined()")
           legend Household Members
           .row(ng-repeat="householdMember in adoptee.householdMembers")
             hr(ng-if="!$first")
@@ -193,7 +198,7 @@
             .col-sm-1
               .form-group
                 a.btn.btn-link(href="", tabindex="-1", ng-click="deleteHouseholdMember(householdMember)")
-                  i.glyphicon.glyphicon-remove
+                  i.text-danger.glyphicon.glyphicon-remove
           .row
             .col-sm-12
               .form-group
@@ -202,7 +207,7 @@
                   | &nbsp;Add new
       .panel-footer
         .btn-toolbar.text-right
-          button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update(true)") Save and New
-          button.btn.btn-primary(ng-click="(adopteeForm.$invalid)?submitted = true:update(false)") Save
+          button.btn.btn-primary(ng-click="update(adopteeForm, true)") Save and New
+          button.btn.btn-primary(ng-click="update(adopteeForm, false)") Save
           button.btn.btn-default(ng-click="cancel()") Cancel
-div(mv-site-directive)
+div(mv-site-directive, data-onsave="onsitechange(site)", ng-if="siteUndefined()")

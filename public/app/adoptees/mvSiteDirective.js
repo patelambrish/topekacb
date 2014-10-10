@@ -1,22 +1,28 @@
-angular.module('app').directive('mvSiteDirective',
-    function(mvSite) {
-        return {
-            templateUrl : '/partials/adoptees/adoptee-sites',
-            link: function(scope, element) {
-                scope.isCurrentSiteSet = mvSite.isCurrentSiteSet();
-                scope.getCurrentSite = function(){
-                    return mvSite.getCurrentSite();
-                };
+angular.module('app')
+  .directive('mvSiteDirective', function($document, cbSites, cbCurrentSite) {
+    return {
+      replace: true,
+      scope: {
+        onsave: '&'
+      },
+      templateUrl : '/partials/adoptees/adoptee-sites',
+      link: function(scope, element) {
+        scope.sites = cbSites;
+        scope.selected = {};
 
-                var dialog = element.find('.modal');
-                if ((!scope.isCurrentSiteSet) && scope.adopteeTitle) {
-                    dialog.modal('show');
-                };
+        element.modal();
 
-                scope.closeModal = function(site) {
-                    mvSite.setSite(site);
-                    dialog.modal('hide');
-                };
-            }
+        scope.save = function(site) {
+          cbCurrentSite.set(site);
+          (scope.onsave || angular.noop)(scope.selected);
         };
-    });
+
+        element.on('$destroy', function() {
+          // remove orphaned modal backdrops
+          angular.element($document[0].body).
+            find('.modal-backdrop').
+            remove();
+        });
+      }
+    };
+  });

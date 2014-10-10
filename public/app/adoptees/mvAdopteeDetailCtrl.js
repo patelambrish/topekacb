@@ -1,11 +1,11 @@
 angular.module('app').
-  controller('mvAdopteeDetailCtrl', function($scope, $routeParams, $location, $filter, mvAdoptee, mvAdopteeApplicationCounter, mvNotifier, common) {
+  controller('mvAdopteeDetailCtrl', function($scope, $routeParams, $location, $filter, cbSites, cbCurrentSite, mvAdoptee, mvAdopteeApplicationCounter, mvNotifier, common) {
+    $scope.sites = cbSites;
     $scope.genders = ['Male','Female'];
     $scope.clothingSizeTypes = ['A', 'J', 'C'];
     $scope.shoeSizeTypes = ['A', 'C'];
     $scope.languages = ['Spanish','Spanish/English spoken by'];
     $scope.adopteeTitle = '';
-    $scope.site = '';
     $scope.specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'];
     $scope.householdTypes = ['Single',
         'Adult Only',
@@ -16,10 +16,22 @@ angular.module('app').
         'Grandparents (only) with Children'];
     $scope.setNewAdoptee = function(){
         $scope.adoptee = new mvAdoptee({
+            site: cbCurrentSite.get(),
             householdMembers: [],
-            address: {city: 'Topeka'}
+            address: {
+              city: 'Topeka',
+              state: 'KS'
+            }
         });
         $scope.adopteeTitle = 'New Adoptee';
+    };
+
+    $scope.siteUndefined = function() {
+      return $scope.adoptee && !$scope.adoptee.site;      
+    };
+
+    $scope.onsitechange = function(site) {
+      $scope.adoptee.site = site;
     };
 
     if($routeParams.id !== '0') {
@@ -37,7 +49,11 @@ angular.module('app').
         $scope.setNewAdoptee();
     }
 
-    $scope.update = function(newFlag){
+    $scope.update = function(form, newFlag){
+      if(form.$invalid) {
+        $scope.submitted = true;
+        return;
+      }
       $scope.newFlag = newFlag;
       var adoptee = $scope.adoptee;
       if (adoptee.applicationNumber)
@@ -50,7 +66,6 @@ angular.module('app').
               }
               else {
                   adoptee.applicationNumber = retVal.seq;
-                  adoptee.site = $scope.getCurrentSite();
                   $scope.adopteeUpdate();
 
               }
@@ -74,10 +89,6 @@ angular.module('app').
         {
             adoptee.householdMembers.splice(i,1);
         }
-    };
-
-    $scope.saveSite = function(site){
-        $scope.closeModal(site);
     };
 
     $scope.adopteeUpdate = function(){
