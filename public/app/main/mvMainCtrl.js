@@ -14,7 +14,7 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService,ChartSe
 	}
 	$scope.chart = {
 		"type" : "ColumnChart",
-		/*"data" : {
+		"data" : {
 			"cols" : [{
 				"id" : "month",
 				"label" : "",
@@ -32,15 +32,6 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService,ChartSe
 				"label" : "Waiting Adoption",
 				"type" : "number",
 				"p" : {}
-			}],
-			"rows" : [{
-				"c" : [{
-					"v" : ""
-				}, {
-					"v" : 2500
-				}, {
-					"v" : 1500
-				}]
 			}]
 		},
 		"options" : {
@@ -60,7 +51,7 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService,ChartSe
 			"hAxis" : {
 				"title" : ""
 			}
-		},*/
+		},
 		"formatters" : {
 			number : [{
 				columnNum : 1,
@@ -117,26 +108,7 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService,ChartSe
 	 	});
 
 	 	console.log("Matched :"+matched+"  Not Matched:"+notmatched);
-	 	 $scope.chart.data = {
-			"cols" : [{
-				"id" : "month",
-				"label" : "",
-				"type" : "string",
-				"color" : 'red',
-				"p" : {}
-			}, {
-				"id" : "adopted",
-				"label" : "Adopted",
-				"type" : "number",
-				"color" : 'green',
-				"p" : {}
-			}, {
-				"id" : "not-adopted",
-				"label" : "Waiting Adoption",
-				"type" : "number",
-				"p" : {}
-			}],
-			"rows" : [{
+	 	 $scope.chart.data.rows = [{
 				"c" : [{
 					"v" : ""
 				}, {
@@ -144,8 +116,8 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService,ChartSe
 				}, {
 					"v" : notmatched
 				}]
-			}]
-		};
+			}];
+		
 	 });
 
 }]);
