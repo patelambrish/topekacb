@@ -17,6 +17,19 @@ exports.getAdopteeById = function(req, res) {
     })
 };
 
+exports.getAggregateHouseholdTypes = function(req, res){
+  Adoptee.aggregate({$group : { _id: "$householdType", count: {$sum: 1 }}}).exec(function(err,collection){
+        res.send(collection);
+    })     
+}
+
+exports.getAggregateAdoptedCounts = function(req, res){
+  Adoptee.aggregate({$group : { _id: "$status", count: {$sum: 1 }}}).exec(function(err,collection){
+        res.send(collection);
+    })     
+}
+
+
 exports.updateAdoptee = function(req, res){
       var update = req.body,
           id = update._id,

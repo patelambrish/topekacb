@@ -19,7 +19,8 @@ module.exports = function(app) {
   app.get('/api/adoptees/:id', auth.requiresRole(['observer','user','manager']), adoptees.getAdopteeById);
   app.put('/api/adoptees', auth.requiresRole(['user','manager']), adoptees.updateAdoptee);
   app.del('/api/adoptees/:id', auth.requiresRole(['manager']), adoptees.deleteAdoptee);
-
+  app.get('/api/chartdata', adoptees.getAggregateHouseholdTypes);
+  app.get('/api/chartdata/bar', adoptees.getAggregateAdoptedCounts);
 
   app.get('/api/adopters', auth.requiresRole(['observer','user','manager']), adopters.getAdopters);
   app.get('/api/adopters/:id', auth.requiresRole(['observer','user','manager']), adopters.getAdopterById);

@@ -1,5 +1,5 @@
-angular.module('app').controller('mvMainCtrl', ['$scope', 'mvNotifier', 'mvSharedContext', 'mvIdentity', 'MessageService',
-function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService) {
+angular.module('app').controller('mvMainCtrl', ['$scope', 'mvNotifier', 'mvSharedContext', 'mvIdentity', 'MessageService','ChartService', 'BarChartService',
+function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService,ChartService,BarChartService) {
 	$scope.identity = mvIdentity;
 	$scope.message = MessageService.get({type:'HomePageMessage'});
 	$scope.updateMessage = function() {
@@ -14,7 +14,7 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService) {
 	}
 	$scope.chart = {
 		"type" : "ColumnChart",
-		"data" : {
+		/*"data" : {
 			"cols" : [{
 				"id" : "month",
 				"label" : "",
@@ -60,7 +60,7 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService) {
 			"hAxis" : {
 				"title" : ""
 			}
-		},
+		},*/
 		"formatters" : {
 			number : [{
 				columnNum : 1,
@@ -74,7 +74,6 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService) {
 	};
 	$scope.household = {
 		"type" : "PieChart",
-		"data" : [["Household Types", "Count"], ["Children under 12", 1000], ["Children under 18", 2000], ["Seniors", 2000]],
 		"options" : {
 			title : 'Households',
 			"displayExactValues" : true,
@@ -91,5 +90,62 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService) {
 			}]
 		},
 		"displayed" : true
-	}
+	};
+
+	 ChartService.get().$promise.then(function(data){
+	 	var chartArray = [];
+	 	var chartItem = ["Household Types", "Count"];
+	 	chartArray.push(chartItem);
+	 	angular.forEach(data,function(item){
+	 		chartItem = [item._id,item.count];
+	 		chartArray.push(chartItem);
+	 	});
+
+	  //console.log(chartArray);
+	  $scope.household.data = chartArray;
+	 });
+
+	 BarChartService.get().$promise.then(function(data){
+	 	var matched = 0;
+	 	var notmatched = 0;
+	 	angular.forEach(data,function(item){
+	 		if(item._id == "Matched"){
+	 			matched = item.count;
+	 		}else{
+	 			notmatched = notmatched + item.count;
+	 		}
+	 	});
+
+	 	console.log("Matched :"+matched+"  Not Matched:"+notmatched);
+	 	 $scope.chart.data = {
+			"cols" : [{
+				"id" : "month",
+				"label" : "",
+				"type" : "string",
+				"color" : 'red',
+				"p" : {}
+			}, {
+				"id" : "adopted",
+				"label" : "Adopted",
+				"type" : "number",
+				"color" : 'green',
+				"p" : {}
+			}, {
+				"id" : "not-adopted",
+				"label" : "Waiting Adoption",
+				"type" : "number",
+				"p" : {}
+			}],
+			"rows" : [{
+				"c" : [{
+					"v" : ""
+				}, {
+					"v" : matched
+				}, {
+					"v" : notmatched
+				}]
+			}]
+		};
+	 });
+
 }]);
