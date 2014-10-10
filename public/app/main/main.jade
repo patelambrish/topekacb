@@ -1,33 +1,76 @@
 .container
   .jumbotron
+    h1 Shawnee County Christmas Bureau
     .row
-      .col-lg-10
-        h2 Shwanee County Christmas Bureau
-        br
-        br
-    .row
-      .col-md-4
-        img(src="/assets/image/uwlogo-lg.gif")
-      .col-md-4
-        //img(src="/assets/image/bar-chart.jpg")
+      .col-sm-2.hidden-xs
+        img.img-responsive(src="/assets/image/uw-logo.png")
+      .col-sm-4
         div(google-chart, chart="chart")
-      .col-md-4
-        //img(src="/assets/image/pie-chart.jpg")
+      .col-sm-4
         div(google-chart, chart="household")
-    .row
-      .col-md-4
-      .col-lg-8
-         p Counts last updated September 21, 2014 12:01 pm
-    .row
-      .col-md-12        
-        div(ta-bind data-ng-model="message.value" data-ng-if="message.value.length")
-        br        
-        div.panel.panel-default(data-ng-if="identity.isAuthorized('admin')")
-          div.panel-heading
-            h4.panel-title
-              a(href="" data-toggle="collapse" data-target="#editMessage") Update Message
-          div.panel-collapse.collapse(id="editMessage")
-            div.panel-body
-              div(text-angular data-ng-model="message.value")        
-              div.pull-right(data-ng-if="identity.isAuthorized('admin')")
-                button.btn.btn-primary(data-ng-click="updateMessage()") Save Changes
+      .col-sm-2.hidden-xs
+        img.img-responsive(src="/assets/image/cb-logo-green.png")
+  div(ta-bind ng-model="message.value" ng-if="message.value.length")
+  p.lead.text-center
+    | Interested in helping a local family during the holidays this year?
+    br
+    | Go to&nbsp;
+    a(href="//www.unitedwaytopeka.org/cb", target="_blank") www.unitedwaytopeka.org/cb
+    | &nbsp;to sign up to adopt a family.
+  p.lead.text-center Intake for eligible families is October 31 – November 8.
+  .row
+    .col-sm-3.col-sm-offset-2
+      a(href="//www.antiochfamilylifecenter.org/", target="_blank") Antioch Family Life Center
+      br
+      | 1921 SE Indiana Ave
+      br
+      | Topeka, KS 66607
+      table.table.table-condensed
+        thead
+          tr
+            th(colspan="2") Open Times
+        tbody
+          tr
+            td Oct 31
+            td 9:00 am – 5:00 pm
+          tr
+            td Nov 1
+            td 9:00 am – 3:00 pm
+          tr
+            td Nov 3 – 7
+            td 9:00 am – 1:00 pm
+          tr
+            td Nov 8
+            td 9:00 am – 3:00 pm
+    .col-sm-3.col-sm-offset-2
+      a(href="//letshelpinc.com/", target="_blank") Let's Help
+      br
+      | 200 S Kansas Ave
+      br
+      | Topeka, KS 66603
+      table.table.table-condensed
+        thead
+          tr
+            th(colspan="2") Open Times
+        tbody
+          tr
+            td Oct 31
+            td 3:00 pm – 7:00 pm
+          tr
+            td Nov 1
+            td 9:00 am – 3:00 pm
+          tr
+            td Nov 3 – 7
+            td 3:00 pm – 7:00 pm
+          tr
+            td Nov 8
+            td 9:00 am – 3:00 pm
+  .panel.panel-default(ng-if="identity.isAuthorized('admin')")
+    .panel-heading
+      h4.panel-title
+        a(href="" data-toggle="collapse" data-target="#editMessage") Update Message
+    .panel-collapse.collapse(id="editMessage")
+      .panel-body
+        p(text-angular ng-model="message.value")
+        .btn-toolbar.pull-right
+          button.btn.btn-primary(ng-click="updateMessage()") Save Changes
