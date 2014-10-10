@@ -1,18 +1,6 @@
-angular.module('app').controller('mvMainCtrl', ['$scope', 'mvNotifier', 'mvSharedContext', 'mvIdentity', 'MessageService','ChartService', 'BarChartService',
-function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService,ChartService,BarChartService) {
-	$scope.identity = mvIdentity;
-	$scope.message = MessageService.get({type:'HomePageMessage'});
-	$scope.updateMessage = function() {
-		$scope.message.$update().then(function(data){
-			$scope.message = data;
-			mvNotifier.notify('Message updated successfully!');
-		});
-	};
-	if (mvSharedContext.message()) {
-		mvNotifier.notify(mvSharedContext.message());
-		mvSharedContext.clearContext();
-	}
-	$scope.chart = {
+angular.module('app').controller('mvMainCtrl', ['$scope', 'mvNotifier', 'mvSharedContext', 'mvIdentity', 'MessageService', 'ChartService', 'BarChartService',
+function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService, ChartService, BarChartService) {
+	var barChart = {
 		"type" : "ColumnChart",
 		"data" : {
 			"cols" : [{
@@ -32,7 +20,8 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService,ChartSe
 				"label" : "Waiting Adoption",
 				"type" : "number",
 				"p" : {}
-			}]
+			}],
+			rows : []
 		},
 		"options" : {
 			"title" : "Adoptions",
@@ -62,9 +51,9 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService,ChartSe
 			}]
 		},
 		"displayed" : true
-	};
-	$scope.household = {
+	}, pieChart = {
 		"type" : "PieChart",
+		data : [],
 		"options" : {
 			title : 'Households',
 			"displayExactValues" : true,
@@ -83,41 +72,55 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService,ChartSe
 		"displayed" : true
 	};
 
-	 ChartService.get().$promise.then(function(data){
-	 	var chartArray = [];
-	 	var chartItem = ["Household Types", "Count"];
-	 	chartArray.push(chartItem);
-	 	angular.forEach(data,function(item){
-	 		chartItem = [item._id,item.count];
-	 		chartArray.push(chartItem);
-	 	});
+	$scope.identity = mvIdentity;
+	$scope.message = MessageService.get({
+		type : 'HomePageMessage'
+	});
+	$scope.updateMessage = function() {
+		$scope.message.$update().then(function(data) {
+			$scope.message = data;
+			mvNotifier.notify('Message updated successfully!');
+		});
+	};
+	if (mvSharedContext.message()) {
+		mvNotifier.notify(mvSharedContext.message());
+		mvSharedContext.clearContext();
+	}
 
-	  //console.log(chartArray);
-	  $scope.household.data = chartArray;
-	 });
+	ChartService.get().$promise.then(function(data) {
+		var chartArray = [], chartItem = ["Household Types", "Count"];
+		chartArray.push(chartItem);
+		angular.forEach(data, function(item) {
+			chartItem = [item._id, item.count];
+			chartArray.push(chartItem);
+		});
 
-	 BarChartService.get().$promise.then(function(data){
-	 	var matched = 0;
-	 	var notmatched = 0;
-	 	angular.forEach(data,function(item){
-	 		if(item._id == "Matched"){
-	 			matched = item.count;
-	 		}else{
-	 			notmatched = notmatched + item.count;
-	 		}
-	 	});
+		pieChart.data = chartArray;
+		$scope.householdChart = pieChart;
+	});
 
-	 	console.log("Matched :"+matched+"  Not Matched:"+notmatched);
-	 	 $scope.chart.data.rows = [{
-				"c" : [{
-					"v" : ""
-				}, {
-					"v" : matched
-				}, {
-					"v" : notmatched
-				}]
-			}];
-		
-	 });
+	BarChartService.get().$promise.then(function(data) {
+		var matched = 0, notmatched = 0;
+		angular.forEach(data, function(item) {
+			if (item._id == "Matched") {
+				matched = item.count;
+			} else {
+				notmatched = notmatched + item.count;
+			}
+		});
+
+		//console.log("Matched :"+matched+"  Not Matched:"+notmatched);
+		barChart.data.rows = [{
+			"c" : [{
+				"v" : ""
+			}, {
+				"v" : matched
+			}, {
+				"v" : notmatched
+			}]
+		}];
+		$scope.adoptionChart = barChart;
+
+	});
 
 }]);

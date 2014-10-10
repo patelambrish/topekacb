@@ -5,16 +5,16 @@
       .col-sm-2.hidden-xs
         img.img-responsive(src="/assets/image/uw-logo.png")
       .col-sm-4
-        div(google-chart, chart="chart")
+        div(google-chart, chart="adoptionChart")
       .col-sm-4
-        div(google-chart, chart="household")
+        div(google-chart, chart="householdChart")
       .col-sm-2.hidden-xs
         img.img-responsive(src="/assets/image/cb-logo-green.png")
   div(ta-bind ng-model="message.value" ng-if="message.value.length")
   .panel.panel-default(ng-if="identity.isAuthorized('admin')")
     .panel-heading
       h4.panel-title
-        a(href="" data-toggle="collapse" data-target="#editMessage") Update Message
+        a(href="" data-toggle="collapse" data-target="#editMessage") Update Content
     .panel-collapse.collapse(id="editMessage")
       .panel-body
         p(text-angular ng-model="message.value")
