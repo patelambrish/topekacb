@@ -29,11 +29,11 @@
           th Create Date
           th(ng-if="permission.delete") &nbsp;
       tbody
-        tr(ng-repeat="adoptee in adoptees | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size", ng-click="select(adoptee)")
-          td {{adoptee.lastName}}, {{adoptee.firstName}}
-          td {{adoptee.status}}
-          td {{adoptee.site + '-' + adoptee.applicationNumber}}
-          td
+        tr(ng-repeat="adoptee in adoptees | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size")
+          td(ng-click="select(adoptee)") {{adoptee.lastName}}, {{adoptee.firstName}}
+          td(ng-click="select(adoptee)") {{adoptee.status}}
+          td(ng-click="select(adoptee)") {{adoptee.site + '-' + adoptee.applicationNumber}}
+          td(ng-click="select(adoptee)")
             time {{adoptee.createDate | date}}&nbsp;
             | by {{adoptee._createUser | fullName}}
             p.small.text-muted(ng-if="adoptee.updateDate") Modified:&nbsp;
