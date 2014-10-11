@@ -1,18 +1,6 @@
-angular.module('app').controller('mvMainCtrl', ['$scope', 'mvNotifier', 'mvSharedContext', 'mvIdentity', 'MessageService',
-function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService) {
-	$scope.identity = mvIdentity;
-	$scope.message = MessageService.get({type:'HomePageMessage'});
-	$scope.updateMessage = function() {
-		$scope.message.$update().then(function(data){
-			$scope.message = data;
-			mvNotifier.notify('Message updated successfully!');
-		});
-	};
-	if (mvSharedContext.message()) {
-		mvNotifier.notify(mvSharedContext.message());
-		mvSharedContext.clearContext();
-	}
-	$scope.chart = {
+angular.module('app').controller('mvMainCtrl', ['$scope', 'mvNotifier', 'mvSharedContext', 'mvIdentity', 'MessageService', 'ChartService', 'BarChartService',
+function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService, ChartService, BarChartService) {
+	var barChart = {
 		"type" : "ColumnChart",
 		"data" : {
 			"cols" : [{
@@ -33,15 +21,7 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService) {
 				"type" : "number",
 				"p" : {}
 			}],
-			"rows" : [{
-				"c" : [{
-					"v" : ""
-				}, {
-					"v" : 2500
-				}, {
-					"v" : 1500
-				}]
-			}]
+			rows : []
 		},
 		"options" : {
 			"title" : "Adoptions",
@@ -71,10 +51,9 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService) {
 			}]
 		},
 		"displayed" : true
-	};
-	$scope.household = {
+	}, pieChart = {
 		"type" : "PieChart",
-		"data" : [["Household Types", "Count"], ["Children under 12", 1000], ["Children under 18", 2000], ["Seniors", 2000]],
+		data : [],
 		"options" : {
 			title : 'Households',
 			"displayExactValues" : true,
@@ -91,5 +70,57 @@ function($scope, mvNotifier, mvSharedContext, mvIdentity, MessageService) {
 			}]
 		},
 		"displayed" : true
+	};
+
+	$scope.identity = mvIdentity;
+	$scope.message = MessageService.get({
+		type : 'HomePageMessage'
+	});
+	$scope.updateMessage = function() {
+		$scope.message.$update().then(function(data) {
+			$scope.message = data;
+			mvNotifier.notify('Message updated successfully!');
+		});
+	};
+	if (mvSharedContext.message()) {
+		mvNotifier.notify(mvSharedContext.message());
+		mvSharedContext.clearContext();
 	}
+
+	ChartService.get().$promise.then(function(data) {
+		var chartArray = [], chartItem = ["Household Types", "Count"];
+		chartArray.push(chartItem);
+		angular.forEach(data, function(item) {
+			chartItem = [item._id, item.count];
+			chartArray.push(chartItem);
+		});
+
+		pieChart.data = chartArray;
+		$scope.householdChart = pieChart;
+	});
+
+	BarChartService.get().$promise.then(function(data) {
+		var matched = 0, notmatched = 0;
+		angular.forEach(data, function(item) {
+			if (item._id == "Matched") {
+				matched = item.count;
+			} else {
+				notmatched = notmatched + item.count;
+			}
+		});
+
+		//console.log("Matched :"+matched+"  Not Matched:"+notmatched);
+		barChart.data.rows = [{
+			"c" : [{
+				"v" : ""
+			}, {
+				"v" : matched
+			}, {
+				"v" : notmatched
+			}]
+		}];
+		$scope.adoptionChart = barChart;
+
+	});
+
 }]);

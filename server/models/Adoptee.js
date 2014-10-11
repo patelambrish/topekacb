@@ -113,6 +113,10 @@ function createDefaultAdoptees() {
     });
 }
 
+function getAggregateHouseHolds(){
+  var Adoptee = mongoose.model('Adoptee');
+}
+
 function generateAdoptees(count) {
   var User = mongoose.model('User'),
       Adoptee = mongoose.model('Adoptee');
