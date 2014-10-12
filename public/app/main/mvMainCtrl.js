@@ -60,13 +60,13 @@ function($scope, $http, mvNotifier, mvSharedContext, mvIdentity, MessageService,
     },
     options: {
       backgroundColor: 'transparent',
-      colors: ['#00529B','#3491D8','#A3D4F7', '#D6EEFF', '#FDB641', '#FCC976', '#FCE0B3','#FFEED6'],
+      colors: ['#00529B','#3491D8','#A3D4F7', '#BADFF9', '#FDB641', '#FCC976', '#FCE0B3','#FFEED6'],
       displayExactValues: true,
       fontName: 'Helvetica',
       is3D: true,
       chartArea: {
         height: '95%',
-        width: '100%'
+        width: '95%'
       }
     }
   };
