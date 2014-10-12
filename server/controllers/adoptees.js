@@ -17,10 +17,29 @@ exports.getAdopteeById = function(req, res) {
     })
 };
 
+exports.getAggregateSpecialNeeds = function(req, res) {
+  Adoptee.count({'criteria.specialNeeds': []}, function(err, count) {
+    Adoptee.
+      aggregate([{
+        $project: { 'criteria.specialNeeds': 1 }
+      }, {
+        $unwind: '$criteria.specialNeeds'
+      }, {
+        $group: {
+          _id: '$criteria.specialNeeds',
+          count: { $sum: 1 }
+        }
+      }]).
+      exec(function(err, collection) {
+        res.send([{_id: 'None', count: count}].concat(collection));
+      });
+  });
+};
+
 exports.getAggregateHouseholdTypes = function(req, res){
   Adoptee.aggregate({$group : { _id: "$criteria.householdType", count: {$sum: 1 }}}).exec(function(err,collection){
         res.send(collection);
-    })
+    });
 };
 
 exports.getAggregateAdoptedCounts = function(req, res){

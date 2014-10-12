@@ -1,26 +1,11 @@
 angular.module('app').
-  directive('confirmClick', function($timeout) {
+  directive('confirmClick', function($timeout, $parse, $document) {
     return {
       restrict: 'A',
-      scope: true,
       link: function(scope, element, attrs) {
-        var callback = attrs.confirmClick,
-            originalText = element.html(),
-            confirmText = attrs.confirmText,
-            confirmClass = attrs.confirmClass,
-            confirmIconClass = attrs.confirmIconClass,
-            resetTrigger = attrs.confirmResetTrigger || 'mouseout',
-            confirmPopout = attrs.confirmPopout,
-            timer;
+        var originalText = element.html(),
+            timer, tpl, stopPropagation;
         
-        var popoutHtml = 
-          '<div class="text-center">' +
-            '<div class="btn-group btn-group-sm">' +
-              '<button class="btn btn-danger"><i class="glyphicon glyphicon-ok"></i> Yes</button>' +
-              '<button class="btn btn-default">Cancel</button>' +
-            '</div>' +
-          '</div>';
-
         scope.clicked = false;
         scope.delayed = false;
         
@@ -28,32 +13,47 @@ angular.module('app').
           $timeout.cancel(timer);
 
           element.
-            removeClass(confirmClass).
+            removeClass(attrs.confirmClass).
             html(originalText).
             find('i').
-            removeClass(confirmIconClass);
+            removeClass(attrs.confirmIconClass);
 
           scope.clicked = false;
           scope.delayed = false;
         }
 
-        function popoutHandlers(onoff) {
-            var popoutEl = element.next('.popover');
+        /** 
+         * Credits:
+         * This function borrows heavily, if not fully, from this Angular.js Directive Tutorial by Joe Wegner.
+         * http://wegnerdesign.com/blog/angular-js-directive-tutorial-on-attribute-bootstrap-confirm-button/
+        */
+        function popoutHandlers() {
+          var pop = $document.find('#' + attrs.buttonId);
 
-            popoutEl[onoff]('click', function(e) {
+          pop.closest(".popover").on('click', function(e) {
+            if(stopPropagation) {
               e.stopPropagation();
-            });
-
-            popoutEl.find('.btn-danger')[onoff]('click', function() {
-              scope.$parent.$apply(callback);
-            });
-
-            popoutEl.find('.btn-default')[onoff]('click', function() {
-              element.popover('hide');
-            });
+            }
+          });
+          
+          pop.find('.btn-danger').on('click', function() {
+            stopPropagation = false;
+            $parse(attrs.confirmClick)(scope);
+          });
+          
+          pop.find('.btn-default').click(function() {
+            stopPropagation = false;
+            $document.off('click.' + attrs.buttonId);
+            element.popover('hide');
+          });
+          
+          $document.on('click.' + attrs.buttonId, ":not(.popover, .popover *)", function() {
+            $document.off('click.' + attrs.buttonId);
+            element.popover('hide');
+          });            
         }
-        
-        if(resetTrigger === 'mouseout') {
+
+        if(attrs.resetTrigger === 'mouseout') {
           element.on('mouseout', function() {
             if(scope.delayed && !timer) {
               timer = $timeout(reset, 1500);
@@ -68,32 +68,36 @@ angular.module('app').
           });
         }
         
-        if(confirmPopout) {
+        if(attrs.confirmPopout) {
+          attrs.buttonId = 'btn' + ~~(Math.random() * 1000000);
+          tpl = 
+            '<div class="text-center" id="' + attrs.buttonId + '">' +
+              '<div class="btn-group btn-group-sm">' +
+                '<button class="btn btn-danger"><i class="glyphicon glyphicon-ok"></i> Yes</button>' +
+                '<button class="btn btn-default">Cancel</button>' +
+              '</div>' +
+            '</div>';
+
           element.popover({
-            content: popoutHtml,
+            content: tpl,
             html: true,
-            placement: confirmPopout,
-            trigger: 'focus'
-          });
-
-          element.on('shown.bs.popover', function() {
-            popoutHandlers('on');
-          });
-
-          element.on('hide.bs.popover', function() {
-            popoutHandlers('off');
+            placement: attrs.confirmPopout,
+            trigger: 'manual'
           });
         }
 
         element.on('click', function(e) {
+          stopPropagation = true;
           e.stopPropagation();
 
-          if(confirmPopout) {
+          if(attrs.confirmPopout) {
+            element.popover('show');
+            popoutHandlers();
             return;
           }
           
           if(scope.clicked && scope.delayed) {
-            scope.$parent.$apply(callback);
+            $parse(attrs.confirmClick)(scope);
             reset();
           } else if(scope.clicked) {
               e.stopImmediatePropagation();
@@ -107,10 +111,10 @@ angular.module('app').
               element.
                 attr('disabled', 'disabled').
                 addClass('disabled').
-                addClass(confirmClass).
-                html(confirmText).
+                addClass(attrs.confirmClass).
+                html(attrs.confirmText).
                 find('i').
-                addClass(confirmIconClass);
+                addClass(attrs.confirmIconClass);
             });
   
             $timeout(function () {
@@ -121,7 +125,7 @@ angular.module('app').
                 removeClass('disabled');
             }, 300);
             
-            if(resetTrigger === 'timeout') {
+            if(attrs.resetTrigger === 'timeout') {
               timer = $timeout(reset, 1500);
             }
           }

@@ -30,9 +30,9 @@
                 label(for="birthDate") Birth Date
                 input.form-control(name="adoptee.birthDate", type="date", ng-model="adoptee.birthDate")
             .col-sm-2
-              .form-group
+              .form-group(ng-class="{'has-error': adopteeForm.ssnLastFour.$invalid && (submitted)}")
                 label(for="ssnLastFour") SSN (last 4)
-                input.form-control(name="adoptee.ssnLastFour", type="number", placeholder="SSN (last 4)", ng-model="adoptee.ssnLastFour")
+                input.form-control(name="ssnLastFour", type="text", placeholder="SSN (last 4)", title="Last 4 digits of SSN", pattern="[0-9]{4}", ng-pattern="/[0-9]{4}/", ng-model="adoptee.ssnLastFour")
             .col-sm-1
               .form-group
                 label(for="gender") Gender
@@ -156,15 +156,15 @@
                 textarea.form-control(name="adoptee.criteria.internalComment", type="textarea", rows="4", ng-model="adoptee.criteria.internalComment")
         fieldset(ng-disabled="siteUndefined()")
           legend Household Members
-          .row(ng-repeat="householdMember in adoptee.householdMembers")
+          .row(ng-form="memberForm", ng-repeat="householdMember in adoptee.householdMembers")
             hr(ng-if="!$first")
             .col-sm-4
               .form-group
                 input.form-control(name="householdhouseholdMember.name", type="text", placeholder="Name", ng-model="householdMember.name")
               .row
                 .col-sm-4
-                  .form-group
-                    input.form-control(name="householdMember.ssnLastFour", type="number", placeholder="SSN", ng-model="householdMember.ssnLastFour")
+                  .form-group(ng-class="{'has-error': memberForm.ssnLastFour.$invalid && (submitted)}")
+                    input.form-control(name="ssnLastFour", type="text", placeholder="SSN", title="Last 4 digits of SSN", pattern="[0-9]{4}", ng-pattern="/[0-9]{4}/", ng-model="householdMember.ssnLastFour")
                 .col-sm-4
                   .form-group
                     input.form-control(name="householdMember.age", type="number", min="0", max="110", placeholder="Age", ng-model="householdMember.age")
