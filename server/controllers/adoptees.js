@@ -64,3 +64,7 @@ exports.deleteAdoptee = function(req, res){
             return res.send(adoptee);
         });
 };
+
+exports.getEnums = function(req, res) {
+    res.send(Adoptee.getEnumValues());
+};

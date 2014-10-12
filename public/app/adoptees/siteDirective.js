@@ -1,5 +1,5 @@
 angular.module('app')
-  .directive('mvSiteDirective', function($document, cbSites, cbCurrentSite) {
+  .directive('siteDirective', function($document, cbSites, cbCurrentSite) {
     return {
       replace: true,
       scope: {

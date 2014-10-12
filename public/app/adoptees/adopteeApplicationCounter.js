@@ -1,4 +1,4 @@
-angular.module('app').factory('mvAdopteeApplicationCounter', function($resource, $q) {
+angular.module('app').factory('adopteeApplicationCounter', function($resource, $q) {
   var AdopteeApplicationCounterResource = $resource('/api/adopteeapplicationcounter', {}, {
     getNextSequence: {method:'Get', isArray:false}
   });

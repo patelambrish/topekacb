@@ -1,21 +1,10 @@
 angular.module('app').
-  controller('mvAdopteeDetailCtrl', function($scope, $routeParams, $location, $filter, cbSites, cbCurrentSite, mvAdoptee, mvAdopteeApplicationCounter, mvNotifier, common) {
+  controller('adopteeDetailCtrl', function($scope, $routeParams, $location, $filter, cbSites, cbCurrentSite, adoptee, adopteeApplicationCounter, mvNotifier, common) {
     $scope.sites = cbSites;
-    $scope.genders = ['Male','Female'];
-    $scope.clothingSizeTypes = ['A', 'J', 'C'];
-    $scope.shoeSizeTypes = ['A', 'C'];
-    $scope.languages = ['Spanish','Spanish/English spoken by'];
+    $scope.enums = adoptee.enums({ _id: $routeParams.id });
     $scope.adopteeTitle = '';
-    $scope.specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'];
-    $scope.householdTypes = ['Single',
-        'Adult Only',
-        'Single Mom with Children',
-        'Single Dad with Children',
-        'Married Couple with Children',
-        'Adult with Children',
-        'Grandparents (only) with Children'];
     $scope.setNewAdoptee = function(){
-        $scope.adoptee = new mvAdoptee({
+        $scope.adoptee = new adoptee({
             site: cbCurrentSite.get(),
             householdMembers: [],
             address: {
@@ -35,7 +24,7 @@ angular.module('app').
     };
 
     if($routeParams.id !== '0') {
-        mvAdoptee.get({ _id: $routeParams.id }).$promise.then(function(retVal){
+        adoptee.get({ _id: $routeParams.id }).$promise.then(function(retVal){
           if (retVal.error){
             mvNotifier.notify(retVal.error);
           }
@@ -60,7 +49,7 @@ angular.module('app').
       {
             $scope.adopteeUpdate();
       } else {
-          mvAdopteeApplicationCounter.getNextSequence().$promise.then(function (retVal) {
+          adopteeApplicationCounter.getNextSequence().$promise.then(function (retVal) {
               if (retVal.error) {
                   mvNotifier.notify(retVal.error);
               }
@@ -92,7 +81,7 @@ angular.module('app').
     };
 
     $scope.adopteeUpdate = function(){
-        mvAdoptee.updateAdoptee($scope.adoptee).$promise.then(function (retVal) {
+        adoptee.updateAdoptee($scope.adoptee).$promise.then(function (retVal) {
             if (retVal.error) {
                 mvNotifier.notify(retVal.error);
             }
