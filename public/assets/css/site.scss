@@ -8,6 +8,9 @@ html {
 
 body {
   margin-bottom: 56px;
+  background-image: url("../image/santa-photo.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .content {
@@ -195,10 +198,4 @@ input[type=date] {
       @include rotate(-90deg);
     }
   }
-}
-
-body {
-  background-image: url("/assets/image/santa-photo.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
 }
