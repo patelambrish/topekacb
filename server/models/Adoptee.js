@@ -141,10 +141,17 @@ function generateAdoptees(count) {
           };
         },
         'child': function() {
+          var age = chance.age({
+              type: chance.pick(
+                ['child', 'teen', 'adult', 'senior'],
+                [8, 8, 2, 1]
+              )
+            });
+
           return {
             name: chance.first(),
             ssnLastFour: chance.ssn({ ssnFour: true }),
-            age: chance.age({type: 'child'}),
+            age: age,
             gender: chance.gender(),
             pantSizeType: chance.pick(clothingSizeTypes, 1),
             pantSize: chance.integer({min: 7, max: 20}),
@@ -152,10 +159,10 @@ function generateAdoptees(count) {
             shirtSize: chance.integer({min: 7, max: 20}),
             shoeSizeType: chance.pick(shoeSizeTypes, 1),
             shoeSize: chance.integer({min: 0, max: 7}),
-            wishList: chance.pick([
+            wishList: age < 18 ? chance.pick([
               'Lego Duplo', 'Fur Real', 'Elmo', 'Elsa Doll',
               'Easy-Bake', 'Transformer', 'Simon', 'Scooter',
-              'R/C Crawler', 'Red Rider BB'], 3).join(', ')
+              'R/C Crawler', 'Red Rider BB'], 3).join(', ') : null
           };
         }
       });
