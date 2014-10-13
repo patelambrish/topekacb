@@ -67,19 +67,25 @@ function($scope, mvUser, $filter, mvAuth, mvNotifier) {
 	$scope.saveUser = function() {
 		setUserRoles();
 		if($scope.selectedUser._id) {
-			$scope.selectedUser.$update(function(savedUser, headers) {
+			mvUser.update($scope.selectedUser).$promise.then(function(savedUser, headers) {
 				$scope.selectedUser = savedUser;
 				mvNotifier.notify('User information updated successfully');
 				getUsers();
 				$scope.closeModal();
+			})['catch'](function(err) {
+				console.log(err.data.reason);
+				mvNotifier.notifyError(err.data.reason);
 			});
 		}
 		else {
-			$scope.selectedUser.$save($scope.selectedUser,function(savedUser, headers) {
+			mvUser.save($scope.selectedUser).$promise.then(function(savedUser, headers) {
 				$scope.selectedUser = savedUser;
 				mvNotifier.notify('User created successfully');
 				getUsers();
 				$scope.closeModal();
+			})['catch'](function(err){
+				console.log(err.data.reason);
+				mvNotifier.notifyError(err.data.reason);
 			});
 		}
 	};
