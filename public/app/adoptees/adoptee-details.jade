@@ -36,7 +36,7 @@
             .col-sm-1
               .form-group
                 label(for="gender") Gender
-                select.form-control(name="adoptee.gender", ng-model="adoptee.gender" ng-options="g | limitTo:1 for g in genders")
+                select.form-control(name="adoptee.gender", ng-model="adoptee.gender" ng-options="g | limitTo:1 for g in enums.gender")
                   option(disabled, value="") &ndash;
         fieldset(ng-disabled="siteUndefined()")
           legend Address
@@ -117,7 +117,7 @@
           .row
             .col-sm-6
               .form-group
-                select.form-control(name="adoptee.language", ng-model="adoptee.language", ng-options="l for l in languages")
+                select.form-control(name="adoptee.language", ng-model="adoptee.language", ng-options="l for l in enums.language")
                   option(disabled, value="") Language
                 p.help-block For non-English-speaking households
             .col-sm-6(ng-hide="adoptee.language != 'Spanish/English spoken by'")
@@ -129,14 +129,14 @@
             .col-sm-7
               .form-group
                 label Classification
-                .radio(ng-repeat="e in householdTypes")
+                .radio(ng-repeat="e in enums.household")
                   label
                     input(type="radio", ng-value="e", ng-model="adoptee.criteria.householdType")
                     | {{e}}
             .col-sm-5
               .form-group
                 label Special Needs
-                .checkbox(ng-repeat="e in specialNeedsEnum")
+                .checkbox(ng-repeat="e in enums.special")
                   label
                     input(type="checkbox", ng-value="e", ng-click="setFlags(adoptee.criteria.specialNeeds, e)", ng-checked="adoptee.criteria.specialNeeds.indexOf(e) > -1")
                     | {{e}}
@@ -210,4 +210,4 @@
           button.btn.btn-primary(ng-click="update(adopteeForm, true)") Save and New
           button.btn.btn-primary(ng-click="update(adopteeForm, false)") Save
           button.btn.btn-default(ng-click="cancel()") Cancel
-div(mv-site-directive, data-onsave="onsitechange(site)", ng-if="siteUndefined()")
+div(site-directive, data-onsave="onsitechange(site)", ng-if="siteUndefined()")

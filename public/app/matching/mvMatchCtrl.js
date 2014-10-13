@@ -1,6 +1,7 @@
 angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier',
 function($scope, $filter, mvNotifier) {
 	$scope.adopterSearchResults = [];
+    $scope.adopteeSearchresults = [];
 
 	$scope.applyPage = function(page, data, pageInfo) {
       pageInfo.current = page;
@@ -16,5 +17,14 @@ function($scope, $filter, mvNotifier) {
 		$scope.adopterPage.current = page;
 		$scope.searchAdopters();
 	};
+
+    $scope.$on('adopterSelected', function (event, result) {
+        $scope.searchAdoptees(result);
+    });
+
+    $scope.getAdopteePage = function(page) {
+        $scope.adopteePage.current = page;
+        $scope.searchAdoptees();
+    };
 
 }]);

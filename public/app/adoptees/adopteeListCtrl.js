@@ -24,8 +24,8 @@ angular.module('app').
       }
     };
   }).
-  controller('mvAdopteeListCtrl', function($scope, $filter, $location, mvAdoptee, mvIdentity, mvNotifier) {
-    var adoptees = mvAdoptee.query();
+  controller('adopteeListCtrl', function($scope, $filter, $location, adoptee, mvIdentity, mvNotifier) {
+    var adoptees = adoptee.query();
     $scope.permission = {
         delete: mvIdentity.isAuthorized('manager')
     };
@@ -58,7 +58,7 @@ angular.module('app').
     
     $scope.applyFilter = function(query) {
       adoptees.$promise.then(function() {
-        $scope.adoptees = $filter('filter')(adoptees, query);
+        $scope.adoptees = $filter('filter')(adoptees.data, query);
         $scope.applyPage(1);
       });
     };
@@ -75,7 +75,7 @@ angular.module('app').
     };
 
     $scope.delete = function(adoptee) {
-        mvAdoptee.delete({ _id: adoptee._id }, function() {
+        adoptee.delete({ _id: adoptee._id }, function() {
             mvNotifier.notify(adoptee.firstName + ' ' + adoptee.lastName + ' was deleted.');
             var index = $scope.adoptees.indexOf(adoptee);
             if (index !== -1){

@@ -97,6 +97,17 @@ var adopteeSchema = mongoose.Schema({
     modifyDate: {type: Date},
     _modifyUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
     });
+    adopteeSchema.static('getEnumValues', function() {
+        return {
+            household: householdTypes,
+            language: languages,
+            gender: genders,
+            clothingSizeType: clothingSizeTypes,
+            shoeSizeType: shoeSizeTypes,
+            special: specialNeedsEnum,
+            status: adopteeStates
+        };
+    });
 var Adoptee = mongoose.model('Adoptee', adopteeSchema);
 
 function createDefaultAdoptees() {

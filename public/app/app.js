@@ -31,11 +31,11 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
 	//})
 	.when('/adoptees', {
 		templateUrl : '/partials/adoptees/adoptee-list',
-		controller : 'mvAdopteeListCtrl',
+		controller : 'adopteeListCtrl',
 		resolve : routeRoleChecks.user
 	}).when('/adoptees/:id', {
 		templateUrl : '/partials/adoptees/adoptee-details',
-		controller : 'mvAdopteeDetailCtrl',
+		controller : 'adopteeDetailCtrl',
 		resolve : routeRoleChecks.user
 	}).when('/adopters', {
 		templateUrl : '/partials/adopters/adopter-list',
