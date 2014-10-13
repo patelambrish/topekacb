@@ -71,7 +71,7 @@ function(mvAdopter, $filter) {
 		templateUrl : '/partials/matching/directives/adopterSearch/adopterSearchResults',
 		restrict: 'A',
 		controller: ['$scope', function($scope) {
-            $scope.select = function(adopter){
+            $scope.selectAdopter = function(adopter){
                 $scope.$emit('adopterSelected', adopter.criteria);
             }
 		}]

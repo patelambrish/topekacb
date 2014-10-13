@@ -1,5 +1,4 @@
 .panel.panel-default(ng-class="{busy: busy()}")
-    .panel-heading.clearfix Adoptee Search Results
     table.table.table-hover
         thead
             tr
@@ -7,7 +6,7 @@
                 th Household Type
                 th Select
         tbody
-            tr(ng-repeat="adoptee in adopteeSearchResults.data" ng-click="select(adoptee)")
+            tr(ng-repeat="adoptee in adopteeSearchResults.data" ng-click="selectAdoptee(adoptee)")
                 td {{adoptee.lastName + ', ' + adoptee.firstName}}<span>,</span>
                 td {{adoptee.criteria.householdType}}
                 td

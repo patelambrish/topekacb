@@ -14,7 +14,6 @@ angular.module('app').directive('adopteeSearchResults', ['adoptee','$filter',
                 };
 
                 $scope.searchAdoptees = function(criteria) {
-                    console.log('criteria:' + criteria);
                     if (criteria){
                         criteria['status'] = "Not Matched";
                         adoptee.query({
@@ -29,6 +28,10 @@ angular.module('app').directive('adopteeSearchResults', ['adoptee','$filter',
                     }
                 }
                 $scope.getAdopteePage(1);
+
+                $scope.selectAdoptee = function(adoptee){
+                    $scope.$emit('adopteeSelected', adoptee);
+                }
             }]
         };
     }]);

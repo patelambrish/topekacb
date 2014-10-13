@@ -3,6 +3,8 @@ function($scope, $filter, mvNotifier) {
 	$scope.adopterSearchResults = [];
     $scope.adopteeSearchresults = [];
     $scope.criteria;
+    $scope.currentAdoptee;
+
 	$scope.applyPage = function(page, data, pageInfo) {
       pageInfo.current = page;
       if(data && data.totalCount) {
@@ -26,6 +28,10 @@ function($scope, $filter, mvNotifier) {
     $scope.getAdopteePage = function(page) {
         $scope.adopteePage.current = page;
         $scope.searchAdoptees($scope.criteria);
-    };
+    }
+
+    $scope.$on('adopteeSelected', function(event, result){
+        $scope.currentAdoptee = result;
+    });
 
 }]);

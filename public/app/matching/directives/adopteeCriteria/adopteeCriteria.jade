@@ -1,0 +1,25 @@
+.panel.panel-default(ng-class="{busy: busy()}", ng-show="currentAdoptee")
+    .panel-heading.clearfix {{currentAdoptee.lastName + ', ' + currentAdoptee.firstName}}
+        .panel-body
+            .row
+                .col-sm-7
+                    label Classification
+                    p {{currentAdoptee.criteria.householdType}}
+                .col-sm-5
+                    label Special Needs
+                    p(ng-repeat="specialNeed in currentAdoptee.criteria.specialNeeds")
+                        {{specialNeed}}
+            .row
+                .col-sm-12
+                    label Adoptee's Story
+                    p {{currentAdoptee.criteria.story}}
+            .row
+                .col-sm-6
+                    label Volunteer Comment
+                    p {{currentAdoptee.criteria.volunteerComment}}
+                .col-sm-6
+                    label Internal Comment
+                    p {{currentAdoptee.criteria.internalComment}}
+            .row
+                .col-sm-12
+                    label Household Members
