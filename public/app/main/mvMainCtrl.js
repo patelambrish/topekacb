@@ -1,8 +1,24 @@
-angular.module('app').controller('mvMainCtrl', ['$scope', '$http', 'mvNotifier', 'mvSharedContext', 'mvIdentity', 'MessageService', 'ChartService', 'BarChartService',
+angular.module('app').
+directive('autoSlide', function() {
+  /**
+   * the sole purpose of this directive is to initiate carousel animating starting at 
+   * page load. normally this can be achieved via the data-ride element attribute, but 
+   * the carousel markup is injected into the dom by angular and is not dom-resident
+   * at page load. because of this bootstrap doesn't get the message about page load.
+   * so in essence, bootstrap isn't bootstrapped.
+  */
+  return {
+    link: function(scope, element) {
+      scope.$evalAsync(function() {
+        element.carousel();
+      });
+    }
+  }
+}).
+controller('mvMainCtrl', ['$scope', '$http', 'mvNotifier', 'mvSharedContext', 'mvIdentity', 'MessageService', 'ChartService', 'BarChartService',
 function($scope, $http, mvNotifier, mvSharedContext, mvIdentity, MessageService, ChartService, BarChartService) {
   var barChart = {
     type: 'ColumnChart',
-    displayed: true,
     data: {
       cols: [{
         id: 'current',
@@ -37,21 +53,15 @@ function($scope, $http, mvNotifier, mvSharedContext, mvIdentity, MessageService,
       colors: ['#1EA942','#E23D28'],
       displayExactValues: true,
       fontName: 'Helvetica',
-      isStacked: 'true',
       legend: null,
+      isStacked: 'true',
       chartArea: {
-        height: '95%',
-        width: '80'
-      },
-      vAxis: {
-        gridlines: {
-          count: 6
-        }
+        width: '80',
+        height: '180'
       }
     }
   }, pieChart = {
     type: 'PieChart',
-    displayed: true,
     formatters: {
       number: [{
         columnNum: 1,
@@ -61,12 +71,9 @@ function($scope, $http, mvNotifier, mvSharedContext, mvIdentity, MessageService,
     options: {
       backgroundColor: 'transparent',
       colors: ['#00529B','#3491D8','#A3D4F7', '#BADFF9', '#FDB641', '#FCC976', '#FCE0B3','#FFEED6'],
-      displayExactValues: true,
       fontName: 'Helvetica',
-      is3D: true,
       chartArea: {
-        height: '95%',
-        width: '95%'
+        height: '180'
       }
     }
   };
@@ -89,28 +96,28 @@ function($scope, $http, mvNotifier, mvSharedContext, mvIdentity, MessageService,
   $http.get('/api/stats/specialNeeds').
     then(function(data) {
       var chartArray = [],
-          collection = data.data;
+          collection = data.data,
+          config = angular.copy(pieChart);
 
-      chartArray = collection.map(function(item) {
+      config.data = collection.map(function(item) {
         return [item._id, item.count];
       });
-      chartArray.unshift(['Special Needs', 'Households']);
+      config.data.unshift(['Special Needs', 'Households']);
 
-      pieChart.data = chartArray; console.log(chartArray);
-      $scope.householdChart = pieChart;
+      $scope.specialChart = config;
     });
 
-  // ChartService.get().$promise.then(function(data) {
-  //   var chartArray = [], chartItem = ["Household Types", "Count"];
-  //   chartArray.push(chartItem);
-  //   angular.forEach(data, function(item) {
-  //     chartItem = [item._id, item.count];
-  //     chartArray.push(chartItem);
-  //   });
+  ChartService.get().$promise.then(function(data) {
+    var chartArray = [], chartItem = ["Household Types", "Count"];
+    chartArray.push(chartItem);
+    angular.forEach(data, function(item) {
+      chartItem = [item._id, item.count];
+      chartArray.push(chartItem);
+    });
 
-  //   pieChart.data = chartArray;
-  //   $scope.householdChart = pieChart;
-  // });
+    pieChart.data = chartArray;
+    $scope.householdChart = pieChart;
+  });
 
   BarChartService.get().$promise.then(function(data) {
     var matched = 0, notmatched = 0;

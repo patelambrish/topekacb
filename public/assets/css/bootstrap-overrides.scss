@@ -78,3 +78,12 @@ h1 {
     }
   }
 }
+
+.carousel-control {
+  &.left {
+    background-image: none;
+  }
+  &.right {
+    background-image: none;
+  }
+}
