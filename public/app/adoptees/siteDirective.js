@@ -1,5 +1,5 @@
 angular.module('app')
-  .directive('siteDirective', function($document, cbSites, cbCurrentSite) {
+  .directive('siteDirective', function(cbSites, cbCurrentSite) {
     return {
       replace: true,
       scope: {
@@ -18,10 +18,7 @@ angular.module('app')
         };
 
         element.on('$destroy', function() {
-          // remove orphaned modal backdrops
-          angular.element($document[0].body).
-            find('.modal-backdrop').
-            remove();
+          element.modal('hide');
         });
       }
     };

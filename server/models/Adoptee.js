@@ -152,10 +152,17 @@ function generateAdoptees(count) {
           };
         },
         'child': function() {
+          var age = chance.age({
+              type: chance.pick(
+                ['child', 'teen', 'adult', 'senior'],
+                [8, 8, 2, 1]
+              )
+            });
+
           return {
             name: chance.first(),
             ssnLastFour: chance.ssn({ ssnFour: true }),
-            age: chance.age({type: 'child'}),
+            age: age,
             gender: chance.gender(),
             pantSizeType: chance.pick(clothingSizeTypes, 1),
             pantSize: chance.integer({min: 7, max: 20}),
@@ -163,13 +170,35 @@ function generateAdoptees(count) {
             shirtSize: chance.integer({min: 7, max: 20}),
             shoeSizeType: chance.pick(shoeSizeTypes, 1),
             shoeSize: chance.integer({min: 0, max: 7}),
-            wishList: chance.pick([
+            wishList: age < 18 ? chance.pick([
               'Lego Duplo', 'Fur Real', 'Elmo', 'Elsa Doll',
               'Easy-Bake', 'Transformer', 'Simon', 'Scooter',
-              'R/C Crawler', 'Red Rider BB'], 3).join(', ')
+              'R/C Crawler', 'Red Rider BB'], 3).join(', ') : null
           };
         }
       });
+
+      /**
+       * generate random sample of special needs. may return 0 - 4 unique special needs. 
+       * the likelihood of having a particular special need is based on US census stats. 
+       * the likelihood of having multiple special needs is totally arbitrary.
+       * US Census stats (% of total population):
+       *   20% Senior 60+, 8% Veterans, 4% Disabled, 1% Homebound
+      */
+      function sampleSpecialNeeds() {
+        var specPct = [20, 8, 4, 1],
+            combPct = [100, 50, 20, 10],
+            needs = [],
+            i, n, item;
+
+        for(i = 0, n = 0; item = specialNeedsEnum[i]; i++) {
+          if(chance.bool({likelihood: specPct[i]}) && chance.bool({likelihood: combPct[n]})) {
+            n = needs.push(item);
+          }
+        }
+
+        return needs;
+      }
 
       for(i = 1; i <= count; i++) {
         status = chance.pick(adopteeStates);
@@ -216,7 +245,7 @@ function generateAdoptees(count) {
               volunteerComment: chance.bool() && chance.sentence(2) || undefined,
               internalComment: chance.bool() && chance.sentence() || undefined,
               householdType: chance.pick(householdTypes, 1),
-              specialNeeds: chance.pick(specialNeedsEnum, chance.d4())
+              specialNeeds: sampleSpecialNeeds()
           },
           householdMembers: chance.n(chance.child, chance.d4()),
           applicationNumber: i,
