@@ -176,19 +176,19 @@
               .row
                 .col-sm-4
                   .form-group
-                    select.form-control(name="householdMember.shirtSizeType", ng-model="householdMember.shirtSizeType", ng-options="szt for szt in clothingSizeTypes")
+                    select.form-control(name="householdMember.shirtSizeType", ng-model="householdMember.shirtSizeType", ng-options="szt for szt in enums.clothingSizeType")
                       option(disabled, value="") Shirt
                   .form-group
                     input.form-control(name="householdMember.shirtSize", type="number", min="0", max="30", placeholder="Size", ng-model="householdMember.shirtSize")
                 .col-sm-4
                   .form-group
-                    select.form-control(name="householdMember.pantSizeType", ng-model="householdMember.pantSizeType" ng-options="pzt for pzt in clothingSizeTypes")
+                    select.form-control(name="householdMember.pantSizeType", ng-model="householdMember.pantSizeType" ng-options="pzt for pzt in enums.clothingSizeType")
                       option(disabled, value="") Pants
                   .form-group
                     input.form-control(name="householdMember.pantSize", type="number", min="0", max="30", placeholder="Size", ng-model="householdMember.pantSize")
                 .col-sm-4
                   .form-group
-                    select.form-control(name="householdMember.shoeSizeType", ng-model="householdMember.shoeSizeType" ng-options="szt for szt in shoeSizeTypes")
+                    select.form-control(name="householdMember.shoeSizeType", ng-model="householdMember.shoeSizeType" ng-options="szt for szt in enums.shoeSizeType")
                       option(disabled, value="") Shoe
                   .form-group
                     input.form-control(name="householdMember.shoeSize", type="number", min="0", max="99", placeholder="Size", ng-model="householdMember.shoeSize")
