@@ -17,12 +17,12 @@
                 td No Data Available
 .panel-footer(ng-show="adopteeSearchResults.totalCount > 0")
     ul.pager
-        li.previous(ng-class="{disabled: AdopteePage.current == 1}")
-            a(class="editAdoptee" href="" ng-click="getAdopteePage(AdopteePage.previous)") Previous
+        li.previous(ng-class="{disabled: adopteePage.current == 1}")
+            a(class="editAdoptee" href="" ng-click="getAdopteePage(adopteePage.previous)") Previous
         li
             .input-group.input-group-page
                 .input-group-addon Page
-                input.form-control(type="number", min="1", max="{{AdopteePage.total}}", ng-model="AdopteePage.current", ng-change="getAdopteePage(AdopteePage.current)")
-                .input-group-addon of {{AdopteePage.total}}
-        li.next(ng-class="{disabled: AdopteePage.current == AdopteePage.total}")
-            a(href="" ng-click="getAdopteePage(AdopteePage.next)") Next 
+                input.form-control(type="number", min="1", max="{{adopteePage.total}}", ng-model="adopteePage.current", ng-change="getAdopteePage(adopteePage.current)")
+                .input-group-addon of {{adopteePage.total}}
+        li.next(ng-class="{disabled: adopteePage.current == adopteePage.total}")
+            a(href="" ng-click="getAdopteePage(adopteePage.next)") Next

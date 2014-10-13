@@ -14,8 +14,8 @@ angular.module('app').directive('adopteeSearchResults', ['adoptee','$filter',
                 };
 
                 $scope.searchAdoptees = function(criteria) {
-                    console.log(criteria);
-                    if (criteria) {
+                    console.log('criteria:' + criteria);
+                    if (criteria){
                         criteria['status'] = "Not Matched";
                         adoptee.query({
                             filter: criteria,
