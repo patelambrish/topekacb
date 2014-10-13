@@ -72,8 +72,7 @@ function(mvAdopter, $filter) {
 		restrict: 'A',
 		controller: ['$scope', function($scope) {
             $scope.select = function(adopter){
-                console.log('broadcasting');
-                $scope.$emit('adopterSelected', adopter);
+                $scope.$emit('adopterSelected', adopter.criteria);
             }
 		}]
 	};

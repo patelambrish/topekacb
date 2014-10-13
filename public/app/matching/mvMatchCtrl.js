@@ -22,4 +22,9 @@ function($scope, $filter, mvNotifier) {
         $scope.searchAdoptees(result);
     });
 
+    $scope.getAdopteePage = function(page) {
+        $scope.adopteePage.current = page;
+        $scope.searchAdoptees();
+    };
+
 }]);

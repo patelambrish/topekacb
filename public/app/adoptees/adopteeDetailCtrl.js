@@ -10,7 +10,8 @@ angular.module('app').
             address: {
               city: 'Topeka',
               state: 'KS'
-            }
+            },
+            status: 'Not Matched'
         });
         $scope.adopteeTitle = 'New Adoptee';
     };

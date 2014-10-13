@@ -3,12 +3,39 @@ var mongoose = require('mongoose'),
     AdopteeApplicationCounter = mongoose.model('AdopteeApplicationCounter');
 
 exports.getAdoptees = function(req, res) {
-  Adoptee.find({}).
-    populate('_createUser', 'firstName lastName').
-    populate('_modifyUser', 'firstName lastName').
-    exec(function(err, collection) {
-    res.send(collection);
-  })
+    var searchFilters, nameRegex, query, queryName, sortBy, sortDir;
+    if(req.query.filter) {
+        searchFilters= JSON.parse(req.query.filter);
+    }
+    query = Adoptee.find({});
+    if(searchFilters) {
+        if(searchFilters.households) {
+            query = query.where('criteria.householdType').in(searchFilters.households);
+        }
+        if(searchFilters.special && searchFilters.special.length>0) {
+            query = query.where('criteria.specialNeeds').in(searchFilters.special);
+        }
+        if(searchFilters.status) {
+            query = query.where('status').equals(searchFilters.status);
+        }
+
+    }
+    Adoptee.count(query, function(err, count){
+        queryCount = count;
+
+        sortBy = "lastName";
+        query = query.sort(sortBy);
+
+        if(req.query.start && req.query.limit) {
+            query = query.skip(req.query.start).limit(req.query.limit);
+        }
+        query.
+           populate('_createUser', 'firstName lastName').
+           populate('_modifyUser', 'firstName lastName').
+            exec(function(err, collection) {
+                 res.send({data: collection, totalCount: count});
+            });
+    });
 };
 
 exports.getAdopteeById = function(req, res) {

@@ -4,6 +4,10 @@ angular.module('app').factory('adoptee', function($resource, $q) {
           method:'PUT',
           isArray:false
       },
+      query : {
+          method : 'GET',
+          isArray : false
+      },
       enums : {
           method : 'GET',
           url : '/api/adoptees/:_id/enums',

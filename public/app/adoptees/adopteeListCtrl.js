@@ -58,7 +58,7 @@ angular.module('app').
     
     $scope.applyFilter = function(query) {
       adoptees.$promise.then(function() {
-        $scope.adoptees = $filter('filter')(adoptees, query);
+        $scope.adoptees = $filter('filter')(adoptees.data, query);
         $scope.applyPage(1);
       });
     };

@@ -4,27 +4,25 @@
         thead
             tr
                 th Name
-                th Birthdate
-                th Home Phone
-                th
+                th Household Type
+                th Select
         tbody
             tr(ng-repeat="adoptee in adopteeSearchResults.data" ng-click="select(adoptee)")
-                td {{adoptee.lastNameame}+ ', ' + adoptee.firstName}<span>,</span>
-                td {{adoptee.birthDate}}<span>,</span>
-                td {{adoptee.homePhone.number}}
+                td {{adoptee.lastName + ', ' + adoptee.firstName}}<span>,</span>
+                td {{adoptee.criteria.householdType}}
                 td
                     a(href="adoptees/{{adoptee._id}}")
-                        i(class="glyphicon glyphicon-pencil")
-            tr(ng-if="adopteeSearchResults.len == 0")
+                        i(class="glyphicon glyphicon-plus")
+            tr(ng-if="adopteeSearchResults.totalCount == 0")
                 td No Data Available
-    .panel-footer
-        ul.pager
-            li.previous(ng-class="{disabled: adopteePage.current == 1}")
-                a(class="editadoptee" href="" ng-click="getadopteePage(adopteePage.previous)") Previous
-            li
-                .input-group.input-group-page
-                    .input-group-addon Page
-                    input.form-control(type="number", min="1", max="{{adopteePage.total}}", ng-model="adopteePage.current", ng-change="getadopteePage(adopteePage.current)")
-                    .input-group-addon of {{adopteePage.total}}
-            li.next(ng-class="{disabled: adopteePage.current == adopteePage.total}")
-                a(href="" ng-click="getadopteePage(adopteePage.next)") Next
+.panel-footer(ng-show="adopteeSearchResults.totalCount > 0")
+    ul.pager
+        li.previous(ng-class="{disabled: AdopteePage.current == 1}")
+            a(class="editAdoptee" href="" ng-click="getAdopteePage(AdopteePage.previous)") Previous
+        li
+            .input-group.input-group-page
+                .input-group-addon Page
+                input.form-control(type="number", min="1", max="{{AdopteePage.total}}", ng-model="AdopteePage.current", ng-change="getAdopteePage(AdopteePage.current)")
+                .input-group-addon of {{AdopteePage.total}}
+        li.next(ng-class="{disabled: AdopteePage.current == AdopteePage.total}")
+            a(href="" ng-click="getAdopteePage(AdopteePage.next)") Next 

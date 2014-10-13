@@ -7,23 +7,21 @@
       .panel.panel-default(ng-class="{busy: busy()}")
         .panel-heading.clearfix Adopters    
         .panel-body
-          div(data-adopter-search)
-     div(class="col-md-6")
+            div(data-adopter-search)
       .panel.panel-default(ng-class="{busy: busy()}")
-        .panel-heading.clearfix Adoptee Results  
-        .panel-body 
-          div(adoptee-search-results)
-   div(class="row")
-    div(class="col-md-6")
-     div(data-adopter-match-results)
-    div(class="col-md-6")
-     .panel.panel-default(ng-class="{busy: busy()}")
-       .panel-heading.clearfix Adoptee Results  
-        panel-body 
-         div() Some Adoptee Criteria Directive
-   div(class="row")
+        .panel-heading.clearfix Adopter Results
+        .panel-body
+            div(adopter-match-results)
+        .panel.panel-default(ng-class="{busy: busy()}")
+           .panel-heading.clearfix Adopter Criteria
+               .panel-body
+                   div() Some Adopter Criteria Directive
     div(class="col-md-6")
       .panel.panel-default(ng-class="{busy: busy()}")
-        .panel-heading.clearfix Adopter Criteria  
-        .panel-body 
-          div() Some Adopter Criteria Directive
+        .panel-heading.clearfix Adoptee Results
+        .panel-body
+            div(adoptee-search-results)
+        .panel.panel-default(ng-class="{busy: busy()}")
+            .panel-heading.clearfix Adoptee Criteria
+                .panel-body
+                    div() Some Adoptee Criteria Directive
