@@ -10,7 +10,7 @@
             .col-sm-3
               .form-group
                 label Type of Adopter
-                select.form-control(ng-model="adopter.entity", ng-options="e for e in enums.entity")
+                select.form-control(ng-model="adopter.entity", ng-options="e for e in adopter.enums.entity")
             .col-sm-4.col-md-3(ng-class="{'col-sm-6 col-md-5': adopter.entity == 'Individual'}")
               .form-group(ng-class="{'has-error': form.name.$invalid && (submitted || form.name.$dirty)}")
                 label Name *
@@ -37,7 +37,7 @@
             .col-sm-2
               .form-group
                 label State
-                select.form-control(name="state", tabindex="-1", ng-model="adopter.address.state", ng-options="e for e in enums.state")
+                select.form-control(name="state", tabindex="-1", ng-model="adopter.address.state", ng-options="e for e in adopter.enums.state")
                   option(disabled value="") State
             .col-sm-3.col-md-2
               .form-group
@@ -57,7 +57,7 @@
             .col-sm-3
               .form-group
                 label.visible-xs-block Phone
-                select.form-control(name="name", ng-model="p.name", ng-options="e for e in enums.phone")
+                select.form-control(name="name", ng-model="p.name", ng-options="e for e in adopter.enums.phone")
             .col-sm-3
               .form-group(ng-hide="$first")
                 a.btn.btn-link(href="", tabindex="-1", ng-click="deletePhone(p)")
@@ -75,14 +75,14 @@
           .row
             .col-sm-6
               .form-group
-                label.checkbox-inline(ng-repeat="e in enums.notify")
+                label.checkbox-inline(ng-repeat="e in adopter.enums.notify")
                   input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.notifyMethods, e)", ng-checked="adopter.notifyMethods.indexOf(e) > -1")
                   | {{e}}
                 p.help-block Method for receiving household information
             .col-sm-6
               .form-group(ng-class="{'has-error': form.email.$invalid && (submitted || form.email.$dirty)}")
                 input.form-control(type="email", name="email", placeholder="Email", required, ng-model="adopter.email", ng-if="adopter.notifyMethods.indexOf('Email') > -1")
-        div(data-criteriaset data-criteria="adopter.criteria" data-enums="enums")
+        div(data-criteriaset, data-criteria="adopter.criteria", data-enums="adopter.enums")
       .panel-footer
         .btn-toolbar.text-right
           button.btn.btn-primary(ng-click="savePlus(form)") Save and New

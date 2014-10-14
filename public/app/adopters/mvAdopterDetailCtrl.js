@@ -1,6 +1,5 @@
 angular.module('app').
 	controller('mvAdopterDetailCtrl', function($scope, $routeParams, $location, mvAdopter, mvIdentity, mvNotifier, common) {
-    $scope.enums = mvAdopter.enums({ _id: $routeParams.id });
     $scope.permission = {
       delete: mvIdentity.isAuthorized('manager')
     };

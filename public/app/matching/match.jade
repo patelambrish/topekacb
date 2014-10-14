@@ -12,10 +12,7 @@
         .panel-heading.clearfix Adopter Results
         .panel-body
             div(adopter-match-results)
-        .panel.panel-default(ng-class="{busy: busy()}")
-           .panel-heading.clearfix Adopter Criteria
-               .panel-body
-                   div() Some Adopter Criteria Directive
+            div(data-criteriaset, ng-if="criteria", data-criteria="criteria", data-enums="adopterEnums")
     div(class="col-md-6")
       .panel.panel-default(ng-class="{busy: busy()}")
         .panel-heading.clearfix Adoptee Results

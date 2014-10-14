@@ -41,6 +41,7 @@ var adopterSchema = new Schema({
     special: [{ type: String, enum: specialEnum }],
     comment: String
   },
+  adoptees: [{ type: Schema.Types.ObjectId, ref: 'Adoptee'}],
   status: { type: String, enum: statusEnum, default: 'In Process' },
   createDate: Date,
   createdBy: { type: Schema.Types.ObjectId, ref: 'User'},
@@ -81,63 +82,79 @@ function createDefaultAdopters() {
 
 function generateAdopters(count) {
   var User = mongoose.model('User'),
-      Adopter = mongoose.model('Adopter');
+      Adopter = mongoose.model('Adopter'),
+      Adoptee = mongoose.model('Adoptee'),
+      promise, adopteePool;
 
   console.log('populating default adopters...');
 
-  User.
-    find({}).
-    select('_id').
-    exec(function(err, users) {
-      var chance = new Chance(),
-          data = [],
-          entity, status, i;
+  promise = Adoptee.find({}).select('_id').exec();
 
-      for(i = 1; i <= count; i++) {
-        entity = chance.pick(entityEnum);
-        status = chance.pick(statusEnum);
+  promise.then(function(adoptees) {
+    adopteePool = adoptees;
+    return User.find({}).select('_id').exec();
+  }).then(function(userPool) {
+    var chance = new Chance(),
+        data = [],
+        entity, status, i, a, counts, matchCount, adoptees;
 
-        data.push({
-            entity: entity,
-            name: chance.name(),
-            org: (entity !== 'Individual' ? chance.capitalize(chance.word()) : null),
-            dept: (entity === 'Deptartment' ? chance.capitalize(chance.word()) : null),
-            address: {
-              street: chance.address({short_suffix: true}),
-              city: chance.city(),
-              state: chance.pick(stateEnum),
-              zip: chance.zip()
-            },
-            phones: [{
-              name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
-              number: chance.phone()
-            }, {
-              name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
-              number: chance.phone()
-            }],
-            email: chance.email(),
-            notifyMethods: chance.pick(notifyEnum, 2),
-            criteria: {
-              count: (entity === 'Individual' ? chance.d4() : chance.d12()),
-              households: chance.unique(chance.pick, chance.d4(), householdEnum, 1),
-              childAges: chance.pick(ageEnum, 1),
-              special: chance.unique(chance.pick, chance.d4(), specialEnum, 1),
-              comment: chance.sentence()
-            },
-            status: chance.pick(statusEnum),
-            createDate: chance.date({month: 8, year: 2014}),
-            createdBy: chance.pick(users),
-            updateDate: (status !== 'In Process' ? chance.date({month: 9, year: 2014}) : null),
-            updatedBy: (status !== 'In Process' ? chance.pick(users) : null)
-        });
+    for(i = 1; i <= count; i++) {
+      entity = chance.weighted(entityEnum,[20, 2, 1]);
+      status = chance.pick(statusEnum);
+      counts = {'Individual': chance.d4(), 'Department': chance.d12(), 'Organization': chance.d100()};
+      matchCount = status === 'Matched' ? counts[entity] : chance.natural({min:0,max:counts[entity] - 1});
+      adoptees = [];
+
+      if(status !== 'In Process' && matchCount > 0 && matchCount <= adopteePool.length) {
+        for(a = 1; a <= matchCount; a++) {
+          adoptees.push(adopteePool.pop());
+        }
       }
 
-      Adopter.
-        create(data).
-        then(function() {
-          console.log('created ' + data.length + ' adopters.');
-        });
+      data.push({
+          entity: entity,
+          name: chance.name(),
+          org: (entity !== 'Individual' ? chance.capitalize(chance.word()) : null),
+          dept: (entity === 'Deptartment' ? chance.capitalize(chance.word()) : null),
+          address: {
+            street: chance.address({short_suffix: true}),
+            city: chance.city(),
+            state: chance.pick(stateEnum),
+            zip: chance.zip()
+          },
+          phones: [{
+            name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
+            number: chance.phone()
+          }, {
+            name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
+            number: chance.phone()
+          }],
+          email: chance.email(),
+          notifyMethods: chance.pick(notifyEnum, 2),
+          criteria: {
+            count: counts[entity],
+            households: chance.unique(chance.pick, chance.d4(), householdEnum, 1),
+            childAges: chance.pick(ageEnum, 1),
+            special: chance.unique(chance.pick, chance.d4(), specialEnum, 1),
+            comment: chance.sentence()
+          },
+          adoptees: adoptees,
+          status: chance.pick(statusEnum),
+          createDate: chance.date({month: 8, year: 2014}),
+          createdBy: chance.pick(userPool),
+          updateDate: (status !== 'In Process' ? chance.date({month: 9, year: 2014}) : null),
+          updatedBy: (status !== 'In Process' ? chance.pick(userPool) : null)
+      });
+    }
+
+    Adopter.create(data, function(err) {
+      if(err) {
+        console.log(err);
+      } else {
+        console.log('created ' + data.length + ' adopters.');
+      }
     });
+  });
 }
 
 exports.createDefaultAdopters = createDefaultAdopters;

@@ -1,7 +1,12 @@
 fieldset(ng-form="criteriaForm")
-  legend Household Criteria
+  legend(ng-switch="criteria.count % 2") Household Criteria
+    .pull-right.label.label-success(ng-switch-when="0") Successfully Matched!
+    .pull-right.label.label-warning(ng-switch-default) 
+      | {{count-matchCount}} 
+      span(ng-pluralize, count="criteria.count", when="{'one': 'Match', 'other': 'Matches'}")
+      | &nbsp;Remaining
   .row
-    .col-sm-4
+    .col-sm-5
       .form-group
         label Number of Households
         input.form-control(type="number", name="count", placeholder="Number of households", min="1", ng-model="criteria.count")
@@ -11,23 +16,23 @@ fieldset(ng-form="criteriaForm")
         label Household Types
         .checkbox(ng-repeat="e in enums.household")
           label
-            input(type="checkbox", ng-value="e", ng-click="setFlags(criteria.households, e)", ng-checked="criteria.households.indexOf(e) > -1")
+            input(type="checkbox", name="household", ng-value="e", ng-click="setFlags(criteria.households, e)", ng-checked="criteria.households.indexOf(e) > -1", ng-disabled="disabled.household")
             | {{e}}
     .col-sm-5
       .form-group
         label Children's Ages
         .checkbox(ng-repeat="e in enums.age")
           label
-            input(type="checkbox", ng-value="e", ng-click="setFlags(criteria.childAges, e)", ng-checked="criteria.childAges.indexOf(e) > -1")
+            input(type="checkbox", name="age", ng-value="e", ng-click="setFlags(criteria.childAges, e)", ng-checked="criteria.childAges.indexOf(e) > -1")
             | {{e}}
       .form-group
         label Special Needs
         .checkbox(ng-repeat="e in enums.special")
           label
-            input(type="checkbox", ng-value="e", ng-click="setFlags(criteria.special, e)", ng-checked="criteria.special.indexOf(e) > -1")
+            input(type="checkbox", name="special", ng-value="e", ng-click="setFlags(criteria.special, e)", ng-checked="criteria.special.indexOf(e) > -1")
             | {{e}}
   .row
     .col-sm-12
       .form-group
         label Comments
-        textarea.form-control(rows="3", placeholder="Comments", ng-model="criteria.comment")
+        textarea.form-control(name="comment", rows="3", placeholder="Comments", ng-model="criteria.comment")
