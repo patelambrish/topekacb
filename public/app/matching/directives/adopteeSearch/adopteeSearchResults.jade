@@ -1,4 +1,4 @@
-.panel.panel-default(ng-class="{busy: busy()}")
+.panel.panel-default(ng-class="{busy: busy()}", ng-show="adopteeSearchResults.totalCount > 0")
     table.table.table-hover
         thead
             tr
@@ -25,3 +25,5 @@
                 .input-group-addon of {{adopteePage.total}}
         li.next(ng-class="{disabled: adopteePage.current == adopteePage.total}")
             a(href="" ng-click="getAdopteePage(adopteePage.next)") Next
+.panel.panel-default(ng-class="{busy: busy()}", ng-show="!adopteeSearchResults")
+    p Select an adopter to view matching adoptees
