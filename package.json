@@ -30,11 +30,13 @@
     "passport-facebook": "~1.0.3",
     "passport-local": "^1.0.0",
     "grunt": "^0.4.5",
-    "grunt-sass": "^0.14.2"
+    "grunt-sass": "^0.14.2",
+    "grunt-cli": "^0.1.13"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-sass": "^0.14.2",
+    "grunt-cli": "^0.1.13",
     "karma": "^0.12.16",
     "karma-chai-plugins": "^0.2.1",
     "karma-chrome-launcher": "^0.1.4",

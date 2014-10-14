@@ -1,17 +1,19 @@
 @media (max-width: 1105px) and (min-width: 768px) {
   .navbar-form .form-control {
     width: 10em; } }
+
 @media (min-width: 1105px) {
   .navbar-form .form-control {
     width: auto; } }
+
 @media (min-width: 994px) {
   .navbar-header a.navbar-brand .logo-text {
     display: inline-block !important; } }
+
 label + .checkbox, label + .radio, label + textarea, label + input {
   margin-top: 0; }
 
-.table-hover > tbody > tr:hover > td,
-.table-hover > tbody > tr:hover > th {
+.table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
   cursor: pointer; }
 
 .panel-footer > .pager {
@@ -21,7 +23,8 @@ h1 .badge.pull-right {
   clear: right; }
 
 .jumbotron {
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  background-color: transparent; }
   .jumbotron h1 {
     margin-bottom: 20px;
     text-align: center; }
@@ -32,9 +35,13 @@ h1 .badge.pull-right {
       .container .jumbotron {
         padding-left: 45px;
         padding-right: 45px; }
-      .jumbotron h1,
-      .jumbotron .h1 {
+      .jumbotron h1, .jumbotron .h1 {
         font-size: 42px; } }
+
+.carousel-control.left {
+  background-image: none; }
+.carousel-control.right {
+  background-image: none; }
 
 .depth-1 {
   -webkit-filter: drop-shadow(0px 2px 2px #9e9e9e); }
@@ -56,7 +63,10 @@ html {
   min-height: 100%; }
 
 body {
-  margin-bottom: 56px; }
+  margin-bottom: 56px;
+  background-image: url("../image/santa-photo.jpg");
+  background-repeat: no-repeat;
+  background-size: cover; }
 
 .content {
   padding-top: 56px; }
@@ -76,7 +86,7 @@ body {
     margin-left: 15px;
     color: #FDB945; }
     .navbar-header a.navbar-brand .logo-text .subtext {
-      font-size: .75em;
+      font-size: 0.75em;
       color: white; }
 
 .navbar {
@@ -150,8 +160,7 @@ body {
   cursor: default;
   background-color: transparent; }
 
-.btn-toolbar > .input-group-sort,
-.btn-toolbar > .input-group-sort .dropdown-menu {
+.btn-toolbar > .input-group-sort, .btn-toolbar > .input-group-sort .dropdown-menu {
   width: 22em; }
 
 .input-group-page {
@@ -178,7 +187,7 @@ body {
   z-index: 1050; }
 
 .busy {
-  opacity: .65; }
+  opacity: 0.65; }
 
 table td.tool {
   text-align: right; }
