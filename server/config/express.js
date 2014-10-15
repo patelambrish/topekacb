@@ -17,12 +17,13 @@ module.exports = function(app, config) {
   app.use(bodyParser());
   app.use(session({
 	secret : 'Topeka unicorns',
-	store : new MongoStore({url: config.db, reapInterval: 60 * 60 * 1000}),
+	store : new MongoStore({url: config.db, reapInterval: 10 * 60 * 1000}),
 	saveUninitialized: true,
     resave: true,
     cookie: {
-      maxAge: 720 * 60 * 1000
-    }
+      maxAge: 60 * 60 * 1000
+    },
+    rolling: true
   }));
   app.use(passport.initialize());
   app.use(passport.session());
