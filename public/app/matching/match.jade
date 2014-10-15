@@ -12,7 +12,7 @@
         .panel-heading.clearfix Adopter Results
         .panel-body
             div(adopter-match-results)
-            div(data-criteriaset, ng-if="criteria", data-criteria="criteria", data-enums="adopterEnums")
+            div(data-criteriaset, ng-if="adopter.criteria", data-criteria="adopter.criteria", data-enums="adopter.enums")
     div(class="col-md-6")
       .panel.panel-default(ng-class="{busy: busy()}")
         .panel-heading.clearfix Adoptee Matches

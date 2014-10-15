@@ -14,11 +14,11 @@ function(mvAdopter, $filter) {
 				size : 3
 			};
 			$scope.adopterFilter = {};
-			mvAdopter.enums({
-				_id : 0
-			}).$promise.then(function(data) {
-				$scope.adopterEnums = data;
-			});
+			// mvAdopter.enums({
+			// 	_id : 0
+			// }).$promise.then(function(data) {
+			// 	$scope.adopterEnums = data;
+			// });
 			$scope.searchAdopters = function() {
 				mvAdopter.query({
 					filter : $scope.adopterFilter,
@@ -71,9 +71,9 @@ function(mvAdopter, $filter) {
 		templateUrl : '/partials/matching/directives/adopterSearch/adopterSearchResults',
 		restrict: 'A',
 		controller: ['$scope', function($scope) {
-            $scope.selectAdopter = function(adopter){
-                $scope.$emit('adopterSelected', adopter.criteria);
-            }
+            // $scope.selectAdopter = function(adopter){
+            //     $scope.$emit('adopterSelected', adopter.criteria);
+            // }
 		}]
 	};
 }]);
