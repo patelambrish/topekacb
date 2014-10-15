@@ -29,7 +29,7 @@
         .panel-heading.clearfix Adoptee Matches
         .panel-body
         div(adoptee-search-results)
-        .panel-footer(ng-show="adopteeSearchResults.totalCount > 0")
+        .panel-footer(ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0")
           ul.pager
               li.previous(ng-class="{disabled: adopteePage.current == 1}")
                   a(class="editAdoptee" href="" ng-click="getAdopteePage(adopteePage.previous)") Previous
@@ -40,5 +40,5 @@
                       .input-group-addon of {{adopteePage.total}}
               li.next(ng-class="{disabled: adopteePage.current == adopteePage.total}")
                   a(href="" ng-click="getAdopteePage(adopteePage.next)") Next
-        .panel-body
+        .panel-body(ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0")
             div(adoptee-criteria)

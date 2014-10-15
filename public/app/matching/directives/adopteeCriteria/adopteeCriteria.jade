@@ -1,68 +1,63 @@
-.panel.panel-default(ng-class="{busy: busy()}", ng-show="currentAdoptee")
-    .panel-heading.clearfix
-        label
-            | {{currentAdoptee.lastName + ', ' + currentAdoptee.firstName}}
-        .panel-body
-            .row
-                .col-sm-12
-                    div.panel-group
-                        div.panel.panel-default
-                            div.panel-heading
-                                label
-                                    a(data-toggle="collapse" data-target="#household")
-                                        i(class="glyphicon glyphicon-chevron-down")
-                                    | &nbsp Household
-                            div.panel-collapse.collapse.in(id="household")
-                                div.panel-body
-                                    .row
-                                        .col-sm-7
-                                            label Classification
-                                            p {{currentAdoptee.criteria.householdType}}
-                                        .col-sm-5
-                                            label Special Needs
-                                            p(ng-repeat="specialNeed in currentAdoptee.criteria.specialNeeds")
-                                                {{specialNeed}}
-            .row
-                .col-sm-12
-                    div.panel-group
-                        div.panel.panel-default
-                            div.panel-heading
-                                label
-                                    a(data-toggle="collapse" data-target="#comments")
-                                        i(class="glyphicon glyphicon-chevron-down")
-                                    | &nbsp Story and Comments
-                            div.panel-collapse.collapse(id="comments")
-                                div.panel-body
-                                    .row
-                                        .col-sm-12
-                                            label Adoptee's Story
-                                            p {{currentAdoptee.criteria.story}}
-                                    .row
-                                        .col-sm-6
-                                            label Volunteer Comment
-                                            p {{currentAdoptee.criteria.volunteerComment}}
-                                        .col-sm-6
-                                            label Internal Comment
-                                            p {{currentAdoptee.criteria.internalComment}}
-            .row
-                .col-sm-12
-                    div.panel-group
-                        div.panel.panel-default
-                            div.panel-heading
-                                label
-                                    a(data-toggle="collapse" data-target="#householdMembers")
-                                        i(class="glyphicon glyphicon-chevron-down")
-                                    | &nbsp Household Members
-                            div.panel-collapse.collapse(id="householdMembers")
-                                div.panel-body
-                                    table.table.table-hover
-                                        thead
-                                            tr
-                                                th Name
-                                                th Age
-                                                th Gender
-                                        tbody
-                                            tr(ng-repeat="member in currentAdoptee.householdMembers")
-                                                td {{member.name}}
-                                                td {{member.age}}
-                                                td {{member.gender}}
+label
+    | {{currentAdoptee.lastName + ', ' + currentAdoptee.firstName}}
+.row
+    .col-sm-12
+        .row
+            .col-sm-7
+                label Classification
+                p {{currentAdoptee.criteria.householdType}}
+            .col-sm-5
+                label Special Needs
+                p(ng-repeat="specialNeed in currentAdoptee.criteria.specialNeeds")
+                    {{specialNeed}}
+.row
+    .col-sm-12
+        div.panel-group
+            div.panel.panel-default
+                div.panel-heading
+                    label
+                        a(data-toggle="collapse" data-target="#comments")
+                            i(class="glyphicon glyphicon-chevron-down")
+                        | &nbsp Story and Comments
+                div.panel-collapse.collapse(id="comments")
+                    div.panel-body
+                        .row
+                            .col-sm-12
+                                label Adoptee's Story
+                                p {{currentAdoptee.criteria.story}}
+                        .row
+                            .col-sm-6
+                                label Volunteer Comment
+                                p {{currentAdoptee.criteria.volunteerComment}}
+                            .col-sm-6
+                                label Internal Comment
+                                p {{currentAdoptee.criteria.internalComment}}
+.row
+    .col-sm-12
+        div.panel-group
+            div.panel.panel-default
+                div.panel-heading
+                    label
+                        a(data-toggle="collapse" data-target="#householdMembers")
+                            i(class="glyphicon glyphicon-chevron-down")
+                        | &nbsp Household Members
+                div.panel-collapse.collapse(id="householdMembers")
+                    div.panel-body
+                        table.table.table-hover
+                            thead
+                                tr
+                                    th Name
+                                    th Age
+                                    th Gender
+                            tbody
+                                tr(ng-repeat="member in currentAdoptee.householdMembers")
+                                    td {{member.name}}
+                                    td {{member.age}}
+                                    td {{member.gender}}
+
+.panel-footer
+    .row
+        .col-md-6
+            button.text-right.btn.navbar-button(ng-click="matchAdoptee()") Next Adoptee
+        .col-md-6
+            button.text-right.btn.btn-primary(ng-click="matchAdoptee()") <  Match
