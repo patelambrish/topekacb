@@ -2,7 +2,7 @@ angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifie
 function($scope, $filter, mvNotifier) {
 	$scope.adopterSearchResults = [];
     $scope.adopteeSearchresults = [];
-    $scope.criteria;
+    $scope.currentAdopter;
     $scope.currentAdoptee;
 
 	$scope.applyPage = function(page, data, pageInfo) {
@@ -20,18 +20,20 @@ function($scope, $filter, mvNotifier) {
 		$scope.searchAdopters();
 	};
 
-    $scope.$on('adopterSelected', function (event, result) {
-        $scope.criteria = result;
-        $scope.searchAdoptees($scope.criteria);
-    });
-
     $scope.getAdopteePage = function(page) {
         $scope.adopteePage.current = page;
-        $scope.searchAdoptees($scope.criteria);
+        if ($scope.currentAdopter) {
+            $scope.searchAdoptees($scope.currentAdopter.criteria);
+        }
     }
 
-    $scope.$on('adopteeSelected', function(event, result){
-        $scope.currentAdoptee = result;
-    });
+    $scope.selectAdoptee = function(adoptee){
+        $scope.currentAdoptee = adoptee;
+    }
+
+    $scope.selectAdopter = function(adopter){
+        $scope.currentAdopter = adopter;
+        $scope.searchAdoptees(adopter.criteria);
+    }
 
 }]);
