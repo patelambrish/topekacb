@@ -27,6 +27,7 @@
     div(class="col-md-6")
       .panel.panel-default(ng-class="{busy: busy()}")
         .panel-heading.clearfix Adoptee Matches
+            button.pull-right.btn.btn-primary(ng-click="bulkMatch()", ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0") <  Bulk Match
         .panel-body
         div(adoptee-search-results)
         .panel-footer(ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0")
@@ -42,3 +43,9 @@
                   a(href="" ng-click="getAdopteePage(adopteePage.next)") Next
         .panel-body(ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0")
             div(adoptee-criteria)
+        .panel-footer(ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0")
+            .row
+                .col-md-6
+                    button.text-right.btn.navbar-button(ng-click="matchAdoptee()") Next Adoptee
+                .col-md-6
+                    button.pull-right.btn.btn-primary(ng-click="matchAdoptee()") <  Match
