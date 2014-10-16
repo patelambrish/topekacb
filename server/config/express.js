@@ -7,10 +7,9 @@ var express = require('express'),
 	session = require('express-session'),
 	passport = require('passport'),
 	mongoose = require('mongoose'),
-	MongoStore = require('connect-mongo')(session);
+	MongoStore = require('connect-mongostore')(session);
 
 module.exports = function(app, config) {
-	console.log('express');
 	app.set('views', config.rootPath + '/server/views');
 	app.set('view engine', 'jade');
 	app.use(logger('dev'));
@@ -19,7 +18,7 @@ module.exports = function(app, config) {
 	app.use(session({
 		secret : 'Topeka unicorns',
 		store : new MongoStore({
-			mongoose_connection : mongoose.connections[0]
+			mongooseConnection : mongoose.connection
 		}),
 		saveUninitialized : true,
 		resave : true,
