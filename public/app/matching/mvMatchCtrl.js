@@ -1,9 +1,12 @@
 angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier',
-function($scope, $filter, mvNotifier) {
+function($scope, $filter, mvNotifier, adoptee) {
 	$scope.adopterSearchResults = [];
     $scope.adopteeSearchresults = [];
-    $scope.criteria;
+    $scope.currentAdopter;
     $scope.currentAdoptee;
+    $scope.ageRanges = ["0-7", "8-12", "13-18"];
+    $scope.adopteeEnums;
+    $scope.adopteeAges = [];
 
 	$scope.applyPage = function(page, data, pageInfo) {
       pageInfo.current = page;
@@ -20,18 +23,33 @@ function($scope, $filter, mvNotifier) {
 		$scope.searchAdopters();
 	};
 
-    $scope.$on('adopterSelected', function (event, result) {
-        $scope.criteria = result;
-        $scope.searchAdoptees($scope.criteria);
-    });
-
     $scope.getAdopteePage = function(page) {
         $scope.adopteePage.current = page;
-        $scope.searchAdoptees($scope.criteria);
+        if ($scope.currentAdopter) {
+            $scope.searchAdoptees($scope.currentAdopter.criteria);
+        }
     }
 
-    $scope.$on('adopteeSelected', function(event, result){
-        $scope.currentAdoptee = result;
-    });
+    $scope.selectAdoptee = function(selectedAdoptee) {
+        $scope.currentAdoptee = selectedAdoptee;
+        $scope.adopteeAges = [];
+        selectedAdoptee.householdMembers.forEach(function(member){
+            if (member.age < 8 && $scope.adopteeAges.indexOf($scope.ageRanges[0]) == -1){
+                $scope.adopteeAges.push($scope.ageRanges[0]);
+            }
+            if (member.age > 7 && member.age < 13 && $scope.adopteeAges.indexOf($scope.ageRanges[1]) == -1) {
+                $scope.adopteeAges.push($scope.ageRanges[1]);
+            }
+            if (member.age > 12 && member.age < 19 && $scope.adopteeAges.indexOf($scope.ageRanges[2]) == -1){
+                $scope.adopteeAges.push($scope.ageRanges[2]);
+            }
+        });
+        console.log($scope.adopteeAges);
+    }
+
+    $scope.selectAdopter = function(adopter){
+        $scope.currentAdopter = adopter;
+        $scope.searchAdoptees(adopter.criteria);
+    }
 
 }]);

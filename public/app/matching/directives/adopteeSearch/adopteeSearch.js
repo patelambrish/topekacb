@@ -24,14 +24,14 @@ angular.module('app').directive('adopteeSearchResults', ['adoptee','$filter',
                         }).$promise.then(function (res) {
                                 $scope.adopteeSearchResults = res;
                                 $scope.applyPage($scope.adopteePage.current, $scope.adopteeSearchResults, $scope.adopteePage);
+                                if (res.data.length > 0) {
+                                    $scope.selectAdoptee(res.data[0]);
+                                    $scope.adopteeEnums = adoptee.enums({ _id: res.data[0]._id });
+                                }
                             });
                     }
                 }
                 $scope.getAdopteePage(1);
-
-                $scope.selectAdoptee = function(adoptee){
-                    $scope.$emit('adopteeSelected', adoptee);
-                }
             }]
         };
     }]);

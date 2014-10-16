@@ -170,7 +170,7 @@
                     input.form-control(name="householdMember.age", type="number", min="0", max="110", placeholder="Age", ng-model="householdMember.age")
                 .col-sm-4
                   .form-group
-                    select.form-control(name="householdMember.gender", ng-model="householdMember.gender", ng-options="g | limitTo:1 for g in genders")
+                    select.form-control(name="householdMember.gender", ng-model="householdMember.gender", ng-options="g | limitTo:1 for g in enums.gender")
                       option(disabled, value="") Sex
             .col-sm-4
               .row

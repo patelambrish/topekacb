@@ -7,11 +7,14 @@ form(name="adopterSearchForm" novalidate)
       div(class="form-group")
         select.form-control(ng-model="adopterFilter.status", ng-options="e for e in adopterEnums.status")
     div(class="col-md-4")      
-      div(class="pull-right form-group")
+      div(class="form-group")
         //button(type="button" class="btn btn-default" data-ng-click="reset()") Reset
         //| &nbsp;
-        button(type="button" class="btn btn-primary" data-ng-click="searchAdopters()") Search
-    div(class="col-md-12")
+        button.btn.btn-primary(type="button" data-ng-click="searchAdopters()")
+          i.glyphicon.glyphicon-search
+        a(data-toggle="collapse" data-target="#sort")
+         i.glyphicon.glyphicon-cog.pull-right
+    div(class="col-md-12 collapse" id="sort")
       .input-group.input-group-sort
             .input-group-addon Sort By:
             input.form-control(type="text", ng-model="adopterSort.text", disabled)
