@@ -30,7 +30,20 @@ angular.module('app').directive('adopteeSearchResults', ['adoptee','$filter',
                                 }
                             });
                     }
-                }
+                };
+                
+                $scope.nextAdoptee = function(){
+                  var currentAdopteeIndex = $scope.adopteeSearchResults.data.indexOf($scope.currentAdoptee);
+                  if (currentAdopteeIndex == $scope.adopteePage.size - 1){
+                    $scope.adopteePage.current++;
+                    $scope.searchAdoptees($scope.currentAdopter.criteria);
+                  }
+                  else{
+                    $scope.selectAdoptee($scope.adopteeSearchResults.data[currentAdopteeIndex + 1]);
+                  }
+                  
+                };
+                
                 $scope.getAdopteePage(1);
             }]
         };

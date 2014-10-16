@@ -5,10 +5,10 @@
   div(class="row")
     div(class="col-md-6")
       .panel.panel-default(ng-class="{busy: busy()}")
-        .panel-heading.clearfix Adopters    
+        .panel-heading.clearfix Adopters
         .panel-body
             div(data-adopter-search)
-        div(adopter-match-results)            
+        div(adopter-match-results)
         .panel-footer
            ul.pager
              li.previous(ng-class="{disabled: adopterPage.current == 1}")
@@ -19,7 +19,7 @@
                  input.form-control(type="number", min="1", max="{{adopterPage.total}}", ng-model="adopterPage.current", ng-change="getAdopterPage(adopterPage.current)")
                  .input-group-addon of {{adopterPage.total}}
              li.next(ng-class="{disabled: adopterPage.current == adopterPage.total}")
-               a(href="" ng-click="getAdopterPage(adopterPage.next)") Next          
+               a(href="" ng-click="getAdopterPage(adopterPage.next)") Next
       .panel.panel-default(ng-class="{busy: busy()}")
          .panel-heading.clearfix Adopter Criteria
              .panel-body
@@ -46,6 +46,6 @@
         .panel-footer(ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0")
             .row
                 .col-md-6
-                    button.text-right.btn.navbar-button(ng-click="matchAdoptee()") Next Adoptee
+                    button.text-right.btn.navbar-button(ng-click="nextAdoptee()") Next Adoptee
                 .col-md-6
                     button.pull-right.btn.btn-primary(ng-click="matchAdoptee()") <  Match
