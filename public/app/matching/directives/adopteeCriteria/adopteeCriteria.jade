@@ -1,15 +1,26 @@
 label
     | {{currentAdoptee.lastName + ', ' + currentAdoptee.firstName}}
 .row
-    .col-sm-12
-        .row
-            .col-sm-7
-                label Classification
-                p {{currentAdoptee.criteria.householdType}}
-            .col-sm-5
-                label Special Needs
-                p(ng-repeat="specialNeed in currentAdoptee.criteria.specialNeeds")
-                    {{specialNeed}}
+    .col-sm-7
+        .form-group
+            label Household Types
+            .checkbox(ng-repeat="e in adopteeEnums.household")
+                label
+                    input(type="checkbox", ng-value="e", ng-checked="currentAdoptee.criteria.householdType.indexOf(e) > -1")
+                    | {{e}}
+    .col-sm-5
+        .form-group
+            label Children's Ages
+            .checkbox(ng-repeat="e in ageRanges")
+                label
+                    input(type="checkbox", ng-value="e", ng-checked="adopteeAges.indexOf(e) > -1")
+                    | {{e}}
+        .form-group
+            label Special Needs
+            .checkbox(ng-repeat="e in adopteeEnums.special")
+                label
+                    input(type="checkbox", ng-value="e", ng-checked="currentAdoptee.criteria.specialNeeds.indexOf(e) > -1")
+                    | {{e}}
 .row
     .col-sm-12
         div.panel-group

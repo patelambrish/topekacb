@@ -6,7 +6,7 @@ table.table.table-hover(ng-show="adopteeSearchResults.totalCount > 0")
         th Members
   tbody
     tr.row(ng-repeat="adoptee in adopteeSearchResults.data" ng-click="selectAdoptee(adoptee)")
-        td {{adoptee.lastName + ', ' + adoptee.firstName}}<span>,</span>
+        td {{adoptee.lastName + ', ' + adoptee.firstName}}
         td {{adoptee.criteria.householdType}}
         td {{adoptee.householdMembers.length}}
     tr(ng-if="adopteeSearchResults.totalCount == 0")
