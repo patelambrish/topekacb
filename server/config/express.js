@@ -31,5 +31,13 @@ module.exports = function(app, config) {
 	app.use(passport.session());
 	app.use(express.static(config.rootPath + '/public'));
 	app.locals.newrelic = newrelic;
-
+	app.use('*', function(req, res, next) {
+		var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+		if (env =='production' && req.headers['x-forwarded-proto'] != 'https') {
+			return res.redirect(['https://', req.get('Host'), req.url].join(''));
+		} else {
+			next();
+		}
+	});
 };
+
