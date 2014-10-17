@@ -91,10 +91,10 @@
               .form-group(ng-class="{'has-error': form.email.$invalid && (submitted || form.email.$dirty)}")
                 input.form-control(type="email", name="email", placeholder="Email", required, ng-model="adopter.email", ng-if="adopter.notifyMethods.indexOf('Email') > -1")
         div(data-criteriaset, data-title="Household Criteria", data-criteria="adopter.criteria", data-enums="adopter.enums")
-        fieldset(id="adopteeList", ng-if="adopter.adoptees.length")
+        fieldset(id="adoptees", ng-if="adopter.adoptees.length")
           legend Matched Adoptees
             .btn-toolbar.pull-right
-              a.collapse-toggle(href="", data-toggle="collapse", data-target="#adopteeList .collapse")
+              a.collapse-toggle(href="", data-toggle="collapse", data-target="#adoptees .collapse")
                 i.glyphicon.glyphicon-chevron-up
           .collapse.in(ng-controller="AdopterAdopteeCtrl", ng-include="template.adopteeListUrl")
       .panel-footer

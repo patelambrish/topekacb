@@ -20,10 +20,6 @@
                  .input-group-addon of {{adopterPage.total}}
              li.next(ng-class="{disabled: adopterPage.current == adopterPage.total}")
                a(href="" ng-click="getAdopterPage(adopterPage.next)") Next
-      .panel.panel-default(ng-class="{busy: busy()}")
-        .panel-heading.clearfix Adopter Results
-        .panel-body
-            div(adopter-match-results)
       div(ng-include="template.adopterMatchUrl")
     div(class="col-sm-6")
       .panel.panel-default(ng-class="{busy: busy()}")

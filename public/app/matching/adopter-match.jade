@@ -1,17 +1,17 @@
-.panel.panel-default(ng-if="adopter.criteria")
+.panel.panel-default(ng-if="currentAdopter.criteria")
   .panel-heading.clearfix
     .pull-right
-      .label.label-default {{adopter.criteria.count - adopter.adoptees.length || ''}}
+      .label.label-default {{currentAdopter.criteria.count - currentAdopter.adoptees.length || ''}}
       | &nbsp;
-      .label(class="{{adopter.status == 'Matched' && 'label-success' || 'label-warning'}}") {{adopter.status}}
-    .panel-title {{adopter.name}}
+      .label(class="{{currentAdopter.status == 'Matched' && 'label-success' || 'label-warning'}}") {{currentAdopter.status}}
+    .panel-title {{currentAdopter.name}}
   .panel-body
-    div(data-criteriaset, data-criteria="adopter.criteria", data-enums="adopter.enums")
+    div(data-criteriaset, data-criteria="currentAdopter.criteria", data-enums="currentAdopter.enums")
     div(ng-controller="AdopterAdopteeCtrl", ng-include="template.adopteeListUrl")
   .panel-footer
     btn-toolbar.pull-right
-      button.btn.btn-primary(ng-click="emailAdopter(adopter)") Email
+      button.btn.btn-primary(ng-click="emailAdopter(currentAdopter)") Email
       | &nbsp;
-      button.btn.btn-primary(ng-click="printAdopter(adopter)") Print
+      button.btn.btn-primary(ng-click="printAdopter(currentAdopter)") Print
     btn-toolbar
       button.btn.btn-default(ng-click="getNextAdopter()") Next Adopter

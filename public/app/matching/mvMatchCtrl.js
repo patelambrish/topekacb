@@ -4,6 +4,7 @@ function($scope, $filter, mvNotifier, Adopter, adoptee) {
     adopterMatchUrl: '/partials/matching/adopter-match',
     adopteeListUrl: '/partials/adopters/adoptee-list'
   };
+  $scope.adopteeList = { heading: 'Matched Adoptees' };
 	$scope.adopterSearchResults = [];
   $scope.adopteeSearchResults = [];
   $scope.currentAdopter;
@@ -26,15 +27,6 @@ function($scope, $filter, mvNotifier, Adopter, adoptee) {
 		$scope.adopterPage.current = page;
 		$scope.searchAdopters();
 	};
-
-  $scope.selectAdopter = function(adopter){
-    $scope.adopter = Adopter.get({ _id: adopter._id });
-    $scope.adopter.$promise.
-      then(function(data) {
-        $scope.adoptees = data.adoptees;
-      });
-    $scope.searchAdoptees(adopter.criteria);
-  };
 
   $scope.getAdopteePage = function(page) {
       $scope.adopteePage.current = page;
@@ -61,8 +53,12 @@ function($scope, $filter, mvNotifier, Adopter, adoptee) {
   };
 
   $scope.selectAdopter = function(adopter){
-      $scope.currentAdopter = adopter;
-      $scope.searchAdoptees(adopter.criteria);
-  }
+      $scope.currentAdopter = Adopter.get({ _id: adopter._id });
+      $scope.currentAdopter.$promise.
+        then(function(data) {
+          $scope.adoptees = data.adoptees;
+          $scope.searchAdoptees(data.criteria);
+        });
+  };
     
 }]);
