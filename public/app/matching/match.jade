@@ -3,7 +3,7 @@
     h1 Matching
 .container.top-padding-med
   div(class="row")
-    div(class="col-md-6")
+    div(class="col-sm-6")
       .panel.panel-default(ng-class="{busy: busy()}")
         .panel-heading.clearfix Adopters    
         .panel-body
@@ -12,8 +12,8 @@
         .panel-heading.clearfix Adopter Results
         .panel-body
             div(adopter-match-results)
-            div(data-criteriaset, ng-if="adopter.criteria", data-criteria="adopter.criteria", data-enums="adopter.enums")
-    div(class="col-md-6")
+      div(ng-include="template.adopterMatchUrl")
+    div(class="col-sm-6")
       .panel.panel-default(ng-class="{busy: busy()}")
         .panel-heading.clearfix Adoptee Matches
         .panel-body

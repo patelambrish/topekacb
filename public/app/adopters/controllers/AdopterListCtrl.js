@@ -1,31 +1,6 @@
 angular.module('app').
-  filter('startFrom', function() {
-    return function(array, start) {
-      start = parseInt(start, 10);
-
-      return (angular.isArray(array) || angular.isString(array)) && start ? array.slice(start) : array;
-    };
-  }).
-  filter('fullName', function() {
-    return function(data, format) {
-      if(!data) {
-        return;
-      }
-
-      var fName = data.firstName || '',
-          lName = data.lastName || '';
-
-      format = format || 'ltr';
-
-      if(format === 'ltr') {
-        return fName && lName ? lName + ', ' + fName : lName + fName;
-      } else {
-        return fName && lName ? fName + ' ' + lName : lName + fName;
-      }
-    };
-  }).
-  controller('mvAdopterListCtrl', function($scope, $filter, $location, mvAdopter, mvIdentity, mvNotifier) {
-    var adopters = mvAdopter.query();
+  controller('AdopterListCtrl', function($scope, $filter, $location, Adopter, cachedAdopters, mvIdentity, mvNotifier) {
+    var adopters = cachedAdopters.query();
 
     $scope.permission = {
       delete: mvIdentity.isAuthorized('manager')
@@ -76,7 +51,7 @@ angular.module('app').
     };
 
     $scope.delete = function(adopter) {
-      mvAdopter.remove({ _id: adopter._id }, function() {
+      Adopter.remove({ _id: adopter._id }, function() {
         var array = $scope.adopters,
             index = angular.isArray(array) ? array.indexOf(adopter) : -1;
   

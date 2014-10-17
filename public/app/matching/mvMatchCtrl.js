@@ -1,9 +1,13 @@
-angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier', 'mvAdopter',
-function($scope, $filter, mvNotifier, mvAdopter) {
+angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier', 'Adopter',
+function($scope, $filter, mvNotifier, Adopter) {
 	$scope.adopterSearchResults = [];
     $scope.adopteeSearchresults = [];
     //$scope.criteria;
     $scope.currentAdoptee;
+    $scope.template = {
+      adopterMatchUrl: '/partials/matching/adopter-match',
+      adopteeListUrl: '/partials/adopters/adoptee-list'
+    };
 
 	$scope.applyPage = function(page, data, pageInfo) {
       pageInfo.current = page;
@@ -21,9 +25,13 @@ function($scope, $filter, mvNotifier, mvAdopter) {
 	};
 
   $scope.selectAdopter = function(adopter){
-    $scope.adopter = mvAdopter.get({ _id: adopter._id });;
+    $scope.adopter = Adopter.get({ _id: adopter._id });
+    $scope.adopter.$promise.
+      then(function(data) {
+        $scope.adoptees = data.adoptees;
+      });
     $scope.searchAdoptees(adopter.criteria);
-  }
+  };
 
 /*    $scope.$on('adopterSelected', function (event, result) {
         $scope.criteria = result;

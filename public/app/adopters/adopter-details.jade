@@ -1,12 +1,14 @@
 .container
   .page-header
     h1 {{adopter.name || 'New Adopter'}}
-  form(role="form", name="form")
+  form(role="form", name="form", ng-submit="savePlus(form)")
     .panel.panel-default
       .panel-body
-        fieldset
+        fieldset(id="adopter")
           legend Adopter Information
-          .row
+            a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#adopter .collapse")
+              i.glyphicon.glyphicon-chevron-up
+          .row.collapse.in
             .col-sm-3
               .form-group
                 label Type of Adopter
@@ -23,9 +25,11 @@
               .form-group(ng-class="{'has-error': form.dept.$invalid && (submitted || form.dept.$dirty)}")
                 label Department *
                 input.form-control(type="text", name="dept", placeholder="Department", required, ng-model="adopter.dept")
-        fieldset
+        fieldset(id="address")
           legend Address
-          .row
+            a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#address .collapse")
+              i.glyphicon.glyphicon-chevron-up
+          .row.collapse.in
             .col-sm-4
               .form-group(ng-class="{'has-error': form.address.$invalid && (submitted || form.address.$dirty)}")
                 label Street *
@@ -43,9 +47,11 @@
               .form-group
                 label Zip Code
                 input.form-control(type="text", name="zip", placeholder="Zip", ng-model="adopter.address.zip")
-        fieldset
+        fieldset(id="phone")
           legend Phone
-          .row(ng-repeat="p in adopter.phones", ng-form="phoneForm", ng-class="{'has-error': phoneForm.number.$invalid && (submitted || phoneForm.number.$dirty)}")
+            a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#phone .collapse")
+              i.glyphicon.glyphicon-chevron-up
+          .row.collapse.in(ng-repeat="p in adopter.phones", ng-form="phoneForm", ng-class="{'has-error': phoneForm.number.$invalid && (submitted || phoneForm.number.$dirty)}")
             .col-sm-3
               .form-group
                 label.visible-xs-block Number
@@ -64,15 +70,17 @@
                   span.text-danger
                     i.glyphicon.glyphicon-remove
             hr.visible-xs-block
-          .row
+          .row.collapse.in
             .col-sm-12
               .form-group
                 a.btn.btn-link(href="", ng-click="addPhone()")
                   i.glyphicon.glyphicon-plus
                   | &nbsp;Add new
-        fieldset
+        fieldset(id="notification")
           legend Notification Method
-          .row
+            a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#notification .collapse")
+              i.glyphicon.glyphicon-chevron-up
+          .row.collapse.in
             .col-sm-6
               .form-group
                 label.checkbox-inline(ng-repeat="e in adopter.enums.notify")
@@ -82,9 +90,16 @@
             .col-sm-6
               .form-group(ng-class="{'has-error': form.email.$invalid && (submitted || form.email.$dirty)}")
                 input.form-control(type="email", name="email", placeholder="Email", required, ng-model="adopter.email", ng-if="adopter.notifyMethods.indexOf('Email') > -1")
-        div(data-criteriaset, data-criteria="adopter.criteria", data-enums="adopter.enums")
+        div(data-criteriaset, data-title="Household Criteria", data-criteria="adopter.criteria", data-enums="adopter.enums")
+        fieldset(id="adopteeList", ng-if="adopter.adoptees.length")
+          legend Matched Adoptees
+            .btn-toolbar.pull-right
+              a.collapse-toggle(href="", data-toggle="collapse", data-target="#adopteeList .collapse")
+                i.glyphicon.glyphicon-chevron-up
+          .collapse.in(ng-controller="AdopterAdopteeCtrl", ng-include="template.adopteeListUrl")
       .panel-footer
         .btn-toolbar.text-right
-          button.btn.btn-primary(ng-click="savePlus(form)") Save and New
-          button.btn.btn-primary(ng-click="save(form)") Save
           button.btn.btn-default(ng-click="cancel()", ng-disabled="busy()") Cancel
+          button.btn.btn-primary(ng-click="save(form)") Save
+          button.btn.btn-primary(type="submit") Save and New
+          

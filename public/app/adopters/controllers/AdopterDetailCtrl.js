@@ -1,7 +1,7 @@
 angular.module('app').
-	controller('mvAdopterDetailCtrl', function($scope, $routeParams, $location, mvAdopter, mvIdentity, mvNotifier, common) {
-    $scope.permission = {
-      delete: mvIdentity.isAuthorized('manager')
+	controller('AdopterDetailCtrl', function($scope, $routeParams, $location, Adopter, cachedAdopters, mvNotifier, common) {
+    $scope.template = {
+      adopteeListUrl: '/partials/adopters/adoptee-list'
     };
 
     $scope.busy = function() {
@@ -10,13 +10,15 @@ angular.module('app').
 
     $scope.create = function() {
       $scope.submitted = false;
-      $scope.adopter = new mvAdopter({
+      $scope.adopter = new Adopter({
         entity: 'Individual',
         address: {
           city: 'Topeka',
           state: 'KS'
         },
         phones: [{ name: 'Home' }],
+        adoptees: [],
+        enums: cachedAdopters.enums(),
         notifyMethods: [],
         criteria: {
           childAges: [],
@@ -26,14 +28,16 @@ angular.module('app').
       });
 
       $scope.master = angular.copy($scope.adopter);
+      $scope.adoptees = $scope.master.adoptees;
     };
 
     $scope.get = function() {
       $scope.submitted = false;
-      $scope.adopter = mvAdopter.get({ _id: $routeParams.id });
+      $scope.adopter = Adopter.get({ _id: $routeParams.id });
       $scope.adopter.$promise.
         then(function(data) {
           $scope.master = angular.copy(data);
+          $scope.adoptees = $scope.master.adoptees;
         });
     };
 
@@ -41,7 +45,7 @@ angular.module('app').
       $scope.submitted = true;
 
       if(form.$valid) {
-        mvAdopter.save($scope.adopter, function() {
+        Adopter.save($scope.adopter, function() {
           mvNotifier.notify($scope.adopter.name + ' successfully saved!');
           $location.path('/adopters');
         });
@@ -52,16 +56,17 @@ angular.module('app').
       $scope.submitted = true;
 
       if(form.$valid) {
-        mvAdopter.save($scope.adopter, function() {
+        Adopter.save($scope.adopter, function() {
           mvNotifier.notify($scope.adopter.name + ' successfully saved!');
           $location.path('/adopters/0');
           $scope.create();
+          form.$setPristine();
         });
       }
     };
 
     $scope.delete = function() {
-      mvAdopter.remove({ _id: $scope.adopter._id }, function() {
+      Adopter.remove({ _id: $scope.adopter._id }, function() {
         mvNotifier.notify($scope.adopter.name + ' was deleted.');
         $location.path('/adopters');
       });
@@ -92,6 +97,6 @@ angular.module('app').
     };
     
     $scope.setFlags = common.setFlags;
-
+        
     ($routeParams.id === '0' ? $scope.create : $scope.get)();
 	});

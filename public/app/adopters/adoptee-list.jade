@@ -1,0 +1,23 @@
+.panel.panel-default
+  table.table.table-hover
+    thead
+      tr
+        th Name
+        th Household Type
+        th Household Members
+    tbody
+      tr(ng-repeat="adoptee in adoptees | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size")
+        td(ng-click="select(adoptee)") {{adoptee.lastName}}, {{adoptee.firstName}}
+        td(ng-click="select(adoptee)") {{adoptee.criteria.householdType}}
+        td(ng-click="select(adoptee)") {{adoptee.householdMembers.length}}
+  .panel-footer(ng-if="adoptees.length > page.size")
+    ul.pager
+      li.previous(ng-class="{disabled: page.current == 1}")
+        a(href="" ng-click="applyPage(page.previous)") Previous
+      li
+        .input-group.input-group-page
+          .input-group-addon Page
+          input.form-control(type="number", min="1", max="{{page.total}}", ng-model="page.current", ng-change="applyPage(page.current)")
+          .input-group-addon of {{page.total}}
+      li.next(ng-class="{disabled: page.current == page.total}")
+        a(href="" ng-click="applyPage(page.next)") Next

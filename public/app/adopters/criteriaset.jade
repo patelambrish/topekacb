@@ -1,16 +1,13 @@
-fieldset(ng-form="criteriaForm")
-  legend(ng-switch="criteria.count % 2") Household Criteria
-    .pull-right.label.label-success(ng-switch-when="0") Successfully Matched!
-    .pull-right.label.label-warning(ng-switch-default) 
-      | {{count-matchCount}} 
-      span(ng-pluralize, count="criteria.count", when="{'one': 'Match', 'other': 'Matches'}")
-      | &nbsp;Remaining
-  .row
+fieldset(id="criteriaForm", ng-form="criteriaForm")
+  legend(ng-if="title") {{title}}
+    a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#criteriaForm .collapse")
+      i.glyphicon.glyphicon-chevron-up
+  .row.collapse.in
     .col-sm-5
       .form-group
         label Number of Households
         input.form-control(type="number", name="count", placeholder="Number of households", min="1", ng-model="criteria.count")
-  .row
+  .row.collapse.in
     .col-sm-7
       .form-group
         label Household Types
@@ -31,7 +28,7 @@ fieldset(ng-form="criteriaForm")
           label
             input(type="checkbox", name="special", ng-value="e", ng-click="setFlags(criteria.special, e)", ng-checked="criteria.special.indexOf(e) > -1")
             | {{e}}
-  .row
+  .row.collapse.in
     .col-sm-12
       .form-group
         label Comments

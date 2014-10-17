@@ -65,6 +65,7 @@ exports.getAdopterById = function(req, res, next) {
     findById(req.params.id).
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
+    populate('adoptees').
     select('-__v').
     lean(true).
     exec(function(err, adopter) {

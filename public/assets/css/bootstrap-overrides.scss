@@ -84,3 +84,8 @@ h1 {
     background-image: none;
   }
 }
+
+legend {
+  font-size: ($font-size-base * 1.15);
+  margin-bottom: 10px;
+}
