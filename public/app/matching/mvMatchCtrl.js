@@ -1,12 +1,12 @@
-angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier',
-function($scope, $filter, mvNotifier, adoptee) {
-	$scope.adopterSearchResults = [];
-  $scope.adopteeSearchResults = [];
-  $scope.currentAdopter;
-  $scope.currentAdoptee;
-  $scope.ageRanges = ["0-7", "8-12", "13-18"];
-  $scope.adopteeEnums;
-  $scope.adopteeAges = [];
+angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier', 'adoptee', 'mvAdopter',
+function($scope, $filter, mvNotifier, adoptee, mvAdopter) {
+    $scope.adopterSearchResults = [];
+    $scope.adopteeSearchResults = [];
+    $scope.currentAdopter;
+    $scope.currentAdoptee;
+    $scope.ageRanges = ["0-7", "8-12", "13-18"];
+    $scope.adopteeEnums;
+    $scope.adopteeAges = [];
 
 	$scope.applyPage = function(page, data, pageInfo) {
       pageInfo.current = page;
@@ -16,21 +16,21 @@ function($scope, $filter, mvNotifier, adoptee) {
       pageInfo.previous = page > 1 ? page - 1 : page;
       pageInfo.next = page < pageInfo.total ? page + 1 : page;
 
-   };
+    };
 
 	$scope.getAdopterPage = function(page) {
 		$scope.adopterPage.current = page;
 		$scope.searchAdopters();
 	};
 
-  $scope.getAdopteePage = function(page) {
+    $scope.getAdopteePage = function(page) {
       $scope.adopteePage.current = page;
       if ($scope.currentAdopter) {
           $scope.searchAdoptees($scope.currentAdopter.criteria);
       }
-  }
+    }
 
-  $scope.selectAdoptee = function(selectedAdoptee) {
+    $scope.selectAdoptee = function(selectedAdoptee) {
       $scope.currentAdoptee = selectedAdoptee;
       $scope.adopteeAges = [];
       selectedAdoptee.householdMembers.forEach(function(member){
@@ -44,12 +44,37 @@ function($scope, $filter, mvNotifier, adoptee) {
               $scope.adopteeAges.push($scope.ageRanges[2]);
           }
       });
-      console.log($scope.adopteeAges);
-  }
+    }
 
-  $scope.selectAdopter = function(adopter){
+    $scope.matchAdoptee = function(){
+      $scope.currentAdoptee.status = "Matched";
+      $scope.currentAdoptee._adopterId = $scope.currentAdopter._id;
+      if (!$scope.currentAdopter.adoptees){
+          $scope.currentAdopter.adoptees = [];
+      }
+      $scope.currentAdopter.adoptees.push($scope.currentAdoptee._id);
+      console.log($scope.currentAdoptee);
+      adoptee.updateAdoptee($scope.currentAdoptee).$promise.then(function (retVal) {
+          if (retVal.error) {
+              mvNotifier.notify(retVal.error);
+          }
+          else {
+              mvAdopter.save($scope.currentAdopter).$promise.then(function(retVal){
+                  if (retVal.error) {
+                      mvNotifier.notify(retVal.error);
+                  }
+                  else{
+                      mvNotifier.notify($scope.currentAdoptee.firstName + ' ' + $scope.currentAdoptee.lastName + ' matched!');
+                  }
+              });
+          }
+      });
+      $scope.searchAdoptees($scope.currentAdopter.criteria);
+    }
+
+    $scope.selectAdopter = function(adopter){
       $scope.currentAdopter = adopter;
       $scope.searchAdoptees(adopter.criteria);
-  }
+    }
     
 }]);

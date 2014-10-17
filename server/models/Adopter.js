@@ -41,6 +41,7 @@ var adopterSchema = new Schema({
     special: [{ type: String, enum: specialEnum }],
     comment: String
   },
+  adoptees: [{type:Schema.Types.ObjectId, ref: 'Adoptee'}],
   status: { type: String, enum: statusEnum, default: 'In Process' },
   createDate: Date,
   createdBy: { type: Schema.Types.ObjectId, ref: 'User'},

@@ -81,21 +81,22 @@ exports.updateAdoptee = function(req, res){
           id = update._id,
           options = { upsert: true },
           userId = req.user ? req.user._id : null;
-
       if(!id) {
           id = new mongoose.Types.ObjectId();
           update.createDate = new Date();
           update._createUser = userId;
       } else {
           delete update._id;
+          delete update._createUser;
           update.modifyDate = new Date();
           update._modifyUser = userId;
       }
+
       delete update.__v;
       Adoptee.
           findByIdAndUpdate(id, update, options).
-          populate('createUser', 'firstName lastName').
-          populate('modifyUser', 'firstName lastName').
+          populate('_createUser', 'firstName lastName').
+          populate('_modifyUser', 'firstName lastName').
           exec(function(err, adoptee) {
               if(err) { res.status(400); return res.send({error:err.toString()});}
               return res.send(adoptee);
