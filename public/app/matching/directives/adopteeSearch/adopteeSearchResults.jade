@@ -1,30 +1,15 @@
-.panel.panel-default(ng-class="{busy: busy()}", ng-show="adopteeSearchResults.totalCount > 0")
-    table.table.table-hover
-        thead
-            tr
-                th Name
-                th Household Type
-                th Select
-        tbody
-            tr(ng-repeat="adoptee in adopteeSearchResults.data" ng-click="selectAdoptee(adoptee)")
-                td {{adoptee.lastName + ', ' + adoptee.firstName}}<span>,</span>
-                td {{adoptee.criteria.householdType}}
-                td
-                    a(href="adoptees/{{adoptee._id}}")
-                        i(class="glyphicon glyphicon-plus")
-            tr(ng-if="adopteeSearchResults.totalCount == 0")
-                td No Data Available
-    .panel-footer(ng-show="adopteeSearchResults.totalCount > 0")
-        ul.pager
-            li.previous(ng-class="{disabled: adopteePage.current == 1}")
-                a(class="editAdoptee" href="" ng-click="getAdopteePage(adopteePage.previous)") Previous
-            li
-                .input-group.input-group-page
-                    .input-group-addon Page
-                    input.form-control(type="number", min="1", max="{{adopteePage.total}}", ng-model="adopteePage.current", ng-change="getAdopteePage(adopteePage.current)")
-                    .input-group-addon of {{adopteePage.total}}
-            li.next(ng-class="{disabled: adopteePage.current == adopteePage.total}")
-                a(href="" ng-click="getAdopteePage(adopteePage.next)") Next
-.panel.panel-default(ng-class="{busy: busy()}", ng-show="!adopteeSearchResults")
-    div
-        p Select an adopter to view matching adoptees
+table.table.table-hover(ng-show="adopteeSearchResults.totalCount > 0")
+  thead
+    tr.row
+        th Name
+        th Household Type
+        th Members
+  tbody
+    tr.row(ng-repeat="adoptee in adopteeSearchResults.data" ng-click="selectAdoptee(adoptee)")
+        td {{adoptee.lastName + ', ' + adoptee.firstName}}
+        td {{adoptee.criteria.householdType}}
+        td {{adoptee.householdMembers.length}}
+    tr(ng-if="adopteeSearchResults.totalCount == 0")
+        td No Data Available
+div(ng-show="!adopteeSearchResults")
+    p Select an adopter to view matching adoptees

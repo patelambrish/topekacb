@@ -69,11 +69,6 @@ angular.module('app').directive('adopterMatchResults', ['Adopter','$filter',
 function(Adopter, $filter) {
 	return {
 		templateUrl : '/partials/matching/directives/adopterSearch/adopterSearchResults',
-		restrict: 'A',
-		controller: ['$scope', function($scope) {
-            // $scope.selectAdopter = function(adopter){
-            //     $scope.$emit('adopterSelected', adopter.criteria);
-            // }
-		}]
+		restrict: 'A'
 	};
 }]);
