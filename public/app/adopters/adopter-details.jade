@@ -1,16 +1,18 @@
 .container
   .page-header
     h1 {{adopter.name || 'New Adopter'}}
-  form(role="form", name="form")
+  form(role="form", name="form", ng-submit="savePlus(form)")
     .panel.panel-default
       .panel-body
-        fieldset
+        fieldset(id="adopter")
           legend Adopter Information
-          .row
+            a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#adopter .collapse")
+              i.glyphicon.glyphicon-chevron-up
+          .row.collapse.in
             .col-sm-3
               .form-group
                 label Type of Adopter
-                select.form-control(ng-model="adopter.entity", ng-options="e for e in enums.entity")
+                select.form-control(ng-model="adopter.entity", ng-options="e for e in adopter.enums.entity")
             .col-sm-4.col-md-3(ng-class="{'col-sm-6 col-md-5': adopter.entity == 'Individual'}")
               .form-group(ng-class="{'has-error': form.name.$invalid && (submitted || form.name.$dirty)}")
                 label Name *
@@ -23,9 +25,11 @@
               .form-group(ng-class="{'has-error': form.dept.$invalid && (submitted || form.dept.$dirty)}")
                 label Department *
                 input.form-control(type="text", name="dept", placeholder="Department", required, ng-model="adopter.dept")
-        fieldset
+        fieldset(id="address")
           legend Address
-          .row
+            a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#address .collapse")
+              i.glyphicon.glyphicon-chevron-up
+          .row.collapse.in
             .col-sm-4
               .form-group(ng-class="{'has-error': form.address.$invalid && (submitted || form.address.$dirty)}")
                 label Street *
@@ -37,15 +41,17 @@
             .col-sm-2
               .form-group
                 label State
-                select.form-control(name="state", tabindex="-1", ng-model="adopter.address.state", ng-options="e for e in enums.state")
+                select.form-control(name="state", tabindex="-1", ng-model="adopter.address.state", ng-options="e for e in adopter.enums.state")
                   option(disabled value="") State
             .col-sm-3.col-md-2
               .form-group
                 label Zip Code
                 input.form-control(type="text", name="zip", placeholder="Zip", ng-model="adopter.address.zip")
-        fieldset
+        fieldset(id="phone")
           legend Phone
-          .row(ng-repeat="p in adopter.phones", ng-form="phoneForm", ng-class="{'has-error': phoneForm.number.$invalid && (submitted || phoneForm.number.$dirty)}")
+            a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#phone .collapse")
+              i.glyphicon.glyphicon-chevron-up
+          .row.collapse.in(ng-repeat="p in adopter.phones", ng-form="phoneForm", ng-class="{'has-error': phoneForm.number.$invalid && (submitted || phoneForm.number.$dirty)}")
             .col-sm-3
               .form-group
                 label.visible-xs-block Number
@@ -57,34 +63,43 @@
             .col-sm-3
               .form-group
                 label.visible-xs-block Phone
-                select.form-control(name="name", ng-model="p.name", ng-options="e for e in enums.phone")
+                select.form-control(name="name", ng-model="p.name", ng-options="e for e in adopter.enums.phone")
             .col-sm-3
               .form-group(ng-hide="$first")
                 a.btn.btn-link(href="", tabindex="-1", ng-click="deletePhone(p)")
                   span.text-danger
                     i.glyphicon.glyphicon-remove
             hr.visible-xs-block
-          .row
+          .row.collapse.in
             .col-sm-12
               .form-group
                 a.btn.btn-link(href="", ng-click="addPhone()")
                   i.glyphicon.glyphicon-plus
                   | &nbsp;Add new
-        fieldset
+        fieldset(id="notification")
           legend Notification Method
-          .row
+            a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#notification .collapse")
+              i.glyphicon.glyphicon-chevron-up
+          .row.collapse.in
             .col-sm-6
               .form-group
-                label.checkbox-inline(ng-repeat="e in enums.notify")
+                label.checkbox-inline(ng-repeat="e in adopter.enums.notify")
                   input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.notifyMethods, e)", ng-checked="adopter.notifyMethods.indexOf(e) > -1")
                   | {{e}}
                 p.help-block Method for receiving household information
             .col-sm-6
               .form-group(ng-class="{'has-error': form.email.$invalid && (submitted || form.email.$dirty)}")
                 input.form-control(type="email", name="email", placeholder="Email", required, ng-model="adopter.email", ng-if="adopter.notifyMethods.indexOf('Email') > -1")
-        div(data-criteriaset data-criteria="adopter.criteria" data-enums="enums")
+        div(data-criteriaset, data-title="Household Criteria", data-criteria="adopter.criteria", data-enums="adopter.enums")
+        fieldset(id="adoptees", ng-if="adopter.adoptees.length")
+          legend Matched Adoptees
+            .btn-toolbar.pull-right
+              a.collapse-toggle(href="", data-toggle="collapse", data-target="#adoptees .collapse")
+                i.glyphicon.glyphicon-chevron-up
+          .collapse.in(ng-controller="AdopterAdopteeCtrl", ng-include="template.adopteeListUrl")
       .panel-footer
         .btn-toolbar.text-right
-          button.btn.btn-primary(ng-click="savePlus(form)") Save and New
-          button.btn.btn-primary(ng-click="save(form)") Save
           button.btn.btn-default(ng-click="cancel()", ng-disabled="busy()") Cancel
+          button.btn.btn-primary(ng-click="save(form)") Save
+          button.btn.btn-primary(type="submit") Save and New
+          

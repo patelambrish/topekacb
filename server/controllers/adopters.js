@@ -65,12 +65,15 @@ exports.getAdopterById = function(req, res, next) {
     findById(req.params.id).
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
+    populate('adoptees').
     select('-__v').
+    lean(true).
     exec(function(err, adopter) {
       if(err) {
         console.log(err);
         return next(err);
       }
+      adopter.enums = Adopter.getEnumValues();
       res.send(adopter);
     });
 };
@@ -81,6 +84,7 @@ exports.saveAdopter = function(req, res, next) {
       options = { upsert: true },
       userId = req.user ? req.user._id : null;
 
+  delete data.enums;
   if(!id) {
     id = new mongoose.Types.ObjectId();
     data.createDate = new Date();

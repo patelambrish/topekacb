@@ -3,7 +3,7 @@
     h1 Matching
 .container.top-padding-med
   div(class="row")
-    div(class="col-md-6")
+    div(class="col-sm-6")
       .panel.panel-default(ng-class="{busy: busy()}")
         .panel-heading.clearfix Adopters
         .panel-body
@@ -20,11 +20,8 @@
                  .input-group-addon of {{adopterPage.total}}
              li.next(ng-class="{disabled: adopterPage.current == adopterPage.total}")
                a(href="" ng-click="getAdopterPage(adopterPage.next)") Next
-      .panel.panel-default(ng-class="{busy: busy()}")
-         .panel-heading.clearfix Adopter Criteria
-             .panel-body
-                 div() Some Adopter Criteria Directive
-    div(class="col-md-6")
+      div(ng-include="template.adopterMatchUrl")
+    div(class="col-sm-6")
       .panel.panel-default(ng-class="{busy: busy()}")
         .panel-heading.clearfix Adoptee Matches
             button.pull-right.btn.btn-primary(ng-click="bulkMatch()", ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0") <  Bulk Match

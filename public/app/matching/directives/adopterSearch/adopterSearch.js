@@ -1,5 +1,5 @@
-angular.module('app').directive('adopterSearch', ['mvAdopter', '$filter',
-function(mvAdopter, $filter) {
+angular.module('app').directive('adopterSearch', ['Adopter', '$filter',
+function(Adopter, $filter) {
 	return {
 		templateUrl : '/partials/matching/directives/adopterSearch/adopterSearch',
 		restrict : 'A',
@@ -14,13 +14,13 @@ function(mvAdopter, $filter) {
 				size : 3
 			};
 			$scope.adopterFilter = {};
-			mvAdopter.enums({
-				_id : 0
-			}).$promise.then(function(data) {
-				$scope.adopterEnums = data;
-			});
+			// mvAdopter.enums({
+			// 	_id : 0
+			// }).$promise.then(function(data) {
+			// 	$scope.adopterEnums = data;
+			// });
 			$scope.searchAdopters = function() {
-				mvAdopter.query({
+				Adopter.query({
 					filter : $scope.adopterFilter,
 					sort : $scope.adopterSort.value,
 					start : ($scope.adopterPage.current * $scope.adopterPage.size) - $scope.adopterPage.size,
@@ -65,8 +65,8 @@ function(mvAdopter, $filter) {
 	};
 }]);
 
-angular.module('app').directive('adopterMatchResults', ['mvAdopter','$filter',
-function(mvAdopter, $filter) {
+angular.module('app').directive('adopterMatchResults', ['Adopter','$filter',
+function(Adopter, $filter) {
 	return {
 		templateUrl : '/partials/matching/directives/adopterSearch/adopterSearchResults',
 		restrict: 'A'

@@ -39,11 +39,11 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
 		resolve : routeRoleChecks.user
 	}).when('/adopters', {
 		templateUrl : '/partials/adopters/adopter-list',
-		controller : 'mvAdopterListCtrl',
+		controller : 'AdopterListCtrl',
 		resolve : routeRoleChecks.user
 	}).when('/adopters/:id', {
 		templateUrl : '/partials/adopters/adopter-details',
-		controller : 'mvAdopterDetailCtrl',
+		controller : 'AdopterDetailCtrl',
 		resolve : routeRoleChecks.user
 	}).when('/facebook/:message', {
 		resolve : {

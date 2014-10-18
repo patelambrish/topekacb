@@ -1,12 +1,17 @@
-angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier', 'adoptee', 'mvAdopter',
-function($scope, $filter, mvNotifier, adoptee, mvAdopter) {
-    $scope.adopterSearchResults = [];
-    $scope.adopteeSearchResults = [];
-    $scope.currentAdopter;
-    $scope.currentAdoptee;
-    $scope.ageRanges = ["0-7", "8-12", "13-18"];
-    $scope.adopteeEnums;
-    $scope.adopteeAges = [];
+angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier', 'Adopter',
+function($scope, $filter, mvNotifier, Adopter, adoptee) {
+  $scope.template = {
+    adopterMatchUrl: '/partials/matching/adopter-match',
+    adopteeListUrl: '/partials/adopters/adoptee-list'
+  };
+  $scope.adopteeList = { heading: 'Matched Adoptees' };
+	$scope.adopterSearchResults = [];
+  $scope.adopteeSearchResults = [];
+  $scope.currentAdopter;
+  $scope.currentAdoptee;
+  $scope.ageRanges = ["0-7", "8-12", "13-18"];
+  $scope.adopteeEnums;
+  $scope.adopteeAges = [];
 
 	$scope.applyPage = function(page, data, pageInfo) {
       pageInfo.current = page;
@@ -28,7 +33,7 @@ function($scope, $filter, mvNotifier, adoptee, mvAdopter) {
       if ($scope.currentAdopter) {
           $scope.searchAdoptees($scope.currentAdopter.criteria);
       }
-    }
+    };
 
     $scope.selectAdoptee = function(selectedAdoptee) {
       $scope.currentAdoptee = selectedAdoptee;
@@ -44,7 +49,7 @@ function($scope, $filter, mvNotifier, adoptee, mvAdopter) {
               $scope.adopteeAges.push($scope.ageRanges[2]);
           }
       });
-    }
+    };
 
     $scope.matchAdoptee = function(){
       $scope.currentAdoptee.status = "Matched";
@@ -70,11 +75,16 @@ function($scope, $filter, mvNotifier, adoptee, mvAdopter) {
           }
       });
       $scope.searchAdoptees($scope.currentAdopter.criteria);
-    }
+    };
 
-    $scope.selectAdopter = function(adopter){
-      $scope.currentAdopter = adopter;
-      $scope.searchAdoptees(adopter.criteria);
-    }
+
+  $scope.selectAdopter = function(adopter){
+      $scope.currentAdopter = Adopter.get({ _id: adopter._id });
+      $scope.currentAdopter.$promise.
+        then(function(data) {
+          $scope.adoptees = data.adoptees;
+          $scope.searchAdoptees(data.criteria);
+        });
+  };
     
 }]);

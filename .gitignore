@@ -5,3 +5,4 @@ public/Thumbs.db
 .sass-cache
 *.css
 newrelic_agent.log
+*.project
