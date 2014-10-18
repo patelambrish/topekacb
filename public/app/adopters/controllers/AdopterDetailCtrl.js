@@ -41,26 +41,20 @@ angular.module('app').
         });
     };
 
-    $scope.save = function(form) {
+    $scope.save = function(form, plus) {
       $scope.submitted = true;
 
       if(form.$valid) {
         Adopter.save($scope.adopter, function() {
           mvNotifier.notify($scope.adopter.name + ' successfully saved!');
-          $location.path('/adopters');
-        });
-      }
-    };
-
-    $scope.savePlus = function(form) {
-      $scope.submitted = true;
-
-      if(form.$valid) {
-        Adopter.save($scope.adopter, function() {
-          mvNotifier.notify($scope.adopter.name + ' successfully saved!');
-          $location.path('/adopters/0');
-          $scope.create();
-          form.$setPristine();
+          
+          if(plus) {
+            $location.path('/adopters/0');
+            $scope.create();
+            form.$setPristine();
+          } else {
+            $location.path('/adopters');
+          }
         });
       }
     };

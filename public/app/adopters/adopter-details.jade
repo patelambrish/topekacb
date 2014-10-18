@@ -1,7 +1,7 @@
 .container
   .page-header
     h1 {{adopter.name || 'New Adopter'}}
-  form(role="form", name="form", ng-submit="savePlus(form)")
+  form(role="form", name="form")
     .panel.panel-default
       .panel-body
         fieldset(id="adopter")
@@ -99,7 +99,7 @@
           .collapse.in(ng-controller="AdopterAdopteeCtrl", ng-include="template.adopteeListUrl")
       .panel-footer
         .btn-toolbar.text-right
-          button.btn.btn-default(ng-click="cancel()", ng-disabled="busy()") Cancel
-          button.btn.btn-primary(ng-click="save(form)") Save
-          button.btn.btn-primary(type="submit") Save and New
+          button.btn.btn-default(type="button", ng-click="cancel()", ng-disabled="busy()") Cancel
+          button.btn.btn-primary(type="button", ng-click="save(form)") Save
+          button.btn.btn-primary(type="submit", ng-click="save(form, true)") Save and New
           
