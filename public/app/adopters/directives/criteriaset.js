@@ -5,8 +5,10 @@ angular.module('app').
         enums: '=',
         criteria: '='
       },
+      replace: true,
       templateUrl: '/partials/adopters/criteriaset',
-      link: function(scope) {
+      link: function(scope, element, attrs) {
+        scope.title = attrs.title;
         scope.setFlags = common.setFlags;
       }
     };

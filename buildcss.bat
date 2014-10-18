@@ -1,1 +1,14 @@
-sass --watch public/vendor/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss:public/assets/css/bootstrap.css public/assets/css/site.scss:public/assets/css/site.css --precision 8
+@ECHO OFF
+:: Display Ruby version
+ruby.exe -v
+ 
+:: Switch to Sass dir:
+cd .\public\assets\css
+ 
+:: run Sass
+:: output version:
+call sass -v
+:: force overwrite of css
+call sass --update site.scss:site.css -f -C --style compact --precision 8
+:: watch for more updates
+call sass --watch site.scss:site.css --style compact --precision 8

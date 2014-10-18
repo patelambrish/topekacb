@@ -1,4 +1,4 @@
-angular.module('app').factory('mvAdopter', function($resource) {
+angular.module('app').factory('Adopter', function($resource) {
 	var AdopterResource = $resource('/api/adopters/:_id', {
 		_id : '@id'
 	}, {
