@@ -1,6 +1,6 @@
 fieldset(id="criteriaForm", ng-form="criteriaForm")
   legend(ng-if="title") {{title}}
-    a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#criteriaForm .collapse")
+    a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#criteriaForm .collapse")
       i.glyphicon.glyphicon-chevron-up
   .row.collapse.in
     .col-sm-5

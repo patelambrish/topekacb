@@ -6,7 +6,7 @@
       .panel-body
         fieldset(id="adopter")
           legend Adopter Information
-            a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#adopter .collapse")
+            a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#adopter .collapse")
               i.glyphicon.glyphicon-chevron-up
           .row.collapse.in
             .col-sm-3
@@ -27,7 +27,7 @@
                 input.form-control(type="text", name="dept", placeholder="Department", required, ng-model="adopter.dept")
         fieldset(id="address")
           legend Address
-            a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#address .collapse")
+            a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#address .collapse")
               i.glyphicon.glyphicon-chevron-up
           .row.collapse.in
             .col-sm-4
@@ -49,7 +49,7 @@
                 input.form-control(type="text", name="zip", placeholder="Zip", ng-model="adopter.address.zip")
         fieldset(id="phone")
           legend Phone
-            a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#phone .collapse")
+            a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#phone .collapse")
               i.glyphicon.glyphicon-chevron-up
           .row.collapse.in(ng-repeat="p in adopter.phones", ng-form="phoneForm", ng-class="{'has-error': phoneForm.number.$invalid && (submitted || phoneForm.number.$dirty)}")
             .col-sm-3
@@ -78,7 +78,7 @@
                   | &nbsp;Add new
         fieldset(id="notification")
           legend Notification Method
-            a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#notification .collapse")
+            a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#notification .collapse")
               i.glyphicon.glyphicon-chevron-up
           .row.collapse.in
             .col-sm-6
@@ -94,7 +94,7 @@
         fieldset(id="adoptees", ng-if="adopter.adoptees.length")
           legend Matched Adoptees
             .btn-toolbar.pull-right
-              a.collapse-toggle(href="", data-toggle="collapse", data-target="#adoptees .collapse")
+              a.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#adoptees .collapse")
                 i.glyphicon.glyphicon-chevron-up
           .collapse.in(ng-controller="AdopterAdopteeCtrl", ng-include="template.adopteeListUrl")
       .panel-footer
