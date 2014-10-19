@@ -31,7 +31,7 @@
   div.modal.fade(id="userModal" 
     tabindex="-1" 
     role="dialog" 
-    aria-hidden="true")
+    aria-hidden="true" data-backdrop="static")
     div.modal-dialog
       div.modal-content
         form(name="userForm" id="userForm"
@@ -97,9 +97,9 @@
                       data-ng-required="!selectedUser._id" 
                       type="password" 
                       data-ng-disabled="selectedUser.facebook.id"
-                      data-select-on-focus="true")
+                      data-select-on-focus="true" data-ng-change="validatePassword(selectedUser.password)")
                     span(class="help-block" 
-                      data-ng-show="userForm.password.$invalid && userForm.password.$dirty") Password is required
+                      data-ng-show="userForm.password.$invalid && userForm.password.$dirty") Minimum six characters with at least one special character or number.
               div(class="form-group" 
                 data-ng-class="{'has-error': userForm.roles.$invalid && userForm.roles.$dirty}")
                 label(class="col-sm-4 control-label") Roles 
@@ -126,4 +126,4 @@
             button(type="button" 
               class="btn btn-primary" 
               data-ng-click="saveUser()"
-              data-ng-disabled="userForm.$invalid || (roles | filter: {selected:true} : true).length===0") Save Changes
+              data-ng-disabled="userForm.$invalid || userForm.password.$invalid || (roles | filter: {selected:true} : true).length===0") {{selectedUser._id? 'Update' : 'Create'}}

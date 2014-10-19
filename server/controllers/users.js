@@ -1,5 +1,15 @@
 var User = require('mongoose').model('User'), encrypt = require('../utilities/encryption');
 
+function isValidPassword(pwd) {
+	if (pwd.length < 6) {
+		return false;
+	} else if (pwd.search(/\d/) == -1 && pwd.search(/[!@#$%^&*(){}[\]<>?/|.:;_-]/) == -1) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
 exports.getUsers = function(req, res) {
 	console.log(req.query);
 	User.find({}, {
@@ -18,6 +28,13 @@ exports.createUser = function(req, res, next) {
 	var userData = req.body;
 	userData.username = userData.username.toLowerCase();
 	userData.salt = encrypt.createSalt();
+	if (!isValidPassword(userData.password)) {
+		var err = new Error("Password must be at least 6 characters long and contain at least one special character or number");
+		res.status(400);
+		return res.send({
+			reason : err.toString()
+		});
+	}
 	userData.hashed_pwd = encrypt.hashPwd(userData.salt, userData.password);
 	User.create(userData, function(err, user) {
 		if (err) {
@@ -42,30 +59,6 @@ exports.createUser = function(req, res, next) {
 	});
 };
 
-/*
- exports.updateUser = function(req, res) {
- var userUpdates = req.body;
-
- if(req.user._id != userUpdates._id && !req.user.hasRole('admin')) {
- res.status(403);
- return res.end();
- }
-
- req.user.firstName = userUpdates.firstName;
- req.user.lastName = userUpdates.lastName;
- req.user.username = userUpdates.username;
- req.user.active = userUpdates.active;
- req.user.roles = userUpdates.roles;
- if(userUpdates.password && userUpdates.password.length > 0) {
- req.user.salt = encrypt.createSalt();
- req.user.hashed_pwd = encrypt.hashPwd(req.user.salt, userUpdates.password);
- }
- req.user.save(function(err) {
- if(err) { res.status(400); return res.send({reason:err.toString()});}
- res.send(req.user);
- });
- };
- */
 exports.updateUser = function(req, res) {
 	var userUpdates = req.body;
 
@@ -82,8 +75,14 @@ exports.updateUser = function(req, res) {
 		curUser.username = userUpdates.username;
 		curUser.active = userUpdates.active;
 		curUser.roles = userUpdates.roles;
-		console.log(curUser.roles);
 		if (userUpdates.password && userUpdates.password.length > 0) {
+			if (!isValidPassword(userUpdates.password)) {
+				var err = new Error("Password must be at least 6 characters long and contain at least one special character or number");
+				res.status(400);
+				return res.send({
+					reason : err.toString()
+				});
+			}
 			curUser.salt = encrypt.createSalt();
 			curUser.hashed_pwd = encrypt.hashPwd(curUser.salt, userUpdates.password);
 		}
