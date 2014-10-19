@@ -1,5 +1,5 @@
-angular.module('app').directive('adopteeSearchResults', ['adoptee','$filter',
-    function(adoptee, $filter) {
+angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter',
+    function(Adoptee, $filter) {
         return {
             templateUrl : '/partials/matching/directives/adopteeSearch/adopteeSearchResults',
             restrict: 'A',
@@ -16,7 +16,7 @@ angular.module('app').directive('adopteeSearchResults', ['adoptee','$filter',
                 $scope.searchAdoptees = function(criteria) {
                     if (criteria){
                         criteria['status'] = "Not Matched";
-                        adoptee.query({
+                        Adoptee.query({
                             filter: criteria,
                             sort: "lastName", //
                             start: ($scope.adopteePage.current * $scope.adopteePage.size) - $scope.adopteePage.size,
@@ -26,7 +26,7 @@ angular.module('app').directive('adopteeSearchResults', ['adoptee','$filter',
                                 $scope.applyPage($scope.adopteePage.current, $scope.adopteeSearchResults, $scope.adopteePage);
                                 if (res.data.length > 0) {
                                     $scope.selectAdoptee(res.data[0]);
-                                    $scope.adopteeEnums = adoptee.enums({ _id: res.data[0]._id });
+                                    $scope.adopteeEnums = Adoptee.enums({ _id: res.data[0]._id });
                                 }
                             });
                     }
