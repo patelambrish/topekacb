@@ -1,4 +1,4 @@
-angular.module('app').controller('mvUserListCtrl', ['$scope', 'mvUser', '$filter','mvAuth','mvNotifier',
+angular.module('app').controller('UserListCtrl', ['$scope', 'mvUser', '$filter','mvAuth','mvNotifier',
 function($scope, mvUser, $filter, mvAuth, mvNotifier) {
 
 	function getUsers() {

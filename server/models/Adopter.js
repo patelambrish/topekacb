@@ -17,7 +17,8 @@ var mongoose = require('mongoose'),
 
 var phoneSchema = new Schema({
   name: { type: String, enum: phoneEnum, default: 'Home' },
-  number: String
+  number: String,
+  contact: String
 });
 
 var adopterSchema = new Schema({
@@ -124,7 +125,8 @@ function generateAdopters(count) {
           },
           phones: [{
             name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
-            number: chance.phone()
+            number: chance.phone(),
+            contact: chance.first()
           }, {
             name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
             number: chance.phone()
