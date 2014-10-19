@@ -104,14 +104,14 @@
                   i.glyphicon.glyphicon-plus
                   | &nbsp;Add new
         fieldset(id="notification")
-          legend Notification Method
+          legend Notification Method {{adopter.notifyMethods}}
             a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#notification .collapse")
               i.glyphicon.glyphicon-chevron-up
           .row.collapse.in
             .col-sm-6
               .form-group
-                label.checkbox-inline(ng-repeat="e in adopter.enums.notify")
-                  input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.notifyMethods, e)", ng-checked="adopter.notifyMethods.indexOf(e) > -1")
+                label.radio-inline(ng-repeat="e in adopter.enums.notify")
+                  input(type="radio", name="notifyMethods" ng-value="e", ng-click="setFlags(adopter.notifyMethods, e, true)", ng-checked="adopter.notifyMethods.indexOf(e) > -1")
                   | {{e}}
                 p.help-block Method for receiving household information
             .col-sm-6

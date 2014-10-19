@@ -1,7 +1,7 @@
 angular.module('app').
   factory('common', function() {
     return {
-      setFlags: function(flags, value) {
+      setFlags: function(flags, value, exclusive) {
         var array = flags,
             index;
 
@@ -9,6 +9,10 @@ angular.module('app').
           array = (flags = []);
         }
 
+        if(exclusive) {
+          array.length = 0;
+        }
+        
         index = array.indexOf(value);
 
         if(index === -1) {
