@@ -100,6 +100,7 @@ exports.saveAdopter = function(req, res, next) {
     findByIdAndUpdate(id, data, options).
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
+    populate('adoptees').
     select('-__v').
     exec(function(err, adopter) {
       if(err) {

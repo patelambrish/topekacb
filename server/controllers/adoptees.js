@@ -39,7 +39,7 @@ exports.getAdoptees = function(req, res) {
 };
 
 exports.getAdopteeById = function(req, res) {
-    Adoptee.findOne({_id: req.params.id}).exec(function (err, adoptee) {
+    Adoptee.findOne({_id: req.params._id}).exec(function (err, adoptee) {
         res.send(adoptee);
     })
 };
@@ -82,7 +82,6 @@ exports.updateAdoptee = function(req, res){
           options = { upsert: true },
           userId = req.user ? req.user._id : null;
       if(!id) {
-          id = new mongoose.Types.ObjectId();
           update.createDate = new Date();
           update._createUser = userId;
       } else {
@@ -105,7 +104,7 @@ exports.updateAdoptee = function(req, res){
 
 exports.deleteAdoptee = function(req, res){
     Adoptee.
-        findByIdAndRemove(req.params.id).
+        findByIdAndRemove(req.params._id).
         exec(function(err, adoptee) {
             if(err) { res.status(400); return res.send({error:err.toString()});}
             return res.send(adoptee);
