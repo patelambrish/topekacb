@@ -1,4 +1,4 @@
-angular.module('app').factory('adoptee', function($resource, $q) {
+angular.module('app').factory('Adoptee', function($resource, $q) {
   var AdopteeResource = $resource('/api/adoptees/:_id', {_id: "@id"}, {
       updateAdoptee: {
           method:'PUT',

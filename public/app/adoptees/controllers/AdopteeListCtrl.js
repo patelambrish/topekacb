@@ -24,8 +24,8 @@ angular.module('app').
       }
     };
   }).
-  controller('adopteeListCtrl', function($scope, $filter, $location, adoptee, mvIdentity, mvNotifier) {
-    var adoptees = adoptee.query();
+  controller('adopteeListCtrl', function($scope, $filter, $location, Adoptee, mvIdentity, mvNotifier) {
+    var adoptees = Adoptee.query();
     $scope.permission = {
         delete: mvIdentity.isAuthorized('manager')
     };

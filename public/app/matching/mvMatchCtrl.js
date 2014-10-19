@@ -1,5 +1,5 @@
-angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier', 'Adopter',
-function($scope, $filter, mvNotifier, Adopter, adoptee) {
+angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier', 'Adopter', 'Adoptee',
+function($scope, $filter, mvNotifier, Adopter, Adoptee) {
   $scope.template = {
     adopterMatchUrl: '/partials/matching/adopter-match',
     adopteeListUrl: '/partials/adopters/adoptee-list'
@@ -59,12 +59,12 @@ function($scope, $filter, mvNotifier, Adopter, adoptee) {
       }
       $scope.currentAdopter.adoptees.push($scope.currentAdoptee._id);
       console.log($scope.currentAdoptee);
-      adoptee.updateAdoptee($scope.currentAdoptee).$promise.then(function (retVal) {
+      Adoptee.updateAdoptee($scope.currentAdoptee).$promise.then(function (retVal) {
           if (retVal.error) {
               mvNotifier.notify(retVal.error);
           }
           else {
-              mvAdopter.save($scope.currentAdopter).$promise.then(function(retVal){
+              Adopter.save($scope.currentAdopter).$promise.then(function(retVal){
                   if (retVal.error) {
                       mvNotifier.notify(retVal.error);
                   }

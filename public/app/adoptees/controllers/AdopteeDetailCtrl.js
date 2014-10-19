@@ -1,7 +1,7 @@
 angular.module('app').
-  controller('adopteeDetailCtrl', function($scope, $routeParams, $location, $filter, cbSites, cbCurrentSite, adoptee, adopteeApplicationCounter, mvNotifier, common) {
+  controller('adopteeDetailCtrl', function($scope, $routeParams, $location, $filter, cbSites, cbCurrentSite, Adoptee, AdopteeApplicationCounter, mvNotifier, common) {
     $scope.sites = cbSites;
-    $scope.enums = adoptee.enums({ _id: $routeParams.id });
+    $scope.enums = Adoptee.enums({ _id: $routeParams.id });
     $scope.adopteeTitle = '';
     $scope.setNewAdoptee = function(){
         $scope.adoptee = new adoptee({
@@ -25,7 +25,7 @@ angular.module('app').
     };
 
     if($routeParams.id !== '0') {
-        adoptee.get({ _id: $routeParams.id }).$promise.then(function(retVal){
+        Adoptee.get({ _id: $routeParams.id }).$promise.then(function(retVal){
           if (retVal.error){
             mvNotifier.notify(retVal.error);
           }
@@ -45,8 +45,7 @@ angular.module('app').
         return;
       }
       $scope.newFlag = newFlag;
-      var adoptee = $scope.adoptee;
-      if (adoptee.applicationNumber)
+      if ($scope.adoptee.applicationNumber)
       {
             $scope.adopteeUpdate();
       } else {
@@ -55,7 +54,7 @@ angular.module('app').
                   mvNotifier.notify(retVal.error);
               }
               else {
-                  adoptee.applicationNumber = retVal.seq;
+                  $scope.Adoptee.applicationNumber = retVal.seq;
                   $scope.adopteeUpdate();
 
               }
@@ -64,25 +63,23 @@ angular.module('app').
     };
 
     $scope.addHouseholdMember = function(){
-      var adoptee = $scope.adoptee;
-      if (!adoptee.householdMembers)
+      if (!$scope.adoptee.householdMembers)
       {
-        adoptee.householdMembers = [];
+        $scope.adoptee.householdMembers = [];
       }
-      adoptee.householdMembers.push({});
+      $scope.adoptee.householdMembers.push({});
     };
   
     $scope.deleteHouseholdMember = function(householdMember){
-        var adoptee = $scope.adoptee;
-        var i = adoptee.householdMembers.indexOf(householdMember);
+        var i = $scope.adoptee.householdMembers.indexOf(householdMember);
         if (i != -1)
         {
-            adoptee.householdMembers.splice(i,1);
+            $scope.adoptee.householdMembers.splice(i,1);
         }
     };
 
     $scope.adopteeUpdate = function(){
-        adoptee.updateAdoptee($scope.adoptee).$promise.then(function (retVal) {
+        Adoptee.updateAdoptee($scope.adoptee).$promise.then(function (retVal) {
             if (retVal.error) {
                 mvNotifier.notify(retVal.error);
             }
