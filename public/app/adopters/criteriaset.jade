@@ -1,11 +1,13 @@
 fieldset(id="criteriaForm", ng-form="criteriaForm")
   legend(ng-if="title") {{title}}
-    a.pull-right.collapse-toggle(href="", data-toggle="collapse", data-target="#criteriaForm .collapse")
+    a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#criteriaForm .collapse")
       i.glyphicon.glyphicon-chevron-up
   .row.collapse.in
     .col-sm-5
-      .form-group
-        label Number of Households
+      .form-group(ng-class="{'has-error': criteriaForm.count.$invalid}")
+        label.control-label 
+          | Number of Households&nbsp;
+          .label(ng-show="criteriaForm.count.$error.number") Invalid
         input.form-control(type="number", name="count", placeholder="Number of households", min="1", ng-model="criteria.count")
   .row.collapse.in
     .col-sm-7
