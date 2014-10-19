@@ -4,6 +4,11 @@ angular.module('app').
       adopteeListUrl: '/partials/adopters/adoptee-list'
     };
 
+    $scope.validation = {
+      zip: /^\d{5}(-\d{4})?$/,
+      phone: /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/
+    };
+    
     $scope.busy = function() {
       return $scope.adopter && $scope.adopter.$promise && !$scope.adopter.$resolved;
     };
@@ -44,7 +49,9 @@ angular.module('app').
     $scope.save = function(form, plus) {
       $scope.submitted = true;
 
-      if(form.$valid) {
+      if(form.$invalid) {
+        mvNotifier.notifyError("Some validation errors prevented us from saving this adopter.");
+      } else {
         Adopter.save($scope.adopter, function() {
           mvNotifier.notify($scope.adopter.name + ' successfully saved!');
           
@@ -87,7 +94,7 @@ angular.module('app').
         array = ($scope.adopter.phones = []);
       }
 
-      array.push({ name: $scope.enums.phone[0] });
+      array.push({ name: $scope.adopter.enums.phone[0] });
     };
     
     $scope.setFlags = common.setFlags;
