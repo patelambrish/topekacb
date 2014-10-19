@@ -51,6 +51,7 @@ exports.getAdopters = function(req, res, next) {
   query.
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
+    populate('adoptees').
     select('-__v').
     exec(function(err, collection) {
       Adopter.count({}, function(err, cnt) {
@@ -95,7 +96,11 @@ exports.saveAdopter = function(req, res, next) {
     data.updateDate = new Date();
     data.updatedBy = userId;
   }
-
+  var adopteeIds = [];
+  data.adoptees.forEach(function(a){
+      adopteeIds.push(a._id);
+    });
+  data.adoptees = adopteeIds;
   Adopter.
     findByIdAndUpdate(id, data, options).
     populate('createdBy', 'firstName lastName').

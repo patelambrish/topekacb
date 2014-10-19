@@ -61,7 +61,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee) {
           if (!$scope.currentAdopter.adoptees) {
               $scope.currentAdopter.adoptees = [];
           }
-          $scope.currentAdopter.adoptees.push($scope.currentAdoptee._id);
+          $scope.currentAdopter.adoptees.push($scope.currentAdoptee);
           if ($scope.currentAdopter.adoptees.length == $scope.currentAdopter.criteria.count) {
               $scope.currentAdopter.status = "Matched";
           }
@@ -75,8 +75,9 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee) {
                           mvNotifier.notify(retVal.error);
                       }
                       else {
-                          mvNotifier.notify($scope.currentAdoptee.firstName + ' ' + $scope.currentAdoptee.lastName + ' matched with ' + $scope.currentAdopter.name + '!');
                           $scope.currentAdopter = retVal;
+                          mvNotifier.notify($scope.currentAdoptee.firstName + ' ' + $scope.currentAdoptee.lastName + ' matched with ' + $scope.currentAdopter.name + '!');
+
                       }
                   });
               }
