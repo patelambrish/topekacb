@@ -159,6 +159,9 @@
           .row(ng-form="memberForm", ng-repeat="householdMember in adoptee.householdMembers")
             hr(ng-if="!$first")
             .col-sm-4
+              .row
+                .col-sm-12
+                  label Name, SSN, Age, Gender
               .form-group
                 input.form-control(name="householdhouseholdMember.name", type="text", placeholder="Name", ng-model="householdMember.name")
               .row
@@ -171,8 +174,15 @@
                 .col-sm-4
                   .form-group
                     select.form-control(name="householdMember.gender", ng-model="householdMember.gender", ng-options="g | limitTo:1 for g in enums.gender")
-                      option(disabled, value="") Sex
+                      option(disabled, value="") Gender
             .col-sm-4
+              .row
+                .col-sm-4
+                    label Shirt
+                .col-sm-4
+                    label Pants
+                .col-sm-4
+                    label Shoe
               .row
                 .col-sm-4
                   .form-group
@@ -193,12 +203,22 @@
                   .form-group
                     input.form-control(name="householdMember.shoeSize", type="number", min="0", max="99", placeholder="Size", ng-model="householdMember.shoeSize")
             .col-sm-3
-              .form-group
-                textarea.form-control(name="householdMember.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="householdMember.wishList")
+              .row
+                .col-sm-12
+                    label Wishlist
+              .row
+                .col-sm-12
+                    .form-group
+                        textarea.form-control(name="householdMember.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="householdMember.wishList")
             .col-sm-1
-              .form-group
-                a.btn.btn-link(href="", tabindex="-1", ng-click="deleteHouseholdMember(householdMember)")
-                  i.text-danger.glyphicon.glyphicon-remove
+              .row
+                .col-sm-12
+                    label
+              .row
+                .col-sm-12
+                  .form-group
+                    a.btn.btn-link(href="", tabindex="-1", ng-click="deleteHouseholdMember(householdMember)")
+                      i.text-danger.glyphicon.glyphicon-remove
           .row
             .col-sm-12
               .form-group
