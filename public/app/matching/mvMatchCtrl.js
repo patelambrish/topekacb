@@ -1,10 +1,11 @@
 angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier', 'Adopter', 'Adoptee',
 function($scope, $filter, mvNotifier, Adopter, Adoptee) {
   $scope.template = {
-    adopterMatchUrl: '/partials/matching/adopter-match',
-    adopteeListUrl: '/partials/adopters/adoptee-list'
+    adopterMatchUrl: '/partials/matching/adopter-match'
   };
-  $scope.adopteeList = { heading: 'Matched Adoptees' };
+  $scope.adopterFields = {
+    count: false
+  };
 	$scope.adopterSearchResults = [];
   $scope.adopteeSearchResults = [];
   $scope.currentAdopter;
@@ -12,6 +13,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee) {
   $scope.ageRanges = ["0-7", "8-12", "13-18"];
   $scope.adopteeEnums;
   $scope.adopteeAges = [];
+  $scope.unmatchAdoptees = [];
 
 	$scope.applyPage = function(page, data, pageInfo) {
       pageInfo.current = page;
@@ -80,11 +82,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee) {
 
   $scope.selectAdopter = function(adopter){
       $scope.currentAdopter = Adopter.get({ _id: adopter._id });
-      $scope.currentAdopter.$promise.
-        then(function(data) {
-          $scope.adoptees = data.adoptees;
-          $scope.searchAdoptees(data.criteria);
-        });
+      $scope.searchAdoptees(adopter.criteria);
   };
     
 }]);
