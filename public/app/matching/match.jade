@@ -24,7 +24,7 @@
     div(class="col-sm-6")
       .panel.panel-default(ng-class="{busy: busy()}")
         .panel-heading.clearfix Adoptee Matches
-            button.pull-right.btn.btn-primary(ng-click="bulkMatch()", ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0") <  Bulk Match
+            button.pull-right.btn.btn-primary(ng-click="bulkMatch()", ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0 && currentAdopter.criteria.count <= adopteeSearchResults.totalCount") <  Bulk Match
         .panel-body
         div(adoptee-search-results)
         .panel-footer(ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0")
