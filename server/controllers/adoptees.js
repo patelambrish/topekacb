@@ -1,6 +1,8 @@
 var mongoose = require('mongoose'),
     Adoptee = mongoose.model('Adoptee'),
-    AdopteeApplicationCounter = mongoose.model('AdopteeApplicationCounter');
+    AdopteeApplicationCounter = mongoose.model('AdopteeApplicationCounter'),
+    fs = require('fs'),
+    jade=require('jade');
 
 exports.getAdoptees = function(req, res) {
     var searchFilters, nameRegex, query, queryName, sortBy, sortDir;
@@ -114,3 +116,16 @@ exports.deleteAdoptee = function(req, res){
 exports.getEnums = function(req, res) {
     res.send(Adoptee.getEnumValues());
 };
+
+exports.print = function(req, res) {
+	console.log('#################################################');
+	fs.readFile('server/views/adopteePrint.jade', 'utf8', function (err, data) {
+    if (err) throw err;
+    console.log(data);
+    var fn = jade.compile(data);
+    var html = fn({name:'Smith', address: 'Smith place'});
+    console.log(html);
+    res.status(200);
+    res.send(html);
+});
+}
