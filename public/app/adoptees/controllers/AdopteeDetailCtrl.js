@@ -4,7 +4,7 @@ angular.module('app').
     $scope.enums = Adoptee.enums({ _id: $routeParams.id });
     $scope.adopteeTitle = '';
     $scope.setNewAdoptee = function(){
-        $scope.adoptee = new adoptee({
+        $scope.adoptee = new Adoptee({
             site: cbCurrentSite.get(),
             householdMembers: [],
             address: {

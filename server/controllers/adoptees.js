@@ -41,7 +41,7 @@ exports.getAdoptees = function(req, res) {
 };
 
 exports.getAdopteeById = function(req, res) {
-    Adoptee.findOne({_id: req.params._id}).exec(function (err, adoptee) {
+    Adoptee.findOne({_id: req.params.id}).exec(function (err, adoptee) {
         res.send(adoptee);
     })
 };

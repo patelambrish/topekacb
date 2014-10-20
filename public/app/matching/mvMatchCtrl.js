@@ -85,7 +85,6 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee) {
                             mvNotifier.notify(retVal.error);
                         }
                         else {
-                            //$scope.currentAdopter = retVal;
                             mvNotifier.notify($scope.currentAdopter.name + ' matched with ' + $scope.currentAdopter.criteria.count + ' adoptees!');
 
                         }
@@ -96,7 +95,6 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee) {
     };
 
     $scope.matchAdoptee = function (){
-        console.log("matching");
         if ($scope.currentAdopter.status == "Matched") {
             mvNotifier.notify($scope.currentAdopter.name + " is fully matched.");
         }
@@ -110,31 +108,31 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee) {
             if ($scope.currentAdopter.adoptees.length == $scope.currentAdopter.criteria.count) {
                 $scope.currentAdopter.status = "Matched";
             }
-            Adoptee.updateAdoptee($scope.currentAdoptee).$promise.then(function (retVal) {
-                if (retVal.error) {
-                    mvNotifier.notify(retVal.error);
+            var updatedAdopter = $scope.currentAdopter;
+            var adopteeIds = [];
+            $scope.currentAdopter.adoptees.forEach(function(a){
+                adopteeIds.push(a._id);
+            });
+            updatedAdopter.adoptees = adopteeIds;
+            Adoptee.updateAdoptee($scope.currentAdoptee).$promise.then(function (retAdoptee) {
+                if (retAdoptee.error) {
+                    mvNotifier.notify(retAdoptee.error);
                 }
                 else {
-                    var updatedAdopter = $scope.currentAdopter;
-                    var adopteeIds = [];
-                    $scope.currentAdopter.adoptees.forEach(function(a){
-                        adopteeIds.push(a._id);
-                    });
-                    updatedAdopter.adoptees = adopteeIds;
-                    Adopter.save(updatedAdopter).$promise.then(function (retVal) {
-                        if (retVal.error) {
-                            mvNotifier.notify(retVal.error);
+                    $scope.currentAdoptee = retAdoptee;
+                    Adopter.save(updatedAdopter).$promise.then(function (retAdopter) {
+                        if (retAdopter.error) {
+                            mvNotifier.notify(retAdopter.error);
                         }
                         else {
-                            $scope.currentAdopter = retVal;
+                            //$scope.currentAdopter = retAdopter;
                             mvNotifier.notify($scope.currentAdoptee.firstName + ' ' + $scope.currentAdoptee.lastName + ' matched with ' + $scope.currentAdopter.name + '!');
 
                         }
                     });
+                    $scope.searchAdoptees($scope.currentAdopter.criteria);
                 }
             });
-
-            $scope.searchAdoptees($scope.currentAdopter.criteria);
         }
     };
 
