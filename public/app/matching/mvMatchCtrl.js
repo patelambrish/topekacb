@@ -80,7 +80,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee) {
                         adopteeIds.push(a._id);
                     });
                     updatedAdopter.adoptees = adopteeIds;
-                    Adopter.save(updatedAdopter).$promise.then(function (retVal) {
+                    Adopter.saveAdopter(updatedAdopter).$promise.then(function (retVal) {
                         if (retVal.error) {
                             mvNotifier.notify(retVal.error);
                         }
@@ -122,7 +122,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee) {
                     $scope.searchAdoptees($scope.currentAdopter.criteria);
                 }
             });
-            Adopter.save(updatedAdopter).$promise.then(function (retAdopter) {
+            Adopter.saveAdopter(updatedAdopter).$promise.then(function (retAdopter) {
                 if (retAdopter.error) {
                     mvNotifier.notify(retAdopter.error);
                 }

@@ -110,6 +110,7 @@ exports.updateAdoptee = function(req, res){
       }
 
       delete update.__v;
+      update._adopterId = update._adopterId.name ? update._adopterId._id : update._adopterId;
       Adoptee.
           findByIdAndUpdate(id, update, options).
           populate('_createUser', 'firstName lastName').

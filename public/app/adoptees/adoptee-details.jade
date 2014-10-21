@@ -4,7 +4,7 @@
       small
         | &nbsp;{{adoptee.status}}
       small(ng-show="adoptee.status == 'Matched'")
-        | &nbsp;with
+        | &nbsp;with&nbsp;
         a(href="/adopters/{{adoptee._adopterId._id}}") {{adoptee._adopterId.name}}
       small.pull-right(ng-switch="adoptee.site")
         img(src="/assets/image/antioch.png", ng-switch-when="A")
