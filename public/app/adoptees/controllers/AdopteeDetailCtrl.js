@@ -3,7 +3,7 @@ angular.module('app').
     $scope.sites = cbSites;
     $scope.enums = Adoptee.enums({ _id: $routeParams.id });
     $scope.adopteeTitle = '';
-    $scope.setNewAdoptee = function(){
+    $scope.setNewAdoptee = function(currentNumber){
         $scope.adoptee = new Adoptee({
             site: cbCurrentSite.get(),
             householdMembers: [],
@@ -39,12 +39,13 @@ angular.module('app').
         $scope.setNewAdoptee();
     }
 
-    $scope.update = function(form, newFlag){
+    $scope.update = function(form, nextFlag){
       if(form.$invalid) {
         $scope.submitted = true;
+        mvNotifier.notify('Invalid fields present');
         return;
       }
-      $scope.newFlag = newFlag;
+      $scope.nextFlag = nextFlag;
       if ($scope.adoptee.applicationNumber)
       {
             $scope.adopteeUpdate();
@@ -56,7 +57,6 @@ angular.module('app').
               else {
                   $scope.Adoptee.applicationNumber = retVal.seq;
                   $scope.adopteeUpdate();
-
               }
           });
       }
@@ -86,9 +86,17 @@ angular.module('app').
             else {
                 mvNotifier.notify(retVal.firstName + ' ' + retVal.lastName + ' successfully saved!');
                 $scope.adopteeTitle = '';
-                if ($scope.newFlag) {
-                    $scope.setNewAdoptee();
-                    $location.path('/adoptees/0');
+                if ($scope.nextFlag) {
+                    Adoptee.getNextAdoptee({nextNumber: retVal.applicationNumber + 1}).$promise.then(function(nextVal){
+                        if (!nextVal._id || nextVal.error){
+                           mvNotifier.notify(retVal.firstName + ' ' + retVal.lastName + " is the highest numbered Adoptee")
+                        }
+                        else {
+                            $scope.adoptee = nextVal;
+                            $scope.adoptee.birthDate = $filter('date')($scope.adoptee.birthDate, 'yyyy-MM-dd');
+                            $location.path('/adoptees/' + nextVal._id);
+                        }
+                    });
                 }
                 else{
                     $scope.adoptee = retVal;

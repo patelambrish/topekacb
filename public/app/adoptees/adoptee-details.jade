@@ -167,7 +167,7 @@
               .row
                 .col-sm-4
                   .form-group(ng-class="{'has-error': memberForm.ssnLastFour.$invalid && (submitted)}")
-                    input.form-control(name="ssnLastFour", type="text", placeholder="SSN", title="Last 4 digits of SSN", pattern="[0-9]{4}", ng-pattern="/[0-9]{4}/", ng-model="householdMember.ssnLastFour")
+                    input.form-control(name="ssnLastFour", type="text", placeholder="SSN", title="Last 4 digits of SSN", pattern="[\s0-9]{4}", ng-pattern="/[\s0-9]{4}/", ng-model="householdMember.ssnLastFour")
                 .col-sm-4
                   .form-group
                     input.form-control(name="householdMember.age", type="number", min="0", max="110", placeholder="Age", ng-model="householdMember.age")
@@ -227,7 +227,7 @@
                   | &nbsp;Add new
       .panel-footer
         .btn-toolbar.text-right
-          button.btn.btn-primary(ng-click="update(adopteeForm, true)") Save and New
+          button.btn.btn-primary(ng-click="update(adopteeForm, true)") Save and Next
           button.btn.btn-primary(ng-click="update(adopteeForm, false)") Save
           button.btn.btn-default(ng-click="cancel()") Cancel
 div(site-directive, data-onsave="onsitechange(site)", ng-if="siteUndefined()")

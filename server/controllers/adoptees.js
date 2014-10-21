@@ -46,6 +46,17 @@ exports.getAdopteeById = function(req, res) {
     })
 };
 
+exports.getNextAdoptee = function(req, res) {
+    Adoptee.findOne({applicationNumber: req.body.nextNumber}).exec(function (err, adoptee) {
+        if (adoptee) {
+            res.send(adoptee);
+        }
+        else {
+            res.send({});
+        }
+    })
+};
+
 exports.getAggregateSpecialNeeds = function(req, res) {
   Adoptee.count({'criteria.specialNeeds': []}, function(err, count) {
     Adoptee.
