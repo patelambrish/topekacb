@@ -34,6 +34,7 @@ exports.getAdoptees = function(req, res) {
         query.
            populate('_createUser', 'firstName lastName').
            populate('_modifyUser', 'firstName lastName').
+           populate('_adopterId', 'name').
             exec(function(err, collection) {
                  res.send({data: collection, totalCount: count});
             });
@@ -41,13 +42,17 @@ exports.getAdoptees = function(req, res) {
 };
 
 exports.getAdopteeById = function(req, res) {
-    Adoptee.findOne({_id: req.params.id}).exec(function (err, adoptee) {
+    Adoptee.findOne({_id: req.params.id}).
+        populate('_adopterId', 'name').
+        exec(function (err, adoptee) {
         res.send(adoptee);
     })
 };
 
 exports.getNextAdoptee = function(req, res) {
-    Adoptee.findOne({applicationNumber: req.body.nextNumber}).exec(function (err, adoptee) {
+    Adoptee.findOne({applicationNumber: req.body.nextNumber}).
+        populate('_adopterId', 'name').
+        exec(function (err, adoptee) {
         if (adoptee) {
             res.send(adoptee);
         }
