@@ -4,7 +4,7 @@
       small
         | &nbsp;{{adoptee.status}}
       small(ng-show="adoptee.status == 'Matched'")
-        | &nbsp;with 
+        | &nbsp;with
         a(href="/adopters/{{adoptee._adopterId._id}}") {{adoptee._adopterId.name}}
       small.pull-right(ng-switch="adoptee.site")
         img(src="/assets/image/antioch.png", ng-switch-when="A")
@@ -102,6 +102,20 @@
             .col-sm-6
               .form-group
                 input.form-control(name="adoptee.email", type="email", placeholder="Email", ng-model="adoptee.email")
+        fieldset(ng-disabled="siteUndefined()", ng-show="adoptee.site == 'O'")
+          .row
+            .col-sm-6
+                .form-group
+                    label(for="adoptee.agent.agency") Agency
+                    input.form-control(name="adoptee.agent.agency", placeholder="Agency", ng-model="adoptee.agent.agency")
+            .col-sm-3
+                .form-group
+                    label(for="adoptee.agent.agentName") Agent Name
+                    input.form-control(name="adoptee.agent.agentName", placeholder="Agent Name", ng-model="adoptee.agent.agentName")
+            .col-sm-3
+                .form-group
+                    label(for="adoptee.agent.agentPhone") Agent Phone
+                    input.form-control(name="adoptee.agent.agentPhone", type="phone", placeholder="Agent Phone", ng-model="adoptee.agent.agentPhone")
         fieldset(ng-disabled="siteUndefined()")
           legend Additional Information
           .row
