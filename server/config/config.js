@@ -24,6 +24,6 @@ module.exports = {
     port: process.env.PORT || 80,
     faceBookClientID : '449063101898994',
     faceBookClientSecret : '52aa954220f13dab6746d18d9a2617fa',
-    faceBookCallbackURL : 'http://topekacb.org/auth/facebook/callback'
+    faceBookCallbackURL : 'https://topekacb.org/auth/facebook/callback'
   }
 }
