@@ -17,7 +17,7 @@ angular.module('app').
     };
 
     $scope.siteUndefined = function() {
-      return $scope.adoptee && !$scope.adoptee.site;      
+      return $scope.adoptee && !$scope.adoptee.site;
     };
 
     $scope.onsitechange = function(site) {
@@ -45,6 +45,7 @@ angular.module('app').
         mvNotifier.notify('Invalid fields present');
         return;
       }
+      //get next adoptee
       $scope.nextFlag = nextFlag;
       if ($scope.adoptee.applicationNumber)
       {

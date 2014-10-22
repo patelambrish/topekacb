@@ -84,7 +84,7 @@ exports.saveAdopter = function(req, res, next) {
       id = data._id,
       options = { upsert: true },
       userId = req.user ? req.user._id : null;
-
+  console.log(id);
   delete data.enums;
   if(!id) {
     id = new mongoose.Types.ObjectId();
@@ -93,6 +93,7 @@ exports.saveAdopter = function(req, res, next) {
   } else {
     delete data.createDate;
     delete data.createdBy;
+    delete data._id;
     data.updateDate = new Date();
     data.updatedBy = userId;
   }
