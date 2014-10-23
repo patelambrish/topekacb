@@ -12,6 +12,6 @@
     btn-toolbar.pull-right
       button.btn.btn-primary(ng-click="emailAdopter(currentAdopter)") Email
       | &nbsp;
-      button.btn.btn-primary(ng-click="printAdopter(currentAdopter)") Print
+      a.btn.btn-primary(ng-href="api/adopters/{{currentAdopter._id}}/print" target="_blank") Print
     btn-toolbar
       button.btn.btn-default(ng-click="getNextAdopter()") Next Adopter
