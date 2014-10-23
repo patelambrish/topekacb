@@ -2,7 +2,8 @@ var mongoose = require('mongoose'),
     Adoptee = mongoose.model('Adoptee'),
     AdopteeApplicationCounter = mongoose.model('AdopteeApplicationCounter'),
     fs = require('fs'),
-    jade=require('jade');
+    jade=require('jade'),
+    htmlUtil = require('../utilities/adopteeHtml');
 
 exports.getAdoptees = function(req, res) {
     var searchFilters, nameRegex, query, queryName, sortBy, sortDir;
@@ -138,16 +139,17 @@ exports.getEnums = function(req, res) {
 };
 
 exports.print = function(req, res) {
-	console.log('#################################################');
-	fs.readFile('server/views/adopteePrint.jade', 'utf8', function (err, data) {
-    if (err) throw err;
-    console.log(data);
-    var fn = jade.compile(data);
-    var html = fn({name:'Smith', address: 'Smith place'});
-    console.log(html);
-    res.status(200);
-    res.send(html);
-  });
+
+    fs.readFile('server/views/adopteePrint.jade', 'utf8', function (err, templateData) {
+        Adoptee.findOne({_id: req.params.id}).
+            populate('_adopterId').
+            exec(function (err, adoptee) {
+                adoptee.adopter = adoptee._adopterId;
+                var html = htmlUtil.getAdopteeHtml(adoptee, templateData);
+                res.status(200);
+                res.send(html);
+            });
+    });
 };
 
 exports.getForm = function(req, res) {
@@ -159,3 +161,4 @@ exports.getForm = function(req, res) {
         res.end();
      });
 };
+

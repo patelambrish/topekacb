@@ -1,5 +1,26 @@
 var mongoose = require('mongoose'),
-    Adopter = mongoose.model('Adopter');
+    Adopter = mongoose.model('Adopter'),
+    fs = require('fs'),
+    jade=require('jade'),
+    htmlUtil = require('../utilities/adopteeHtml');
+
+
+function getAdopterHtml(adopter, templateData) {
+	var completeHtml = '', html;
+	if (adopter.adoptees && adopter.adoptees.length > 0) {
+		adopter.adoptees.forEach(function(adoptee) {
+			adoptee.adopter = {
+				name : adopter.name,
+				email : adopter.email,
+				address : adopter.address,
+				phones : adopter.phones
+			};
+			html = htmlUtil.getAdopteeHtml(adoptee, templateData);
+			completeHtml = completeHtml + html;
+		});
+	}
+	return completeHtml;
+}
 
 exports.getAdopters = function(req, res, next) {
   console.log(req.query.filter);
@@ -123,6 +144,22 @@ exports.deleteAdopter = function(req, res, next) {
       }
       res.send(adopter);
     });
+};
+
+
+exports.print = function(req, res, next) {
+	var adopterId = req.params.id;
+	fs.readFile('server/views/adopteePrint.jade', 'utf8', function(err, templateData) {
+		Adopter.findById(adopterId).populate('adoptees').select('-__v').exec(function(err, adopter) {
+			if (err) {
+				console.log(err);
+				return next(err);
+			}
+			var completeHtml = getAdopterHtml(adopter, templateData);
+			res.status(200);
+			res.send(completeHtml);
+		});
+	});
 };
 
 exports.getEnums = function(req, res) {
