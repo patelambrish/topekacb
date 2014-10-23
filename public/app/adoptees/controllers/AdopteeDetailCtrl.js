@@ -2,7 +2,6 @@ angular.module('app').
   controller('adopteeDetailCtrl', function($scope, $routeParams, $location, $filter, cbSites, cbCurrentSite, Adoptee, AdopteeApplicationCounter, mvNotifier, common) {
     $scope.sites = cbSites;
     $scope.enums = Adoptee.enums({ _id: $routeParams.id });
-    $scope.form = Adoptee.form({_id: $routeParams.id});
     $scope.adopteeTitle = '';
     $scope.setNewAdoptee = function(currentNumber){
         $scope.adoptee = new Adoptee({

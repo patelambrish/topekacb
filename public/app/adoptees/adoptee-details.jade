@@ -11,7 +11,7 @@
         img(src="/assets/image/letshelp.png", ng-switch-when="L")
         | &nbsp;{{sites[adoptee.site]}}
       span
-        a(href="/adoptees/{{adoptee._id}}/form")
+        a(ng-href="../api/adoptees/{{adoptee._id}}/form", target="_blank")
             .badge.pull-right(ng-show="adoptee.applicationNumber") {{adoptee.site + '-' + adoptee.applicationNumber}}
 
 
