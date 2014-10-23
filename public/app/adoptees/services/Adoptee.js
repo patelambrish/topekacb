@@ -13,10 +13,17 @@ angular.module('app').factory('Adoptee', function($resource, $q) {
           url : '/api/adoptees/:_id/enums',
           isArray : false
       },
+      form : {
+          method : 'GET',
+          url : '/api/adoptees/:_id/form',
+          isArray : false
+      },
+
       getAdopteeByNumber : {
           method : 'GET',
           isArray : false
       },
+
       getNextAdoptee : {
           method : 'POST',
           isArray : false

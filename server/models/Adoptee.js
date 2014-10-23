@@ -92,6 +92,7 @@ var adopteeSchema = mongoose.Schema({
     householdMembers: [householdMember],
     applicationNumber: {type: Number, index: {unique: true, dropDups: true}},
     site: {type: String, enum: sites},
+    image: {type: String},
     createDate: {type: Date},
     _createUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     modifyDate: {type: Date},

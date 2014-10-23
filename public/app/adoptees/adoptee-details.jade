@@ -10,7 +10,10 @@
         img(src="/assets/image/antioch.png", ng-switch-when="A")
         img(src="/assets/image/letshelp.png", ng-switch-when="L")
         | &nbsp;{{sites[adoptee.site]}}
-      span.badge.pull-right(ng-show="adoptee.applicationNumber") {{adoptee.site + '-' + adoptee.applicationNumber}}
+      span
+        a(href="/adoptees/{{adoptee._id}}/form")
+            .badge.pull-right(ng-show="adoptee.applicationNumber") {{adoptee.site + '-' + adoptee.applicationNumber}}
+
 
   form(name="adopteeForm")
     .panel.panel-default

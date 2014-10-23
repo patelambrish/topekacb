@@ -32,9 +32,10 @@ exports.getAdoptees = function(req, res) {
             query = query.skip(req.query.start).limit(req.query.limit);
         }
         query.
-           populate('_createUser', 'firstName lastName').
-           populate('_modifyUser', 'firstName lastName').
-           populate('_adopterId', 'name').
+            populate('_createUser', 'firstName lastName').
+            populate('_modifyUser', 'firstName lastName').
+            populate('_adopterId', 'name').
+            select('-image').
             exec(function(err, collection) {
                  res.send({data: collection, totalCount: count});
             });
@@ -44,6 +45,7 @@ exports.getAdoptees = function(req, res) {
 exports.getAdopteeById = function(req, res) {
     Adoptee.findOne({_id: req.params.id}).
         populate('_adopterId', 'name').
+        select('-image').
         exec(function (err, adoptee) {
         res.send(adoptee);
     })
@@ -52,6 +54,7 @@ exports.getAdopteeById = function(req, res) {
 exports.getNextAdoptee = function(req, res) {
     Adoptee.findOne({applicationNumber: req.body.nextNumber}).
         populate('_adopterId', 'name').
+        select('-image').
         exec(function (err, adoptee) {
         if (adoptee) {
             res.send(adoptee);
@@ -144,5 +147,15 @@ exports.print = function(req, res) {
     console.log(html);
     res.status(200);
     res.send(html);
-});
-}
+  });
+};
+
+exports.getForm = function(req, res) {
+    console.log('#################################################');
+    Adoptee.findOne({_id: req.params.id})
+     .exec(function(err, adoptee) {
+        res.writeHead(200, {'content-type' : 'image/tiff', 'content-disposition': 'attachment; filename=' + adoptee.lastName + adoptee._id + '.tif'});
+        res.write(adoptee.image);
+        res.end();
+     });
+};
