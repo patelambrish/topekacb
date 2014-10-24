@@ -155,9 +155,10 @@ exports.print = function(req, res) {
 exports.getForm = function(req, res) {
     console.log('#################################################');
     Adoptee.findOne({_id: req.params.id})
-     .exec(function(err, adoptee) {
+     .exec(function(err, adoptee){
+        var decodedImage = new Buffer(adoptee.image, 'base64');
         res.writeHead(200, {'content-type' : 'image/tiff', 'content-disposition': 'attachment; filename=' + adoptee.lastName + adoptee._id + '.tif'});
-        res.write(adoptee.image);
+        res.write(decodedImage);
         res.end();
      });
 };
