@@ -90,6 +90,8 @@ angular.module('app').
                 if ($scope.nextFlag) {
                     Adoptee.getNextAdoptee({nextNumber: retVal.applicationNumber + 1}).$promise.then(function(nextVal){
                         if (!nextVal._id || nextVal.error){
+                           console.log(nextVal);
+                           console.log(nextVal.error);
                            mvNotifier.notify(retVal.firstName + ' ' + retVal.lastName + " is the highest numbered Adoptee")
                         }
                         else {

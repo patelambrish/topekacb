@@ -114,7 +114,10 @@ exports.updateAdoptee = function(req, res){
       }
 
       delete update.__v;
-      update._adopterId = update._adopterId.name ? update._adopterId._id : update._adopterId;
+      if (update._adopterId) {
+          update._adopterId = update._adopterId.name ? update._adopterId._id : update._adopterId;
+      }
+
       Adoptee.
           findByIdAndUpdate(id, update, options).
           populate('_createUser', 'firstName lastName').
@@ -153,7 +156,6 @@ exports.print = function(req, res) {
 };
 
 exports.getForm = function(req, res) {
-    console.log('#################################################');
     Adoptee.findOne({_id: req.params.id})
      .exec(function(err, adoptee){
         var decodedImage = new Buffer(adoptee.image, 'base64');

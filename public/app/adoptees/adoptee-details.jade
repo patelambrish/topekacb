@@ -23,11 +23,15 @@
           .row
             .col-sm-3
               .form-group(ng-class="{'has-error': adopteeForm.lastName.$invalid && (submitted || adopteeForm.lastName.$dirty)}")
-                label(for="lastName") Last Name *
+                label(for="lastName") Last Name
+                | &nbsp;
+                .label.label-default() Required
                 input.form-control(name="lastName", type="text", placeholder="Last Name", ng-model="adoptee.lastName", required)
             .col-sm-3
               .form-group(ng-class="{'has-error': adopteeForm.firstName.$invalid && (submitted || adopteeForm.firstName.$dirty)}")
-                label(for="firstName") First Name *
+                label(for="firstName") First Name
+                | &nbsp;
+                .label.label-default() Required
                 input.form-control(name="firstName", type="text", placeholder="First Name", ng-model="adoptee.firstName", required)
             .col-sm-1
               .form-group
@@ -51,7 +55,9 @@
           .row
             .col-sm-4
               .form-group(ng-class="{'has-error': adopteeForm.homeAddress.$invalid && (submitted || adopteeForm.homeAddress.$dirty)}")
-                label(for="adoptee.address.homeAddress") Home Address *
+                label(for="adoptee.address.homeAddress") Home Address
+                | &nbsp;
+                .label.label-default() Required
                 input.form-control(name="homeAddress", type="text", placeholder="Home address", ng-model="adoptee.address.homeAddress", required)
             .col-sm-3.col-md-4
               .form-group
@@ -122,21 +128,31 @@
         fieldset(ng-disabled="siteUndefined()")
           legend Additional Information
           .row
-            .col-sm-6
+            .col-sm-3
               .form-group
                 label.checkbox-inline
                   input(name="adoptee.isDiabetic", type="checkbox", ng-model="adoptee.isDiabetic")
                   | Diabetic
+            .col-sm-9
+          .row
+            .col-sm-3
+              .form-group
                 label.checkbox-inline
-                  input(name="adoptee.isDiabetic", type="checkbox", ng-model="adoptee.isDogOwner")
-                  | Has Dog(s)
-                label.checkbox-inline
-                  input(name="adoptee.isDiabetic", type="checkbox", ng-model="adoptee.isAllergic")
+                  input(name="adoptee.isAllergic", type="checkbox", ng-model="adoptee.isAllergic")
                   | Has Allergies
-            .col-sm-6
+            .col-sm-9
               .form-group(ng-hide="!adoptee.isAllergic")
                 input.form-control(name="adoptee.reactionFoods", type="text", placeholder="Reaction Foods", ng-model="adoptee.reactionFoods")
           .row
+            .col-sm-3
+              .form-group
+                label.checkbox-inline
+                    input(name="adoptee.isPetOwner", type="checkbox", ng-model="adoptee.isPetOwner")
+                    | Pet Owner
+            .col-sm-9
+                .form-group(ng-hide="!adoptee.isPetOwner")
+                    input.form-control(name="adoptee.petTypes", type="text", placeholder="Pet Types", ng-model="adoptee.petTypes")
+            .row
             .col-sm-6
               .form-group
                 select.form-control(name="adoptee.language", ng-model="adoptee.language", ng-options="l for l in enums.language")
@@ -211,19 +227,19 @@
                     select.form-control(name="householdMember.shirtSizeType", ng-model="householdMember.shirtSizeType", ng-options="szt for szt in enums.clothingSizeType")
                       option(disabled, value="") Shirt
                   .form-group
-                    input.form-control(name="householdMember.shirtSize", type="number", min="0", max="30", placeholder="Size", ng-model="householdMember.shirtSize")
+                    input.form-control(name="householdMember.shirtSize", type="string", placeholder="Size", ng-model="householdMember.shirtSize")
                 .col-sm-4
                   .form-group
                     select.form-control(name="householdMember.pantSizeType", ng-model="householdMember.pantSizeType" ng-options="pzt for pzt in enums.clothingSizeType")
                       option(disabled, value="") Pants
                   .form-group
-                    input.form-control(name="householdMember.pantSize", type="number", min="0", max="30", placeholder="Size", ng-model="householdMember.pantSize")
+                    input.form-control(name="householdMember.pantSize", type="string", placeholder="Size", ng-model="householdMember.pantSize")
                 .col-sm-4
                   .form-group
                     select.form-control(name="householdMember.shoeSizeType", ng-model="householdMember.shoeSizeType" ng-options="szt for szt in enums.shoeSizeType")
                       option(disabled, value="") Shoe
                   .form-group
-                    input.form-control(name="householdMember.shoeSize", type="number", min="0", max="99", placeholder="Size", ng-model="householdMember.shoeSize")
+                    input.form-control(name="householdMember.shoeSize", type="string", placeholder="Size", ng-model="householdMember.shoeSize")
             .col-sm-3
               .row
                 .col-sm-12
