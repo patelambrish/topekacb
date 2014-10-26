@@ -1,17 +1,19 @@
 angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier', 'Adopter', 'Adoptee',
 function($scope, $filter, mvNotifier, Adopter, Adoptee) {
-    $scope.template = {
-        adopterMatchUrl: '/partials/matching/adopter-match',
-        adopteeListUrl: '/partials/adopters/adoptee-list'
-    };
-    $scope.adopteeList = { heading: 'Matched Adoptees' };
-    $scope.adopterSearchResults = [];
-    $scope.adopteeSearchResults = [];
-    $scope.currentAdopter;
-    $scope.currentAdoptee;
-    $scope.ageRanges = ["0-7", "8-12", "13-18"];
-    $scope.adopteeEnums;
-    $scope.adopteeAges = [];
+  $scope.template = {
+    adopterMatchUrl: '/partials/matching/adopter-match'
+  };
+  $scope.adopterFields = {
+    count: false
+  };
+	$scope.adopterSearchResults = [];
+  $scope.adopteeSearchResults = [];
+  $scope.currentAdopter;
+  $scope.currentAdoptee;
+  $scope.ageRanges = ["0-7", "8-12", "13-18"];
+  $scope.adopteeEnums;
+  $scope.adopteeAges = [];
+  $scope.unmatchAdoptees = [];
 
     $scope.applyPage = function (page, data, pageInfo) {
         pageInfo.current = page;
@@ -71,7 +73,6 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee) {
                         a._adopterId = $scope.currentAdopter._id;
                         a.status = "Matched";
                         Adoptee.updateAdoptee(a);
-
                     });
                     $scope.currentAdopter.status = "Matched";
                     var updatedAdopter = $scope.currentAdopter;
@@ -135,13 +136,9 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee) {
     };
 
 
-    $scope.selectAdopter = function(adopter){
-          $scope.currentAdopter = Adopter.get({ _id: adopter._id });
-          $scope.currentAdopter.$promise.
-            then(function(data) {
-              $scope.adoptees = data.adoptees;
-              $scope.searchAdoptees(data.criteria);
-            });
-    };
-    
+  $scope.selectAdopter = function(adopter){
+      $scope.currentAdopter = Adopter.get({ _id: adopter._id });
+      $scope.searchAdoptees(adopter.criteria);
+  };
+
 }]);

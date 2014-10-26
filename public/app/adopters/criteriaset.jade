@@ -1,37 +1,74 @@
 fieldset(id="criteriaForm", ng-form="criteriaForm")
   legend(ng-if="title") {{title}}
-    a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#criteriaForm .collapse")
+    a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#criteriaForm > .collapse")
       i.glyphicon.glyphicon-chevron-up
   .row.collapse.in
     .col-sm-5
-      .form-group(ng-class="{'has-error': criteriaForm.count.$invalid}")
+      .form-group(ng-class="{'has-error': criteriaForm.count.$invalid}", ng-hide="fields.count===false")
         label.control-label 
           | Number of Households&nbsp;
           .label(ng-show="criteriaForm.count.$error.number") Invalid
-        input.form-control(type="number", name="count", placeholder="Number of households", min="1", ng-model="criteria.count")
+        input.form-control(type="number", name="count", placeholder="Number of households", min="1", ng-model="adopter.criteria.count")
   .row.collapse.in
     .col-sm-7
       .form-group
         label Household Types
-        .checkbox(ng-repeat="e in enums.household")
+        .checkbox(ng-repeat="e in adopter.enums.household")
           label
-            input(type="checkbox", name="household", ng-value="e", ng-click="setFlags(criteria.households, e)", ng-checked="criteria.households.indexOf(e) > -1", ng-disabled="disabled.household")
+            input(type="checkbox", name="household", ng-value="e", ng-click="setFlags(adopter.criteria.households, e)", ng-checked="adopter.criteria.households.indexOf(e) > -1")
             | {{e}}
     .col-sm-5
       .form-group
         label Children's Ages
-        .checkbox(ng-repeat="e in enums.age")
+        .checkbox(ng-repeat="e in adopter.enums.age")
           label
-            input(type="checkbox", name="age", ng-value="e", ng-click="setFlags(criteria.childAges, e)", ng-checked="criteria.childAges.indexOf(e) > -1")
+            input(type="checkbox", name="age", ng-value="e", ng-click="setFlags(adopter.criteria.childAges, e)", ng-checked="adopter.criteria.childAges.indexOf(e) > -1")
             | {{e}}
       .form-group
         label Special Needs
-        .checkbox(ng-repeat="e in enums.special")
+        .checkbox(ng-repeat="e in adopter.enums.special")
           label
-            input(type="checkbox", name="special", ng-value="e", ng-click="setFlags(criteria.special, e)", ng-checked="criteria.special.indexOf(e) > -1")
+            input(type="checkbox", name="special", ng-value="e", ng-click="setFlags(adopter.criteria.special, e)", ng-checked="adopter.criteria.special.indexOf(e) > -1")
             | {{e}}
   .row.collapse.in
     .col-sm-12
-      .form-group
-        label Comments
-        textarea.form-control(name="comment", rows="3", placeholder="Comments", ng-model="criteria.comment")
+      .panel.panel-default(id="comment")
+        .panel-heading
+          a.pull-right.collapse-toggle.collapsed(href="", tabindex="-1", data-toggle="collapse", data-target="#comment .panel-collapse")
+            i.glyphicon.glyphicon-chevron-up
+          label Comments
+        .panel-collapse.collapse
+          textarea.form-control(name="comment", rows="4", placeholder="Comments", ng-model="adopter.criteria.comment")
+  .row.collapse.in
+    .col-sm-12          
+      .panel.panel-default(id="adopteeList")
+        .panel-heading
+          a.pull-right.collapse-toggle.collapsed(href="", tabindex="-1", data-toggle="collapse", data-target="#adopteeList .panel-collapse")
+            i.glyphicon.glyphicon-chevron-up
+          label Matched Adoptees
+        .panel-collapse.collapse(ng-switch="adopter.adoptees.length")
+          .panel-body(ng-switch-when="0") No matched adoptees found.
+          table.table.table-hover(ng-switch-default)
+            thead
+              tr
+                th &nbsp;
+                th Name
+                th Household Type
+                th Members
+            tbody
+              tr(ng-repeat="adoptee in adopter.adoptees | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size")
+                td: input(type="checkbox", ng-click="setFlags(selected, adoptee)", ng-checked="selected.indexOf(adoptee) > -1")
+                td(ng-click="select(adoptee)") {{adoptee.lastName}}, {{adoptee.firstName}}
+                td(ng-click="select(adoptee)") {{adoptee.criteria.householdType}}
+                td(ng-click="select(adoptee)") {{adoptee.householdMembers.length}}
+          .panel-footer(ng-if="adopter.adoptees.length > page.size")
+            ul.pager
+              li.previous(ng-class="{disabled: page.current == 1}")
+                a(href="" ng-click="applyPage(page.previous)") Previous
+              li
+                .input-group.input-group-page
+                  .input-group-addon Page
+                  input.form-control(type="number", min="1", max="{{page.total}}", ng-model="page.current", ng-change="applyPage(page.current)")
+                  .input-group-addon of {{page.total}}
+              li.next(ng-class="{disabled: page.current == page.total}")
+                a(href="" ng-click="applyPage(page.next)") Next

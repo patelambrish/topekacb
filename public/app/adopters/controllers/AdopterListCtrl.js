@@ -1,6 +1,6 @@
 angular.module('app').
   controller('AdopterListCtrl', function($scope, $filter, $location, Adopter, cachedAdopters, mvIdentity, mvNotifier) {
-    var adopters = cachedAdopters.query();
+    var adopters;
 
     $scope.permission = {
       delete: mvIdentity.isAuthorized('manager')
@@ -62,6 +62,15 @@ angular.module('app').
         mvNotifier.notify(adopter.name + ' was deleted.');
       });
     };
+    
+    $scope.refresh = function(clearCache) {
+      if(clearCache) {
+        cachedAdopters.clear();
+      }
 
-    $scope.applyFilter();
+      adopters = cachedAdopters.query();
+      $scope.applyFilter();
+    };
+
+    $scope.refresh();
   });

@@ -103,3 +103,10 @@ a {
     background-color: $brand-danger;
   }
 }
+
+.panel {
+  > .panel-collapse > textarea {
+    border-radius: 0; 
+  }
+  
+}
