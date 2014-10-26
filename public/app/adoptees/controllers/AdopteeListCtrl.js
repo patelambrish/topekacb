@@ -24,10 +24,11 @@ angular.module('app').
       }
     };
   }).
-  controller('adopteeListCtrl', function($scope, $filter, $location, Adoptee, mvIdentity, mvNotifier) {
-    var adoptees = Adoptee.query();
+  controller('adopteeListCtrl', function($scope, $filter, $location, Adoptee, cachedAdoptees, mvIdentity, mvNotifier) {
+    var adoptees;
+    
     $scope.permission = {
-        delete: mvIdentity.isAuthorized('manager')
+      delete: mvIdentity.isAuthorized('manager')
     };
 
     $scope.sort = {
@@ -75,15 +76,26 @@ angular.module('app').
     };
 
     $scope.delete = function(adoptee) {
-        Adoptee.delete({ _id: adoptee._id }, function() {
-            mvNotifier.notify(adoptee.firstName + ' ' + adoptee.lastName + ' was deleted.');
-            var index = $scope.adoptees.indexOf(adoptee);
-            if (index !== -1){
-                $scope.adoptees.splice(index, 1);
-            }
-            $location.path('/adoptees');
-        });
+      Adoptee.delete({ _id: adoptee._id }, function() {
+        mvNotifier.notify(adoptee.firstName + ' ' + adoptee.lastName + ' was deleted.');
+        var index = $scope.adoptees.indexOf(adoptee);
+
+        if(index !== -1) {
+          $scope.adoptees.splice(index, 1);
+        }
+
+        $location.path('/adoptees');
+      });
     };
 
-    $scope.applyFilter();
+    $scope.refresh = function(clearCache) {
+      if(clearCache) {
+        cachedAdoptees.clear();
+      }
+
+      adoptees = cachedAdoptees.query();
+      $scope.applyFilter();
+    };
+
+    $scope.refresh();
   });

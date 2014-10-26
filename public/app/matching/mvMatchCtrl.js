@@ -73,13 +73,6 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee) {
                         a._adopterId = $scope.currentAdopter._id;
                         a.status = "Matched";
                         Adoptee.updateAdoptee(a);
-
-<<<<<<< HEAD
-  $scope.selectAdopter = function(adopter){
-      $scope.currentAdopter = Adopter.get({ _id: adopter._id });
-      $scope.searchAdoptees(adopter.criteria);
-  };
-=======
                     });
                     $scope.currentAdopter.status = "Matched";
                     var updatedAdopter = $scope.currentAdopter;
@@ -143,14 +136,9 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee) {
     };
 
 
-    $scope.selectAdopter = function(adopter){
-          $scope.currentAdopter = Adopter.get({ _id: adopter._id });
-          $scope.currentAdopter.$promise.
-            then(function(data) {
-              $scope.adoptees = data.adoptees;
-              $scope.searchAdoptees(data.criteria);
-            });
-    };
->>>>>>> upstream/master
-    
+  $scope.selectAdopter = function(adopter){
+      $scope.currentAdopter = Adopter.get({ _id: adopter._id });
+      $scope.searchAdoptees(adopter.criteria);
+  };
+
 }]);
