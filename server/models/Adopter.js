@@ -74,7 +74,7 @@ function createDefaultAdopters() {
     count({}).
     exec(function(err, count) {
       if(count === 0) {
-        generateAdopters(4000);
+        generateAdopters(1500);
       } else {
         console.log('found ' + count + ' adopters.');
       }
@@ -97,19 +97,37 @@ function generateAdopters(count) {
   }).then(function(userPool) {
     var chance = new Chance(),
         data = [],
-        entity, status, i, a, counts, matchCount, adoptees;
+        entity, status, i, a, householdCount, matchCount, adoptees;
 
     for(i = 1; i <= count; i++) {
+      // pick entity (individual, dept, org) with the greater proportion to individuals
       entity = chance.weighted(entityEnum,[20, 2, 1]);
       status = chance.pick(statusEnum);
-      counts = {'Individual': chance.d4(), 'Department': chance.d12(), 'Organization': chance.d100()};
-      matchCount = status === 'Matched' ? counts[entity] : chance.natural({min:0,max:counts[entity] - 1});
+      // pick household count based on entity, eg org can adopt as many as 200 familes 
+      householdCount = 
+        (entity === 'Individual' && chance.d4()) || 
+        (entity === 'Department' && chance.d20()) || 
+        (entity === 'Organization' && chance.d100()*2); 
+      // pick matched adoptee count based on above household count and status;
+      //   if matched status, then number of matched should equal household count
+      //   if unmatched status, then number of matched should be less than household count
+      //   for other statuses, number of matched should be zero
+      matchCount = 
+        (status === 'Matched' && householdCount) || 
+        (status === 'Unmatched' && chance.natural({min:0,max:householdCount - 1})) || 
+        0;
       adoptees = [];
 
-      if(status !== 'In Process' && matchCount > 0 && matchCount <= adopteePool.length) {
+      // apply stupid simple matching, just pop them from the stack
+      if(matchCount > 0 && adopteePool.length > 0) {
         for(a = 1; a <= matchCount; a++) {
           adoptees.push(adopteePool.pop());
         }
+      }
+      
+      // adjust matched status to unmatched if insufficient adoptees 
+      if(status === 'Matched' && adoptees.length !== householdCount) {
+        status = 'Unmatched';
       }
 
       data.push({
@@ -132,9 +150,9 @@ function generateAdopters(count) {
             number: chance.phone()
           }],
           email: chance.email(),
-          notifyMethods: chance.pick(notifyEnum, 2),
+          notifyMethods: chance.pick(notifyEnum, 1),
           criteria: {
-            count: counts[entity],
+            count: householdCount,
             households: chance.unique(chance.pick, chance.d4(), householdEnum, 1),
             childAges: chance.pick(ageEnum, 1),
             special: chance.unique(chance.pick, chance.d4(), specialEnum, 1),

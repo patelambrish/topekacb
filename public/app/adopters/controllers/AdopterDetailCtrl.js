@@ -1,9 +1,5 @@
 angular.module('app').
 	controller('AdopterDetailCtrl', function($scope, $routeParams, $location, Adopter, cachedAdopters, mvNotifier, common) {
-    $scope.template = {
-      adopteeListUrl: '/partials/adopters/adoptee-list'
-    };
-
     $scope.validation = {
       zip: /^\d{5}(-\d{4})?$/,
       phone: /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/

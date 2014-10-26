@@ -110,8 +110,8 @@
           .row.collapse.in
             .col-sm-6
               .form-group
-                label.checkbox-inline(ng-repeat="e in adopter.enums.notify")
-                  input(type="checkbox", ng-value="e", ng-click="setFlags(adopter.notifyMethods, e)", ng-checked="adopter.notifyMethods.indexOf(e) > -1")
+                label.radio-inline(ng-repeat="e in adopter.enums.notify")
+                  input(type="radio", name="notifyMethods" ng-value="e", ng-click="setFlags(adopter.notifyMethods, e, true)", ng-checked="adopter.notifyMethods.indexOf(e) > -1")
                   | {{e}}
                 p.help-block Method for receiving household information
             .col-sm-6
@@ -121,13 +121,7 @@
                   .label.label-default(ng-show="form.email.$error.required") Required
                   .label(ng-show="form.email.$error.email") Invalid
                 input.form-control(type="email", name="email", placeholder="Email", required, ng-model="adopter.email")
-        div(data-criteriaset, data-title="Household Criteria", data-criteria="adopter.criteria", data-enums="adopter.enums")
-        fieldset(id="adoptees", ng-if="adopter.adoptees.length")
-          legend Matched Adoptees
-            .btn-toolbar.pull-right
-              a.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#adoptees .collapse")
-                i.glyphicon.glyphicon-chevron-up
-          .collapse.in(ng-controller="AdopterAdopteeCtrl", ng-include="template.adopteeListUrl")
+        div(data-criteriaset, data-title="Household Criteria", data-adopter="adopter")
       .panel-footer
         .btn-toolbar.text-right
           button.btn.btn-default(type="button", ng-click="cancel()", ng-disabled="busy()") Cancel

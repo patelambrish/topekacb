@@ -1,17 +1,26 @@
-.panel.panel-default(ng-if="currentAdopter.criteria")
+.panel.panel-default(ng-if="currentAdopter")
   .panel-heading.clearfix
-    .pull-right
-      .label.label-default {{currentAdopter.criteria.count - currentAdopter.adoptees.length || ''}}
-      | &nbsp;
-      .label(class="{{currentAdopter.status == 'Matched' && 'label-success' || 'label-warning'}}") {{currentAdopter.status}}
-    .panel-title {{currentAdopter.name}}
+    h3.panel-title
+      .pull-right(ng-switch="currentAdopter.criteria.count == currentAdopter.adoptees.length")
+        span.label.label-success(ng-switch-when="true") Matched
+        span.label.label-warning(ng-switch-default) Not Matched
+        | &nbsp;
+        span.badge {{currentAdopter.criteria.count - currentAdopter.adoptees.length || ''}}
+      | {{currentAdopter.name}}&nbsp;
   .panel-body
-    div(data-criteriaset, data-criteria="currentAdopter.criteria", data-enums="currentAdopter.enums")
-    div(ng-controller="AdopterAdopteeCtrl", ng-include="template.adopteeListUrl")
+    div(data-criteriaset, data-adopter="currentAdopter", data-fields="adopterFields", data-selected="unmatchAdoptees")
   .panel-footer
     btn-toolbar.pull-right
-      button.btn.btn-primary(ng-click="emailAdopter(currentAdopter)") Email
+      button.btn.btn-primary(ng-click="emailAdopter(currentAdopter)", ng-if="currentAdopter.notifyMethods.indexOf('Email') > -1") 
+        i.glyphicon.glyphicon-envelope
+        | &nbsp;Email
       | &nbsp;
-      a.btn.btn-primary(ng-href="api/adopters/{{currentAdopter._id}}/print" target="_blank") Print
+      a.btn.btn-primary(ng-href="api/adopters/{{currentAdopter._id}}/print" target="_blank")
+        i.glyphicon.glyphicon-print
+        | &nbsp;Print
+      | &nbsp;
+      button.btn.btn-primary(ng-click="unmatch(currentAdopter, unmatchAdoptees)")
+        i.glyphicon.glyphicon-share-alt
+        | &nbsp;Unmatch
     btn-toolbar
       button.btn.btn-default(ng-click="getNextAdopter()") Next Adopter

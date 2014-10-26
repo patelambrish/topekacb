@@ -1,25 +1,25 @@
 angular.module('app').
-  factory('cachedAdopters', function(Adopter) {
-    var adopterList,
+  factory('cachedAdoptees', function(Adoptee) {
+    var adopteeList,
         enums;
     
     return {
       query: function() {
-        if(!adopterList) {
-          adopterList = Adopter.query();
+        if(!adopteeList) {
+          adopteeList = Adoptee.query();
         }
 
-        return adopterList;
+        return adopteeList;
       },
       enums: function() {
         if(!enums) {
-          enums = Adopter.enums({_id: 0});
+          enums = Adoptee.enums({_id: 0});
         }
         
         return enums;
       },
       clear: function() {
-        adopterList = null;
+        adopteeList = null;
       }
     };
   });
