@@ -15,7 +15,7 @@
         i.glyphicon.glyphicon-envelope
         | &nbsp;Email
       | &nbsp;
-      button.btn.btn-primary(ng-click="printAdopter(currentAdopter)")
+      a.btn.btn-primary(ng-href="api/adopters/{{currentAdopter._id}}/print" target="_blank")
         i.glyphicon.glyphicon-print
         | &nbsp;Print
       | &nbsp;

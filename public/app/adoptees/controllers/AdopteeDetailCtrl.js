@@ -3,8 +3,8 @@ angular.module('app').
     $scope.sites = cbSites;
     $scope.enums = Adoptee.enums({ _id: $routeParams.id });
     $scope.adopteeTitle = '';
-    $scope.setNewAdoptee = function(){
-        $scope.adoptee = new adoptee({
+    $scope.setNewAdoptee = function(currentNumber){
+        $scope.adoptee = new Adoptee({
             site: cbCurrentSite.get(),
             householdMembers: [],
             address: {
@@ -17,7 +17,7 @@ angular.module('app').
     };
 
     $scope.siteUndefined = function() {
-      return $scope.adoptee && !$scope.adoptee.site;      
+      return $scope.adoptee && !$scope.adoptee.site;
     };
 
     $scope.onsitechange = function(site) {
@@ -39,12 +39,14 @@ angular.module('app').
         $scope.setNewAdoptee();
     }
 
-    $scope.update = function(form, newFlag){
+    $scope.update = function(form, nextFlag){
       if(form.$invalid) {
         $scope.submitted = true;
+        mvNotifier.notify('Invalid fields present');
         return;
       }
-      $scope.newFlag = newFlag;
+      //get next adoptee
+      $scope.nextFlag = nextFlag;
       if ($scope.adoptee.applicationNumber)
       {
             $scope.adopteeUpdate();
@@ -56,7 +58,6 @@ angular.module('app').
               else {
                   $scope.Adoptee.applicationNumber = retVal.seq;
                   $scope.adopteeUpdate();
-
               }
           });
       }
@@ -86,9 +87,19 @@ angular.module('app').
             else {
                 mvNotifier.notify(retVal.firstName + ' ' + retVal.lastName + ' successfully saved!');
                 $scope.adopteeTitle = '';
-                if ($scope.newFlag) {
-                    $scope.setNewAdoptee();
-                    $location.path('/adoptees/0');
+                if ($scope.nextFlag) {
+                    Adoptee.getNextAdoptee({nextNumber: retVal.applicationNumber + 1}).$promise.then(function(nextVal){
+                        if (!nextVal._id || nextVal.error){
+                           console.log(nextVal);
+                           console.log(nextVal.error);
+                           mvNotifier.notify(retVal.firstName + ' ' + retVal.lastName + " is the highest numbered Adoptee")
+                        }
+                        else {
+                            $scope.adoptee = nextVal;
+                            $scope.adoptee.birthDate = $filter('date')($scope.adoptee.birthDate, 'yyyy-MM-dd');
+                            $location.path('/adoptees/' + nextVal._id);
+                        }
+                    });
                 }
                 else{
                     $scope.adoptee = retVal;
@@ -105,4 +116,5 @@ angular.module('app').
     };
     
     $scope.setFlags = common.setFlags;
+
   });

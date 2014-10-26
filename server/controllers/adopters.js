@@ -1,5 +1,26 @@
 var mongoose = require('mongoose'),
-    Adopter = mongoose.model('Adopter');
+    Adopter = mongoose.model('Adopter'),
+    fs = require('fs'),
+    jade=require('jade'),
+    htmlUtil = require('../utilities/adopteeHtml');
+
+
+function getAdopterHtml(adopter, templateData) {
+	var completeHtml = '', html;
+	if (adopter.adoptees && adopter.adoptees.length > 0) {
+		adopter.adoptees.forEach(function(adoptee) {
+			adoptee.adopter = {
+				name : adopter.name,
+				email : adopter.email,
+				address : adopter.address,
+				phones : adopter.phones
+			};
+			html = htmlUtil.getAdopteeHtml(adoptee, templateData);
+			completeHtml = completeHtml + html;
+		});
+	}
+	return completeHtml;
+}
 
 exports.getAdopters = function(req, res, next) {
   console.log(req.query.filter);
@@ -51,6 +72,7 @@ exports.getAdopters = function(req, res, next) {
   query.
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
+    populate('adoptees').
     select('-__v').
     exec(function(err, collection) {
       Adopter.count({}, function(err, cnt) {
@@ -83,7 +105,7 @@ exports.saveAdopter = function(req, res, next) {
       id = data._id,
       options = { upsert: true },
       userId = req.user ? req.user._id : null;
-
+  console.log(id);
   delete data.enums;
   if(!id) {
     id = new mongoose.Types.ObjectId();
@@ -92,6 +114,7 @@ exports.saveAdopter = function(req, res, next) {
   } else {
     delete data.createDate;
     delete data.createdBy;
+    delete data._id;
     data.updateDate = new Date();
     data.updatedBy = userId;
   }
@@ -100,6 +123,7 @@ exports.saveAdopter = function(req, res, next) {
     findByIdAndUpdate(id, data, options).
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
+    populate('adoptees').
     select('-__v').
     exec(function(err, adopter) {
       if(err) {
@@ -120,6 +144,22 @@ exports.deleteAdopter = function(req, res, next) {
       }
       res.send(adopter);
     });
+};
+
+
+exports.print = function(req, res, next) {
+	var adopterId = req.params.id;
+	fs.readFile('server/views/adopteePrint.jade', 'utf8', function(err, templateData) {
+		Adopter.findById(adopterId).populate('adoptees').select('-__v').exec(function(err, adopter) {
+			if (err) {
+				console.log(err);
+				return next(err);
+			}
+			var completeHtml = getAdopterHtml(adopter, templateData);
+			res.status(200);
+			res.send(completeHtml);
+		});
+	});
 };
 
 exports.getEnums = function(req, res) {

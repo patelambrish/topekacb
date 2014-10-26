@@ -37,6 +37,9 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
 		templateUrl : '/partials/adoptees/adoptee-details',
 		controller : 'adopteeDetailCtrl',
 		resolve : routeRoleChecks.user
+    }).when('/adoptees/:id/form', {
+        controller: 'adopteeDetailCtrl',
+        resolve : routeRoleChecks.user
 	}).when('/adopters', {
 		templateUrl : '/partials/adopters/adopter-list',
 		controller : 'AdopterListCtrl',

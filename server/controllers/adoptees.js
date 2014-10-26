@@ -1,6 +1,9 @@
 var mongoose = require('mongoose'),
     Adoptee = mongoose.model('Adoptee'),
-    AdopteeApplicationCounter = mongoose.model('AdopteeApplicationCounter');
+    AdopteeApplicationCounter = mongoose.model('AdopteeApplicationCounter'),
+    fs = require('fs'),
+    jade=require('jade'),
+    htmlUtil = require('../utilities/adopteeHtml');
 
 exports.getAdoptees = function(req, res) {
     var searchFilters, nameRegex, query, queryName, sortBy, sortDir;
@@ -30,8 +33,10 @@ exports.getAdoptees = function(req, res) {
             query = query.skip(req.query.start).limit(req.query.limit);
         }
         query.
-           populate('_createUser', 'firstName lastName').
-           populate('_modifyUser', 'firstName lastName').
+            populate('_createUser', 'firstName lastName').
+            populate('_modifyUser', 'firstName lastName').
+            populate('_adopterId', 'name').
+            select('-image').
             exec(function(err, collection) {
                  res.send({data: collection, totalCount: count});
             });
@@ -39,8 +44,25 @@ exports.getAdoptees = function(req, res) {
 };
 
 exports.getAdopteeById = function(req, res) {
-    Adoptee.findOne({_id: req.params.id}).exec(function (err, adoptee) {
+    Adoptee.findOne({_id: req.params.id}).
+        populate('_adopterId', 'name').
+        select('-image').
+        exec(function (err, adoptee) {
         res.send(adoptee);
+    })
+};
+
+exports.getNextAdoptee = function(req, res) {
+    Adoptee.findOne({applicationNumber: req.body.nextNumber}).
+        populate('_adopterId', 'name').
+        select('-image').
+        exec(function (err, adoptee) {
+        if (adoptee) {
+            res.send(adoptee);
+        }
+        else {
+            res.send({});
+        }
     })
 };
 
@@ -82,7 +104,6 @@ exports.updateAdoptee = function(req, res){
           options = { upsert: true },
           userId = req.user ? req.user._id : null;
       if(!id) {
-          id = new mongoose.Types.ObjectId();
           update.createDate = new Date();
           update._createUser = userId;
       } else {
@@ -93,6 +114,10 @@ exports.updateAdoptee = function(req, res){
       }
 
       delete update.__v;
+      if (update._adopterId) {
+          update._adopterId = update._adopterId.name ? update._adopterId._id : update._adopterId;
+      }
+
       Adoptee.
           findByIdAndUpdate(id, update, options).
           populate('_createUser', 'firstName lastName').
@@ -105,7 +130,7 @@ exports.updateAdoptee = function(req, res){
 
 exports.deleteAdoptee = function(req, res){
     Adoptee.
-        findByIdAndRemove(req.params.id).
+        findByIdAndRemove(req.params._id).
         exec(function(err, adoptee) {
             if(err) { res.status(400); return res.send({error:err.toString()});}
             return res.send(adoptee);
@@ -115,3 +140,28 @@ exports.deleteAdoptee = function(req, res){
 exports.getEnums = function(req, res) {
     res.send(Adoptee.getEnumValues());
 };
+
+exports.print = function(req, res) {
+
+    fs.readFile('server/views/adopteePrint.jade', 'utf8', function (err, templateData) {
+        Adoptee.findOne({_id: req.params.id}).
+            populate('_adopterId').
+            exec(function (err, adoptee) {
+                adoptee.adopter = adoptee._adopterId;
+                var html = htmlUtil.getAdopteeHtml(adoptee, templateData);
+                res.status(200);
+                res.send(html);
+            });
+    });
+};
+
+exports.getForm = function(req, res) {
+    Adoptee.findOne({_id: req.params.id})
+     .exec(function(err, adoptee){
+        var decodedImage = new Buffer(adoptee.image, 'base64');
+        res.writeHead(200, {'content-type' : 'image/tiff', 'content-disposition': 'attachment; filename=' + adoptee.lastName + adoptee._id + '.tif'});
+        res.write(decodedImage);
+        res.end();
+     });
+};
+

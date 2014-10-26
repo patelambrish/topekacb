@@ -27,11 +27,11 @@ var householdMember = {
     age: {type: Number, max: 99},
     gender: {type: String, enum: genders},
     pantSizeType: {type: String, enum: clothingSizeTypes},
-    pantSize: {type: Number, max: 99},
+    pantSize: {type: String},
     shirtSizeType: {type: String, enum: clothingSizeTypes},
-    shirtSize: {type: Number, max: 99},
+    shirtSize: {type: String},
     shoeSizeType: {type: String, enum: shoeSizeTypes},
-    shoeSize: {type: Number, max: 99},
+    shoeSize: {type: String},
     wishList: {type: String}
 };
 
@@ -88,10 +88,12 @@ var adopteeSchema = mongoose.Schema({
     isDiabetic: {type: Boolean},
     isAllergic: {type: Boolean},
     reactionFoods: {type: String},
-    isDogOwner: {type: Boolean},
+    isPetOwner: {type: Boolean},
+    petTypes: {type: String},
     householdMembers: [householdMember],
     applicationNumber: {type: Number, index: {unique: true, dropDups: true}},
     site: {type: String, enum: sites},
+    image: {type: String},
     createDate: {type: Date},
     _createUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     modifyDate: {type: Date},
@@ -140,8 +142,9 @@ function generateAdoptees(count) {
     exec(function(err, users) {
       var chance = new Chance(),
           data = [],
-          gender, status, hispanic, language, allergic, site,
+          gender, status, hispanic, language, allergic, site, petOwner,
           allergens = ['Peanut','Tree nuts','Milk','Egg','Wheat','Soy','Fish','Shellfish'],
+          domesticAnimals = ['Dog', 'Cat', 'Gerbil', 'Parakeet'],
           i;
 
       chance.mixin({
@@ -206,6 +209,7 @@ function generateAdoptees(count) {
         hispanic = chance.bool({likelihood: 17});
         language = chance.pick(languages, 1);
         allergic = chance.bool({likelihood: 30});
+        petOwner = chance.bool({likelihood: 48});
         site = chance.pick(sites, 1);
 
 
@@ -237,7 +241,8 @@ function generateAdoptees(count) {
           language: hispanic && language || undefined,
           englishSpeaker: language === languages[1] && chance.first() || undefined,
           isDiabetic: chance.bool({likelihood: 10}),
-          isDogOwner: chance.bool({likelihood: 40}),
+          isPetOwner: chance.bool({likelihood: 40}),
+          petTypes: petOwner && [].concat(chance.pick(domesticAnimals, chance.d4())).join(', ') || undefined,
           isAllergic: allergic,
           reactionFoods: allergic && [].concat(chance.pick(allergens, chance.d4())).join(', ') || undefined,
           criteria: {

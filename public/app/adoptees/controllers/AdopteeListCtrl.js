@@ -75,7 +75,7 @@ angular.module('app').
     };
 
     $scope.delete = function(adoptee) {
-        adoptee.delete({ _id: adoptee._id }, function() {
+        Adoptee.delete({ _id: adoptee._id }, function() {
             mvNotifier.notify(adoptee.firstName + ' ' + adoptee.lastName + ' was deleted.');
             var index = $scope.adoptees.indexOf(adoptee);
             if (index !== -1){

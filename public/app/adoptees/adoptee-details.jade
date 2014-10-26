@@ -1,11 +1,19 @@
 .container
   .page-header
     h1 {{adopteeTitle || adoptee.firstName + ' ' + adoptee.lastName}}&nbsp;
+      small
+        | &nbsp;{{adoptee.status}}
+      small(ng-show="adoptee.status == 'Matched'")
+        | &nbsp;with&nbsp;
+        a(href="/adopters/{{adoptee._adopterId._id}}") {{adoptee._adopterId.name}}
       small.pull-right(ng-switch="adoptee.site")
         img(src="/assets/image/antioch.png", ng-switch-when="A")
         img(src="/assets/image/letshelp.png", ng-switch-when="L")
         | &nbsp;{{sites[adoptee.site]}}
-      span.badge.pull-right(ng-show="adoptee.applicationNumber") {{adoptee.site + '-' + adoptee.applicationNumber}}
+      span
+        a(ng-href="../api/adoptees/{{adoptee._id}}/form", target="_blank")
+            .badge.pull-right(ng-show="adoptee.applicationNumber") {{adoptee.site + '-' + adoptee.applicationNumber}}
+
 
   form(name="adopteeForm")
     .panel.panel-default
@@ -15,11 +23,15 @@
           .row
             .col-sm-3
               .form-group(ng-class="{'has-error': adopteeForm.lastName.$invalid && (submitted || adopteeForm.lastName.$dirty)}")
-                label(for="lastName") Last Name *
+                label(for="lastName") Last Name
+                | &nbsp;
+                .label.label-default() Required
                 input.form-control(name="lastName", type="text", placeholder="Last Name", ng-model="adoptee.lastName", required)
             .col-sm-3
               .form-group(ng-class="{'has-error': adopteeForm.firstName.$invalid && (submitted || adopteeForm.firstName.$dirty)}")
-                label(for="firstName") First Name *
+                label(for="firstName") First Name
+                | &nbsp;
+                .label.label-default() Required
                 input.form-control(name="firstName", type="text", placeholder="First Name", ng-model="adoptee.firstName", required)
             .col-sm-1
               .form-group
@@ -43,7 +55,9 @@
           .row
             .col-sm-4
               .form-group(ng-class="{'has-error': adopteeForm.homeAddress.$invalid && (submitted || adopteeForm.homeAddress.$dirty)}")
-                label(for="adoptee.address.homeAddress") Home Address *
+                label(for="adoptee.address.homeAddress") Home Address
+                | &nbsp;
+                .label.label-default() Required
                 input.form-control(name="homeAddress", type="text", placeholder="Home address", ng-model="adoptee.address.homeAddress", required)
             .col-sm-3.col-md-4
               .form-group
@@ -97,24 +111,48 @@
             .col-sm-6
               .form-group
                 input.form-control(name="adoptee.email", type="email", placeholder="Email", ng-model="adoptee.email")
+        fieldset(ng-disabled="siteUndefined()", ng-show="adoptee.site == 'O'")
+          .row
+            .col-sm-6
+                .form-group
+                    label(for="adoptee.agent.agency") Agency
+                    input.form-control(name="adoptee.agent.agency", placeholder="Agency", ng-model="adoptee.agent.agency")
+            .col-sm-3
+                .form-group
+                    label(for="adoptee.agent.agentName") Agent Name
+                    input.form-control(name="adoptee.agent.agentName", placeholder="Agent Name", ng-model="adoptee.agent.agentName")
+            .col-sm-3
+                .form-group
+                    label(for="adoptee.agent.agentPhone") Agent Phone
+                    input.form-control(name="adoptee.agent.agentPhone", type="phone", placeholder="Agent Phone", ng-model="adoptee.agent.agentPhone")
         fieldset(ng-disabled="siteUndefined()")
           legend Additional Information
           .row
-            .col-sm-6
+            .col-sm-3
               .form-group
                 label.checkbox-inline
                   input(name="adoptee.isDiabetic", type="checkbox", ng-model="adoptee.isDiabetic")
                   | Diabetic
+            .col-sm-9
+          .row
+            .col-sm-3
+              .form-group
                 label.checkbox-inline
-                  input(name="adoptee.isDiabetic", type="checkbox", ng-model="adoptee.isDogOwner")
-                  | Has Dog(s)
-                label.checkbox-inline
-                  input(name="adoptee.isDiabetic", type="checkbox", ng-model="adoptee.isAllergic")
+                  input(name="adoptee.isAllergic", type="checkbox", ng-model="adoptee.isAllergic")
                   | Has Allergies
-            .col-sm-6
+            .col-sm-9
               .form-group(ng-hide="!adoptee.isAllergic")
                 input.form-control(name="adoptee.reactionFoods", type="text", placeholder="Reaction Foods", ng-model="adoptee.reactionFoods")
           .row
+            .col-sm-3
+              .form-group
+                label.checkbox-inline
+                    input(name="adoptee.isPetOwner", type="checkbox", ng-model="adoptee.isPetOwner")
+                    | Pet Owner
+            .col-sm-9
+                .form-group(ng-hide="!adoptee.isPetOwner")
+                    input.form-control(name="adoptee.petTypes", type="text", placeholder="Pet Types", ng-model="adoptee.petTypes")
+            .row
             .col-sm-6
               .form-group
                 select.form-control(name="adoptee.language", ng-model="adoptee.language", ng-options="l for l in enums.language")
@@ -159,46 +197,66 @@
           .row(ng-form="memberForm", ng-repeat="householdMember in adoptee.householdMembers")
             hr(ng-if="!$first")
             .col-sm-4
+              .row
+                .col-sm-12
+                  label Name, SSN, Age, Gender
               .form-group
                 input.form-control(name="householdhouseholdMember.name", type="text", placeholder="Name", ng-model="householdMember.name")
               .row
                 .col-sm-4
                   .form-group(ng-class="{'has-error': memberForm.ssnLastFour.$invalid && (submitted)}")
-                    input.form-control(name="ssnLastFour", type="text", placeholder="SSN", title="Last 4 digits of SSN", pattern="[0-9]{4}", ng-pattern="/[0-9]{4}/", ng-model="householdMember.ssnLastFour")
+                    input.form-control(name="ssnLastFour", type="text", placeholder="SSN", title="Last 4 digits of SSN", pattern="[\s0-9]{4}", ng-pattern="/[\s0-9]{4}/", ng-model="householdMember.ssnLastFour")
                 .col-sm-4
                   .form-group
                     input.form-control(name="householdMember.age", type="number", min="0", max="110", placeholder="Age", ng-model="householdMember.age")
                 .col-sm-4
                   .form-group
                     select.form-control(name="householdMember.gender", ng-model="householdMember.gender", ng-options="g | limitTo:1 for g in enums.gender")
-                      option(disabled, value="") Sex
+                      option(disabled, value="") Gender
             .col-sm-4
+              .row
+                .col-sm-4
+                    label Shirt
+                .col-sm-4
+                    label Pants
+                .col-sm-4
+                    label Shoe
               .row
                 .col-sm-4
                   .form-group
                     select.form-control(name="householdMember.shirtSizeType", ng-model="householdMember.shirtSizeType", ng-options="szt for szt in enums.clothingSizeType")
                       option(disabled, value="") Shirt
                   .form-group
-                    input.form-control(name="householdMember.shirtSize", type="number", min="0", max="30", placeholder="Size", ng-model="householdMember.shirtSize")
+                    input.form-control(name="householdMember.shirtSize", type="string", placeholder="Size", ng-model="householdMember.shirtSize")
                 .col-sm-4
                   .form-group
                     select.form-control(name="householdMember.pantSizeType", ng-model="householdMember.pantSizeType" ng-options="pzt for pzt in enums.clothingSizeType")
                       option(disabled, value="") Pants
                   .form-group
-                    input.form-control(name="householdMember.pantSize", type="number", min="0", max="30", placeholder="Size", ng-model="householdMember.pantSize")
+                    input.form-control(name="householdMember.pantSize", type="string", placeholder="Size", ng-model="householdMember.pantSize")
                 .col-sm-4
                   .form-group
                     select.form-control(name="householdMember.shoeSizeType", ng-model="householdMember.shoeSizeType" ng-options="szt for szt in enums.shoeSizeType")
                       option(disabled, value="") Shoe
                   .form-group
-                    input.form-control(name="householdMember.shoeSize", type="number", min="0", max="99", placeholder="Size", ng-model="householdMember.shoeSize")
+                    input.form-control(name="householdMember.shoeSize", type="string", placeholder="Size", ng-model="householdMember.shoeSize")
             .col-sm-3
-              .form-group
-                textarea.form-control(name="householdMember.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="householdMember.wishList")
+              .row
+                .col-sm-12
+                    label Wishlist
+              .row
+                .col-sm-12
+                    .form-group
+                        textarea.form-control(name="householdMember.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="householdMember.wishList")
             .col-sm-1
-              .form-group
-                a.btn.btn-link(href="", tabindex="-1", ng-click="deleteHouseholdMember(householdMember)")
-                  i.text-danger.glyphicon.glyphicon-remove
+              .row
+                .col-sm-12
+                    label
+              .row
+                .col-sm-12
+                  .form-group
+                    a.btn.btn-link(href="", tabindex="-1", ng-click="deleteHouseholdMember(householdMember)")
+                      i.text-danger.glyphicon.glyphicon-remove
           .row
             .col-sm-12
               .form-group
@@ -207,7 +265,7 @@
                   | &nbsp;Add new
       .panel-footer
         .btn-toolbar.text-right
-          button.btn.btn-primary(ng-click="update(adopteeForm, true)") Save and New
+          button.btn.btn-primary(ng-click="update(adopteeForm, true)") Save and Next
           button.btn.btn-primary(ng-click="update(adopteeForm, false)") Save
           button.btn.btn-default(ng-click="cancel()") Cancel
 div(site-directive, data-onsave="onsitechange(site)", ng-if="siteUndefined()")

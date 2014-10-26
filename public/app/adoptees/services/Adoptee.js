@@ -12,6 +12,16 @@ angular.module('app').factory('Adoptee', function($resource, $q) {
           method : 'GET',
           url : '/api/adoptees/:_id/enums',
           isArray : false
+      },
+
+      getAdopteeByNumber : {
+          method : 'GET',
+          isArray : false
+      },
+
+      getNextAdoptee : {
+          method : 'POST',
+          isArray : false
       }
   });
 

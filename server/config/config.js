@@ -14,16 +14,16 @@ module.exports = {
     rootPath: rootPath,
     db: process.env.MONGOHQ_URL,
     port: process.env.PORT || 80,
-    faceBookClientID : '1474507579496476',
-    faceBookClientSecret : '1968827bdff967650b4828d2b0e68f46',
+    faceBookClientID : process.env.FACEBOOK_CLIENT_ID,
+    faceBookClientSecret : process.env.FACEBOOK_CLIENT_SECRET,
     faceBookCallbackURL : 'http://topekacb-test.herokuapp.com/auth/facebook/callback'
   },
   production: {
     rootPath: rootPath,
     db: process.env.MONGOHQ_URL,
     port: process.env.PORT || 80,
-    faceBookClientID : '449063101898994',
-    faceBookClientSecret : '52aa954220f13dab6746d18d9a2617fa',
-    faceBookCallbackURL : 'http://topekacb.org/auth/facebook/callback'
+    faceBookClientID : process.env.FACEBOOK_CLIENT_ID,
+    faceBookClientSecret : process.env.FACEBOOK_CLIENT_SECRET,
+    faceBookCallbackURL : 'https://topekacb.org/auth/facebook/callback'
   }
 }

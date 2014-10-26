@@ -17,9 +17,12 @@ module.exports = function(app) {
 
   app.get('/api/adoptees', auth.requiresRole(['observer','user','manager']), adoptees.getAdoptees);
   app.get('/api/adoptees/:id', auth.requiresRole(['observer','user','manager']), adoptees.getAdopteeById);
+  app.post('/api/adoptees', auth.requiresRole(['observer','user','manager']), adoptees.getNextAdoptee);
   app.get('/api/adoptees/:id/enums', auth.requiresRole(['observer','user','manager']), adoptees.getEnums);
+  app.get('/api/adoptees/:id/form', auth.requiresRole(['observer','user','manager']), adoptees.getForm);
   app.put('/api/adoptees', auth.requiresRole(['user','manager']), adoptees.updateAdoptee);
   app.del('/api/adoptees/:id', auth.requiresRole(['manager']), adoptees.deleteAdoptee);
+  app.get('/api/adoptees/:id/print', auth.requiresRole(['observer','user','manager']), adoptees.print);
   app.get('/api/chartdata', adoptees.getAggregateHouseholdTypes);
   app.get('/api/chartdata/bar', adoptees.getAggregateAdoptedCounts);
   app.get('/api/stats/specialNeeds', adoptees.getAggregateSpecialNeeds);
@@ -29,6 +32,7 @@ module.exports = function(app) {
   app.get('/api/adopters/:id/enums', auth.requiresRole(['observer','user','manager']), adopters.getEnums);
   app.post('/api/adopters', auth.requiresRole(['user','manager']), adopters.saveAdopter);
   app.del('/api/adopters/:id', auth.requiresRole(['manager']), adopters.deleteAdopter);
+  app.get('/api/adopters/:id/print', auth.requiresRole(['observer','user','manager']), adopters.print);
 
   app.get('/api/states', states.getStates);
 
