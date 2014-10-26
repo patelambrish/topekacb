@@ -1,5 +1,5 @@
-angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier', 'Adopter', 'Adoptee','AdopterPrintEmailService','AdopterEmailService',
-function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService, AdopterEmailService) {
+angular.module('app').controller('mvMatchCtrl', ['$scope', '$filter', 'mvNotifier', 'Adopter', 'Adoptee',
+function($scope, $filter, mvNotifier, Adopter, Adoptee) {
     $scope.template = {
         adopterMatchUrl: '/partials/matching/adopter-match',
         adopteeListUrl: '/partials/adopters/adoptee-list'
@@ -143,34 +143,5 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
               $scope.searchAdoptees(data.criteria);
             });
     };
-
-    function getNewPrintEmailRequest(reqType) {
-    	var newReq = new AdopterPrintEmailService();
-    	newReq.status = "Not Complete";
-    	newReq.jobType = reqType;
-    	return newReq;
-    }
-
-    $scope.emailAdopter = function(adopter) {
-    	var req = getNewPrintEmailRequest('Email');
-    	req.adopter = adopter._id;
-    	console.log(adopter);
-    	AdopterEmailService.get({id:adopter._id}).$promise.then(function(res) {
-    		mvNotifier.notify('Email is sent successfully!');
-    	})['catch'](function(){
-    		mvNotifier.notifyError('An error occured while sending email!');
-    	});
-    };
-
-    $scope.printAdopter = function(adopter) {
-    	var req = getNewPrintEmailRequest('Print');
-    	req.adopter = adopter._id;
-    	AdopterPrintEmailService.create(req).$promise.then(function(res) {
-    		mvNotifier.notify('Print item added to queue successfully!');
-    	})['catch'](function() {
-    		mvNotifier.notifyError('An error occured while create item in Print queue!');
-    	});
-    };
-
-
+    
 }]);
