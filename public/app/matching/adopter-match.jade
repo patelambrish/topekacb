@@ -10,8 +10,8 @@
     div(ng-controller="AdopterAdopteeCtrl", ng-include="template.adopteeListUrl")
   .panel-footer
     btn-toolbar.pull-right
-      button.btn.btn-primary(ng-click="emailAdopter(currentAdopter)") Email
+      button.btn.btn-primary(ng-click="emailAdopter(currentAdopter)" data-ng-if="currentAdopter.email") Email
       | &nbsp;
-      a.btn.btn-primary(ng-href="api/adopters/{{currentAdopter._id}}/print" target="_blank") Print
+      button.btn.btn-primary(ng-click="printAdopter(currentAdopter)") Print
     btn-toolbar
       button.btn.btn-default(ng-click="getNextAdopter()") Next Adopter
