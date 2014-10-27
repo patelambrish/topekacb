@@ -13,7 +13,6 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
   $scope.ageRanges = ["0-7", "8-12", "13-18"];
   $scope.adopteeEnums;
   $scope.adopteeAges = [];
-  $scope.unmatchAdoptees = [];
 
     $scope.applyPage = function (page, data, pageInfo) {
         pageInfo.current = page;
@@ -137,7 +136,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 
 
   $scope.selectAdopter = function(adopter){
-      $scope.currentAdopter = Adopter.get({ _id: adopter._id });
+      $scope.currentAdopter = Adopter.get({id: adopter._id});
       $scope.searchAdoptees(adopter.criteria);
   };
 

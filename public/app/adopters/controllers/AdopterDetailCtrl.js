@@ -29,16 +29,14 @@ angular.module('app').
       });
 
       $scope.master = angular.copy($scope.adopter);
-      $scope.adoptees = $scope.master.adoptees;
     };
 
     $scope.get = function() {
       $scope.submitted = false;
-      $scope.adopter = Adopter.get({ _id: $routeParams.id });
+      $scope.adopter = Adopter.get({ id: $routeParams.id });
       $scope.adopter.$promise.
         then(function(data) {
           $scope.master = angular.copy(data);
-          $scope.adoptees = $scope.master.adoptees;
         });
     };
 
@@ -62,25 +60,15 @@ angular.module('app').
       }
     };
 
-    $scope.delete = function() {
-      Adopter.remove({ _id: $scope.adopter._id }, function() {
-        mvNotifier.notify($scope.adopter.name + ' was deleted.');
-        $location.path('/adopters');
-      });
-    };
-
     $scope.cancel = function() {
       $scope.adopter = angular.copy($scope.master);
       $location.path('/adopters');
     };
 
-    $scope.deletePhone = function(phone) {
-      var array = $scope.adopter.phones,
-          index = angular.isArray(array) ? array.indexOf(phone) : -1;
+    $scope.deletePhone = function(phone, index) {
+      var array = $scope.adopter.phones;
 
-      if(index !== -1) {
-        array.splice(index, 1);
-      }
+      array.splice(index, 1);
     };
 
     $scope.addPhone = function() {

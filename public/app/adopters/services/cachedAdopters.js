@@ -13,7 +13,7 @@ angular.module('app').
       },
       enums: function() {
         if(!enums) {
-          enums = Adopter.enums({_id: 0});
+          enums = Adopter.enums({id: 0});
         }
         
         return enums;

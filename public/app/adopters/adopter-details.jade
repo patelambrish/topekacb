@@ -93,7 +93,7 @@
             .col-sm-3
               .form-group(ng-hide="$first")
                 br
-                a.btn.btn-link(href="", tabindex="-1", ng-click="deletePhone(p)")
+                a.btn.btn-link(href="", tabindex="-1", ng-click="deletePhone(p, $index)")
                   span.text-danger
                     i.glyphicon.glyphicon-remove
             hr.visible-xs-block

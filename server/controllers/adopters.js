@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
     Adopter = mongoose.model('Adopter'),
+    Adoptee = mongoose.model('Adoptee'),
     fs = require('fs'),
     jade=require('jade'),
     htmlUtil = require('../utilities/adopteeHtml');
@@ -72,7 +73,6 @@ exports.getAdopters = function(req, res, next) {
   query.
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
-    populate('adoptees').
     select('-__v').
     exec(function(err, collection) {
       Adopter.count({}, function(err, cnt) {
@@ -125,11 +125,13 @@ exports.saveAdopter = function(req, res, next) {
     populate('updatedBy', 'firstName lastName').
     populate('adoptees').
     select('-__v').
+    lean(true).
     exec(function(err, adopter) {
       if(err) {
         console.log(err);
         return next(err);
       }
+      adopter.enums = Adopter.getEnumValues();
       res.send(adopter);
     });
 };
@@ -164,4 +166,55 @@ exports.print = function(req, res, next) {
 
 exports.getEnums = function(req, res) {
   res.send(Adopter.getEnumValues());
+};
+
+exports.removeAdoptee = function(req, res, next) {
+  var adopterId = req.params.id,
+      adopteeId = req.params.adopteeId,
+      userId = req.user ? req.user._id : null,
+      update = {
+        status: 'Not Matched',
+        _adopterId: null,
+        modifyDate: new Date(),
+        _modifyUser: userId
+      };
+      
+  Adoptee.findByIdAndUpdate(adopteeId, update).exec().
+    then(function(adoptee) {
+      return Adopter.findById(adopterId).exec();
+    }).
+    then(function(adopter) {
+      var update = {
+            adoptees: adopter.adoptees || [],
+            status: adopter.status,
+            updateDate: new Date(),
+            updatedBy: userId
+          }, 
+          arr = update.adoptees,
+          index = arr.indexOf(adopteeId);
+          
+      if(index !== -1) {
+        arr.splice(index, 1);
+      }
+
+      if(arr.length === 0 || arr.length !== adopter.criteria.count) {
+        update.status = 'Not Matched';
+      }
+
+      Adopter.
+        findByIdAndUpdate(adopterId, update).
+        populate('createdBy', 'firstName lastName').
+        populate('updatedBy', 'firstName lastName').
+        populate('adoptees').
+        select('-__v').
+        lean(true).
+        exec(function(err, adopter) {
+          if(err) {
+            console.log(err);
+            return next(err);
+          }
+          adopter.enums = Adopter.getEnumValues();
+          res.send(adopter);
+        });
+    });
 };

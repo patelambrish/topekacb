@@ -34,16 +34,14 @@ module.exports = function(app) {
   app.get('/api/adopters/:id', auth.requiresRole(['observer','user','manager']), adopters.getAdopterById);
   app.get('/api/adopters/:id/enums', auth.requiresRole(['observer','user','manager']), adopters.getEnums);
   app.post('/api/adopters', auth.requiresRole(['user','manager']), adopters.saveAdopter);
-  app.del('/api/adopters/:id', auth.requiresRole(['manager']), adopters.deleteAdopter);
-
-
+  app.delete('/api/adopters/:id', auth.requiresRole(['manager']), adopters.deleteAdopter);
+  app.delete('/api/adopters/:id/adoptees/:adopteeId', auth.requiresRole(['user','manager']), adopters.removeAdoptee);
   app.get('/api/adopters/print/:id', auth.requiresRole(['observer','user','manager']), adopters.print);
-  app.get('/api/printemails', auth.requiresRole(['observer','user','manager']), printEmail.getPrintEmailRequests)
+  app.get('/api/printemails', auth.requiresRole(['observer','user','manager']), printEmail.getPrintEmailRequests);
   app.post('/api/printemails', auth.requiresRole(['observer','user','manager']), printEmail.createPrintEmailRequest);
   app.get('/api/printemails/:id', auth.requiresRole(['observer', 'user','manager']), printEmail.preview);
   app.get('/api/print/:id', auth.requiresRole(['observer','user','manager']), printEmail.print);
   app.get('/api/email/:id', auth.requiresRole(['observer','user','manager']), printEmail.email);
-
 
   app.get('/api/states', states.getStates);
 

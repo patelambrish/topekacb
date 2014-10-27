@@ -3,15 +3,14 @@ angular.module('app').
     return {
       scope: {
         adopter: '=',
-        fields: '=',
-        selected: '='
+        fields: '='
       },
       replace: true,
       templateUrl: '/partials/adopters/criteriaset',
       link: function(scope, element, attrs) {
         scope.title = attrs.title;
       },
-      controller: function($scope, $location) {
+      controller: function($scope, $location, mvNotifier) {
         $scope.page = {
           current: 1,
           total: 1,
@@ -37,9 +36,24 @@ angular.module('app').
           $location.path('/adoptees/' + adoptee._id);
         };
     
+        $scope.remove = function(adoptee) {
+          var adopter = $scope.adopter,
+              array = adopter.adoptees,
+              index = angular.isArray(array) ? array.indexOf(adoptee) : -1;
+          
+          if(index !== -1) {
+            array.splice(index, 1);
+            $scope.applyPage(1); 
+          }
+
+          adopter.$removeAdoptee({id: adopter._id, adopteeId: adoptee._id}, function() {
+            mvNotifier.notify(adoptee.firstName + ' ' + adoptee.lastName + ' removed from ' + adopter.name);
+          });
+        };
+        
         $scope.setFlags = common.setFlags;
 
-        $scope.$watch('adopter.adoptees', function(newValue, oldValue) {
+        $scope.$watch('adopter.adoptees', function(newValue) {
           if(newValue) {
             $scope.applyPage(1); 
           }
