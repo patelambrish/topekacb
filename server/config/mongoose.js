@@ -2,9 +2,10 @@ var mongoose = require('mongoose'),
     userModel = require('../models/User'),
     adopteeModel = require('../models/Adoptee'),
     adopterModel = require('../models/Adopter'),
-    stateModel = require('../models/State');
-    messageModel = require('../models/Message');
-    adopteeApplicationCounterModel = require('../models/AdopteeApplicationCounter');
+    stateModel = require('../models/State'),
+    messageModel = require('../models/Message'),
+    adopteeApplicationCounterModel = require('../models/AdopteeApplicationCounter'),
+    printEmailModel = require('../models/PrintEmail.js');
 
 module.exports = function(config) {
   mongoose.connect(config.db);
