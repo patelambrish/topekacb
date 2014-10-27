@@ -13,7 +13,6 @@
     "angular": "~1.2.16",
     "angular-resource": "~1.2.16",
     "angular-route": "~1.2.16",
-    "bootstrap": "~3.1.1",
     "newrelic-timing": "~0.4.0",
     "angular-mocks": "~1.2.16",
     "bootstrap-sass-official": "~3.2.0+2",

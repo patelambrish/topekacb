@@ -1,6 +1,6 @@
 @import "../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap";
-@import "bootstrap-overrides";
-@import "material/material.design";
+@import "./bootstrap-overrides";
+@import "./material/material.design";
 
 html {
   position: relative;

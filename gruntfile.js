@@ -3,14 +3,12 @@ module.exports = function(grunt) {
         sass: {
             dev: {
                 options: {
-                    style: 'expanded',
-                    compass: false
+                    style: 'compact',
+                    compass: false,
+                    precision: 8
                 },
-                precision: 8,
-                files:
-                {
-                	'public/assets/css/site.css': 'public/assets/css/site.scss',
-                	'public/vendor/font-awesome/css/font-awesome.css': 'public/vendor/font-awesome/scss/font-awesome.scss'
+                files: {
+                	'public/assets/css/site.css': 'public/assets/css/site.scss'
                 }
             }
         }
