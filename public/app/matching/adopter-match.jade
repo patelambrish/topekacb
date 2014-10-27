@@ -8,7 +8,7 @@
         span.badge {{currentAdopter.criteria.count - currentAdopter.adoptees.length || ''}}
       | {{currentAdopter.name}}&nbsp;
   .panel-body
-    div(data-criteriaset, data-adopter="currentAdopter", data-fields="adopterFields", data-selected="unmatchAdoptees")
+    div(data-criteriaset, data-adopter="currentAdopter", data-fields="adopterFields")
   .panel-footer
     btn-toolbar.pull-right
       button.btn.btn-primary(ng-click="emailAdopter(currentAdopter)", ng-if="currentAdopter.notifyMethods.indexOf('Email') > -1") 
@@ -18,9 +18,5 @@
       a.btn.btn-primary(ng-href="api/adopters/{{currentAdopter._id}}/print" target="_blank")
         i.glyphicon.glyphicon-print
         | &nbsp;Print
-      | &nbsp;
-      button.btn.btn-primary(ng-click="unmatch(currentAdopter, unmatchAdoptees)")
-        i.glyphicon.glyphicon-share-alt
-        | &nbsp;Unmatch
     btn-toolbar
       button.btn.btn-default(ng-click="getNextAdopter()") Next Adopter

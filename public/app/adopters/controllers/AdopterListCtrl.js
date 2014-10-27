@@ -51,7 +51,7 @@ angular.module('app').
     };
 
     $scope.delete = function(adopter) {
-      Adopter.remove({ _id: adopter._id }, function() {
+      Adopter.remove({ id: adopter._id }, function() {
         var array = $scope.adopters,
             index = angular.isArray(array) ? array.indexOf(adopter) : -1;
   

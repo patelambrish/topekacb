@@ -51,16 +51,18 @@ fieldset(id="criteriaForm", ng-form="criteriaForm")
           table.table.table-hover(ng-switch-default)
             thead
               tr
-                th &nbsp;
                 th Name
                 th Household Type
                 th Members
+                th &nbsp;
             tbody
               tr(ng-repeat="adoptee in adopter.adoptees | orderBy:sort.value | startFrom:(page.current-1)*page.size | limitTo:page.size")
-                td: input(type="checkbox", ng-click="setFlags(selected, adoptee)", ng-checked="selected.indexOf(adoptee) > -1")
                 td(ng-click="select(adoptee)") {{adoptee.lastName}}, {{adoptee.firstName}}
                 td(ng-click="select(adoptee)") {{adoptee.criteria.householdType}}
                 td(ng-click="select(adoptee)") {{adoptee.householdMembers.length}}
+                td.tool
+                  a(href="", title="Remove this Adoptee", tabindex="0", ng-click="remove(adoptee, $index)")
+                    i.text-danger.glyphicon.glyphicon-remove
           .panel-footer(ng-if="adopter.adoptees.length > page.size")
             ul.pager
               li.previous(ng-class="{disabled: page.current == 1}")

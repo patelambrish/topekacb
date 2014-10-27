@@ -31,7 +31,8 @@ module.exports = function(app) {
   app.get('/api/adopters/:id', auth.requiresRole(['observer','user','manager']), adopters.getAdopterById);
   app.get('/api/adopters/:id/enums', auth.requiresRole(['observer','user','manager']), adopters.getEnums);
   app.post('/api/adopters', auth.requiresRole(['user','manager']), adopters.saveAdopter);
-  app.del('/api/adopters/:id', auth.requiresRole(['manager']), adopters.deleteAdopter);
+  app.delete('/api/adopters/:id', auth.requiresRole(['manager']), adopters.deleteAdopter);
+  app.delete('/api/adopters/:id/adoptees/:adopteeId', auth.requiresRole(['user']), adopters.removeAdoptee);
   app.get('/api/adopters/:id/print', auth.requiresRole(['observer','user','manager']), adopters.print);
 
   app.get('/api/states', states.getStates);
