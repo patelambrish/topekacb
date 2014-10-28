@@ -13,7 +13,7 @@
             input.form-control(type="text", ng-model="sort.text", disabled)
             .input-group-btn
               button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown")
-                i.glyphicon.glyphicon-chevron-down
+                i.fa.fa-caret-down
               ul.dropdown-menu.pull-right
                 li(ng-repeat="option in sort.options", ng-class="{active: sort.text == option.text}")
                   a(href="", ng-click="applySort(option)") {{option.text}}
@@ -38,7 +38,7 @@
             | by {{req.createdBy | fullName}}
           td
             a.btn.btn-primary(data-ng-click="req.status='Complete'" data-ng-href="api/print/{{req._id}}" data-ng-if="req.status === 'Not Complete'" target='_blank')
-              i.glyphicon.glyphicon-print
+              i.fa.fa-print
               | &nbsp;Print
             a.btn.btn-primary(data-ng-href="api/printemails/{{req._id}}" data-ng-if="req.status === 'Complete'" target='_blank') View
     .panel-footer

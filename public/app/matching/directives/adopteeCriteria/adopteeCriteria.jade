@@ -26,9 +26,9 @@ label
         div.panel-group
             div.panel.panel-default
                 div.panel-heading
+                    a.collapse-toggle.collapsed.pull-right(href="", data-toggle="collapse", data-target="#comments")
+                        i.fa.fa-chevron-down
                     label
-                        a(data-toggle="collapse" data-target="#comments")
-                            i(class="glyphicon glyphicon-chevron-down")
                         | &nbsp Story and Comments
                 div.panel-collapse.collapse(id="comments")
                     div.panel-body
@@ -48,9 +48,9 @@ label
         div.panel-group
             div.panel.panel-default
                 div.panel-heading
+                    a.collapse-toggle.collapsed.pull-right(href="", data-toggle="collapse", data-target="#householdMembers")
+                        i.fa.fa-chevron-down
                     label
-                        a(data-toggle="collapse" data-target="#householdMembers")
-                            i(class="glyphicon glyphicon-chevron-down")
                         | &nbsp Household Members
                 div.panel-collapse.collapse(id="householdMembers")
                     div.panel-body

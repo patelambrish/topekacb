@@ -17,9 +17,9 @@
             div.item(google-chart, chart="specialChart", ng-class="{active: !specialChart.displayed}")
             div.item(google-chart, chart="householdChart", ng-class="{active: !householdChart.displayed}")
           a.left.carousel-control(href="", role="button", data-target=".carousel", data-slide="prev")
-            span.glyphicon.glyphicon-chevron-left
+            i.fa.fa-chevron-left.fa-lg
           a.right.carousel-control(href="", role="button", data-target=".carousel", data-slide="next")
-            span.glyphicon.glyphicon-chevron-right
+            i.fa.fa-chevron-right.fa-lg
       .col-sm-3.hidden-xs
         img.img-responsive(src="/assets/image/cb-logo-green.png")
   div(ta-bind ng-model="message.value" ng-if="message.value.length")

@@ -1,6 +1,6 @@
 @import "../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap";
-@import "bootstrap-overrides";
-@import "material/material.design";
+@import "./bootstrap-overrides";
+@import "./material/material.design";
 
 html {
   position: relative;
@@ -182,21 +182,11 @@ input[type=date] {
 }
 
 .collapse-toggle {
-  .glyphicon-chevron-up {
+  .fa-chevron-up {
       @include transition-transform(0.35s ease);
   }
 
-  .glyphicon-chevron-down {
+  .fa-chevron-down {
       @include transition-transform(0.35s ease);
-  }
-
-  &.collapsed {
-    .glyphicon-chevron-up {
-      @include rotate(-180deg);
-    }
-
-    .glyphicon-chevron-down {
-      @include rotate(-90deg);
-    }
   }
 }

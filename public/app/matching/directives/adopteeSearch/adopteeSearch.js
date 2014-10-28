@@ -33,7 +33,11 @@ angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter',
                 };
                 
                 $scope.nextAdoptee = function(){
-                  var currentAdopteeIndex = $scope.adopteeSearchResults.data.indexOf($scope.currentAdoptee);
+                  // need to find current adoptee in search array by Id instead of by object ref,
+                  // because search adoptee is not fully hydrated, while current adoptee is. eg,
+                  // household members not included w/ search adoptee for performance reasons.
+                  var arr = $scope.adopteeSearchResults.data.map(function(a) { return a._id; });
+                  var currentAdopteeIndex = arr.indexOf($scope.currentAdoptee._id);
                   if (currentAdopteeIndex == $scope.adopteePage.size - 1){
                     $scope.adopteePage.current++;
                     $scope.searchAdoptees($scope.currentAdopter.criteria);

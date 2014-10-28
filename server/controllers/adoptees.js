@@ -36,7 +36,23 @@ exports.getAdoptees = function(req, res) {
             populate('_createUser', 'firstName lastName').
             populate('_modifyUser', 'firstName lastName').
             populate('_adopterId', 'name').
-            select('-image').
+            select({
+              firstName: 1,
+              lastName: 1,
+              gender: 1,
+              agent: 1,
+              address: 1,
+              status: 1,
+              'criteria.story': 1,
+              'criteria.specialNeeds': 1,
+              'criteria.householdType': 1,
+              applicationNumber: 1,
+              site: 1,
+              createDate: 1,
+              '_createUser': 1,
+              '_modifyUser': 1,
+              '_adopterId': 1
+            }).
             exec(function(err, collection) {
                  res.send({data: collection, totalCount: count});
             });
@@ -49,7 +65,7 @@ exports.getAdopteeById = function(req, res) {
         select('-image').
         exec(function (err, adoptee) {
         res.send(adoptee);
-    })
+    });
 };
 
 exports.getNextAdoptee = function(req, res) {
@@ -63,7 +79,7 @@ exports.getNextAdoptee = function(req, res) {
         else {
             res.send({});
         }
-    })
+    });
 };
 
 exports.getAggregateSpecialNeeds = function(req, res) {
@@ -94,7 +110,7 @@ exports.getAggregateHouseholdTypes = function(req, res){
 exports.getAggregateAdoptedCounts = function(req, res){
   Adoptee.aggregate({$group : { _id: "$status", count: {$sum: 1 }}}).exec(function(err,collection){
         res.send(collection);
-    })
+  });
 };
 
 
