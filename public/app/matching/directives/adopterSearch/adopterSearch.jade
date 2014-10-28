@@ -11,16 +11,16 @@ form(name="adopterSearchForm" novalidate)
         //button(type="button" class="btn btn-default" data-ng-click="reset()") Reset
         //| &nbsp;
         button.btn.btn-primary(type="button" data-ng-click="searchAdopters()")
-          i.glyphicon.glyphicon-search
+          i.fa.fa-search
         a(data-toggle="collapse" data-target="#sort")
-         i.glyphicon.glyphicon-cog.pull-right
+         i.fa.fa-cog.pull-right
     div(class="col-md-12 collapse" id="sort")
       .input-group.input-group-sort
             .input-group-addon Sort By:
             input.form-control(type="text", ng-model="adopterSort.text", disabled)
             .input-group-btn
               button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown")
-                i.glyphicon.glyphicon-chevron-down
+                i.fa.fa-caret-down
               ul.dropdown-menu.pull-right
                 li(ng-repeat="option in adopterSort.options", ng-class="{active: sort.text == option.text}")
                   a(href="", ng-click="applyAdopterSort(option)") {{option.text}}

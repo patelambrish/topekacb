@@ -47,4 +47,21 @@ angular.module('app').
         return fName && lName ? fName + ' ' + lName : lName + fName;
       }
     };
+  }).
+  directive('toggle', function() {
+    return {
+      link: function(scope, element, attrs) {
+        var target;
+
+        function toggleIcon() {
+          element.find('i').toggleClass('fa-rotate-180');
+        }
+
+        if(attrs.toggle === 'collapse') {
+          target = $(attrs.target).eq(0);
+          target.on('show.bs.collapse', toggleIcon);
+          target.on('hide.bs.collapse', toggleIcon);
+        }
+      }
+    };
   });

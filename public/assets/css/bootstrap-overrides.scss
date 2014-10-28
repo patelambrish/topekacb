@@ -110,3 +110,20 @@ a {
   }
   
 }
+
+.carousel-control {
+  .fa {
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+    display: inline-block;
+  }
+  .fa-chevron-left {
+    left: 50%;
+    margin-left: -10px;
+  }
+  .fa-chevron-right {
+    right: 50%;
+    margin-right: -10px;
+  }
+}

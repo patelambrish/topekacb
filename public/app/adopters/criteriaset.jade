@@ -1,7 +1,7 @@
 fieldset(id="criteriaForm", ng-form="criteriaForm")
   legend(ng-if="title") {{title}}
     a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#criteriaForm > .collapse")
-      i.glyphicon.glyphicon-chevron-up
+      i.fa.fa-chevron-up
   .row.collapse.in
     .col-sm-5
       .form-group(ng-class="{'has-error': criteriaForm.count.$invalid}", ng-hide="fields.count===false")
@@ -35,7 +35,7 @@ fieldset(id="criteriaForm", ng-form="criteriaForm")
       .panel.panel-default(id="comment")
         .panel-heading
           a.pull-right.collapse-toggle.collapsed(href="", tabindex="-1", data-toggle="collapse", data-target="#comment .panel-collapse")
-            i.glyphicon.glyphicon-chevron-up
+            i.fa.fa-chevron-down
           label Comments
         .panel-collapse.collapse
           textarea.form-control(name="comment", rows="4", placeholder="Comments", ng-model="adopter.criteria.comment")
@@ -44,7 +44,7 @@ fieldset(id="criteriaForm", ng-form="criteriaForm")
       .panel.panel-default(id="adopteeList")
         .panel-heading
           a.pull-right.collapse-toggle.collapsed(href="", tabindex="-1", data-toggle="collapse", data-target="#adopteeList .panel-collapse")
-            i.glyphicon.glyphicon-chevron-up
+            i.fa.fa-chevron-down
           label Matched Adoptees
         .panel-collapse.collapse(ng-switch="adopter.adoptees.length")
           .panel-body(ng-switch-when="0") No matched adoptees found.
@@ -62,7 +62,7 @@ fieldset(id="criteriaForm", ng-form="criteriaForm")
                 td(ng-click="select(adoptee)") {{adoptee.householdMembers.length}}
                 td.tool
                   a(href="", title="Remove this Adoptee", tabindex="0", ng-click="remove(adoptee, $index)")
-                    i.text-danger.glyphicon.glyphicon-remove
+                    i.text-danger.fa.fa-times
           .panel-footer(ng-if="adopter.adoptees.length > page.size")
             ul.pager
               li.previous(ng-class="{disabled: page.current == 1}")
