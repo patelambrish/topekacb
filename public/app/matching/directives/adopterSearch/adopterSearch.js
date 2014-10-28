@@ -1,5 +1,5 @@
-angular.module('app').directive('adopterSearch', ['Adopter', '$filter',
-function(Adopter, $filter) {
+angular.module('app').directive('adopterSearch', ['Adopter', '$filter','cachedAdopters',
+function(Adopter, $filter,cachedAdopters) {
 	return {
 		templateUrl : '/partials/matching/directives/adopterSearch/adopterSearch',
 		restrict : 'A',
@@ -14,11 +14,12 @@ function(Adopter, $filter) {
 				size : 3
 			};
 			$scope.adopterFilter = {};
-			// mvAdopter.enums({
-			// 	_id : 0
-			// }).$promise.then(function(data) {
-			// 	$scope.adopterEnums = data;
-			// });
+			cachedAdopters.enums({
+				_id : 0
+			}).$promise.then(function(data) {
+				$scope.adopterEnums = data;
+			});
+
 			$scope.searchAdopters = function() {
 				Adopter.query({
 					filter : $scope.adopterFilter,
