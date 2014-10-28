@@ -73,7 +73,18 @@ exports.getAdopters = function(req, res, next) {
   query.
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
-    select('-__v').
+    select({
+      entity: 1,
+      name: 1,
+      org: 1,
+      dept: 1,
+      address: 1,
+      criteria: 1,
+      status: 1,
+      createDate: 1,
+      createdBy: 1,
+      updatedBy: 1
+    }).
     exec(function(err, collection) {
       Adopter.count({}, function(err, cnt) {
       	res.send({data: collection, totalCount: cnt});

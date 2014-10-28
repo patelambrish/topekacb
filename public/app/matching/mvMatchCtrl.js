@@ -37,19 +37,25 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
     };
 
     $scope.selectAdoptee = function (selectedAdoptee) {
-        $scope.currentAdoptee = selectedAdoptee;
+        // getting from server because search adoptee is not fully hydrated. eg, 
+        // household members not included w/ search adoptee for performance reasons.
+        $scope.currentAdoptee = Adoptee.get({_id: selectedAdoptee._id});
         $scope.adopteeAges = [];
-        selectedAdoptee.householdMembers.forEach(function (member) {
-            if (member.age < 8 && $scope.adopteeAges.indexOf($scope.ageRanges[0]) == -1) {
-                $scope.adopteeAges.push($scope.ageRanges[0]);
-            }
-            if (member.age > 7 && member.age < 13 && $scope.adopteeAges.indexOf($scope.ageRanges[1]) == -1) {
-                $scope.adopteeAges.push($scope.ageRanges[1]);
-            }
-            if (member.age > 12 && member.age < 19 && $scope.adopteeAges.indexOf($scope.ageRanges[2]) == -1) {
-                $scope.adopteeAges.push($scope.ageRanges[2]);
-            }
-        });
+
+        $scope.currentAdoptee.$promise.
+          then(function(data) {
+            data.householdMembers.forEach(function (member) {
+                if (member.age < 8 && $scope.adopteeAges.indexOf($scope.ageRanges[0]) == -1) {
+                    $scope.adopteeAges.push($scope.ageRanges[0]);
+                }
+                if (member.age > 7 && member.age < 13 && $scope.adopteeAges.indexOf($scope.ageRanges[1]) == -1) {
+                    $scope.adopteeAges.push($scope.ageRanges[1]);
+                }
+                if (member.age > 12 && member.age < 19 && $scope.adopteeAges.indexOf($scope.ageRanges[2]) == -1) {
+                    $scope.adopteeAges.push($scope.ageRanges[2]);
+                }
+            });
+          });
     };
 
     $scope.bulkMatch = function () {

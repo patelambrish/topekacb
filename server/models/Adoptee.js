@@ -48,7 +48,7 @@ var adopteeStates = ['In Process',
     'Not Matched',
     'Matched'];
 var genders = ['Male', 'Female'];
-var specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound']
+var specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'];
 
 var adopteeSchema = mongoose.Schema({
     firstName: {type:String, required:'{PATH} is required!'},
