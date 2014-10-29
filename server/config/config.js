@@ -9,8 +9,8 @@ module.exports = {
     faceBookClientID : '276073369254615',
     faceBookClientSecret : '4ad58d5239bea4c36e47caedafe59625',
     faceBookCallbackURL : 'http://localhost:3030/auth/facebook/callback',
-    sendGridUser: process.env.SENDGRID_USERNAME,
-    sendGridPassword: process.env.SENDGRID_PASSWORD,
+    sendGridUser: 'test.user@se2.com',
+    sendGridPassword: 'password',
     emailTo: 'ambrish.patel@se2.com',
     emailFrom: 'cb@unitedwaytopeka.org',
     emailSubject: 'Christmas Bureau Adoption'
