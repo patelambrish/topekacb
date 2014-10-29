@@ -51,7 +51,7 @@ angular.module('app').
       {
             $scope.adopteeUpdate();
       } else {
-          adopteeApplicationCounter.getNextSequence().$promise.then(function (retVal) {
+          AdopteeApplicationCounter.getNextSequence().$promise.then(function (retVal) {
               if (retVal.error) {
                   mvNotifier.notify(retVal.error);
               }
@@ -70,7 +70,7 @@ angular.module('app').
       }
       $scope.adoptee.householdMembers.push({});
     };
-  
+
     $scope.deleteHouseholdMember = function(householdMember){
         var i = $scope.adoptee.householdMembers.indexOf(householdMember);
         if (i != -1)
@@ -109,12 +109,12 @@ angular.module('app').
             }
         });
     };
-    
+
     $scope.cancel = function() {
       //$scope.adoptee = angular.copy($scope.master);
       $location.path('/adoptees');
     };
-    
+
     $scope.setFlags = common.setFlags;
 
   });
