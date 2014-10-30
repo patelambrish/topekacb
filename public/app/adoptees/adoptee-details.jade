@@ -265,7 +265,7 @@
                   | &nbsp;Add new
       .panel-footer
         .btn-toolbar.text-right
-          button.btn.btn-primary(ng-click="update(adopteeForm, true)") Save and Next
+          button.btn.btn-primary(title="Ready For Match?", tabindex="0", confirm-click="update(adopteeForm, true, true)", confirm-default-click="update(adopteeForm, true, false)", confirm-popout="left", confirm-cancel-text="Data Not Complete", confirm-go-class="btn-success") Save and Next
           button.btn.btn-primary(ng-click="update(adopteeForm, false)") Save
           button.btn.btn-default(ng-click="cancel()") Cancel
 div(site-directive, data-onsave="onsitechange(site)", ng-if="siteUndefined()")

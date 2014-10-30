@@ -22,7 +22,7 @@ angular.module('app').
           scope.delayed = false;
         }
 
-        /** 
+        /**
          * Credits:
          * This function borrows heavily, if not fully, from this Angular.js Directive Tutorial by Joe Wegner.
          * http://wegnerdesign.com/blog/angular-js-directive-tutorial-on-attribute-bootstrap-confirm-button/
@@ -35,22 +35,34 @@ angular.module('app').
               e.stopPropagation();
             }
           });
-          
-          pop.find('.btn-danger').on('click', function() {
+
+          var goClass = 'btn-danger';
+          if (attrs.confirmGoClass){
+            goClass = attrs.confirmGoClass;
+          }
+
+          pop.find('.' + goClass).on('click', function() {
             stopPropagation = false;
             $parse(attrs.confirmClick)(scope);
           });
           
-          pop.find('.btn-default').click(function() {
+
+          pop.find('.btn-default').on('click', function() {
             stopPropagation = false;
-            $document.off('click.' + attrs.buttonId);
-            element.popover('hide');
+            if (!attrs.confirmDefaultClick){
+              $document.off('click.' + attrs.buttonId);
+              element.popover('hide');
+            }
+            else{
+              $parse(attrs.confirmDefaultClick)(scope);
+            }
+
           });
           
           $document.on('click.' + attrs.buttonId, ":not(.popover, .popover *)", function() {
             $document.off('click.' + attrs.buttonId);
             element.popover('hide');
-          });            
+          });
         }
 
         if(attrs.resetTrigger === 'mouseout') {
@@ -67,14 +79,24 @@ angular.module('app').
             }
           });
         }
+        var cancelText = 'Cancel';
+        if (attrs.confirmCancelText){
+          cancelText = attrs.confirmCancelText;
+        }
+        
+        var goClass = 'btn-danger';
+        if (attrs.confirmGoClass){
+          goClass = attrs.confirmGoClass;
+        }
+        
         
         if(attrs.confirmPopout) {
           attrs.buttonId = 'btn' + ~~(Math.random() * 1000000);
-          tpl = 
+          tpl =
             '<div class="text-center" id="' + attrs.buttonId + '">' +
               '<div class="btn-group btn-group-sm">' +
-                '<button class="btn btn-danger"><i class="glyphicon glyphicon-ok"></i> Yes</button>' +
-                '<button class="btn btn-default">Cancel</button>' +
+                '<button class="btn ' + goClass + '"><i class="glyphicon glyphicon-ok"></i> Yes</button>' +
+                '<button class="btn btn-default">' + cancelText + '</button>' +
               '</div>' +
             '</div>';
 

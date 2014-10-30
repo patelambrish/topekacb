@@ -46,7 +46,8 @@ var states = ['KS'];
 
 var adopteeStates = ['In Process',
     'Not Matched',
-    'Matched'];
+    'Matched',
+    'Possible Duplicate'];
 var genders = ['Male', 'Female'];
 var specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'];
 
@@ -183,8 +184,8 @@ function generateAdoptees(count) {
       });
 
       /**
-       * generate random sample of special needs. may return 0 - 4 unique special needs. 
-       * the likelihood of having a particular special need is based on US census stats. 
+       * generate random sample of special needs. may return 0 - 4 unique special needs.
+       * the likelihood of having a particular special need is based on US census stats.
        * the likelihood of having multiple special needs is totally arbitrary.
        * US Census stats (% of total population):
        *   20% Senior 60+, 8% Veterans, 4% Disabled, 1% Homebound

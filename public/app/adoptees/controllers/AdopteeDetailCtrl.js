@@ -39,7 +39,8 @@ angular.module('app').
         $scope.setNewAdoptee();
     }
 
-    $scope.update = function(form, nextFlag){
+    $scope.update = function(form, nextFlag, readyToMatch){
+      console.log(readyToMatch);
       if(form.$invalid) {
         $scope.submitted = true;
         mvNotifier.notify('Invalid fields present');
