@@ -42,6 +42,7 @@ exports.getAdoptees = function(req, res) {
               gender: 1,
               agent: 1,
               address: 1,
+              documentNumber: 1,
               status: 1,
               'criteria.story': 1,
               'criteria.specialNeeds': 1,
