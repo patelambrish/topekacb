@@ -11,7 +11,7 @@ module.exports = {
     faceBookCallbackURL : 'http://localhost:3030/auth/facebook/callback',
     sendGridUser: process.env.SENDGRID_USERNAME,
     sendGridPassword: process.env.SENDGRID_PASSWORD,
-    emailTo: 'ambrish.patel@se2.com',
+    emailTo: 'callambrish@yahoo.com',
     emailFrom: 'cb@unitedwaytopeka.org',
     emailSubject: 'Christmas Bureau Adoption'
   },
