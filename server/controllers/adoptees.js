@@ -133,6 +133,22 @@ exports.updateAdoptee = function(req, res){
       if (update._adopterId) {
           update._adopterId = update._adopterId.name ? update._adopterId._id : update._adopterId;
       }
+      //duplicate checking...before updating this adoptee, check to see if there are any other adoptees in the system
+      //having matching (name and ssn) or (matching address). If there are, both should be flagged as "Possible Duplcate"
+      query = Adoptee.find({$and : [
+                                    {_id: {$ne : id}},
+                                    {$or : [ {$and : [{ssnLastFour:update.ssnLastFour, lastName: update.lastName, firstName: update.firstName}]},
+                                             {"address.homeAddress": update.address.homeAddress}
+                                           ]
+                                    }
+                                   ]
+      });
+      query.
+          select("-image").
+          exec(function(err, collection){
+              console.log(err);
+              console.log(collection);
+          });
 
       Adoptee.
           findByIdAndUpdate(id, update, options).

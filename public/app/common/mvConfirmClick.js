@@ -56,6 +56,7 @@ angular.module('app').
             else{
               $parse(attrs.confirmDefaultClick)(scope);
             }
+
           });
           
           $document.on('click.' + attrs.buttonId, ":not(.popover, .popover *)", function() {
@@ -83,6 +84,11 @@ angular.module('app').
           cancelText = attrs.confirmCancelText;
         }
         
+        var goClass = 'btn-danger';
+        if (attrs.confirmGoClass){
+          goClass = attrs.confirmGoClass;
+        }
+
         if(attrs.confirmPopout) {
           attrs.buttonId = 'btn' + ~~(Math.random() * 1000000);
           tpl =
