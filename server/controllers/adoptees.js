@@ -134,7 +134,7 @@ exports.updateAdoptee = function(req, res){
           update._adopterId = update._adopterId.name ? update._adopterId._id : update._adopterId;
       }
       //duplicate checking...before updating this adoptee, check to see if there are any other adoptees in the system
-      //having matching (name and ssn) or (matching address). If there are, both should be flagged as "Possible Duplcate"
+      //having matching (name and ssn) or (matching address). If there are, both should be flagged as "Possible Duplicate"
       query = Adoptee.find({$and : [
                                     {_id: {$ne : id}},
                                     {$or : [ {$and : [{ssnLastFour:update.ssnLastFour, lastName: update.lastName, firstName: update.firstName}]},
@@ -146,17 +146,22 @@ exports.updateAdoptee = function(req, res){
       query.
           select("-image").
           exec(function(err, collection){
-              console.log(err);
-              console.log(collection);
-          });
-
-      Adoptee.
-          findByIdAndUpdate(id, update, options).
-          populate('_createUser', 'firstName lastName').
-          populate('_modifyUser', 'firstName lastName').
-          exec(function(err, adoptee) {
-              if(err) { res.status(400); return res.send({error:err.toString()});}
-              return res.send(adoptee);
+              if (collection.length > 0){
+                collection.forEach(function(item){
+                  Adoptee.
+                    update({_id: item._id}, {status : "Possible Duplicate", _modifyUser: userId, modifyDate : new Date()}, {}).
+                    exec();
+                });
+                update.status = "Possible Duplicate";
+              }
+              Adoptee.
+                findByIdAndUpdate(id, update, options).
+                populate('_createUser', 'firstName lastName').
+                populate('_modifyUser', 'firstName lastName').
+                exec(function(err, adoptee) {
+                  if(err) { res.status(400); return res.send({error:err.toString()});}
+                  return res.send(adoptee);
+                });
       });
 };
 
@@ -190,10 +195,16 @@ exports.print = function(req, res) {
 exports.getForm = function(req, res) {
     Adoptee.findOne({_id: req.params.id})
      .exec(function(err, adoptee){
-        var decodedImage = new Buffer(adoptee.image, 'base64');
-        res.writeHead(200, {'content-type' : 'image/tiff', 'content-disposition': 'attachment; filename=' + adoptee.lastName + adoptee._id + '.tif'});
-        res.write(decodedImage);
-        res.end();
+       if (adoptee.image)
+       {
+         var decodedImage = new Buffer(adoptee.image, 'base64');
+         res.writeHead(200, {'content-type' : 'image/tiff', 'content-disposition': 'attachment; filename=' + adoptee.lastName + adoptee._id + '.tif'});
+         res.write(decodedImage);
+       }
+       else{
+         res.write("<h1>No Image Found</h1>");
+       }
+       res.end();
      });
 };
 
