@@ -11,7 +11,7 @@ angular.module('app').
               city: 'Topeka',
               state: 'KS'
             },
-            status: 'Not Matched'
+            status: 'In Process'
         });
         $scope.adopteeTitle = 'New Adoptee';
     };
@@ -40,7 +40,6 @@ angular.module('app').
     }
 
     $scope.update = function(form, nextFlag, readyToMatch){
-      console.log(readyToMatch);
       if(form.$invalid) {
         $scope.submitted = true;
         mvNotifier.notify('Invalid fields present');
@@ -48,6 +47,7 @@ angular.module('app').
       }
       //get next adoptee
       $scope.nextFlag = nextFlag;
+      $scope.adoptee.status = readyToMatch?"Not Matched":"In Process";
       if ($scope.adoptee.applicationNumber)
       {
             $scope.adopteeUpdate();
@@ -112,7 +112,6 @@ angular.module('app').
     };
 
     $scope.cancel = function() {
-      //$scope.adoptee = angular.copy($scope.master);
       $location.path('/adoptees');
     };
 
