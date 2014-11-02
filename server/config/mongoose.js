@@ -9,15 +9,36 @@ var mongoose = require('mongoose'),
 
 module.exports = function(config) {
   mongoose.connect(config.db);
-  var db = mongoose.connection;
+  var db = mongoose.connection, sampleAdopters, sampleAdoptees;
   db.on('error', console.error.bind(console, 'connection error...'));
   db.once('open', function callback() {
     console.log('topekaCb db opened');
   });
   userModel.createDefaultUsers();
   stateModel.createStates();
-  adopteeModel.createDefaultAdoptees();
-  adopterModel.createDefaultAdopters();
+
+  adopterModel.createSampleAdopters().
+    then(function(data) {
+      sampleAdopters = data;
+      return adopteeModel.createSampleAdoptees();
+    }).
+    then(function(data) {
+      sampleAdoptees = data.filter(function(a) {
+        return a.status === 'Not Matched';
+      });
+      
+      sampleAdoptees.length = Math.floor(sampleAdoptees.length * .88);
+      
+      console.log('Creating sample matches from a pool of ' + sampleAdoptees.length + ' adoptees...');
+
+      sampleAdopters.forEach(function(adopter, index) {
+        adopterModel.createSampleMatch(adopter, sampleAdoptees);
+      });
+
+      process.stdout.write('\n');
+      console.log('Successfully completed sample matching.');
+    });
+
   adopteeApplicationCounterModel.initializeAdopteeApplicationCounter();
   messageModel.createMessages();
 };

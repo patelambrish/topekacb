@@ -114,16 +114,14 @@ var adopteeSchema = mongoose.Schema({
     });
 var Adoptee = mongoose.model('Adoptee', adopteeSchema);
 
-function createDefaultAdoptees() {
+function createSampleAdoptees() {
   var Adoptee = mongoose.model('Adoptee');
 
-  Adoptee.
-    count({}).
-    exec(function(err, count) {
+  return Adoptee.count().exec().then(function(count) {
       if(count === 0) {
-        generateAdoptees(4000);
+        return generateAdoptees(4000);
       } else {
-        console.log('found ' + count + ' adoptees.');
+        throw new Error('db already has ' + count + ' adoptees.');
       }
     });
 }
@@ -134,145 +132,148 @@ function getAggregateHouseHolds(){
 
 function generateAdoptees(count) {
   var User = mongoose.model('User'),
-      Adoptee = mongoose.model('Adoptee');
+      Adoptee = mongoose.model('Adoptee'),
+      promise;
 
-  console.log('populating default adoptees...');
+  console.log('generating sample adoptees...');
+  
+  return User.find({}).select('_id').exec().then(function(userPool) {
+    var chance = new Chance(),
+        data = [], adoptee,
+        gender, hispanic, language, allergic, site, petOwner,
+        allergens = ['Peanut','Tree nuts','Milk','Egg','Wheat','Soy','Fish','Shellfish'],
+        domesticAnimals = ['Dog', 'Cat', 'Gerbil', 'Parakeet'],
+        i = 1;
 
-  User.
-    find({}).
-    select('_id').
-    exec(function(err, users) {
-      var chance = new Chance(),
-          data = [],
-          gender, status, hispanic, language, allergic, site, petOwner,
-          allergens = ['Peanut','Tree nuts','Milk','Egg','Wheat','Soy','Fish','Shellfish'],
-          domesticAnimals = ['Dog', 'Cat', 'Gerbil', 'Parakeet'],
-          i;
+    chance.mixin({
+      'contact': function() {
+        return {
+          name: chance.first(),
+          number: chance.phone()
+        };
+      },
+      'child': function() {
+        var age = chance.age({
+            type: chance.pick(
+              ['child', 'teen', 'adult', 'senior'],
+              [8, 8, 2, 1]
+            )
+          });
 
-      chance.mixin({
-        'contact': function() {
-          return {
-            name: chance.first(),
-            number: chance.phone()
-          };
-        },
-        'child': function() {
-          var age = chance.age({
-              type: chance.pick(
-                ['child', 'teen', 'adult', 'senior'],
-                [8, 8, 2, 1]
-              )
-            });
-
-          return {
-            name: chance.first(),
-            ssnLastFour: chance.ssn({ ssnFour: true }),
-            age: age,
-            gender: chance.gender(),
-            pantSizeType: chance.pick(clothingSizeTypes, 1),
-            pantSize: chance.integer({min: 7, max: 20}),
-            shirtSizeType: chance.pick(clothingSizeTypes, 1),
-            shirtSize: chance.integer({min: 7, max: 20}),
-            shoeSizeType: chance.pick(shoeSizeTypes, 1),
-            shoeSize: chance.integer({min: 0, max: 7}),
-            wishList: age < 18 ? chance.pick([
-              'Lego Duplo', 'Fur Real', 'Elmo', 'Elsa Doll',
-              'Easy-Bake', 'Transformer', 'Simon', 'Scooter',
-              'R/C Crawler', 'Red Rider BB'], 3).join(', ') : null
-          };
-        }
-      });
-
-      /**
-       * generate random sample of special needs. may return 0 - 4 unique special needs.
-       * the likelihood of having a particular special need is based on US census stats.
-       * the likelihood of having multiple special needs is totally arbitrary.
-       * US Census stats (% of total population):
-       *   20% Senior 60+, 8% Veterans, 4% Disabled, 1% Homebound
-      */
-      function sampleSpecialNeeds() {
-        var specPct = [20, 8, 4, 1],
-            combPct = [100, 50, 20, 10],
-            needs = [],
-            i, n, item;
-
-        for(i = 0, n = 0; item = specialNeedsEnum[i]; i++) {
-          if(chance.bool({likelihood: specPct[i]}) && chance.bool({likelihood: combPct[n]})) {
-            n = needs.push(item);
-          }
-        }
-
-        return needs;
-      }
-
-      for(i = 1; i <= count; i++) {
-        status = chance.pick(adopteeStates);
-        gender = chance.gender();
-        hispanic = chance.bool({likelihood: 17});
-        language = chance.pick(languages, 1);
-        allergic = chance.bool({likelihood: 30});
-        petOwner = chance.bool({likelihood: 48});
-        site = chance.pick(sites, 1);
-
-
-        data.push({
-          firstName: chance.first({ gender: gender }),
-          middleInitial: chance.character({alpha: true, casing: 'upper'}),
-          lastName: chance.last(),
-          birthDate: chance.birthday(),
+        return {
+          name: chance.first(),
           ssnLastFour: chance.ssn({ ssnFour: true }),
-          gender: gender,
-          agent: chance.bool() && {
-            agency: chance.capitalize(chance.word()),
-            agentName: chance.name(),
-            agentPhone: chance.phone()
-          } || undefined,
-          address: {
-              homeAddress: chance.address({short_suffix: true}),
-              city: 'Topeka',
-              state: 'KS',
-              zip: chance.integer({min: 66601, max: 66667})
-          },
-          homePhone: chance.contact(),
-          cell1Phone: chance.bool({likelihood: 70}) && chance.contact() || undefined,
-          cell2Phone: chance.bool({likelihood: 60}) && chance.contact() || undefined,
-          otherPhone: chance.bool({likelihood: 40}) && chance.contact() || undefined,
-          email: chance.email(),
-          fax: chance.bool({likelihood: 10}) && chance.phone() || undefined,
-          status: status,
-          language: hispanic && language || undefined,
-          englishSpeaker: language === languages[1] && chance.first() || undefined,
-          isDiabetic: chance.bool({likelihood: 10}),
-          isPetOwner: chance.bool({likelihood: 40}),
-          petTypes: petOwner && [].concat(chance.pick(domesticAnimals, chance.d4())).join(', ') || undefined,
-          isAllergic: allergic,
-          reactionFoods: allergic && [].concat(chance.pick(allergens, chance.d4())).join(', ') || undefined,
-          criteria: {
-              story: chance.paragraph(),
-              volunteerComment: chance.bool() && chance.sentence(2) || undefined,
-              internalComment: chance.bool() && chance.sentence() || undefined,
-              householdType: chance.pick(householdTypes, 1),
-              specialNeeds: sampleSpecialNeeds()
-          },
-          householdMembers: chance.n(chance.child, chance.d4()),
-          applicationNumber: i,
-          site: site,
-          createDate: chance.date({month: 8, year: 2014}),
-          _createUser: chance.pick(users),
-          modifyDate: (status !== 'In Process' ? chance.date({month: 9, year: 2014}) : null),
-          _modifyUser: (status !== 'In Process' ? chance.pick(users) : null)
-        });
+          age: age,
+          gender: chance.gender(),
+          pantSizeType: chance.pick(clothingSizeTypes, 1),
+          pantSize: chance.integer({min: 7, max: 20}),
+          shirtSizeType: chance.pick(clothingSizeTypes, 1),
+          shirtSize: chance.integer({min: 7, max: 20}),
+          shoeSizeType: chance.pick(shoeSizeTypes, 1),
+          shoeSize: chance.integer({min: 0, max: 7}),
+          wishList: age < 18 ? chance.pick([
+            'Lego Duplo', 'Fur Real', 'Elmo', 'Elsa Doll',
+            'Easy-Bake', 'Transformer', 'Simon', 'Scooter',
+            'R/C Crawler', 'Red Rider BB'], 3).join(', ') : null
+        };
+      }
+    });
+
+    /**
+     * generate random sample of special needs. may return 0 - 4 unique special needs.
+     * the likelihood of having a particular special need is based on US census stats.
+     * the likelihood of having multiple special needs is totally arbitrary.
+     * US Census stats (% of total population):
+     *   20% Senior 60+, 8% Veterans, 4% Disabled, 1% Homebound
+    */
+    function sampleSpecialNeeds() {
+      var specPct = [20, 8, 4, 1],
+          combPct = [100, 50, 20, 10],
+          needs = [],
+          i, n, item;
+
+      for(i = 0, n = 0; item = specialNeedsEnum[i]; i++) {
+        if(chance.bool({likelihood: specPct[i]}) && chance.bool({likelihood: combPct[n]})) {
+          n = needs.push(item);
+        }
       }
 
-      Adoptee.
-        create(data).
-        then(function() {
-          console.log('created ' + data.length + ' adoptees.');
-        }).
-        then(null, function(e) {
-          console.log(e);
-        });
+      return needs;
+    }
+
+    for(; i <= count; i++) {
+      if(i % 500 === 0) {
+        process.stdout.write(chance.pad(i,4) + ' adoptees generated.\033[0G');
+      }
+
+      gender = chance.gender();
+      hispanic = chance.bool({likelihood: 17});
+      language = chance.pick(languages, 1);
+      allergic = chance.bool({likelihood: 30});
+      petOwner = chance.bool({likelihood: 48});
+      site = chance.pick(sites, 1);
+
+      adoptee = new Adoptee({
+        firstName: chance.first({ gender: gender }),
+        middleInitial: chance.character({alpha: true, casing: 'upper'}),
+        lastName: chance.last(),
+        birthDate: chance.birthday(),
+        ssnLastFour: chance.ssn({ ssnFour: true }),
+        gender: gender,
+        agent: chance.bool() && {
+          agency: chance.capitalize(chance.word()),
+          agentName: chance.name(),
+          agentPhone: chance.phone()
+        } || undefined,
+        address: {
+            homeAddress: chance.address({short_suffix: true}),
+            city: 'Topeka',
+            state: 'KS',
+            zip: chance.integer({min: 66601, max: 66667})
+        },
+        homePhone: chance.contact(),
+        cell1Phone: chance.bool({likelihood: 70}) && chance.contact() || undefined,
+        cell2Phone: chance.bool({likelihood: 60}) && chance.contact() || undefined,
+        otherPhone: chance.bool({likelihood: 40}) && chance.contact() || undefined,
+        email: chance.email(),
+        fax: chance.bool({likelihood: 10}) && chance.phone() || undefined,
+        status: chance.bool({likelihood: 88}) && 'Not Matched' || 'In Process',
+        language: hispanic && language || undefined,
+        englishSpeaker: language === languages[1] && chance.first() || undefined,
+        isDiabetic: chance.bool({likelihood: 10}),
+        isPetOwner: chance.bool({likelihood: 40}),
+        petTypes: petOwner && [].concat(chance.pick(domesticAnimals, chance.d4())).join(', ') || undefined,
+        isAllergic: allergic,
+        reactionFoods: allergic && [].concat(chance.pick(allergens, chance.d4())).join(', ') || undefined,
+        criteria: {
+            story: chance.paragraph(),
+            volunteerComment: chance.bool() && chance.sentence(2) || undefined,
+            internalComment: chance.bool() && chance.sentence() || undefined,
+            householdType: chance.pick(householdTypes, 1),
+            specialNeeds: sampleSpecialNeeds()
+        },
+        householdMembers: chance.n(chance.child, chance.d4()),
+        applicationNumber: i,
+        site: site,
+        createDate: chance.date({month: 8, year: 2014}),
+        _createUser: chance.pick(userPool),
+        modifyDate: chance.date({month: 10, year: 2014}),
+        _modifyUser: chance.pick(userPool)
+      });
+      
+      data.push(adoptee);
+    }
+
+    process.stdout.write('\n');
+    console.log('Saving sample adoptees...');
+
+    promise = Adoptee.create(data).then(function() {
+      console.log('Successfully created ' + data.length + ' sample adoptees.');
+      return data;
     });
+    
+    return promise;
+  });
 }
 
-exports.createDefaultAdoptees = createDefaultAdoptees;
+exports.createSampleAdoptees = createSampleAdoptees;
