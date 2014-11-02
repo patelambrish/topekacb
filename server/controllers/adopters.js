@@ -107,8 +107,12 @@ exports.getAdopterById = function(req, res, next) {
         console.log(err);
         return next(err);
       }
-      adopter.enums = Adopter.getEnumValues();
-      res.send(adopter);
+      if(adopter) {
+        adopter.enums = Adopter.getEnumValues();
+        res.send(adopter);
+      } else {
+        res.send({});
+      }
     });
 };
 
