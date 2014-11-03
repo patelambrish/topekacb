@@ -21,8 +21,7 @@ function getAdopterHtml(adopter, templateData) {
 				name : adopter.name,
 				email : adopter.email,
 				address : adopter.address,
-				phones : adopter.phones,
-				notifyMethods: adopter.notifyMethods
+				phones : adopter.phones
 			};
 			html = htmlUtil.getAdopteeHtml(adoptee, templateData);
 			completeHtml = completeHtml + html;

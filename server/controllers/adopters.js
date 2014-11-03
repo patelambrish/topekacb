@@ -14,8 +14,7 @@ function getAdopterHtml(adopter, templateData) {
 				name : adopter.name,
 				email : adopter.email,
 				address : adopter.address,
-				phones : adopter.phones,
-				notifyMethods: adopter.notifyMethods
+				phones : adopter.phones
 			};
 			html = htmlUtil.getAdopteeHtml(adoptee, templateData);
 			completeHtml = completeHtml + html;
@@ -190,7 +189,7 @@ exports.removeAdoptee = function(req, res, next) {
         modifyDate: new Date(),
         _modifyUser: userId
       };
-
+      
   Adoptee.findByIdAndUpdate(adopteeId, update).exec().
     then(function(adoptee) {
       return Adopter.findById(adopterId).exec();
@@ -201,10 +200,10 @@ exports.removeAdoptee = function(req, res, next) {
             status: adopter.status,
             updateDate: new Date(),
             updatedBy: userId
-          },
+          }, 
           arr = update.adoptees,
           index = arr.indexOf(adopteeId);
-
+          
       if(index !== -1) {
         arr.splice(index, 1);
       }

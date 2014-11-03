@@ -46,8 +46,7 @@ var states = ['KS'];
 
 var adopteeStates = ['In Process',
     'Not Matched',
-    'Matched',
-    'Possible Duplicate'];
+    'Matched'];
 var genders = ['Male', 'Female'];
 var specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'];
 
@@ -94,7 +93,6 @@ var adopteeSchema = mongoose.Schema({
     householdMembers: [householdMember],
     applicationNumber: {type: Number, index: {unique: true, dropDups: true}},
     site: {type: String, enum: sites},
-    documentNumber: {type: String},
     image: {type: String},
     createDate: {type: Date},
     _createUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -184,8 +182,8 @@ function generateAdoptees(count) {
       });
 
       /**
-       * generate random sample of special needs. may return 0 - 4 unique special needs.
-       * the likelihood of having a particular special need is based on US census stats.
+       * generate random sample of special needs. may return 0 - 4 unique special needs. 
+       * the likelihood of having a particular special need is based on US census stats. 
        * the likelihood of having multiple special needs is totally arbitrary.
        * US Census stats (% of total population):
        *   20% Senior 60+, 8% Veterans, 4% Disabled, 1% Homebound

@@ -8,8 +8,7 @@ module.exports = function(grunt) {
                     precision: 8
                 },
                 files: {
-                	'public/assets/css/site.css': 'public/assets/css/site.scss',
-                  'public/vendor/font-awesome/css/font-awesome.css': 'public/vendor/font-awesome/scss/font-awesome.scss'
+                	'public/assets/css/site.css': 'public/assets/css/site.scss'
                 }
             }
         }
