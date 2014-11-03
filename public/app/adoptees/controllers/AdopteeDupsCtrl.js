@@ -73,9 +73,8 @@ angular.module('app').
     };
     
     $scope.select = function(adoptee) {
-      $location.path('/adoptees/duplciates');
+      $location.path('/adoptees/' + adoptee._id);
     };
-
     
     adopteeDups = AdopteeDuplicates.get();
     $scope.applyFilter();
