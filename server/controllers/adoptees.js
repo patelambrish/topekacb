@@ -113,6 +113,12 @@ exports.getAggregateAdoptedCounts = function(req, res){
   });
 };
 
+exports.getAdopteeDups = function(req, res){
+  Adoptee.find({"status": "Possible Duplicate"}).exec(function(err,collection){
+        res.send(collection);
+  });
+};
+
 
 exports.updateAdoptee = function(req, res){
       var update = req.body,

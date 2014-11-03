@@ -27,3 +27,14 @@ angular.module('app').factory('Adoptee', function($resource, $q) {
 
   return AdopteeResource;
 });
+
+angular.module('app').factory('AdopteeDuplicates', function($resource) {
+  var AdopteeDupsResource = $resource('/api/adoptees/duplicates', {}, {
+    get : {
+      method : 'GET',
+      isArray : true
+    }
+  });
+
+  return AdopteeDupsResource;
+});
