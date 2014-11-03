@@ -61,10 +61,6 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
 		templateUrl: 'partials/matching/match',
 		controller: 'mvMatchCtrl',
 		resolve : routeRoleChecks.user
-	}).when('/duplicates', {
-		templateUrl: '/partials/adoptees/adoptee-duplicates',
-		controller: 'AdopteeDupsCtrl',
-		resolve : routeRoleChecks.user
 	}).when('/printemail', {
 		templateUrl: 'partials/printemail/printemail',
 		controller: 'PrintEmailController',
