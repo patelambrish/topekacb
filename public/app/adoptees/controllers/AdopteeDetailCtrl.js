@@ -11,7 +11,7 @@ angular.module('app').
               city: 'Topeka',
               state: 'KS'
             },
-            status: 'Not Matched'
+            status: 'In Process'
         });
         $scope.adopteeTitle = 'New Adoptee';
     };
@@ -39,7 +39,7 @@ angular.module('app').
         $scope.setNewAdoptee();
     }
 
-    $scope.update = function(form, nextFlag){
+    $scope.update = function(form, nextFlag, readyToMatch){
       if(form.$invalid) {
         $scope.submitted = true;
         mvNotifier.notify('Invalid fields present');
@@ -47,11 +47,12 @@ angular.module('app').
       }
       //get next adoptee
       $scope.nextFlag = nextFlag;
+      $scope.adoptee.status = readyToMatch?"Not Matched":"In Process";
       if ($scope.adoptee.applicationNumber)
       {
             $scope.adopteeUpdate();
       } else {
-          adopteeApplicationCounter.getNextSequence().$promise.then(function (retVal) {
+          AdopteeApplicationCounter.getNextSequence().$promise.then(function (retVal) {
               if (retVal.error) {
                   mvNotifier.notify(retVal.error);
               }
@@ -70,7 +71,7 @@ angular.module('app').
       }
       $scope.adoptee.householdMembers.push({});
     };
-  
+
     $scope.deleteHouseholdMember = function(householdMember){
         var i = $scope.adoptee.householdMembers.indexOf(householdMember);
         if (i != -1)
@@ -90,8 +91,6 @@ angular.module('app').
                 if ($scope.nextFlag) {
                     Adoptee.getNextAdoptee({nextNumber: retVal.applicationNumber + 1}).$promise.then(function(nextVal){
                         if (!nextVal._id || nextVal.error){
-                           console.log(nextVal);
-                           console.log(nextVal.error);
                            mvNotifier.notify(retVal.firstName + ' ' + retVal.lastName + " is the highest numbered Adoptee")
                         }
                         else {
@@ -109,12 +108,11 @@ angular.module('app').
             }
         });
     };
-    
+
     $scope.cancel = function() {
-      //$scope.adoptee = angular.copy($scope.master);
       $location.path('/adoptees');
     };
-    
+
     $scope.setFlags = common.setFlags;
 
   });

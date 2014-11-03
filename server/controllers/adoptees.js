@@ -42,6 +42,7 @@ exports.getAdoptees = function(req, res) {
               gender: 1,
               agent: 1,
               address: 1,
+              documentNumber: 1,
               status: 1,
               'criteria.story': 1,
               'criteria.specialNeeds': 1,
@@ -119,7 +120,6 @@ exports.getAdopteeDups = function(req, res){
   });
 };
 
-
 exports.updateAdoptee = function(req, res){
       var update = req.body,
           id = update._id,
@@ -139,14 +139,35 @@ exports.updateAdoptee = function(req, res){
       if (update._adopterId) {
           update._adopterId = update._adopterId.name ? update._adopterId._id : update._adopterId;
       }
-
-      Adoptee.
-          findByIdAndUpdate(id, update, options).
-          populate('_createUser', 'firstName lastName').
-          populate('_modifyUser', 'firstName lastName').
-          exec(function(err, adoptee) {
-              if(err) { res.status(400); return res.send({error:err.toString()});}
-              return res.send(adoptee);
+      //duplicate checking...before updating this adoptee, check to see if there are any other adoptees in the system
+      //having matching (name and ssn) or (matching address). If there are, both should be flagged as "Possible Duplicate"
+      query = Adoptee.find({$and : [
+                                    {_id: {$ne : id}},
+                                    {$or : [ {$and : [{ssnLastFour:update.ssnLastFour, lastName: update.lastName, firstName: update.firstName}]},
+                                             {"address.homeAddress": update.address.homeAddress}
+                                           ]
+                                    }
+                                   ]
+      });
+      query.
+          select("-image").
+          exec(function(err, collection){
+              if (collection.length > 0){
+                collection.forEach(function(item){
+                  Adoptee.
+                    update({_id: item._id}, {status : "Possible Duplicate", _modifyUser: userId, modifyDate : new Date()}, {}).
+                    exec();
+                });
+                update.status = "Possible Duplicate";
+              }
+              Adoptee.
+                findByIdAndUpdate(id, update, options).
+                populate('_createUser', 'firstName lastName').
+                populate('_modifyUser', 'firstName lastName').
+                exec(function(err, adoptee) {
+                  if(err) { res.status(400); return res.send({error:err.toString()});}
+                  return res.send(adoptee);
+                });
       });
 };
 
@@ -180,10 +201,16 @@ exports.print = function(req, res) {
 exports.getForm = function(req, res) {
     Adoptee.findOne({_id: req.params.id})
      .exec(function(err, adoptee){
-        var decodedImage = new Buffer(adoptee.image, 'base64');
-        res.writeHead(200, {'content-type' : 'image/tiff', 'content-disposition': 'attachment; filename=' + adoptee.lastName + adoptee._id + '.tif'});
-        res.write(decodedImage);
-        res.end();
+       if (adoptee.image)
+       {
+         var decodedImage = new Buffer(adoptee.image, 'base64');
+         res.writeHead(200, {'content-type' : 'image/tiff', 'content-disposition': 'attachment; filename=' + adoptee.lastName + adoptee._id + '.tif'});
+         res.write(decodedImage);
+       }
+       else{
+         res.write("<h1>No Image Found</h1>");
+       }
+       res.end();
      });
 };
 
