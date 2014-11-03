@@ -79,7 +79,8 @@ angular.module('app').
             $scope.adoptee.householdMembers.splice(i,1);
         }
     };
-
+    
+    //Expects adoptees to have consecutive numbers
     $scope.adopteeUpdate = function(){
         Adoptee.updateAdoptee($scope.adoptee).$promise.then(function (retVal) {
             if (retVal.error) {
