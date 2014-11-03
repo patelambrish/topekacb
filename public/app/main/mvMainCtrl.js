@@ -111,8 +111,8 @@ function($scope, $http, mvNotifier, mvSharedContext, mvIdentity, MessageService,
     var chartArray = [], chartItem = ["Household Types", "Count"];
     chartArray.push(chartItem);
     angular.forEach(data, function(item) {
-      chartItem = [item._id, item.count];
-      chartArray.push(chartItem);
+       chartItem = [item._id, item.count];
+       chartArray.push(chartItem);
     });
 
     pieChart.data = chartArray;
@@ -124,7 +124,7 @@ function($scope, $http, mvNotifier, mvSharedContext, mvIdentity, MessageService,
     angular.forEach(data, function(item) {
       if (item._id == "Matched") {
         matched = item.count;
-      } else {
+      } else if(item._id == "Not Matched") {
         notmatched = notmatched + item.count;
       }
     });
