@@ -66,7 +66,7 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
 		controller: 'AdopteeDupsCtrl',
 		resolve : routeRoleChecks.user
 	}).when('/printemail', {
-		templateUrl: 'partials/printemail/printemail',
+		templateUrl: 'partials/printemail/printemaillist',
 		controller: 'PrintEmailController',
 		resolve: routeRoleChecks.user
 	}).	otherwise({
