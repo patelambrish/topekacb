@@ -23,7 +23,7 @@ var shoeSizeTypes = ['A', 'C'];
 
 var householdMember = {
     name: {type: String},
-    ssnLastFour: {type: Number, max: 9999},
+    ssnLastFour: {type: String, max: "9999"},
     age: {type: Number, max: 99},
     gender: {type: String, enum: genders},
     pantSizeType: {type: String, enum: clothingSizeTypes},
@@ -55,7 +55,7 @@ var adopteeSchema = mongoose.Schema({
     lastName: {type:String, required:'{PATH} is required!'},
     middleInitial: {type: String},
     birthDate: {type: Date},
-    ssnLastFour: {type: Number, max: 9999},
+    ssnLastFour: {type: String, max: "9999"},
     gender: {type: String, enum: genders},
     agent: {
       agency: {type: String},
@@ -182,8 +182,8 @@ function generateAdoptees(count) {
       });
 
       /**
-       * generate random sample of special needs. may return 0 - 4 unique special needs. 
-       * the likelihood of having a particular special need is based on US census stats. 
+       * generate random sample of special needs. may return 0 - 4 unique special needs.
+       * the likelihood of having a particular special need is based on US census stats.
        * the likelihood of having multiple special needs is totally arbitrary.
        * US Census stats (% of total population):
        *   20% Senior 60+, 8% Veterans, 4% Disabled, 1% Homebound

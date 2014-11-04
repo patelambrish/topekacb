@@ -10,10 +10,9 @@ exports.getAdoptees = function(req, res) {
     if(req.query.filter) {
         searchFilters= JSON.parse(req.query.filter);
     }
-    console.log('query ' + req);
+
     query = Adoptee.find({});
     if(searchFilters) {
-        console.log('inside if' + searchfilters);
         if(searchFilters.households) {
             query = query.where('criteria.householdType').in(searchFilters.households);
         }
@@ -29,7 +28,6 @@ exports.getAdoptees = function(req, res) {
     Adoptee.count(query, function(err, count){
         queryCount = count;
         if(req.query.start && req.query.limit) {
-            console.log('start ' + req.query.start + ' limit ' + req.query.limit);
             query = query.skip(req.query.start).limit(req.query.limit);
         }
         query.
@@ -55,7 +53,7 @@ exports.getAdoptees = function(req, res) {
               '_adopterId': 1
             }).
             exec(function(err, collection) {
-                 console.log('xxxx' + err + collection);
+                 if(err) { res.status(400); return res.send({error:err.toString()});}
                  res.send({data: collection, totalCount: count});
             });
     });
@@ -66,7 +64,8 @@ exports.getAdopteeById = function(req, res) {
         populate('_adopterId', 'name').
         select('-image').
         exec(function (err, adoptee) {
-        res.send(adoptee);
+          if(err) { res.status(400); return res.send({error:err.toString()});}
+          res.send(adoptee);
     });
 };
 
@@ -75,6 +74,7 @@ exports.getNextAdoptee = function(req, res) {
         populate('_adopterId', 'name').
         select('-image').
         exec(function (err, adoptee) {
+        if(err) { res.status(400); return res.send({error:err.toString()});}
         if (adoptee) {
             res.send(adoptee);
         }
