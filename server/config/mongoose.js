@@ -14,12 +14,15 @@ module.exports = function(config) {
   db.once('open', function callback() {
     console.log('topekaCb db opened');
   });
-  userModel.createDefaultUsers();
-  stateModel.createStates();
-  adopteeModel.createDefaultAdoptees();
+  console.log("Environment:  " + process.env.NODE_ENV);
+  if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == "test"){
+    userModel.createDefaultUsers();
+    stateModel.createStates();
+    adopteeModel.createDefaultAdoptees();
+    adopterModel.createDefaultAdopters();
+    adopteeApplicationCounterModel.initializeAdopteeApplicationCounter();
+    messageModel.createMessages();
+  }
   adopteeModel.startOrphanedUpdateChecking();
-  adopterModel.createDefaultAdopters();
-  adopteeApplicationCounterModel.initializeAdopteeApplicationCounter();
-  messageModel.createMessages();
 };
 
