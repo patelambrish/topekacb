@@ -3,7 +3,8 @@ angular.module('app').
     var adopters;
 
     $scope.permission = {
-      delete: mvIdentity.isAuthorized('manager')
+      delete: mvIdentity.isAuthorized('manager'),
+      readonly: mvIdentity.isAuthorized('observer')
     };
 
     $scope.sort = {
@@ -54,7 +55,7 @@ angular.module('app').
       Adopter.remove({ id: adopter._id }, function() {
         var array = $scope.adopters,
             index = angular.isArray(array) ? array.indexOf(adopter) : -1;
-  
+
         if(index !== -1) {
           array.splice(index, 1);
         }
@@ -62,7 +63,7 @@ angular.module('app').
         mvNotifier.notify(adopter.name + ' was deleted.');
       });
     };
-    
+
     $scope.refresh = function(clearCache) {
       if(clearCache) {
         cachedAdopters.clear();

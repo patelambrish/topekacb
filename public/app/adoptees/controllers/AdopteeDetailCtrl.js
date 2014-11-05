@@ -1,8 +1,12 @@
 angular.module('app').
-  controller('adopteeDetailCtrl', function($scope, $routeParams, $location, $filter, cbSites, cbCurrentSite, Adoptee, AdopteeApplicationCounter, mvNotifier, common) {
+  controller('adopteeDetailCtrl', function($scope, $routeParams, $location, $filter, cbSites, cbCurrentSite, Adoptee, AdopteeApplicationCounter, mvNotifier, common, mvIdentity) {
     $scope.sites = cbSites;
     $scope.enums = Adoptee.enums({ _id: $routeParams.id });
     $scope.adopteeTitle = '';
+    $scope.permission = {
+      delete: mvIdentity.isAuthorized('manager'),
+      readonly: mvIdentity.isAuthorized('observer')
+    };
     $scope.setNewAdoptee = function(currentNumber){
         $scope.adoptee = new Adoptee({
             site: cbCurrentSite.get(),
@@ -79,7 +83,7 @@ angular.module('app').
             $scope.adoptee.householdMembers.splice(i,1);
         }
     };
-    
+
     //Expects adoptees to have consecutive numbers
     $scope.adopteeUpdate = function(){
         Adoptee.updateAdoptee($scope.adoptee).$promise.then(function (retVal) {

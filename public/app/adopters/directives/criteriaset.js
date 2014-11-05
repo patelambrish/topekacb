@@ -1,5 +1,5 @@
 angular.module('app').
-  directive('criteriaset', function(common) {
+  directive('criteriaset', function(common, mvIdentity) {
     return {
       scope: {
         adopter: '=',
@@ -18,11 +18,16 @@ angular.module('app').
           next: 1,
           size: 3
         };
-        
-        $scope.sort = {
-          value: 'lastName' 
+
+        $scope.permission = {
+          delete: mvIdentity.isAuthorized('manager'),
+          readonly: mvIdentity.isAuthorized('observer')
         };
-    
+
+        $scope.sort = {
+          value: 'lastName'
+        };
+
         $scope.applyPage = function(page) {
           if($scope.adopter.adoptees) {
             $scope.page.current = page;
@@ -31,31 +36,31 @@ angular.module('app').
             $scope.page.next = page < $scope.page.total ? page + 1 : page;
           }
         };
-        
+
         $scope.select = function(adoptee) {
           $location.path('/adoptees/' + adoptee._id);
         };
-    
+
         $scope.remove = function(adoptee) {
           var adopter = $scope.adopter,
               array = adopter.adoptees,
               index = angular.isArray(array) ? array.indexOf(adoptee) : -1;
-          
+
           if(index !== -1) {
             array.splice(index, 1);
-            $scope.applyPage(1); 
+            $scope.applyPage(1);
           }
 
           adopter.$removeAdoptee({id: adopter._id, adopteeId: adoptee._id}, function() {
             mvNotifier.notify(adoptee.firstName + ' ' + adoptee.lastName + ' removed from ' + adopter.name);
           });
         };
-        
+
         $scope.setFlags = common.setFlags;
 
         $scope.$watch('adopter.adoptees', function(newValue) {
           if(newValue) {
-            $scope.applyPage(1); 
+            $scope.applyPage(1);
           }
         });
       }

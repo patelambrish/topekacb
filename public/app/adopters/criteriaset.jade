@@ -61,7 +61,7 @@ fieldset(id="criteriaForm", ng-form="criteriaForm")
                 td(ng-click="select(adoptee)") {{adoptee.criteria.householdType}}
                 td(ng-click="select(adoptee)") {{adoptee.householdMembers.length}}
                 td.tool
-                  a(href="", title="Remove this Adoptee", tabindex="0", ng-click="remove(adoptee, $index)")
+                  a(href="", title="Remove this Adoptee", tabindex="0", ng-click="remove(adoptee, $index)" data-ng-if="!permission.readonly")
                     i.text-danger.fa.fa-times
           .panel-footer(ng-if="adopter.adoptees.length > page.size")
             ul.pager

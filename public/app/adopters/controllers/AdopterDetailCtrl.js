@@ -1,10 +1,14 @@
 angular.module('app').
-	controller('AdopterDetailCtrl', function($scope, $routeParams, $location, Adopter, cachedAdopters, mvNotifier, common) {
+	controller('AdopterDetailCtrl', function($scope, $routeParams, $location, Adopter, cachedAdopters, mvNotifier, common, mvIdentity) {
+    $scope.permission = {
+      delete: mvIdentity.isAuthorized('manager'),
+      readonly: mvIdentity.isAuthorized('observer')
+    };
     $scope.validation = {
       zip: /^\d{5}(-\d{4})?$/,
       phone: /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/
     };
-    
+
     $scope.busy = function() {
       return $scope.adopter && $scope.adopter.$promise && !$scope.adopter.$resolved;
     };
@@ -48,7 +52,7 @@ angular.module('app').
       } else {
         Adopter.save($scope.adopter, function() {
           mvNotifier.notify($scope.adopter.name + ' successfully saved!');
-          
+
           if(plus) {
             $location.path('/adopters/0');
             $scope.create();
@@ -80,8 +84,8 @@ angular.module('app').
 
       array.push({ name: $scope.adopter.enums.phone[0] });
     };
-    
+
     $scope.setFlags = common.setFlags;
-        
+
     ($routeParams.id === '0' ? $scope.create : $scope.get)();
 	});

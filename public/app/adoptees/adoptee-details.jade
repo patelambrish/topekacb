@@ -18,7 +18,7 @@
   form(name="adopteeForm")
     .panel.panel-default
       .panel-body
-        fieldset(ng-disabled="siteUndefined()")
+        fieldset(ng-disabled="siteUndefined() || permission.readonly")
           legend Adoptee Information
           .row
             .col-sm-3
@@ -50,7 +50,7 @@
                 label(for="gender") Gender
                 select.form-control(name="adoptee.gender", ng-model="adoptee.gender" ng-options="g | limitTo:1 for g in enums.gender")
                   option(disabled, value="") &ndash;
-        fieldset(ng-disabled="siteUndefined()")
+        fieldset(ng-disabled="siteUndefined() || permission.readonly")
           legend Address
           .row
             .col-sm-4
@@ -72,7 +72,7 @@
               .form-group
                 label(for="adoptee.address.zip") Zip Code
                 input.form-control(name="adoptee.address.zip", type="text", placeholder="Zip code", ng-model="adoptee.address.zip")
-        fieldset(ng-disabled="siteUndefined()")
+        fieldset(ng-disabled="siteUndefined() || permission.readonly")
           legend Phone
           .row
             .col-sm-4
@@ -105,13 +105,13 @@
               .form-group
                 label(for="adoptee.otherPhone.name") Other Phone Contact
                 input.form-control(name="adoptee.otherPhone.name", type="phone", placeholder="Other contact", ng-model="adoptee.otherPhone.name")
-        fieldset(ng-disabled="siteUndefined()")
+        fieldset(ng-disabled="siteUndefined() || permission.readonly")
           legend Email
           .row
             .col-sm-6
               .form-group
                 input.form-control(name="adoptee.email", type="email", placeholder="Email", ng-model="adoptee.email")
-        fieldset(ng-disabled="siteUndefined()", ng-show="adoptee.site == 'O'")
+        fieldset(ng-disabled="siteUndefined() || permission.readonly", ng-show="adoptee.site == 'O'")
           .row
             .col-sm-6
                 .form-group
@@ -125,7 +125,7 @@
                 .form-group
                     label(for="adoptee.agent.agentPhone") Agent Phone
                     input.form-control(name="adoptee.agent.agentPhone", type="phone", placeholder="Agent Phone", ng-model="adoptee.agent.agentPhone")
-        fieldset(ng-disabled="siteUndefined()")
+        fieldset(ng-disabled="siteUndefined() || permission.readonly")
           legend Additional Information
           .row
             .col-sm-3
@@ -161,7 +161,7 @@
             .col-sm-6(ng-hide="adoptee.language != 'Spanish/English spoken by'")
               .form-group
                 input.form-control(name="adoptee.englishSpeaker", type="text", placeholder="English speaker", ng-model="adoptee.englishSpeaker")
-        fieldset(ng-disabled="siteUndefined()")
+        fieldset(ng-disabled="siteUndefined() || permission.readonly")
           legend Household Characteristics
           .row
             .col-sm-7
@@ -192,7 +192,7 @@
               .form-group
                 label Internal Comment
                 textarea.form-control(name="adoptee.criteria.internalComment", type="textarea", rows="4", ng-model="adoptee.criteria.internalComment")
-        fieldset(ng-disabled="siteUndefined()")
+        fieldset(ng-disabled="siteUndefined() || permission.readonly")
           legend Household Members
           .row(ng-form="memberForm", ng-repeat="householdMember in adoptee.householdMembers")
             hr(ng-if="!$first")
@@ -265,7 +265,7 @@
                   | &nbsp;Add new
       .panel-footer
         .btn-toolbar.text-right
-          button.btn.btn-primary(title="Ready For Match?", tabindex="0", confirm-click="update(adopteeForm, true, true)", confirm-default-click="update(adopteeForm, true, false)", confirm-popout="left", confirm-cancel-text="Data Not Complete", confirm-go-class="btn-success") Save and Next
-          button.btn.btn-primary(title="Ready For Match?", tabindex="0", confirm-click="update(adopteeForm, false, true)", confirm-default-click="update(adopteeForm, false, false)", confirm-popout="left", confirm-cancel-text="Data Not Complete", confirm-go-class="btn-success") Save
-          button.btn.btn-default(ng-click="cancel()") Cancel
+          button.btn.btn-primary(title="Ready For Match?", tabindex="0", confirm-click="update(adopteeForm, true, true)", confirm-default-click="update(adopteeForm, true, false)", confirm-popout="left", confirm-cancel-text="Data Not Complete", confirm-go-class="btn-success" data-ng-disabled="permission.readonly") Save and Next
+          button.btn.btn-primary(title="Ready For Match?", tabindex="0", confirm-click="update(adopteeForm, false, true)", confirm-default-click="update(adopteeForm, false, false)", confirm-popout="left", confirm-cancel-text="Data Not Complete", confirm-go-class="btn-success" data-ng-disabled="permission.readonly") Save
+          button.btn.btn-default(ng-click="cancel()"  data-ng-disabled="permission.readonly") Cancel
 div(site-directive, data-onsave="onsitechange(site)", ng-if="siteUndefined()")

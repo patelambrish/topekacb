@@ -17,7 +17,7 @@
         li(ng-show="form.criteriaForm.count.$invalid") Number of Households must either be blank or a number greater than 0.
     .panel.panel-default
       .panel-body
-        fieldset(id="adopter")
+        fieldset(id="adopter" data-ng-disabled="permission.readonly")
           legend Adopter Information
             a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#adopter .collapse")
               i.fa.fa-chevron-up
@@ -44,7 +44,7 @@
                   | Department&nbsp;
                   .label.label-default(ng-show="form.dept.$error.required") Required
                 input.form-control(type="text", name="dept", placeholder="Department", required, ng-model="adopter.dept")
-        fieldset(id="address")
+        fieldset(id="address" data-ng-disabled="permission.readonly")
           legend Address
             a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#address .collapse")
               i.fa.fa-chevron-up
@@ -70,7 +70,7 @@
                   | ZIP Code&nbsp;
                   .label(ng-show="form.zip.$error.pattern") Invalid
                 input.form-control(type="text", name="zip", placeholder="ZIP Code", ng-pattern="validation.zip", ng-model="adopter.address.zip")
-        fieldset(id="phone")
+        fieldset(id="phone" data-ng-disabled="permission.readonly")
           legend Phone
             a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#phone .collapse")
               i.fa.fa-chevron-up
@@ -103,7 +103,7 @@
                 a.btn.btn-link(href="", ng-click="addPhone()")
                   i.fa.fa-plus
                   | &nbsp;Add new
-        fieldset(id="notification")
+        fieldset(id="notification" data-ng-disabled="permission.readonly")
           legend Notification Method
             a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#notification .collapse")
               i.fa.fa-chevron-up
@@ -121,10 +121,10 @@
                   .label.label-default(ng-show="form.email.$error.required") Required
                   .label(ng-show="form.email.$error.email") Invalid
                 input.form-control(type="email", name="email", placeholder="Email", required, ng-model="adopter.email")
-        div(data-criteriaset, data-title="Household Criteria", data-adopter="adopter")
+        div(data-criteriaset, data-title="Household Criteria", data-adopter="adopter"  data-ng-disabled="permission.readonly")
       .panel-footer
         .btn-toolbar.text-right
-          button.btn.btn-default(type="button", ng-click="cancel()", ng-disabled="busy()") Cancel
-          button.btn.btn-primary(type="submit", ng-click="save(form)") Save
-          button.btn.btn-primary(type="submit", ng-click="save(form, true)") Save and New
+          button.btn.btn-default(type="button", ng-click="cancel()", ng-disabled="busy() || permission.readonly") Cancel
+          button.btn.btn-primary(type="submit", ng-click="save(form)" data-ng-disabled="permission.readonly") Save
+          button.btn.btn-primary(type="submit", ng-click="save(form, true)" data-ng-disabled="permission.readonly") Save and New
           
