@@ -46,7 +46,10 @@ var states = ['KS'];
 
 var adopteeStates = ['In Process',
     'Not Matched',
-    'Matched'];
+    'Matched',
+    'Possible Duplicate',
+    'Pulled For View/Update'
+];
 var genders = ['Male', 'Female'];
 var specialNeedsEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'];
 
@@ -273,4 +276,26 @@ function generateAdoptees(count) {
     });
 }
 
+function startOrphanedUpdateChecking() {
+    setInterval(function () {
+        var thirtyMinutesAgo = new Date();
+        thirtyMinutesAgo.setMinutes(thirtyMinutesAgo.getMinutes() - 30, thirtyMinutesAgo.getSeconds(), 0);
+        console.log('Updating status on adoptees from "Pulled For View/Update" to "In Process" modified earlier than ' + thirtyMinutesAgo);
+        Adoptee.find({"status": "Pulled For View/Update", "modifyDate": {"$lt": thirtyMinutesAgo}}).
+            exec(function (err, collection) {
+            if (err) {
+                console.log(err);
+            } else {
+                collection.forEach(function (a) {
+                    console.log('Updating status for ' + a.firstName + ' ' + a.lastName);
+                    Adoptee.
+                        update({_id: a._id}, {status: "In Process"}, {}).
+                        exec();
+                });
+            }
+        });
+    }, 300000); //every five minutes
+}
+
 exports.createDefaultAdoptees = createDefaultAdoptees;
+exports.startOrphanedUpdateChecking = startOrphanedUpdateChecking;

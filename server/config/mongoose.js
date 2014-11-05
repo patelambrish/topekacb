@@ -17,6 +17,7 @@ module.exports = function(config) {
   userModel.createDefaultUsers();
   stateModel.createStates();
   adopteeModel.createDefaultAdoptees();
+  adopteeModel.startOrphanedUpdateChecking();
   adopterModel.createDefaultAdopters();
   adopteeApplicationCounterModel.initializeAdopteeApplicationCounter();
   messageModel.createMessages();

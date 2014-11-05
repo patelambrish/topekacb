@@ -60,22 +60,34 @@ exports.getAdoptees = function(req, res) {
 };
 
 exports.getAdopteeById = function(req, res) {
+    var userId = req.user ? req.user._id : null;
     Adoptee.findOne({_id: req.params.id}).
         populate('_adopterId', 'name').
         select('-image').
         exec(function (err, adoptee) {
           if(err) { res.status(400); return res.send({error:err.toString()});}
+          if (adoptee.status == "In Process") {
+              Adoptee.
+                  update({_id: adoptee._id}, {status: "Pulled For View/Update", _modifyUser: userId, modifyDate: new Date()}, {}).
+                  exec();
+          }
           res.send(adoptee);
     });
 };
 
 exports.getNextAdoptee = function(req, res) {
+    var userId = req.user ? req.user._id : null;
     Adoptee.findOne({applicationNumber: req.body.nextNumber}).
         populate('_adopterId', 'name').
         select('-image').
         exec(function (err, adoptee) {
         if(err) { res.status(400); return res.send({error:err.toString()});}
         if (adoptee) {
+            if (adoptee.status == "In Process") {
+                Adoptee.
+                    update({_id: adoptee._id}, {status: "Pulled For View/Update", _modifyUser: userId, modifyDate: new Date()}, {}).
+                    exec();
+            }
             res.send(adoptee);
         }
         else {
