@@ -116,17 +116,18 @@ exports.getAggregateSpecialNeeds = function(req, res) {
 };
 
 exports.getAggregateHouseholdTypes = function(req, res){
-  Adoptee.aggregate({$group : { _id: "$criteria.householdType", count: {$sum: 1 }}}).exec(function(err,collection){
+  Adoptee.aggregate({$match: {status:{$in: ['Not Matched', 'Matched']}}},{$group : { _id: "$criteria.householdType", count: {$sum: 1 }}}).exec(function(err,collection){
         res.send(collection);
     });
 };
 
 exports.getAggregateAdoptedCounts = function(req, res){
-  Adoptee.aggregate({$group : { _id: "$status", count: {$sum: 1 }}}).exec(function(err,collection){
+  Adoptee.aggregate({$match: {status:{$in: ['Not Matched', 'Matched']}}},{$group : { _id: "$status", count: {$sum: 1 }}}).exec(function(err,collection){
         res.send(collection);
   });
 };
 
+ Adoptee.aggregate({$group : { _id: "$status", count: {$sum: 1 }}})
 exports.getAdopteeDups = function(req, res){
   Adoptee.find({"status": "Possible Duplicate"}).exec(function(err,collection){
         res.send(collection);

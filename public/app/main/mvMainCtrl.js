@@ -124,7 +124,7 @@ function($scope, $http, mvNotifier, mvSharedContext, mvIdentity, MessageService,
     angular.forEach(data, function(item) {
       if (item._id == "Matched") {
         matched = item.count;
-      } else if(item._id == "Not Matched") {
+      } else {
         notmatched = notmatched + item.count;
       }
     });
