@@ -103,7 +103,7 @@ exports.getAggregateSpecialNeeds = function(req, res) {
         $project: { 'criteria.specialNeeds': 1 }
       }, {
         $unwind: '$criteria.specialNeeds'
-      }, {
+      },{
         $group: {
           _id: '$criteria.specialNeeds',
           count: { $sum: 1 }

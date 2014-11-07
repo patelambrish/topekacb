@@ -100,8 +100,14 @@ function($scope, $http, mvNotifier, mvSharedContext, mvIdentity, MessageService,
           config = angular.copy(pieChart);
 
       config.data = collection.map(function(item) {
-        return [item._id, item.count];
+        if(item._id != "None"){
+          return [item._id, item.count];
+        }else{
+          return ["No Special Need", item.count];
+        }
       });
+
+
       config.data.unshift(['Special Needs', 'Households']);
 
       $scope.specialChart = config;
