@@ -22,7 +22,26 @@ exports.getAdoptees = function(req, res) {
         if(searchFilters.status) {
             query = query.where('status').equals(searchFilters.status);
         }
-
+        console.log('query=' + query);
+        if(searchFilters.childAges){
+            var zeroToSeven = [0, 1, 2, 3, 4, 5, 6, 7];
+            var eightToTwelve = [8, 9, 10, 11, 12];
+            var thirteenToEighteen = [13, 14, 15, 16, 17, 18];
+            var childAges = [];
+            searchFilters.childAges.forEach(function(age){
+                if(age.split('-')[0] == 0){
+                    childAges = childAges.concat(zeroToSeven);
+                }
+                if(age.split('-')[0] == 8){
+                    childAges = childAges.concat(eightToTwelve);
+                }
+                if(age.split('-')[0] == 13){
+                    childAges = childAges.concat(thirteenToEighteen);
+                }
+            });
+            query = query.where('householdMembers.age').in(childAges);
+            console.log('query=' + query);
+        }
     }
     
     Adoptee.count(query, function(err, count){
@@ -46,6 +65,7 @@ exports.getAdoptees = function(req, res) {
               'criteria.specialNeeds': 1,
               'criteria.householdType': 1,
               applicationNumber: 1,
+              householdMembers: 1,
               site: 1,
               createDate: 1,
               '_createUser': 1,
