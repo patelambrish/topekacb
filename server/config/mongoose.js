@@ -4,7 +4,8 @@ var mongoose = require('mongoose'),
     adopterModel = require('../models/Adopter'),
     stateModel = require('../models/State'),
     messageModel = require('../models/Message'),
-    adopteeApplicationCounterModel = require('../models/AdopteeApplicationCounter');
+    adopteeApplicationCounterModel = require('../models/AdopteeApplicationCounter'),
+    printEmailModel = require('../models/PrintEmail.js');
 
 module.exports = function(config) {
   mongoose.connect(config.db);
