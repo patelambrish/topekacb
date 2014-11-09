@@ -8,7 +8,7 @@
         span.badge {{currentAdopter.criteria.count - currentAdopter.adoptees.length || ''}}
       | {{currentAdopter.name}}&nbsp;
   .panel-body
-    div(data-criteriaset, data-adopter="currentAdopter", data-fields="adopterFields")
+    div(data-criteriaset, data-adopter="currentAdopter", data-fields="adopterFields", data-change="criteriaChange(newValue, oldValue)")
   .panel-footer
     btn-toolbar.pull-right
       button.btn.btn-primary(ng-click="emailAdopter(currentAdopter)", ng-if="currentAdopter.notifyMethods.indexOf('Email') > -1" data-ng-disabled="permission.readonly") 

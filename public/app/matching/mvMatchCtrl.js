@@ -8,7 +8,8 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 		adopterMatchUrl : '/partials/matching/adopter-match'
 	};
 	$scope.adopterFields = {
-		count : false
+		count: false,
+		memberCount: false
 	};
 	$scope.adopterSearchResults = [];
 	$scope.adopteeSearchResults = [];
@@ -175,5 +176,8 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 			mvNotifier.notifyError('An error occured while create item in Print queue!');
 		});
 	};
-
+	
+	$scope.criteriaChange = function(newValue, oldValue) {
+    $scope.searchAdoptees($scope.currentAdopter.criteria);
+	};
 }]);

@@ -37,6 +37,7 @@ var adopterSchema = new Schema({
   notifyMethods: [{ type: String, enum: notifyEnum }],
   criteria: {
     count: Number,
+    memberCount: Number,
     households: [{ type: String, enum: householdEnum }],
     childAges: [{ type: String, enum: ageEnum }],
     special: [{ type: String, enum: specialEnum }],
@@ -67,114 +68,123 @@ adopterSchema.static('getEnumValues', function() {
 
 mongoose.model('Adopter', adopterSchema);
 
-function createDefaultAdopters() {
+function createSampleAdopters() {
   var Adopter = mongoose.model('Adopter');
 
-  Adopter.
-    count({}).
-    exec(function(err, count) {
+  return Adopter.count().exec().then(function(count) {
       if(count === 0) {
-        generateAdopters(1500);
+        return generateAdopters(1500);
       } else {
-        console.log('found ' + count + ' adopters.');
+        throw new Error('db already has ' + count + ' adopters.');
       }
     });
+}
+
+function createSampleMatch(adopter, adopteePool) {
+  var chance = new Chance(),
+      Adoptee = mongoose.model('Adoptee'),
+      Adopter = mongoose.model('Adopter'),
+      householdCount = adopter.criteria.count,
+      matchCount = chance.natural({min:0,max:householdCount}),
+      matchedAdoptees, matchedAdopteeIds;
+      
+  if(matchCount > 0 && adopteePool.length > 0) {
+    matchedAdoptees = adopteePool.splice(0, matchCount);
+    matchedAdopteeIds = matchedAdoptees.map(function(a) { return a._id; });
+    matchCount = matchedAdoptees.length; 
+    
+    matchedAdopteeIds.forEach(function(id) {
+      Adoptee.update({ _id: id }, {
+        _adopterId: adopter._id,
+        status: 'Matched'
+      }).exec();
+    });
+    
+    Adopter.update({ _id: adopter._id }, {
+      adoptees: matchedAdopteeIds,
+      status: householdCount === matchCount ? 'Matched' : 'Not Matched'
+    }).exec();
+
+    process.stdout.write('Adopter ' + adopter._id + ' matched with ' + chance.pad(matchCount,3) + ' out of ' + chance.pad(householdCount,3) + ' adoptees\033[0G');
+  }
 }
 
 function generateAdopters(count) {
   var User = mongoose.model('User'),
       Adopter = mongoose.model('Adopter'),
-      Adoptee = mongoose.model('Adoptee'),
-      promise, adopteePool;
+      promise;
 
-  console.log('populating default adopters...');
+  console.log('generating sample adopters...');
 
-  promise = Adoptee.find({}).select('_id').exec();
-
-  promise.then(function(adoptees) {
-    adopteePool = adoptees;
-    return User.find({}).select('_id').exec();
-  }).then(function(userPool) {
+  return User.find({}).select('_id').exec().then(function(userPool) {
     var chance = new Chance(),
-        data = [],
-        entity, status, i, a, householdCount, matchCount, adoptees;
+        data = [], adopter, entity, householdCount, 
+        i = 1;
 
-    for(i = 1; i <= count; i++) {
+    for(; i <= count; i++) {
+      if(i % 500 === 0) {
+        process.stdout.write(chance.pad(i,4) + ' adopters generated.\033[0G');
+      }
+
       // pick entity (individual, dept, org) with the greater proportion to individuals
       entity = chance.weighted(entityEnum,[20, 2, 1]);
-      status = chance.pick(statusEnum);
       // pick household count based on entity, eg org can adopt as many as 200 familes 
       householdCount = 
         (entity === 'Individual' && chance.d4()) || 
         (entity === 'Department' && chance.d20()) || 
         (entity === 'Organization' && chance.d100()*2); 
-      // pick matched adoptee count based on above household count and status;
-      //   if matched status, then number of matched should equal household count
-      //   if unmatched status, then number of matched should be less than household count
-      //   for other statuses, number of matched should be zero
-      matchCount = 
-        (status === 'Matched' && householdCount) || 
-        (status === 'Unmatched' && chance.natural({min:0,max:householdCount - 1})) || 
-        0;
-      adoptees = [];
 
-      // apply stupid simple matching, just pop them from the stack
-      if(matchCount > 0 && adopteePool.length > 0) {
-        for(a = 1; a <= matchCount; a++) {
-          adoptees.push(adopteePool.pop());
-        }
-      }
-      
-      // adjust matched status to unmatched if insufficient adoptees 
-      if(status === 'Matched' && adoptees.length !== householdCount) {
-        status = 'Unmatched';
-      }
-
-      data.push({
-          entity: entity,
-          name: chance.name(),
-          org: (entity !== 'Individual' ? chance.capitalize(chance.word()) : null),
-          dept: (entity === 'Deptartment' ? chance.capitalize(chance.word()) : null),
-          address: {
-            street: chance.address({short_suffix: true}),
-            city: chance.city(),
-            state: chance.pick(stateEnum),
-            zip: chance.zip()
-          },
-          phones: [{
-            name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
-            number: chance.phone(),
-            contact: chance.first()
-          }, {
-            name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
-            number: chance.phone()
-          }],
-          email: chance.email(),
-          notifyMethods: chance.pick(notifyEnum, 1),
-          criteria: {
-            count: householdCount,
-            households: chance.unique(chance.pick, chance.d4(), householdEnum, 1),
-            childAges: chance.pick(ageEnum, 1),
-            special: chance.unique(chance.pick, chance.d4(), specialEnum, 1),
-            comment: chance.sentence()
-          },
-          adoptees: adoptees,
-          status: chance.pick(statusEnum),
-          createDate: chance.date({month: 8, year: 2014}),
-          createdBy: chance.pick(userPool),
-          updateDate: (status !== 'In Process' ? chance.date({month: 9, year: 2014}) : null),
-          updatedBy: (status !== 'In Process' ? chance.pick(userPool) : null)
+      adopter = new Adopter({
+        entity: entity,
+        name: chance.name(),
+        org: (entity !== 'Individual' ? chance.capitalize(chance.word()) : null),
+        dept: (entity === 'Deptartment' ? chance.capitalize(chance.word()) : null),
+        address: {
+          street: chance.address({short_suffix: true}),
+          city: chance.city(),
+          state: chance.pick(stateEnum),
+          zip: chance.zip()
+        },
+        phones: [{
+          name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
+          number: chance.phone(),
+          contact: chance.first()
+        }, {
+          name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
+          number: chance.phone()
+        }],
+        email: chance.email(),
+        notifyMethods: chance.pick(notifyEnum, 1),
+        criteria: {
+          count: householdCount,
+          memberCount: chance.d4(),
+          households: chance.unique(chance.pick, chance.d4(), householdEnum, 1),
+          childAges: chance.pick(ageEnum, 1),
+          special: chance.unique(chance.pick, chance.d4(), specialEnum, 1),
+          comment: chance.sentence()
+        },
+        adoptees: [],
+        status: 'In Process',
+        createDate: chance.date({month: 8, year: 2014}),
+        createdBy: chance.pick(userPool),
+        updateDate: chance.date({month: 10, year: 2014}),
+        updatedBy: chance.pick(userPool)
       });
+      
+      data.push(adopter);
     }
 
-    Adopter.create(data, function(err) {
-      if(err) {
-        console.log(err);
-      } else {
-        console.log('created ' + data.length + ' adopters.');
-      }
+    process.stdout.write('\n');
+    console.log('Saving sample adopters...');
+    
+    promise = Adopter.create(data).then(function() {
+      console.log('Successfully created ' + data.length + ' sample adopters.');
+      return data;
     });
+    
+    return promise;
   });
 }
 
-exports.createDefaultAdopters = createDefaultAdopters;
+exports.createSampleAdopters = createSampleAdopters;
+exports.createSampleMatch = createSampleMatch;

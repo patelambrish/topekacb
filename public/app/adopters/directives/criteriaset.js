@@ -3,7 +3,8 @@ angular.module('app').
     return {
       scope: {
         adopter: '=',
-        fields: '='
+        fields: '=',
+        change: '&'
       },
       replace: true,
       templateUrl: '/partials/adopters/criteriaset',
@@ -56,7 +57,15 @@ angular.module('app').
           });
         };
 
-        $scope.setFlags = common.setFlags;
+        $scope.setFlags = function(flags) {
+          var oldValue = angular.copy(flags);
+              
+          common.setFlags.apply(this, arguments);
+          ($scope.change || angular.noop)({
+            newValue: flags,
+            oldValue: oldValue
+          });
+        };
 
         $scope.$watch('adopter.adoptees', function(newValue) {
           if(newValue) {
