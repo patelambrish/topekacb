@@ -15,7 +15,7 @@ module.exports = function(config) {
     console.log('topekaCb db opened');
   });
   console.log("Environment:  " + process.env.NODE_ENV);
-  if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == "test"){
+  if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'test'){
     userModel.createDefaultUsers();
     stateModel.createStates();
     adopteeModel.createDefaultAdoptees();
