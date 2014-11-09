@@ -176,5 +176,8 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 			mvNotifier.notifyError('An error occured while create item in Print queue!');
 		});
 	};
-
+	
+	$scope.criteriaChange = function(newValue, oldValue) {
+    $scope.searchAdoptees($scope.currentAdopter.criteria);
+	};
 }]);

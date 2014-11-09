@@ -12,7 +12,7 @@ fieldset(id="criteriaForm", ng-form="criteriaForm")
     .col-sm-3
       .form-group(ng-class="{'has-error': criteriaForm.memberCount.$invalid}", ng-hide="fields.memberCount===false")
         label.control-label 
-          | Number of  Members&nbsp;
+          | Number of Members&nbsp;
           .label(ng-show="criteriaForm.memberCount.$error.number") Invalid
         input.form-control(type="number", name="memberCount", placeholder="Number of members", min="1", ng-model="adopter.criteria.memberCount")
   .row.collapse.in
