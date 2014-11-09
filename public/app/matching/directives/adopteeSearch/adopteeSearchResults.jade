@@ -1,3 +1,25 @@
+.panel-body
+    form(name="adopteeSearchForm" novalidate)
+        div(class="row")
+            div(class="col-md-8")
+                div(class="form-group")
+                    input(type="text" data-ng-model="adopteeFilter.name" class="form-control pull-left" placeholder="Name, comments")
+            div(class="col-md-4")
+                div(class="form-group")
+                    button.btn.btn-primary(type="button" data-ng-click="nameAndCommentSearch()")
+                        i.fa.fa-search
+                    a(data-toggle="collapse" data-target="#adopteeSort")
+                        i.fa.fa-cog.pull-right
+            div(class="col-md-12 collapse" id="adopteeSort")
+                .input-group.input-group-sort
+                    .input-group-addon Sort By:
+                    input.form-control(type="text", ng-model="adopteeSort.text", disabled)
+                    .input-group-btn
+                        button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown")
+                            i.fa.fa-caret-down
+                        ul.dropdown-menu.pull-right
+                            li(ng-repeat="option in adopteeSort.options", ng-class="{active: adopteeSort.text == option.text}")
+                                a(href="", ng-click="applyAdopteeSort(option)") {{option.text}}
 table.table.table-hover(ng-show="adopteeSearchResults.totalCount > 0")
   thead
     tr.row

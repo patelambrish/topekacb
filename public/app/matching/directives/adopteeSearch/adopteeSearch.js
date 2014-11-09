@@ -1,5 +1,5 @@
-angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter',
-    function(Adoptee, $filter) {
+angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter', 'cachedAdoptees',
+    function(Adoptee, $filter, cachedAdoptees) {
         return {
             templateUrl : '/partials/matching/directives/adopteeSearch/adopteeSearchResults',
             restrict: 'A',
@@ -11,6 +11,31 @@ angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter',
                     previous : 1,
                     next : 1,
                     size : 3
+                };
+
+                $scope.adopteeFilter = {};
+
+                cachedAdoptees.enums({
+                    _id : 0
+                }).$promise.then(function(data) {
+                        $scope.adopteeEnums = data;
+                    });
+
+                $scope.adopteeSort = {
+                    value : 'name',
+                    text : 'Name: A to Z',
+                    options : [{
+                        value : 'name',
+                        text : 'Name: A to Z'
+                    }, {
+                        value : '-name',
+                        text : 'Name: Z to A'
+                    }]
+                };
+
+                $scope.applyAdopteeSort = function(sortOption) {
+                    angular.extend($scope.adopteeSort, sortOption);
+                    $scope.getAdopteePage(1);
                 };
 
                 $scope.searchAdoptees = function(criteria) {
@@ -30,6 +55,21 @@ angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter',
                                 }
                             });
                     }
+                };
+
+                $scope.nameAndCommentSearch = function() {
+                    console.log('name search');
+                    console.log($scope.adopteeFilter.name);
+                    Adoptee.query({
+                        filter : $scope.adopteeFilter,
+                        sort : $scope.adopteeSort.value,
+                        start : ($scope.adopteePage.current * $scope.adopteePage.size) - $scope.adopteePage.size,
+                        limit : $scope.adopteePage.size
+                    }).$promise.then(function(res) {
+                            $scope.adopteeSearchResults = res;
+                             $scope.applyPage($scope.adopteePage.current, $scope.adopteeSearchResults, $scope.adopteePage);
+                        });
+
                 };
                 
                 $scope.nextAdoptee = function(){

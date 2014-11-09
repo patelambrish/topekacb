@@ -10,7 +10,7 @@ exports.getAdoptees = function(req, res) {
     if(req.query.filter) {
         searchFilters= JSON.parse(req.query.filter);
     }
-
+    console.log(searchFilters);
     query = Adoptee.find({});
     if(searchFilters) {
         if(searchFilters.households) {
@@ -22,7 +22,9 @@ exports.getAdoptees = function(req, res) {
         if(searchFilters.status) {
             query = query.where('status').equals(searchFilters.status);
         }
-        console.log('query=' + query);
+        if(searchFilters.name){
+            query = query.where('lastName').equals(searchFilters.name);
+        }
         if(searchFilters.childAges){
             var zeroToSeven = [0, 1, 2, 3, 4, 5, 6, 7];
             var eightToTwelve = [8, 9, 10, 11, 12];
@@ -40,7 +42,6 @@ exports.getAdoptees = function(req, res) {
                 }
             });
             query = query.where('householdMembers.age').in(childAges);
-            console.log('query=' + query);
         }
     }
     
