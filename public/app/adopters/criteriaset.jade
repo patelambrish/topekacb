@@ -3,12 +3,18 @@ fieldset(id="criteriaForm", ng-form="criteriaForm")
     a.pull-right.collapse-toggle(href="", tabindex="-1", data-toggle="collapse", data-target="#criteriaForm > .collapse")
       i.fa.fa-chevron-up
   .row.collapse.in
-    .col-sm-5
+    .col-sm-3
       .form-group(ng-class="{'has-error': criteriaForm.count.$invalid}", ng-hide="fields.count===false")
         label.control-label 
           | Number of Households&nbsp;
           .label(ng-show="criteriaForm.count.$error.number") Invalid
         input.form-control(type="number", name="count", placeholder="Number of households", min="1", ng-model="adopter.criteria.count")
+    .col-sm-3
+      .form-group(ng-class="{'has-error': criteriaForm.memberCount.$invalid}", ng-hide="fields.memberCount===false")
+        label.control-label 
+          | Number of  Members&nbsp;
+          .label(ng-show="criteriaForm.memberCount.$error.number") Invalid
+        input.form-control(type="number", name="memberCount", placeholder="Number of members", min="1", ng-model="adopter.criteria.memberCount")
   .row.collapse.in
     .col-sm-7
       .form-group

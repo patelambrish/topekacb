@@ -8,7 +8,8 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 		adopterMatchUrl : '/partials/matching/adopter-match'
 	};
 	$scope.adopterFields = {
-		count : false
+		count: false,
+		memberCount: false
 	};
 	$scope.adopterSearchResults = [];
 	$scope.adopteeSearchResults = [];

@@ -37,6 +37,7 @@ var adopterSchema = new Schema({
   notifyMethods: [{ type: String, enum: notifyEnum }],
   criteria: {
     count: Number,
+    memberCount: Number,
     households: [{ type: String, enum: householdEnum }],
     childAges: [{ type: String, enum: ageEnum }],
     special: [{ type: String, enum: specialEnum }],
@@ -156,6 +157,7 @@ function generateAdopters(count) {
         notifyMethods: chance.pick(notifyEnum, 1),
         criteria: {
           count: householdCount,
+          memberCount: chance.d4(),
           households: chance.unique(chance.pick, chance.d4(), householdEnum, 1),
           childAges: chance.pick(ageEnum, 1),
           special: chance.unique(chance.pick, chance.d4(), specialEnum, 1),
