@@ -1,19 +1,22 @@
 table.table.table-hover
+  colgroup
+    col.col-sm-4
+    col.col-sm-4
+    col.col-sm-2
+    col.col-sm-2
   thead
     tr
       th Name
-      th Group/Company
-      th Dept Name
+      th Status
       th Households
-      th 
+      th Members
   tbody
-    tr(ng-repeat="adopter in adopterSearchResults.data" ng-click="selectAdopter(adopter)")
-      td {{adopter.name}}
-      td {{adopter.org}}
-      td {{adopter.dept}}
+    tr(ng-repeat="adopter in adopterSearchResults.data", ng-click="selectAdopter(adopter)", ng-class="{active: currentAdopter._id == adopter._id}")
+      td
+        | {{adopter.org || adopter.name}}<span ng-if="adopter.dept">,</span>
+        | {{adopter.dept}}
+      td {{adopter.status}}
       td {{adopter.criteria.count}}
-      td 
-        a(href="adopters/{{adopter._id}}")
-          i.fa.fa-pencil
-    tr(ng-if="adopterSearchResults.len == 0")
-      td No Data Available
+      td {{adopter.criteria.memberCount}}
+    tr(ng-if="adopterSearchResults.totalCount == 0")
+      td.text-center(colspan="4") No Data Available

@@ -27,7 +27,7 @@ function getAdopterHtml(adopter, templateData) {
 }
 
 exports.getAdopters = function(req, res, next) {
-  var searchFilters, nameFilter, householdFilter, specialFilter, statusFilter,
+  var searchFilters, nameFilter, entityFilter, householdFilter, specialFilter, statusFilter, 
       sort =  req.query.sort,
       start = parseInt(req.query.start, 10) || 0,
       limit = parseInt(req.query.limit, 10) || 0,
@@ -38,6 +38,7 @@ exports.getAdopters = function(req, res, next) {
     
     if(searchFilters) {
       nameFilter = searchFilters.name;
+      entityFilter = searchFilters.entity;
       householdFilter = searchFilters.household;
       specialFilter = searchFilters.special;
       statusFilter = searchFilters.status;
@@ -50,16 +51,20 @@ exports.getAdopters = function(req, res, next) {
         ]);
       }
 
-      if(householdFilter) {
-        query = query.where('criteria.household').equals(householdFilter);
+      if(entityFilter) {
+        query = query.where('entity').equals(entityFilter);
       }
 
-      if(Array.isArray(specialFilter) && specialFilter.length > 0) {
-        query = query.where('criteria.special').in(searchFilters.special);
+      if(householdFilter) {
+        query = query.where('criteria.households').in([].concat(householdFilter));
+      }
+
+      if(specialFilter) {
+        query = query.where('criteria.special').in([].concat(specialFilter));
       }
 
       if(statusFilter) {
-        query = query.where('status').equals(searchFilters.status);
+        query = query.where('status').equals(statusFilter);
       }
     }
   }
