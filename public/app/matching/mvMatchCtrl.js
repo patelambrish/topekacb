@@ -122,9 +122,6 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
                       tempAdoptees.push(attachedAdoptee._id);
                     });
                     tempAdoptees.push(retAdoptee._id);
-
-                    $scope.currentAdoptee = retAdoptee;
-
                     var updatedAdopter = $scope.currentAdopter;
                     updatedAdopter.adoptees = tempAdoptees;
                     if (updatedAdopter.adoptees.length == updatedAdopter.criteria.count) {
