@@ -73,7 +73,6 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 			limit : $scope.currentAdopter.criteria.count
 		}).$promise.then(function(res) {
 			var searchResults = res.data;
-            console.log($scope.currentAdopter);
 			if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
 				mvNotifier.notify($scope.currentAdopter.name + " is fully matched.");
 			} else {
