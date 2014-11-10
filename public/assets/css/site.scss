@@ -122,15 +122,29 @@ body {
   background-color: $color-grey-900;
 }
 .btn-toolbar > .input-group-filter {
+  &.input-group-sm {
+    width: 11.5em;
+  }
+
   width: 15em;
 }
 .btn-toolbar > .input-group-sort > input[disabled] {
   cursor: default;
   background-color: transparent;
 }
-.btn-toolbar > .input-group-sort,
-.btn-toolbar > .input-group-sort .dropdown-menu {
-  width: 22em;
+.btn-toolbar > .input-group-sort {
+  &,
+  .dropdown-menu {
+    width: 22em;
+  }
+
+  &.input-group-sm {
+    &,
+    .dropdown-menu {
+      width: 18em;
+    }
+  }
+  
 }
 .input-group-page {
   display: inline-table;

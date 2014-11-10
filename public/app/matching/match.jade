@@ -8,9 +8,8 @@
   div(class="row")
     div(class="col-sm-6")
       .panel.panel-default(ng-class="{busy: busy()}")
-        .panel-heading.clearfix Adopters
-        .panel-body
-            div(data-adopter-search)
+        .panel-heading.clearfix
+          div(adopter-search)
         div(adopter-match-results)
         .panel-footer
            ul.pager

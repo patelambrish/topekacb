@@ -3,6 +3,7 @@ function(Adopter, $filter,cachedAdopters) {
 	return {
 		templateUrl : '/partials/matching/directives/adopterSearch/adopterSearch',
 		restrict : 'A',
+		replace: true,
 		controller : ['$scope',
 		function($scope) {
 			//default page size
@@ -13,7 +14,9 @@ function(Adopter, $filter,cachedAdopters) {
 				next : 1,
 				size : 3
 			};
-			$scope.adopterFilter = {};
+			$scope.adopterFilter = {
+			  status: 'Not Matched'
+			};
 			cachedAdopters.enums({
 				_id : 0
 			}).$promise.then(function(data) {
@@ -34,31 +37,26 @@ function(Adopter, $filter,cachedAdopters) {
 
 			};
 			$scope.adopterSort = {
-				value : 'name',
-				text : 'Name: A to Z',
+				value : 'org name',
+				text : 'Name',
 				options : [{
-					value : 'name',
-					text : 'Name: A to Z'
-				}, {
-					value : '-name',
-					text : 'Name: Z to A'
-				}, {
-					value : 'org',
-					text : 'Organization: A to Z'
-				}, {
-					value : '-org',
-					text : 'Organization: Z to A'
+					value : 'org name',
+					text : 'Name'
 				}, {
 					value : '-criteria.count',
-					text : '# of households - High to Low'
+					text : 'Households: High to Low'
 				}, {
 					value : 'criteria.count',
-					text : '# of households - Low to High'
+					text : 'Households: Low to High'
 				}]
 			};
 			$scope.applyAdopterSort = function(sortOption) {
 				angular.extend($scope.adopterSort, sortOption);
 				$scope.getAdopterPage(1);
+			};
+			$scope.applyAdopterFilter = function(filter) {
+        angular.extend($scope.adopterFilter, filter);
+        $scope.getAdopterPage(1);
 			};
 			$scope.getAdopterPage(1);
 		}]
@@ -70,6 +68,7 @@ angular.module('app').directive('adopterMatchResults', ['Adopter','$filter',
 function(Adopter, $filter) {
 	return {
 		templateUrl : '/partials/matching/directives/adopterSearch/adopterSearchResults',
-		restrict: 'A'
+		restrict: 'A',
+		replace: true
 	};
 }]);
