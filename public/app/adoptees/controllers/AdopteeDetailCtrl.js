@@ -51,7 +51,9 @@ angular.module('app').
       }
       //get next adoptee
       $scope.nextFlag = nextFlag;
-      $scope.adoptee.status = readyToMatch?"Not Matched":"In Process";
+      if($scope.adoptee.status != "Matched") {
+          $scope.adoptee.status = readyToMatch ? "Not Matched" : "In Process";
+      }
       if ($scope.adoptee.applicationNumber)
       {
             $scope.adopteeUpdate();

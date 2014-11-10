@@ -4,6 +4,11 @@ angular.module('app').factory('Adoptee', function($resource, $q) {
           method:'PUT',
           isArray:false
       },
+      matchAdoptee: {
+          method:'PUT',
+          url: 'api/adoptees/match',
+          isArray:false
+      },
       query : {
           method : 'GET',
           isArray : false

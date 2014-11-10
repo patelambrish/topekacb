@@ -77,28 +77,29 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 				mvNotifier.notify($scope.currentAdopter.name + " is fully matched.");
 			} else {
 				searchResults.forEach(function(a) {
-					if (!$scope.currentAdopter.adoptees) {
-						$scope.currentAdopter.adoptees = [];
-					}
-					$scope.currentAdopter.adoptees.push(a);
 					a._adopterId = $scope.currentAdopter._id;
 					a.status = "Matched";
-					Adoptee.updateAdoptee(a);
-				});
-				$scope.currentAdopter.status = "Matched";
-				var updatedAdopter = $scope.currentAdopter;
-				var adopteeIds = [];
-				$scope.currentAdopter.adoptees.forEach(function(a) {
-					adopteeIds.push(a._id);
-				});
-				updatedAdopter.adoptees = adopteeIds;
-				Adopter.save(updatedAdopter).$promise.then(function(retVal) {
-					if (retVal.error) {
-						mvNotifier.notify(retVal.error);
-					} else {
-						mvNotifier.notify($scope.currentAdopter.name + ' matched with ' + $scope.currentAdopter.criteria.count + ' adoptees!');
-
-					}
+					Adoptee.matchAdoptee(a).$promise.then(function(res) {
+                        if(res.error){
+                            mvNotifier.notify(res.error);
+                        }else {
+                            if (!$scope.currentAdopter.adoptees) {
+                                $scope.currentAdopter.adoptees = [];
+                            }
+                            $scope.currentAdopter.adoptees.push(a);
+                            if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
+                                $scope.currentAdopter.status = "Matched";
+                            }
+                            var updatedAdopter = $scope.currentAdopter;
+                            Adopter.save(updatedAdopter).$promise.then(function (retVal) {
+                                if (retVal.error) {
+                                    mvNotifier.notify(retVal.error);
+                                } else {
+                                    mvNotifier.notify($scope.currentAdopter.name + ' matched with ' + $scope.currentAdopter.adoptees.count + ' adoptees!');
+                                }
+                            });
+                        }
+                    });
 				});
 				$scope.searchAdoptees($scope.currentAdopter.criteria);
 			}
@@ -106,41 +107,36 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 	};
 
 	$scope.matchAdoptee = function() {
-		if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
-			mvNotifier.notify($scope.currentAdopter.name + " is fully matched.");
-		} else {
-			var adopteeIds = [];
-			$scope.currentAdoptee._adopterId = $scope.currentAdopter._id;
-			$scope.currentAdoptee.status = "Matched";
-			if (!$scope.currentAdopter.adoptees) {
-				$scope.currentAdopter.adoptees = [];
-			}
-			$scope.currentAdopter.adoptees.push($scope.currentAdoptee);
-			$scope.currentAdopter.adoptees.forEach(function(a) {
-				adopteeIds.push(a._id);
-			});
-			if ($scope.currentAdopter.adoptees.length == $scope.currentAdopter.criteria.count) {
-				$scope.currentAdopter.status = "Matched";
-			}
-			var updatedAdopter = $scope.currentAdopter;
-			updatedAdopter.adoptees = adopteeIds;
-			Adoptee.updateAdoptee($scope.currentAdoptee).$promise.then(function(retAdoptee) {
-				if (retAdoptee.error) {
-					mvNotifier.notify(retAdoptee.error);
-				} else {
-					$scope.searchAdoptees($scope.currentAdopter.criteria);
-				}
-			});
-			Adopter.save(updatedAdopter).$promise.then(function(retAdopter) {
-				if (retAdopter.error) {
-					mvNotifier.notify(retAdopter.error);
-				} else {
-					$scope.currentAdopter = retAdopter;
-					mvNotifier.notify($scope.currentAdoptee.firstName + ' ' + $scope.currentAdoptee.lastName + ' matched with ' + $scope.currentAdopter.name + '!');
-				}
-			});
-		}
-	};
+        if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
+            mvNotifier.notify($scope.currentAdopter.name + " is fully matched.");
+        } else {
+            $scope.currentAdoptee._adopterId = $scope.currentAdopter._id;
+            $scope.currentAdoptee.status = "Matched";
+            Adoptee.matchAdoptee($scope.currentAdoptee).$promise.then(function (retAdoptee) {
+                if (retAdoptee.error) {
+                    mvNotifier.notify(retAdoptee.error);
+                } else {
+                    if (!$scope.currentAdopter.adoptees) {
+                        $scope.currentAdopter.adoptees = [];
+                    }
+                    $scope.currentAdopter.adoptees.push($scope.currentAdoptee);
+                    if ($scope.currentAdopter.adoptees.length == $scope.currentAdopter.criteria.count) {
+                        $scope.currentAdopter.status = "Matched";
+                    }
+                    var updatedAdopter = $scope.currentAdopter;
+                    Adopter.save(updatedAdopter).$promise.then(function (retAdopter) {
+                        if (retAdopter.error) {
+                            mvNotifier.notify(retAdopter.error);
+                        } else {
+                            $scope.currentAdopter = retAdopter;
+                            mvNotifier.notify($scope.currentAdoptee.firstName + ' ' + $scope.currentAdoptee.lastName + ' matched with ' + $scope.currentAdopter.name + '!');
+                        }
+                    });
+                }
+            });
+            $scope.searchAdoptees($scope.currentAdopter.criteria);
+        }
+    }
 
 	$scope.selectAdopter = function(adopter) {
 		$scope.currentAdopter = Adopter.get({

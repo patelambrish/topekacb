@@ -208,6 +208,36 @@ exports.updateAdoptee = function(req, res){
       });
 };
 
+exports.matchAdoptee = function(req, res){
+    var update = req.body,
+        id = update._id,
+        userId = req.user ? req.user._id : null;
+    delete update._id;
+    delete update._createUser;
+    update.modifyDate = new Date();
+    update._modifyUser = userId;
+    delete update.__v;
+    if (update._adopterId) {
+        update._adopterId = update._adopterId.name ? update._adopterId._id : update._adopterId;
+    }
+    Adoptee.findOne({_id: id}).
+        select('-image').
+        exec(function (err, adoptee) {
+            if(err) { res.status(400); return res.send({error:err.toString()});}
+            if (adoptee.status == "Matched") {
+                res.send({error: "Adoptee is already matched."});
+            }else {
+                Adoptee.
+                    findByIdAndUpdate(id, update, {}).
+                    populate('_modifyUser', 'firstName lastName').
+                    exec(function(err, adoptee) {
+                        if(err) { res.status(400); return res.send({error:err.toString()});}
+                        return res.send(adoptee);
+                    });
+            }
+        });
+};
+
 exports.deleteAdoptee = function(req, res){
     Adoptee.
         findByIdAndRemove(req.params._id).
