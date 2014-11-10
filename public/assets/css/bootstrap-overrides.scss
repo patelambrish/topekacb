@@ -127,3 +127,9 @@ a {
     margin-right: -10px;
   }
 }
+
+.btn-group-justified {
+  > .btn-group .btn {
+    @include text-overflow();
+  }
+}
