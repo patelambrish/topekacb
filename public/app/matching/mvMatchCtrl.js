@@ -70,13 +70,17 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 		Adoptee.query({
 			filter : criteria,
 			start : 0,
-			limit : $scope.currentAdopter.criteria.count
+			limit : $scope.currentAdopter.criteria.count - $scope.currentAdopter.adoptees.length
 		}).$promise.then(function(res) {
 			var searchResults = res.data;
 			if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
 				mvNotifier.notify($scope.currentAdopter.name + " is fully matched.");
 			} else {
 			  mvNotifier.notify('Bulk matching ' + $scope.currentAdopter.name + " with available adoptees.");
+			  var tempAdoptees = [];
+        $scope.currentAdopter.adoptees.forEach(function (existingAdoptee){
+          tempAdoptees.push(existingAdoptee._id);
+        });
 				searchResults.forEach(function(a) {
 					a._adopterId = $scope.currentAdopter._id;
 					a.status = "Matched";
@@ -84,14 +88,13 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
               if(res.error){
                   mvNotifier.notify(res.error);
               }else {
-                  if (!$scope.currentAdopter.adoptees) {
-                      $scope.currentAdopter.adoptees = [];
-                  }
-                  $scope.currentAdopter.adoptees.push(a._id);
+                  tempAdoptees.push(a._id);
                   if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
                       $scope.currentAdopter.status = "Matched";
                   }
              	    var updatedAdopter = $scope.currentAdopter;
+             	    updatedAdopter.adoptees = tempAdoptees;
+             	    console.log(updatedAdopter);
                   Adopter.save(updatedAdopter).$promise.then(function (retVal) {
                     if (retVal.error) {
                       mvNotifier.notify(retVal.error);
@@ -117,7 +120,6 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
                 if (retAdoptee.error) {
                     mvNotifier.notify(retAdoptee.error);
                 } else {
-                    console.log(retAdoptee);
                     $scope.currentAdoptee = retAdoptee;
                     var tempAdoptees = [];
                     $scope.currentAdopter.adoptees.forEach(function(attachedAdoptee){
