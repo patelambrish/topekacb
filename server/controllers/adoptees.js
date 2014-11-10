@@ -13,16 +13,21 @@ exports.getAdoptees = function(req, res) {
     query = Adoptee.find({});
     if(searchFilters) {
         if(searchFilters.households) {
-            query = query.where('criteria.householdType').in(searchFilters.households);
+            query = query.where('criteria.householdType').in([].concat(searchFilters.households));
         }
-        if(searchFilters.special && searchFilters.special.length>0) {
-            query = query.where('criteria.specialNeeds').in(searchFilters.special);
+        if(searchFilters.special) {
+            query = query.where('criteria.specialNeeds').in([].concat(searchFilters.special));
         }
         if(searchFilters.status) {
             query = query.where('status').equals(searchFilters.status);
         }
         if(searchFilters.name){
-            query = query.where('lastName').equals(searchFilters.name);
+            query.or([
+              {firstName: new RegExp(searchFilters.name, 'i')},
+              {lastName: new RegExp(searchFilters.name, 'i')}
+            ]);
+
+            //query = query.where('lastName').equals(searchFilters.name);
         }
         if(searchFilters.childAges){
             var zeroToSeven = [0, 1, 2, 3, 4, 5, 6, 7];

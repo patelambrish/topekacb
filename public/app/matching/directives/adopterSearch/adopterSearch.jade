@@ -1,6 +1,4 @@
 form(name="adopterSearchForm", novalidate)
-  a.collapse-toggle.collapsed.pull-right(href="", tabindex="-1", data-toggle="collapse", data-target="#adopterFilter")
-    i.fa.fa-cog
   .btn-toolbar
     .input-group.input-group-sm.input-group-filter
       input.form-control(type="search", placeholder="Name, Org or Dept", ng-model="adopterFilter.name")        
@@ -16,6 +14,8 @@ form(name="adopterSearchForm", novalidate)
         ul.dropdown-menu.pull-right
           li(ng-repeat="option in adopterSort.options", ng-class="{active: adopterSort.text == option.text}")
             a(href="", ng-click="applyAdopterSort(option)") {{option.text}}
+    a.collapse-toggle.collapsed(href="", tabindex="-1", data-toggle="collapse", data-target="#adopterFilter")
+      i.fa.fa-cog
   .collapse(id="adopterFilter", ng-style="{'margin-top': 5}")
     .btn-group.btn-group-justified
       .btn-group.btn-group-sm

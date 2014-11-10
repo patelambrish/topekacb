@@ -1,8 +1,9 @@
-angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter', 'cachedAdoptees',
+angular.module('app').directive('adopteeSearch', ['Adoptee','$filter', 'cachedAdoptees',
     function(Adoptee, $filter, cachedAdoptees) {
         return {
-            templateUrl : '/partials/matching/directives/adopteeSearch/adopteeSearchResults',
+            templateUrl : '/partials/matching/directives/adopteeSearch/adopteeSearch',
             restrict: 'A',
+            replace: true,
             controller: ['$scope', function($scope) {
                 //default page size
                 $scope.adopteePage = {
@@ -36,6 +37,13 @@ angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter', 'c
                 $scope.applyAdopteeSort = function(sortOption) {
                     angular.extend($scope.adopteeSort, sortOption);
                     $scope.getAdopteePage(1);
+                };
+
+                $scope.applyAdopteeFilter = function(filter) {
+                    angular.extend($scope.adopteeFilter, filter);
+                    //$scope.getAdopteePage(1);
+                    $scope.adopteePage.current = 1;
+                    $scope.nameSearch();
                 };
 
                 $scope.searchAdoptees = function(criteria) {
@@ -88,5 +96,13 @@ angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter', 'c
                 
                 $scope.getAdopteePage(1);
             }]
+        };
+    }]);
+angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter', 'cachedAdoptees',
+    function(Adoptee, $filter, cachedAdoptees) {
+        return {
+            templateUrl : '/partials/matching/directives/adopteeSearch/adopteeSearchResults',
+            restrict: 'A',
+            replace: true
         };
     }]);

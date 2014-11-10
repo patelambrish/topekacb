@@ -121,6 +121,9 @@ body {
 .toast-success {
   background-color: $color-grey-900;
 }
+.btn-toolbar > a {
+  margin-left: 3px;
+}
 .btn-toolbar > .input-group-filter {
   &.input-group-sm {
     width: 11.5em;
