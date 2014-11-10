@@ -117,6 +117,8 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
                 if (retAdoptee.error) {
                     mvNotifier.notify(retAdoptee.error);
                 } else {
+                    console.log(retAdoptee);
+                    $scope.currentAdoptee = retAdoptee;
                     var tempAdoptees = [];
                     $scope.currentAdopter.adoptees.forEach(function(attachedAdoptee){
                       tempAdoptees.push(attachedAdoptee._id);
@@ -134,9 +136,9 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
                             $scope.currentAdopter = retAdopter;
                             mvNotifier.notify($scope.currentAdoptee.firstName + ' ' + $scope.currentAdoptee.lastName + ' matched with ' + $scope.currentAdopter.name + '!');
                         }
+                        $scope.searchAdoptees($scope.currentAdopter.criteria);
                     });
                 }
-                $scope.searchAdoptees($scope.currentAdopter.criteria);
             });
         }
     }
