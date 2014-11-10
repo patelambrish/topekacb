@@ -117,16 +117,19 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
                 if (retAdoptee.error) {
                     mvNotifier.notify(retAdoptee.error);
                 } else {
-                    if (!$scope.currentAdopter.adoptees) {
-                        $scope.currentAdopter.adoptees = [];
-                    }
-                    $scope.currentAdopter.adoptees.push($scope.currentAdoptee);
-                    if ($scope.currentAdopter.adoptees.length == $scope.currentAdopter.criteria.count) {
-                        $scope.currentAdopter.status = "Matched";
-                    }
+                    var tempAdoptees = [];
+                    $scope.currentAdopter.adoptees.forEach(function(attachedAdoptee){
+                      tempAdoptees.push(attachedAdoptee._id);
+                    });
+                    tempAdoptees.push(retAdoptee._id);
+
+                    $scope.currentAdoptee = retAdoptee;
+
                     var updatedAdopter = $scope.currentAdopter;
-                    updatedAdopter.adoptees = [];
-                    updatedAdopter.adoptees.push(retAdoptee._id);
+                    updatedAdopter.adoptees = tempAdoptees;
+                    if (updatedAdopter.adoptees.length == updatedAdopter.criteria.count) {
+                        updatedAdopter.status = "Matched";
+                    }
                     Adopter.save(updatedAdopter).$promise.then(function (retAdopter) {
                         if (retAdopter.error) {
                             mvNotifier.notify(retAdopter.error);
@@ -136,8 +139,8 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
                         }
                     });
                 }
+                $scope.searchAdoptees($scope.currentAdopter.criteria);
             });
-            $scope.searchAdoptees($scope.currentAdopter.criteria);
         }
     }
 
