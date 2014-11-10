@@ -1,6 +1,9 @@
 .container
-  .page-header
-    h1 Matching
+  .page-header.row
+      .col-sm-6
+        h1 Adopter
+      .col-sm-6
+        h1 Adoptee
 .container.top-padding-med
   div(class="row")
     div(class="col-sm-6")
@@ -24,7 +27,6 @@
       .panel.panel-default(ng-class="{busy: busy()}")
         .panel-heading.clearfix Adoptee Matches
             button.pull-right.btn.btn-primary(ng-click="bulkMatch()", ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0 && currentAdopter.criteria.count <= adopteeSearchResults.totalCount"  data-ng-disabled="permission.readonly") <  Bulk Match
-        .panel-body
         div(adoptee-search-results)
         .panel-footer(ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0")
           ul.pager
@@ -37,11 +39,4 @@
                       .input-group-addon of {{adopteePage.total}}
               li.next(ng-class="{disabled: adopteePage.current == adopteePage.total}")
                   a(href="" ng-click="getAdopteePage(adopteePage.next)") Next
-        .panel-body(ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0")
-            div(adoptee-criteria)
-        .panel-footer(ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0")
-            .row
-                .col-md-6
-                    button.text-right.btn.navbar-button(ng-click="nextAdoptee()") Next Adoptee
-                .col-md-6
-                    button.pull-right.btn.btn-primary(ng-click="matchAdoptee()" data-ng-disabled="permission.readonly") <  Match
+      div(adoptee-criteria, ng-show="adopteeSearchResults && adopteeSearchResults.totalCount > 0")

@@ -73,7 +73,8 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 			limit : $scope.currentAdopter.criteria.count
 		}).$promise.then(function(res) {
 			var searchResults = res.data;
-			if ($scope.currentAdopter.status == "Matched") {
+            console.log($scope.currentAdopter);
+			if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
 				mvNotifier.notify($scope.currentAdopter.name + " is fully matched.");
 			} else {
 				searchResults.forEach(function(a) {
@@ -106,7 +107,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 	};
 
 	$scope.matchAdoptee = function() {
-		if ($scope.currentAdopter.status == "Matched") {
+		if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
 			mvNotifier.notify($scope.currentAdopter.name + " is fully matched.");
 		} else {
 			var adopteeIds = [];
@@ -163,7 +164,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 		AdopterEmailService.get({id:adopter._id}).$promise.then(function(res) {
 		mvNotifier.notify('Email is sent successfully!');
 		})['catch'](function() {
-			mvNotifier.notifyError('An error occured while sending email!');
+			mvNotifier.notifyError('An error occurred while sending email!');
 		});
 	};
 
@@ -173,7 +174,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 		AdopterPrintEmailService.create(req).$promise.then(function(res) {
 		mvNotifier.notify('Print item added to queue successfully!');
 		})['catch'](function() {
-			mvNotifier.notifyError('An error occured while create item in Print queue!');
+			mvNotifier.notifyError('An error occurred while create item in Print queue!');
 		});
 	};
 	
