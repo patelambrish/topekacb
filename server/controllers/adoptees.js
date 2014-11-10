@@ -12,19 +12,27 @@ exports.getAdoptees = function(req, res) {
     }
     query = Adoptee.find({});
     if(searchFilters) {
-        if(searchFilters.households) {
+        if(searchFilters.households && searchFilters.households.length > 0) {
             query = query.where('criteria.householdType').in(searchFilters.households);
         }
-        if(searchFilters.special && searchFilters.special.length>0) {
+        if(searchFilters.special && searchFilters.special.length > 0) {
             query = query.where('criteria.specialNeeds').in(searchFilters.special);
         }
         if(searchFilters.status) {
             query = query.where('status').equals(searchFilters.status);
         }
-        if(searchFilters.name){
-            query = query.where('lastName').equals(searchFilters.name);
+        if(searchFilters.name && searchFilters.name.length > 0){
+            var lastName = searchFilters.name.split(' ')[1];
+            var firstName = searchFilters.name.split(' ')[0];
+            if (lastName){
+              query = query.where('lastName').equals(lastName);
+            }
+            if (firstName){
+              query = query.where('firstName').equals(firstName);
+            }
+            
         }
-        if(searchFilters.childAges){
+        if(searchFilters.childAges && searchFilters.childAges.length > 0){
             var zeroToSeven = [0, 1, 2, 3, 4, 5, 6, 7];
             var eightToTwelve = [8, 9, 10, 11, 12];
             var thirteenToEighteen = [13, 14, 15, 16, 17, 18];

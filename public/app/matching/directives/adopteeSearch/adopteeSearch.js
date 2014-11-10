@@ -39,22 +39,23 @@ angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter', 'c
                 };
 
                 $scope.searchAdoptees = function(criteria) {
-                    if (criteria){
-                        criteria['status'] = "Not Matched";
-                        Adoptee.query({
-                            filter: criteria,
-                            sort: $scope.adopteeSort.value,
-                            start: ($scope.adopteePage.current * $scope.adopteePage.size) - $scope.adopteePage.size,
-                            limit: $scope.adopteePage.size
-                        }).$promise.then(function (res) {
-                                $scope.adopteeSearchResults = res;
-                                $scope.applyPage($scope.adopteePage.current, $scope.adopteeSearchResults, $scope.adopteePage);
-                                if (res.data.length > 0) {
-                                    $scope.selectAdoptee(res.data[0]);
-                                    $scope.adopteeEnums = Adoptee.enums({ _id: res.data[0]._id });
-                                }
-                            });
+                    if (!criteria){
+                      criteria = {};
                     }
+                    criteria.status = "Not Matched";
+                    Adoptee.query({
+                        filter: criteria,
+                        sort: $scope.adopteeSort.value,
+                        start: ($scope.adopteePage.current * $scope.adopteePage.size) - $scope.adopteePage.size,
+                        limit: $scope.adopteePage.size
+                    }).$promise.then(function (res) {
+                            $scope.adopteeSearchResults = res;
+                            $scope.applyPage($scope.adopteePage.current, $scope.adopteeSearchResults, $scope.adopteePage);
+                            if (res.data.length > 0) {
+                                $scope.selectAdoptee(res.data[0]);
+                                $scope.adopteeEnums = Adoptee.enums({ _id: res.data[0]._id });
+                            }
+                        });
                 };
 
                 $scope.nameSearch = function() {
