@@ -3,10 +3,10 @@
         div(class="row")
             div(class="col-md-8")
                 div(class="form-group")
-                    input(type="text" data-ng-model="adopteeFilter.name" class="form-control pull-left" placeholder="Name, comments")
+                    input(type="text" data-ng-model="adopteeFilter.name" class="form-control pull-left" placeholder="Name")
             div(class="col-md-4")
                 div(class="form-group")
-                    button.btn.btn-primary(type="button" data-ng-click="nameAndCommentSearch()")
+                    button.btn.btn-primary(type="button" data-ng-click="nameSearch()")
                         i.fa.fa-search
                     a(data-toggle="collapse" data-target="#adopteeSort")
                         i.fa.fa-cog.pull-right
@@ -28,7 +28,7 @@ table.table.table-hover(ng-show="adopteeSearchResults.totalCount > 0")
         th Members
   tbody
     tr.row(ng-repeat="adoptee in adopteeSearchResults.data" ng-click="selectAdoptee(adoptee)")
-        td {{adoptee.lastName + ', ' + adoptee.firstName}}
+        td {{adoptee.firstName + ' ' + adoptee.lastName}}
         td {{adoptee.criteria.householdType}}
         td {{adoptee.householdMembers.length}}
     tr(ng-if="adopteeSearchResults.totalCount == 0")

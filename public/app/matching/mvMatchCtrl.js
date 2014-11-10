@@ -73,7 +73,8 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 			limit : $scope.currentAdopter.criteria.count
 		}).$promise.then(function(res) {
 			var searchResults = res.data;
-			if ($scope.currentAdopter.status == "Matched") {
+            console.log($scope.currentAdopter);
+			if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
 				mvNotifier.notify($scope.currentAdopter.name + " is fully matched.");
 			} else {
 				searchResults.forEach(function(a) {
@@ -106,7 +107,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 	};
 
 	$scope.matchAdoptee = function() {
-		if ($scope.currentAdopter.status == "Matched") {
+		if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
 			mvNotifier.notify($scope.currentAdopter.name + " is fully matched.");
 		} else {
 			var adopteeIds = [];

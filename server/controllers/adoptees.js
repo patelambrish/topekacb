@@ -10,7 +10,6 @@ exports.getAdoptees = function(req, res) {
     if(req.query.filter) {
         searchFilters= JSON.parse(req.query.filter);
     }
-    console.log(searchFilters);
     query = Adoptee.find({});
     if(searchFilters) {
         if(searchFilters.households) {
@@ -47,6 +46,9 @@ exports.getAdoptees = function(req, res) {
     
     Adoptee.count(query, function(err, count){
         queryCount = count;
+        if(req.query.sort) {
+            query = query.sort(req.query.sort);
+        }
         if(req.query.start && req.query.limit) {
             query = query.skip(req.query.start).limit(req.query.limit);
         }

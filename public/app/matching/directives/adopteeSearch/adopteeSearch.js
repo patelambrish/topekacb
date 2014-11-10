@@ -22,13 +22,13 @@ angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter', 'c
                     });
 
                 $scope.adopteeSort = {
-                    value : 'name',
+                    value : 'lastName',
                     text : 'Name: A to Z',
                     options : [{
-                        value : 'name',
+                        value : 'lastName',
                         text : 'Name: A to Z'
                     }, {
-                        value : '-name',
+                        value : '-lastName',
                         text : 'Name: Z to A'
                     }]
                 };
@@ -43,7 +43,7 @@ angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter', 'c
                         criteria['status'] = "Not Matched";
                         Adoptee.query({
                             filter: criteria,
-                            sort: "lastName", //
+                            sort: $scope.adopteeSort.value,
                             start: ($scope.adopteePage.current * $scope.adopteePage.size) - $scope.adopteePage.size,
                             limit: $scope.adopteePage.size
                         }).$promise.then(function (res) {
@@ -57,9 +57,7 @@ angular.module('app').directive('adopteeSearchResults', ['Adoptee','$filter', 'c
                     }
                 };
 
-                $scope.nameAndCommentSearch = function() {
-                    console.log('name search');
-                    console.log($scope.adopteeFilter.name);
+                $scope.nameSearch = function() {
                     Adoptee.query({
                         filter : $scope.adopteeFilter,
                         sort : $scope.adopteeSort.value,
