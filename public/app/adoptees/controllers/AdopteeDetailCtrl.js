@@ -63,7 +63,7 @@ angular.module('app').
                   mvNotifier.notify(retVal.error);
               }
               else {
-                  $scope.Adoptee.applicationNumber = retVal.seq;
+                  $scope.adoptee.applicationNumber = retVal.seq;
                   $scope.adopteeUpdate();
               }
           });

@@ -196,7 +196,8 @@ exports.updateAdoptee = function(req, res){
       query.
           select("-image").
           exec(function(err, collection){
-              if (collection.length > 0){
+              console.log(collection);
+              if (collection && collection.length > 0){
                 collection.forEach(function(item){
                   Adoptee.
                     update({_id: item._id}, {status : "Possible Duplicate", _modifyUser: userId, modifyDate : new Date()}, {}).
