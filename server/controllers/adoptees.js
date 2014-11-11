@@ -146,7 +146,7 @@ exports.getAggregateSpecialNeeds = function(req, res) {
 };
 
 exports.getAggregateHouseholdTypes = function(req, res){
-  Adoptee.aggregate({$match: {status:{$in: ['Not Matched', 'Matched']}}},{$group : { _id: "$criteria.householdType", count: {$sum: 1 }}}).exec(function(err,collection){
+  Adoptee.aggregate({$match: {status:{$in: ['Not Matched', 'Matched']}, 'criteria.householdType': {$exists:true, $ne: ""}}},{$group : { _id: "$criteria.householdType", count: {$sum: 1 }}}).exec(function(err,collection){
         res.send(collection);
     });
 };
