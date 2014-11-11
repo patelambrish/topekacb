@@ -170,6 +170,7 @@ exports.updateAdoptee = function(req, res){
           options = { upsert: true },
           userId = req.user ? req.user._id : null;
       if(!id) {
+          id = new mongoose.Types.ObjectId();
           update.createDate = new Date();
           update._createUser = userId;
       } else {
@@ -196,7 +197,6 @@ exports.updateAdoptee = function(req, res){
       query.
           select("-image").
           exec(function(err, collection){
-              console.log(collection);
               if (collection && collection.length > 0){
                 collection.forEach(function(item){
                   Adoptee.
@@ -205,12 +205,16 @@ exports.updateAdoptee = function(req, res){
                 });
                 update.status = "Possible Duplicate";
               }
+              console.log(update);
+              console.log(options);
               Adoptee.
                 findByIdAndUpdate(id, update, options).
                 populate('_createUser', 'firstName lastName').
                 populate('_modifyUser', 'firstName lastName').
                 exec(function(err, adoptee) {
+                  console.log(err);
                   if(err) { res.status(400); return res.send({error:err.toString()});}
+                  console.log(adoptee);
                   return res.send(adoptee);
                 });
       });
