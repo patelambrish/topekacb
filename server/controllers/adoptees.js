@@ -107,7 +107,7 @@ exports.getAdopteeById = function(req, res) {
 
 exports.getNextAdoptee = function(req, res) {
     var userId = req.user ? req.user._id : null;
-    Adoptee.findOne({applicationNumber: req.body.nextNumber}).
+    Adoptee.findOne({applicationNumber: {$gte : req.body.nextNumber}}).
         populate('_adopterId', 'name').
         select('-image').
         exec(function (err, adoptee) {
@@ -205,16 +205,12 @@ exports.updateAdoptee = function(req, res){
                 });
                 update.status = "Possible Duplicate";
               }
-              console.log(update);
-              console.log(options);
               Adoptee.
                 findByIdAndUpdate(id, update, options).
                 populate('_createUser', 'firstName lastName').
                 populate('_modifyUser', 'firstName lastName').
                 exec(function(err, adoptee) {
-                  console.log(err);
                   if(err) { res.status(400); return res.send({error:err.toString()});}
-                  console.log(adoptee);
                   return res.send(adoptee);
                 });
       });
