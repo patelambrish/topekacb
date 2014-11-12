@@ -247,8 +247,9 @@ exports.matchAdoptee = function(req, res){
 };
 
 exports.deleteAdoptee = function(req, res){
+    console.log(req.params.id);
     Adoptee.
-        findByIdAndRemove(req.params._id).
+        findByIdAndRemove(req.params.id).
         exec(function(err, adoptee) {
             if(err) { res.status(400); return res.send({error:err.toString()});}
             return res.send(adoptee);

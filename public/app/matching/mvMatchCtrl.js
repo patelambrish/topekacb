@@ -94,7 +94,6 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
                   }
              	    var updatedAdopter = $scope.currentAdopter;
              	    updatedAdopter.adoptees = tempAdoptees;
-             	    console.log(updatedAdopter);
                   Adopter.save(updatedAdopter).$promise.then(function (retVal) {
                     if (retVal.error) {
                       mvNotifier.notify(retVal.error);
