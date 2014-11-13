@@ -247,7 +247,6 @@ exports.matchAdoptee = function(req, res){
 };
 
 exports.deleteAdoptee = function(req, res){
-    console.log(req.params.id);
     Adoptee.
         findByIdAndRemove(req.params.id).
         exec(function(err, adoptee) {
