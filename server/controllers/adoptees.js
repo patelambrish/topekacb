@@ -30,11 +30,8 @@ exports.getAdoptees = function(req, res) {
                                      {'lastName': lastName.toUpperCase()},
                                      {'lastName': lastName.toLowerCase()}]});
             }
-            //currently, no index on first name, but...
             if (firstName){
-              query = query.where({$or : [{'firstName': firstName},
-                                           {'firstName': firstName.toUpperCase()},
-                                           {'firstName': firstName.toLowerCase()}]});
+              query = query.where('firstName').equals(firstName);
             }
         }
         if(searchFilters.childAges && searchFilters.childAges.length > 0){
