@@ -1,6 +1,7 @@
 .panel.panel-default(ng-class="{busy: busy()}")
     .panel-heading.clearfix
         h3.panel-title {{currentAdoptee.firstName + ' ' + currentAdoptee.lastName}}
+            .pull-right {{currentAdoptee.language + ' ' + currentAdoptee.englishSpeaker}}
     .panel-body
         .row
             .col-sm-7

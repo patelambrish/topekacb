@@ -24,11 +24,17 @@ exports.getAdoptees = function(req, res) {
         if(searchFilters.name && searchFilters.name.length > 0){
             var lastName = searchFilters.name.split(' ')[1];
             var firstName = searchFilters.name.split(' ')[0];
+            //not using regular expression because it would not be able to use index
             if (lastName){
-              query = query.where('lastName').equals(lastName);
+              query = query.where({$or : [{'lastName': lastName},
+                                     {'lastName': lastName.toUpperCase()},
+                                     {'lastName': lastName.toLowerCase()}]});
             }
+            //currently, no index on first name, but...
             if (firstName){
-              query = query.where('firstName').equals(firstName);
+              query = query.where({$or : [{'firstName': firstName},
+                                           {'firstName': firstName.toUpperCase()},
+                                           {'firstName': firstName.toLowerCase()}]});
             }
         }
         if(searchFilters.childAges && searchFilters.childAges.length > 0){
@@ -49,10 +55,15 @@ exports.getAdoptees = function(req, res) {
             });
             query = query.where('householdMembers.age').in(childAges);
         }
+
+        if(searchFilters.memberCount){
+           //todo:  add filter to query rather than removing from returned results
+           //console.log(searchFilters.memberCount);
+        }
     }
     
     Adoptee.count(query, function(err, count){
-        queryCount = count;
+        var queryCount = count;
         if(req.query.sort) {
             query = query.sort(req.query.sort);
         }
@@ -83,8 +94,22 @@ exports.getAdoptees = function(req, res) {
               '_adopterId': 1
             }).
             exec(function(err, collection) {
-                 if(err) { res.status(400); return res.send({error:err.toString()});}
-                 res.send({data: collection, totalCount: count});
+                if (err) {
+                    res.status(400);
+                    return res.send({error: err.toString()});
+                }
+                //this should be done in the query.  I don't have the skills without doing research
+                //this is a temporary solution
+                if (searchFilters && searchFilters.memberCount) {
+                    var tempCollection = [];
+                    collection.forEach(function(matchItem){
+                       if(matchItem.householdMembers.length <= searchFilters.memberCount){
+                            tempCollection.push(matchItem);
+                        }
+                    });
+                    collection = tempCollection;
+                }
+                res.send({data: collection, totalCount: queryCount});
             });
     });
 };
