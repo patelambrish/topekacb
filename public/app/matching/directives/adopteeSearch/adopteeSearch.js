@@ -74,9 +74,11 @@ angular.module('app').directive('adopteeSearch', ['Adoptee','$filter', 'cachedAd
                         limit : $scope.adopteePage.size
                     }).$promise.then(function(res) {
                             $scope.adopteeSearchResults = res;
-                             $scope.applyPage($scope.adopteePage.current, $scope.adopteeSearchResults, $scope.adopteePage);
+                            $scope.applyPage($scope.adopteePage.current, $scope.adopteeSearchResults, $scope.adopteePage);
+                            if ($scope.adopteeSearchResults && $scope.adopteeSearchResults.totalCount > 0) {
+                                $scope.selectAdoptee($scope.adopteeSearchResults.data[0]);
+                            }
                         });
-
                 };
                 
                 $scope.nextAdoptee = function(){
