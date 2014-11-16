@@ -21,27 +21,31 @@ exports.getAdoptees = function(req, res) {
         if(searchFilters.status) {
             query = query.where('status').equals(searchFilters.status);
         }
-        if(searchFilters.name && searchFilters.name.length > 0){
+        if(searchFilters.name && searchFilters.name.length > 0) {
             var lastName = searchFilters.name.split(' ')[1];
             var firstName = searchFilters.name.split(' ')[0];
             var tokens = searchFilters.name.split(' ').length;
-            var lastNameRegex =  new RegExp('^' + lastName, 'i');
+            var lastNameRegex = new RegExp('^' + lastName, 'i');
             var firstNameRegex = new RegExp('^' + firstName, 'i');
-            var nameRegex = new RegExp(searchFilters.name + '*', 'i' );
-            if (lastName && firstName && tokens === 2){
-              query = query.where({$and : [{'lastName': lastNameRegex},
-                                          {'firstName': firstNameRegex}]});
+            var nameRegex = new RegExp(searchFilters.name + '*', 'i');
+            if (lastName && firstName && tokens === 2) {
+                query = query.where({$and: [
+                    {'lastName': lastNameRegex},
+                    {'firstName': firstNameRegex}
+                ]});
             }
-            if (tokens != 2){
-                query = query.where({$or : [{'lastName': nameRegex},
-                                            {'firstName': nameRegex},
-                                            {'criteria.story': nameRegex},
-                                            {'criteria.volunteerComment': nameRegex},
-                                            {'criteria.internalComment': nameRegex},
-                                            {'ssnLastFour': nameRegex},
-                                            {'householdMembers.wishList': nameRegex},
-                                            {'householdMembers.name': nameRegex},
-                                            {'householdMembers.ssnLastFour': nameRegex}]});
+            if (tokens != 2) {
+                query = query.where({$or: [
+                    {'lastName': nameRegex},
+                    {'firstName': nameRegex},
+                    {'criteria.story': nameRegex},
+                    {'criteria.volunteerComment': nameRegex},
+                    {'criteria.internalComment': nameRegex},
+                    {'ssnLastFour': nameRegex},
+                    {'householdMembers.wishList': nameRegex},
+                    {'householdMembers.name': nameRegex},
+                    {'householdMembers.ssnLastFour': nameRegex}
+                ]});
             }
         }
         if(searchFilters.childAges && searchFilters.childAges.length > 0){

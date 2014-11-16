@@ -50,6 +50,8 @@ angular.module('app').directive('adopteeSearch', ['Adoptee','$filter', 'cachedAd
                     if (!criteria){
                       criteria = {};
                     }
+                    console.log(criteria);
+                    console.log($scope.adopteeFilter);
                     criteria.status = "Not Matched";
                     Adoptee.query({
                         filter: criteria,
