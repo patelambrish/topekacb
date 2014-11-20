@@ -16,8 +16,7 @@
                 i.fa.fa-caret-down
               ul.dropdown-menu.pull-right
                 li(ng-repeat="option in sort.options", ng-class="{active: sort.text == option.text}")
-                  a(href="", ng-click="applySort(option)") {{option.text}}
-
+                  a(href="", ng-click="applySort(option)") {{option.text}}                  
     table.table
       thead
         tr
@@ -37,10 +36,11 @@
             time {{req.createDate | date}}&nbsp;
             | by {{req.createdBy | fullName}}
           td
-            a.btn.btn-primary(data-ng-click="req.status='Complete'" data-ng-href="api/print/{{req._id}}" data-ng-if="req.status === 'Not Complete'" target='_blank')
+            a.btn.btn-primary(data-ng-click="req.status='Complete'" data-ng-href="api/print/{{req._id}}" data-ng-if="req.status === 'Not Complete' && req.adopter" target='_blank')
               i.fa.fa-print
               | &nbsp;Print
-            a.btn.btn-primary(data-ng-href="api/printemails/{{req._id}}" data-ng-if="req.status === 'Complete'" target='_blank') View
+            a.btn.btn-primary(data-ng-href="api/printemails/{{req._id}}" data-ng-if="req.status === 'Complete' && req.adopter" target='_blank') View
+            span(data-ng-if="!req.adopter") Missing Adopter
     .panel-footer
       ul.pager
         li.previous(ng-class="{disabled: page.current == 1}")

@@ -13,10 +13,10 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 	};
 	$scope.adopterSearchResults = [];
 	$scope.adopteeSearchResults = [];
-	$scope.currentAdopter
-	$scope.currentAdoptee
+	$scope.currentAdopter;
+	$scope.currentAdoptee;
 	$scope.ageRanges = ["0-7", "8-12", "13-18"];
-	$scope.adopteeEnums
+	$scope.adopteeEnums;
 	$scope.adopteeAges = [];
 
 	$scope.applyPage = function(page, data, pageInfo) {
@@ -142,7 +142,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
                 }
             });
         }
-    }
+    };
 
 	$scope.selectAdopter = function(adopter) {
 		$scope.currentAdopter = Adopter.get({
@@ -166,7 +166,12 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 		var req = getNewPrintEmailRequest('Email');
 		req.adopter = adopter._id;
 		AdopterEmailService.get({id:adopter._id}).$promise.then(function(res) {
-		mvNotifier.notify('Email is sent successfully!');
+			if(res.error) {
+				mvNotifier.notifyError(res.error);
+			}
+			else {
+				mvNotifier.notify('Email is sent successfully!');
+			}
 		})['catch'](function() {
 			mvNotifier.notifyError('An error occurred while sending email!');
 		});
@@ -176,7 +181,12 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 		var req = getNewPrintEmailRequest('Print');
 		req.adopter = adopter._id;
 		AdopterPrintEmailService.create(req).$promise.then(function(res) {
-		mvNotifier.notify('Print item added to queue successfully!');
+			if(res.error) {
+				mvNotifier.notifyError(res.error);
+			}
+			else {
+				mvNotifier.notify('Print item added to queue successfully!');
+			}		
 		})['catch'](function() {
 			mvNotifier.notifyError('An error occurred while create item in Print queue!');
 		});
