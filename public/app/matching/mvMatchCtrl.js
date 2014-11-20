@@ -144,15 +144,17 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
         }
     };
 
-	$scope.selectAdopter = function(adopter) {
-		$scope.currentAdopter = Adopter.get({
-			id : adopter._id
-		}).$promise.then(function(adopter) {
-                $scope.currentAdopter = adopter;
-                $scope.adopteeFilter = {};
-                $scope.searchAdoptees();
-            });
-	};
+
+  $scope.selectAdopter = function(adopter) {
+      Adopter.get({
+        id : adopter._id
+      }).$promise.then(function(data) {
+        $scope.currentAdopter = data;
+        $scope.adopteeFilter = {};
+        $scope.searchAdoptees();
+      });
+    };
+
 
 	function getNewPrintEmailRequest(reqType) {
 		var newReq = new AdopterPrintEmailService();

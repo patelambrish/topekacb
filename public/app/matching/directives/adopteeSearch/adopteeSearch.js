@@ -47,12 +47,6 @@ angular.module('app').directive('adopteeSearch', ['Adoptee','$filter', 'cachedAd
 
                 $scope.searchAdoptees = function() {
                     if($scope.currentAdopter || $scope.adopteeFilter.name) {
-                        if ($scope.currentAdopter) {
-                            if ($scope.currentAdopter.criteria.comment) {
-                                delete($scope.currentAdopter.criteria.comment);
-                            }
-                            $scope.currentAdopter.criteria.status = 'Not Matched';
-                        }
                         Adoptee.query({
                             filter: $scope.adopteeFilter && $scope.adopteeFilter.name ? $scope.adopteeFilter : $scope.currentAdopter.criteria,
                             sort: $scope.adopteeSort.value,
