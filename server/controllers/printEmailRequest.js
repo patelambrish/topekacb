@@ -40,16 +40,26 @@ exports.getPrintEmailRequests = function(req, res, next) {
 };
 
 exports.createPrintEmailRequest = function(req, res, next) {
-	var data = req.body, options = {
-		upsert : true
-	}, userId = req.user ? req.user._id : null;
+	var data = req.body, userId = req.user ? req.user._id : null;
 
 	data.createDate = new Date();
-	data.createdBy = userId;
+	data.createdBy = userId;	
 
-	PrintEmail.create(data, function(err, peReq) {
-		res.send(peReq);
-	});
+	Adopter.findById(data.adopter).exec(function(err, ad) {
+		if(err) {
+			console.log(err);
+			return next(err);
+		}		
+		if (!ad) {
+			res.send({
+				error : "Error: Adopter not found. Please try again."
+			});
+		} else {
+			PrintEmail.create(data, function(err, peReq) {
+				res.send(peReq);
+			});
+		}
+	});	
 };
 
 exports.updatePrintEmailRequest = function(req, res, next) {
@@ -83,23 +93,29 @@ exports.print = function(req, res, next) {
 				if(err) {
 					console.log(err);
 					return next(err);
+				}				
+
+				if (completeAdopter) {
+
+					var completeHtml = getAdopterHtml(completeAdopter, templateData);
+
+					printEmailRequest.status = 'Complete';
+					printEmailRequest.updateDate = new Date();
+					printEmailRequest.updateUser = req.user._id;
+					printEmailRequest.html = completeHtml;
+
+					printEmailRequest.save(function(err) {
+						if (err) {
+							console.log(err);
+							return next(err);
+						}
+						res.status(200);
+						res.send(completeHtml);
+					});
 				}
-
-				var completeHtml = getAdopterHtml(completeAdopter, templateData);
-
-				printEmailRequest.status = 'Complete';
-				printEmailRequest.updateDate = new Date();
-				printEmailRequest.updateUser = req.user._id;
-				printEmailRequest.html = completeHtml;
-
-				printEmailRequest.save(function(err){
-					if(err){
-						console.log(err);
-						return next(err);
-					}
-					res.status(200);
-					res.send(completeHtml);
-				});
+				else {					
+					res.send("Error: Adopter not found. Please try again.");
+				}
 			});
 		});
 	});
@@ -112,45 +128,51 @@ exports.email = function(req, res, next) {
 			if (err) {
 				console.log(err);
 				return next(err);
-			}
+			}			
 
-			var completeHtml = getAdopterHtml(adopter, templateData), printEmailRequest = {};
-			printEmailRequest.createDate = new Date();
-			printEmailRequest.createdBy = req.user._id;
-			printEmailRequest.jobType = 'Email';
-			printEmailRequest.emailTo = adopter.email;
-			printEmailRequest.adopter = adopter._id;
-			printEmailRequest.status = 'Complete';
-			printEmailRequest.html = completeHtml;
-			var emailTo;
-			if(config.emailTo) {
-				emailTo = config.emailTo;
-			}
-			else {
-				emailTo = adopter.email;
-			}
+			if (adopter) {
 
-			var email = new sendgrid.Email({
-				to : emailTo,
-				from : config.emailFrom,
-				subject : config.emailSubject,
-				html : completeHtml
-			});
-			sendgrid.send(email, function(err, json) {
-				if (err) {
-					console.error(err);
-					return next(err);
+				var completeHtml = getAdopterHtml(adopter, templateData), printEmailRequest = {};
+				printEmailRequest.createDate = new Date();
+				printEmailRequest.createdBy = req.user._id;
+				printEmailRequest.jobType = 'Email';
+				printEmailRequest.emailTo = adopter.email;
+				printEmailRequest.adopter = adopter._id;
+				printEmailRequest.status = 'Complete';
+				printEmailRequest.html = completeHtml;
+				var emailTo;
+				if (config.emailTo) {
+					emailTo = config.emailTo;
+				} else {
+					emailTo = adopter.email;
 				}
-				console.log(json);
-				PrintEmail.create(printEmailRequest, function(err, newRequest) {
+
+				var email = new sendgrid.Email({
+					to : emailTo,
+					from : config.emailFrom,
+					subject : config.emailSubject,
+					html : completeHtml
+				});
+				sendgrid.send(email, function(err, json) {
 					if (err) {
-						console.log(err);
+						console.error(err);
 						return next(err);
 					}
-					res.status(200);
-					res.send(newRequest);
+					console.log(json);
+					PrintEmail.create(printEmailRequest, function(err, newRequest) {
+						if (err) {
+							console.log(err);
+							return next(err);
+						}
+						res.status(200);
+						res.send(newRequest);
+					});
 				});
-			});
+			}
+			else {
+				res.send({error: "Error: Adopter not found. Please try again."});
+			}
+
 		});
 	});
 };
