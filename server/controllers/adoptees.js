@@ -263,8 +263,8 @@ exports.matchAdoptee = function(req, res){
         select('-image').
         exec(function (err, adoptee) {
             if(err) { res.status(400); return res.send({error:err.toString()});}
-            if (adoptee.status == "Matched") {
-                res.send({error: "Adoptee is already matched."});
+            if (adoptee.status != "Not Matched") {
+                res.send({error: "ERROR:  Adoptee status must be 'Not Matched'."});
             }else {
                 Adoptee.
                     findByIdAndUpdate(id, update, {}).
