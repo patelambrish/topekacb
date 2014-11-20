@@ -105,7 +105,7 @@ exports.getAdoptees = function(req, res) {
                     return res.send({error: err.toString()});
                 }
                 //decided this may not be so bad performance-wise vs aggregation
-                if (searchFilters && searchFilters.memberCount) {
+                /*if (searchFilters && searchFilters.memberCount) {
                     var tempCollection = [];
                     collection.forEach(function(matchItem){
                         if(matchItem.householdMembers.length <= searchFilters.memberCount){
@@ -114,7 +114,7 @@ exports.getAdoptees = function(req, res) {
                     });
                     collection = tempCollection;
                     count = collection.length;
-                }
+                }*/
                 res.send({data: collection, totalCount: count});
             });
     });
