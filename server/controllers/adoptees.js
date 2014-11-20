@@ -278,12 +278,25 @@ exports.matchAdoptee = function(req, res){
 };
 
 exports.deleteAdoptee = function(req, res){
-    Adoptee.
-        findByIdAndRemove(req.params.id).
-        exec(function(err, adoptee) {
+    Adoptee.findOne({_id : req.params.id}).
+        select('-image').
+        exec(function(err, adoptee){
             if(err) { res.status(400); return res.send({error:err.toString()});}
-            return res.send(adoptee);
-        });
+            if (adoptee._adopterId){
+                return res.send({error: "Adoptee cannot be deleted while matched with an adopter."})
+            }else {
+                Adoptee.
+                    findByIdAndRemove(req.params.id).
+                    exec(function (err, adoptee) {
+                        if (err) {
+                            res.status(400);
+                            return res.send({error: err.toString()});
+                        }
+                        return res.send(adoptee);
+                    });
+            }
+    })
+
 };
 
 exports.getEnums = function(req, res) {
