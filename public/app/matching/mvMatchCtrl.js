@@ -35,10 +35,8 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 	};
 
 	$scope.getAdopteePage = function(page) {
-		$scope.adopteePage.current = page;
-		if ($scope.currentAdopter) {
-			$scope.searchAdoptees($scope.currentAdopter.criteria);
-		}
+        $scope.adopteePage.current = page;
+        $scope.searchAdoptees();
 	};
 
 	$scope.selectAdoptee = function(selectedAdoptee) {
@@ -76,34 +74,36 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 			if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
 				mvNotifier.notify($scope.currentAdopter.name + " is fully matched.");
 			} else {
-			  mvNotifier.notify('Bulk matching ' + $scope.currentAdopter.name + " with available adoptees.");
-			  var tempAdoptees = [];
-        $scope.currentAdopter.adoptees.forEach(function (existingAdoptee){
-          tempAdoptees.push(existingAdoptee._id);
-        });
+			    mvNotifier.notify('Bulk matching ' + $scope.currentAdopter.name + " with available adoptees.");
+			    var tempAdoptees = [];
+                $scope.currentAdopter.adoptees.forEach(function (existingAdoptee){
+                    tempAdoptees.push(existingAdoptee._id);
+                });
 				searchResults.forEach(function(a) {
 					a._adopterId = $scope.currentAdopter._id;
 					a.status = "Matched";
 					Adoptee.matchAdoptee(a).$promise.then(function(res) {
-              if(res.error){
-                  mvNotifier.notify(res.error);
-              }else {
-                  tempAdoptees.push(a._id);
-                  if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
-                      $scope.currentAdopter.status = "Matched";
-                  }
-             	    var updatedAdopter = $scope.currentAdopter;
-             	    updatedAdopter.adoptees = tempAdoptees;
-                  Adopter.save(updatedAdopter).$promise.then(function (retVal) {
-                    if (retVal.error) {
-                      mvNotifier.notify(retVal.error);
-                    }
-                  });
-              }
-              if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
-				          $scope.searchAdoptees($scope.currentAdopter.criteria);
-              }
-          });
+                        if(res.error){
+                            mvNotifier.notify(res.error);
+                        }else {
+                            tempAdoptees.push(a._id);
+                            if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
+                              $scope.currentAdopter.status = "Matched";
+                            }
+             	            var updatedAdopter = $scope.currentAdopter;
+             	            updatedAdopter.adoptees = tempAdoptees;
+                            Adopter.save(updatedAdopter).$promise.then(function (retVal) {
+                                if (retVal.error) {
+                                    mvNotifier.notify(retVal.error);
+                                }else{
+                                    $scope.currentAdopter = retVal;
+                                }
+                            });
+                        }
+                        if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
+				            $scope.searchAdoptees($scope.currentAdopter.criteria);
+                        }
+                    });
 				});
 			}
 		});
@@ -147,8 +147,11 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 	$scope.selectAdopter = function(adopter) {
 		$scope.currentAdopter = Adopter.get({
 			id : adopter._id
-		});
-		$scope.searchAdoptees(adopter.criteria);
+		}).$promise.then(function(adopter) {
+                $scope.currentAdopter = adopter;
+                $scope.adopteeFilter = {};
+                $scope.searchAdoptees();
+            });
 	};
 
 	function getNewPrintEmailRequest(reqType) {

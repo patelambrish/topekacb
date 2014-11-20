@@ -1,9 +1,9 @@
 form(name="adopteeSearchForm", novalidate)
   .btn-toolbar
     .input-group.input-group-sm.input-group-filter
-      input.form-control(type="search", placeholder="Name", ng-model="adopteeFilter.name")
+      input.form-control(type="search", placeholder="Search Criteria", ng-model="adopteeFilter.name")
       .input-group-btn
-        button.btn.btn-default(ng-click="nameSearch()")
+        button.btn.btn-default(ng-click="searchAdoptees()")
           i.fa.fa-search
     a.collapse-toggle.collapsed(href="", tabindex="-1", data-toggle="collapse", data-target="#adopteeFilter")
       i.fa.fa-cog

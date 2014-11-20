@@ -41,48 +41,34 @@ angular.module('app').directive('adopteeSearch', ['Adoptee','$filter', 'cachedAd
 
                 $scope.applyAdopteeFilter = function(filter) {
                     angular.extend($scope.adopteeFilter, filter);
-                    //$scope.getAdopteePage(1);
                     $scope.adopteePage.current = 1;
-                    $scope.nameSearch();
+                    $scope.searchAdoptees();
                 };
 
-                $scope.searchAdoptees = function(criteria) {
-                    if (!criteria){
-                      criteria = {};
+                $scope.searchAdoptees = function() {
+                    if($scope.currentAdopter || $scope.adopteeFilter.name) {
+                        if ($scope.currentAdopter) {
+                            if ($scope.currentAdopter.criteria.comment) {
+                                delete($scope.currentAdopter.criteria.comment);
+                            }
+                            $scope.currentAdopter.criteria.status = 'Not Matched';
+                        }
+                        Adoptee.query({
+                            filter: $scope.adopteeFilter && $scope.adopteeFilter.name ? $scope.adopteeFilter : $scope.currentAdopter.criteria,
+                            sort: $scope.adopteeSort.value,
+                            start: ($scope.adopteePage.current * $scope.adopteePage.size) - $scope.adopteePage.size,
+                            limit: $scope.adopteePage.size
+                        }).$promise.then(function (res) {
+                                $scope.adopteeSearchResults = res;
+                                $scope.applyPage($scope.adopteePage.current, $scope.adopteeSearchResults, $scope.adopteePage);
+                                if (res.data.length > 0) {
+                                    $scope.selectAdoptee(res.data[0]);
+                                    $scope.adopteeEnums = Adoptee.enums({ _id: res.data[0]._id });
+                                }
+                            });
                     }
-                    console.log(criteria);
-                    console.log($scope.adopteeFilter);
-                    criteria.status = "Not Matched";
-                    Adoptee.query({
-                        filter: criteria,
-                        sort: $scope.adopteeSort.value,
-                        start: ($scope.adopteePage.current * $scope.adopteePage.size) - $scope.adopteePage.size,
-                        limit: $scope.adopteePage.size
-                    }).$promise.then(function (res) {
-                            $scope.adopteeSearchResults = res;
-                            $scope.applyPage($scope.adopteePage.current, $scope.adopteeSearchResults, $scope.adopteePage);
-                            if (res.data.length > 0) {
-                                $scope.selectAdoptee(res.data[0]);
-                                $scope.adopteeEnums = Adoptee.enums({ _id: res.data[0]._id });
-                            }
-                        });
                 };
 
-                $scope.nameSearch = function() {
-                    Adoptee.query({
-                        filter : $scope.adopteeFilter,
-                        sort : $scope.adopteeSort.value,
-                        start : ($scope.adopteePage.current * $scope.adopteePage.size) - $scope.adopteePage.size,
-                        limit : $scope.adopteePage.size
-                    }).$promise.then(function(res) {
-                            $scope.adopteeSearchResults = res;
-                            $scope.applyPage($scope.adopteePage.current, $scope.adopteeSearchResults, $scope.adopteePage);
-                            if ($scope.adopteeSearchResults && $scope.adopteeSearchResults.totalCount > 0) {
-                                $scope.selectAdoptee($scope.adopteeSearchResults.data[0]);
-                            }
-                        });
-                };
-                
                 $scope.nextAdoptee = function(){
                   // need to find current adoptee in search array by Id instead of by object ref,
                   // because search adoptee is not fully hydrated, while current adoptee is. eg,
@@ -98,7 +84,6 @@ angular.module('app').directive('adopteeSearch', ['Adoptee','$filter', 'cachedAd
                   }
                   
                 };
-                
                 $scope.getAdopteePage(1);
             }]
         };

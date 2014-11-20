@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
     htmlUtil = require('../utilities/adopteeHtml');
 
 exports.getAdoptees = function(req, res) {
-    var searchFilters, nameRegex, query, queryName, sortBy, sortDir;
+    var searchFilters, query, queryName, sortBy, sortDir;
     if(req.query.filter) {
         searchFilters= JSON.parse(req.query.filter);
     }
@@ -66,18 +66,13 @@ exports.getAdoptees = function(req, res) {
             });
             query = query.where('householdMembers.age').in(childAges);
         }
-
-        if(searchFilters.memberCount){
-           //todo:  add filter to query rather than removing from returned results
-           //console.log(searchFilters.memberCount);
-        }
     }
     
     Adoptee.count(query, function(err, count){
-        var queryCount = count;
         if(req.query.sort) {
             query = query.sort(req.query.sort);
         }
+
         if(req.query.start && req.query.limit) {
             query = query.skip(req.query.start).limit(req.query.limit);
         }
@@ -109,18 +104,18 @@ exports.getAdoptees = function(req, res) {
                     res.status(400);
                     return res.send({error: err.toString()});
                 }
-                //this should be done in the query.  I don't have the skills without doing research
-                //this is a temporary solution
+                //decided this may not be so bad performance-wise vs aggregation
                 if (searchFilters && searchFilters.memberCount) {
                     var tempCollection = [];
                     collection.forEach(function(matchItem){
-                       if(matchItem.householdMembers.length <= searchFilters.memberCount){
+                        if(matchItem.householdMembers.length <= searchFilters.memberCount){
                             tempCollection.push(matchItem);
                         }
                     });
                     collection = tempCollection;
+                    count = collection.length;
                 }
-                res.send({data: collection, totalCount: queryCount});
+                res.send({data: collection, totalCount: count});
             });
     });
 };
