@@ -117,7 +117,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
             $scope.currentAdoptee.status = "Matched";
             Adoptee.matchAdoptee($scope.currentAdoptee).$promise.then(function (retAdoptee) {
                 if (retAdoptee.error) {
-                    mvNotifier.notify(retAdoptee.error);
+                    mvNotifier.notifyError(retAdoptee.error);
                 } else {
                     $scope.currentAdoptee = retAdoptee;
                     var tempAdoptees = [];
@@ -186,7 +186,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 			}
 			else {
 				mvNotifier.notify('Print item added to queue successfully!');
-			}		
+			}
 		})['catch'](function() {
 			mvNotifier.notifyError('An error occurred while create item in Print queue!');
 		});
