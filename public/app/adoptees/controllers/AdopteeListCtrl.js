@@ -77,16 +77,20 @@ angular.module('app').
     };
 
     $scope.delete = function(adoptee) {
-      Adoptee.delete({ _id: adoptee._id }, function() {
-        mvNotifier.notify(adoptee.firstName + ' ' + adoptee.lastName + ' was deleted.');
-        var index = $scope.adoptees.indexOf(adoptee);
+        Adoptee.delete({ _id: adoptee._id }, function (res) {
+            if (res.error) {
+                mvNotifier.notifyError(res.error);
+            } else {
+                mvNotifier.notify(adoptee.firstName + ' ' + adoptee.lastName + ' was deleted.');
+                var index = $scope.adoptees.indexOf(adoptee);
 
-        if(index !== -1) {
-          $scope.adoptees.splice(index, 1);
-        }
+                if (index !== -1) {
+                    $scope.adoptees.splice(index, 1);
+                }
 
-        $location.path('/adoptees');
-      });
+                $location.path('/adoptees');
+            }
+        });
     };
 
     $scope.refresh = function(clearCache) {
