@@ -3,8 +3,17 @@ form(name="adopteeSearchForm", novalidate)
     .input-group.input-group-sm.input-group-filter
       input.form-control(type="search", placeholder="Search Criteria", ng-model="adopteeFilter.name")
       .input-group-btn
-        button.btn.btn-default(ng-click="searchAdoptees()")
+        button.btn.btn-default(ng-click="applyAdopteeFilter()")
           i.fa.fa-search
+    .input-group.input-group-sm.input-group-sort
+        .input-group-addon Sort By:
+        input.form-control(type="text", ng-model="adopteeSort.text", disabled)
+        .input-group-btn
+            button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown")
+                i.fa.fa-caret-down
+            ul.dropdown-menu.pull-right
+                li(ng-repeat="option in adopteeSort.options", ng-class="{active: adopteeSort.text == option.text}")
+                    a(href="", ng-click="applyAdopteeSort(option)") {{option.text}}
     a.collapse-toggle.collapsed(href="", tabindex="-1", data-toggle="collapse", data-target="#adopteeFilter")
       i.fa.fa-cog
   .collapse(id="adopteeFilter", ng-style="{'margin-top': 5}")

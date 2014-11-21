@@ -18,6 +18,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 	$scope.ageRanges = ["0-7", "8-12", "13-18"];
 	$scope.adopteeEnums;
 	$scope.adopteeAges = [];
+    $scope.useFilter = false;
 
 	$scope.applyPage = function(page, data, pageInfo) {
 		pageInfo.current = page;
@@ -101,7 +102,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
                             });
                         }
                         if ($scope.currentAdopter.criteria.count == $scope.currentAdopter.adoptees.length) {
-				            $scope.searchAdoptees($scope.currentAdopter.criteria);
+				            $scope.searchAdoptees();
                         }
                     });
 				});
@@ -137,7 +138,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
                             $scope.currentAdopter = retAdopter;
                             mvNotifier.notify($scope.currentAdoptee.firstName + ' ' + $scope.currentAdoptee.lastName + ' matched with ' + $scope.currentAdopter.name + '!');
                         }
-                        $scope.searchAdoptees($scope.currentAdopter.criteria);
+                        $scope.searchAdoptees();
                     });
                 }
             });
@@ -152,6 +153,7 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
         $scope.currentAdopter = data;
         $scope.adopteeFilter = {};
         $scope.searchAdoptees();
+        $scope.useFilter = false;
       });
     };
 
@@ -195,6 +197,6 @@ function($scope, $filter, mvNotifier, Adopter, Adoptee, AdopterPrintEmailService
 	};
 	
 	$scope.criteriaChange = function(newValue, oldValue) {
-    $scope.searchAdoptees($scope.currentAdopter.criteria);
+    $scope.searchAdoptees();
 	};
 }]);

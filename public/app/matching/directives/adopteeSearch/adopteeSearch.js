@@ -31,6 +31,18 @@ angular.module('app').directive('adopteeSearch', ['Adoptee','$filter', 'cachedAd
                     }, {
                         value : '-lastName',
                         text : 'Name: Z to A'
+                    /*}, {
+                        value : '-householdMembers.count',
+                        text : 'Members: High to Low'
+                    }, {
+                        value : 'householdMembers.count',
+                        text : 'Members: Low to High'*/
+                    }, {
+                        value : '-criteria.householdType',
+                        text : 'Household Type: High to Low'
+                    }, {
+                        value : 'criteria.householdType',
+                        text : 'Household Type: Low to High'
                     }]
                 };
 
@@ -40,15 +52,19 @@ angular.module('app').directive('adopteeSearch', ['Adoptee','$filter', 'cachedAd
                 };
 
                 $scope.applyAdopteeFilter = function(filter) {
-                    angular.extend($scope.adopteeFilter, filter);
+                    if(filter) {
+                        angular.extend($scope.adopteeFilter, filter);
+                    }
                     $scope.adopteePage.current = 1;
                     $scope.searchAdoptees();
+                    $scope.useFilter = true;
                 };
 
                 $scope.searchAdoptees = function() {
-                    if($scope.currentAdopter || $scope.adopteeFilter.name) {
+                    if($scope.currentAdopter || $scope.adopteeFilter) {
+                        var filter = $scope.currentAdopter && $scope.currentAdopter.criteria && !$scope.useFilter?$scope.currentAdopter.criteria: $scope.adopteeFilter;
                         Adoptee.query({
-                            filter: $scope.adopteeFilter && $scope.adopteeFilter.name ? $scope.adopteeFilter : $scope.currentAdopter.criteria,
+                            filter: filter,
                             sort: $scope.adopteeSort.value,
                             start: ($scope.adopteePage.current * $scope.adopteePage.size) - $scope.adopteePage.size,
                             limit: $scope.adopteePage.size

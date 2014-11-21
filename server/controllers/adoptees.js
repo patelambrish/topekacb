@@ -67,7 +67,6 @@ exports.getAdoptees = function(req, res) {
             query = query.where('householdMembers.age').in(childAges);
         }
     }
-    
     Adoptee.count(query, function(err, count){
         if(req.query.sort) {
             query = query.sort(req.query.sort);
@@ -104,17 +103,6 @@ exports.getAdoptees = function(req, res) {
                     res.status(400);
                     return res.send({error: err.toString()});
                 }
-                //decided this may not be so bad performance-wise vs aggregation
-                /*if (searchFilters && searchFilters.memberCount) {
-                    var tempCollection = [];
-                    collection.forEach(function(matchItem){
-                        if(matchItem.householdMembers.length <= searchFilters.memberCount){
-                            tempCollection.push(matchItem);
-                        }
-                    });
-                    collection = tempCollection;
-                    count = collection.length;
-                }*/
                 res.send({data: collection, totalCount: count});
             });
     });
