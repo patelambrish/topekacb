@@ -5,7 +5,8 @@ angular.module('app').
     $scope.adopteeTitle = '';
     $scope.permission = {
       delete: mvIdentity.isAuthorized('manager'),
-      readonly: mvIdentity.isAuthorized('observer')
+      readonly: mvIdentity.isAuthorized('observer') || mvIdentity.isAuthorized('adopter'),
+      readonlyAdopter: mvIdentity.isAuthorized('adopter')
     };
     $scope.setNewAdoptee = function(currentNumber){
         $scope.adoptee = new Adoptee({

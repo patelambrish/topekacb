@@ -16,6 +16,8 @@ function($scope, mvUser, $filter, mvAuth, mvNotifier) {
 		name : 'Manager - Allow Delete', value: 'manager'
 	}, {
 		name : 'Observer - Readonly', value: 'observer'
+	}, {
+		name: 'Adopter - Readonly', value: 'adopter'
 	}], originalUser = {};
 
 	$scope.roles = [];
