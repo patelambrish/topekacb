@@ -1,9 +1,11 @@
 var mongoose = require('mongoose'),
-	PrintEmail = mongoose.model('PrintEmail'),
-	fs = require('fs'),
-	jade = require('jade'),
-	htmlUtil = require('../utilities/adopteeHtml'),
-	Adopter = mongoose.model('Adopter');
+    PrintEmail = mongoose.model('PrintEmail'),
+    fs = require('fs'),
+    jade = require('jade'),
+    htmlUtil = require('../utilities/adopteeHtml'),
+    Adopter = mongoose.model('Adopter');
+
+var pdf = require('html-pdf');
 
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -11,10 +13,11 @@ var config = require('../config/config')[env];
 
 console.log(config.sendGridUser);
 console.log(config.sendGridPassword);
-var sendgrid  = require('sendgrid')(config.sendGridUser, config.sendGridPassword);
+var sendgrid = require('sendgrid')(config.sendGridUser, config.sendGridPassword);
 
 function getAdopterHtml(adopter, templateData) {
-	var completeHtml = '', html;
+	var completeHtml = '',
+	    html;
 	if (adopter.adoptees && adopter.adoptees.length > 0) {
 		adopter.adoptees.forEach(function(adoptee) {
 			adoptee.adopter = {
@@ -22,7 +25,7 @@ function getAdopterHtml(adopter, templateData) {
 				email : adopter.email,
 				address : adopter.address,
 				phones : adopter.phones,
-				notifyMethods: adopter.notifyMethods
+				notifyMethods : adopter.notifyMethods
 			};
 			html = htmlUtil.getAdopteeHtml(adoptee, templateData);
 			completeHtml = completeHtml + html;
@@ -40,16 +43,17 @@ exports.getPrintEmailRequests = function(req, res, next) {
 };
 
 exports.createPrintEmailRequest = function(req, res, next) {
-	var data = req.body, userId = req.user ? req.user._id : null;
+	var data = req.body,
+	    userId = req.user ? req.user._id : null;
 
 	data.createDate = new Date();
-	data.createdBy = userId;	
+	data.createdBy = userId;
 
 	Adopter.findById(data.adopter).exec(function(err, ad) {
-		if(err) {
+		if (err) {
 			console.log(err);
 			return next(err);
-		}		
+		}
 		if (!ad) {
 			res.send({
 				error : "Error: Adopter not found. Please try again."
@@ -59,11 +63,13 @@ exports.createPrintEmailRequest = function(req, res, next) {
 				res.send(peReq);
 			});
 		}
-	});	
+	});
 };
 
 exports.updatePrintEmailRequest = function(req, res, next) {
-	var update = req.body, id = update._id, userId = req.user ? req.user._id : null;
+	var update = req.body,
+	    id = update._id,
+	    userId = req.user ? req.user._id : null;
 
 	update.updateDate = new Date();
 	update.updateUser = userId;
@@ -84,16 +90,16 @@ exports.print = function(req, res, next) {
 	console.log("requestId: " + requestId);
 	fs.readFile('server/views/adopteePrint.jade', 'utf8', function(err, templateData) {
 		PrintEmail.findById(requestId).exec(function(err, printEmailRequest) {
-			if(err) {
+			if (err) {
 				console.log(err);
 				return next(err);
 			}
 			var adopter = printEmailRequest.adopter;
-			Adopter.findById(printEmailRequest.adopter).populate('adoptees','-image').exec(function(err, completeAdopter){
-				if(err) {
+			Adopter.findById(printEmailRequest.adopter).populate('adoptees', '-image').exec(function(err, completeAdopter) {
+				if (err) {
 					console.log(err);
 					return next(err);
-				}				
+				}
 
 				if (completeAdopter) {
 
@@ -112,8 +118,7 @@ exports.print = function(req, res, next) {
 						res.status(200);
 						res.send(completeHtml);
 					});
-				}
-				else {					
+				} else {
 					res.send("Error: Adopter not found. Please try again.");
 				}
 			});
@@ -128,11 +133,12 @@ exports.email = function(req, res, next) {
 			if (err) {
 				console.log(err);
 				return next(err);
-			}			
+			}
 
 			if (adopter) {
 
-				var completeHtml = getAdopterHtml(adopter, templateData), printEmailRequest = {};
+				var completeHtml = getAdopterHtml(adopter, templateData),
+				    printEmailRequest = {};
 				printEmailRequest.createDate = new Date();
 				printEmailRequest.createdBy = req.user._id;
 				printEmailRequest.jobType = 'Email';
@@ -147,41 +153,50 @@ exports.email = function(req, res, next) {
 					emailTo = adopter.email;
 				}
 
-				var email = new sendgrid.Email({
-					to : emailTo,
-					from : config.emailFrom,
-					subject : config.emailSubject,
-					html : completeHtml
-				});
-				sendgrid.send(email, function(err, json) {
-					if (err) {
-						console.error(err);
-						return next(err);
-					}
-					console.log(json);
-					PrintEmail.create(printEmailRequest, function(err, newRequest) {
+				pdf.create(completeHtml).toBuffer(function(err, buffer) {
+
+					var email = new sendgrid.Email({
+						to : emailTo,
+						from : config.emailFrom,
+						subject : config.emailSubject,
+						text : 'Please download attached pdf with your adoptee details. Thank you!',
+						files : [{
+							filename : 'adoptees.pdf',
+							content : buffer
+						}]
+					});
+					sendgrid.send(email, function(err, json) {
 						if (err) {
-							console.log(err);
+							console.error(err);
 							return next(err);
 						}
-						res.status(200);
-						res.send(newRequest);
+						console.log(json);
+						PrintEmail.create(printEmailRequest, function(err, newRequest) {
+							if (err) {
+								console.log(err);
+								return next(err);
+							}
+							res.status(200);
+							res.send(newRequest);
+						});
 					});
 				});
-			}
-			else {
-				res.send({error: "Error: Adopter not found. Please try again."});
+
+			} else {
+				res.send({
+					error : "Error: Adopter not found. Please try again."
+				});
 			}
 
 		});
 	});
 };
 
-exports.preview = function(req,res,next) {
+exports.preview = function(req, res, next) {
 
 	var reqId = req.params.id;
-	PrintEmail.findById(reqId).exec(function(err,req) {
-		if(err) {
+	PrintEmail.findById(reqId).exec(function(err, req) {
+		if (err) {
 			console.log(err);
 			return next(err);
 		}

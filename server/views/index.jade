@@ -20,7 +20,7 @@ block main-content
             div.subtext Family Adoption Management
 
       .navbar-collapse.collapse(data-ng-controller="mvNavBarLoginCtrl")
-        ul.nav.navbar-nav(ng-if="identity.isAuthenticated() && !identity.isAuthenticated('adopter')")
+        ul.nav.navbar-nav(ng-if="identity.isAuthenticated() && !identity.isAuthorized('adopter')")
           li
             a(href="/") Home
           li
@@ -31,7 +31,7 @@ block main-content
             a(href="/match") Matching
           li
             a(href="/printemail") Print &amp; Email
-        ul.nav.navbar-nav(ng-if="identity.isAuthenticated() && identity.isAuthenticated('adopter')")
+        ul.nav.navbar-nav(ng-if="identity.isAuthenticated() && identity.isAuthorized('adopter')")
           li
             a(href="/") Home
           li
