@@ -159,12 +159,19 @@ exports.email = function(req, res, next) {
 						to : emailTo,
 						from : config.emailFrom,
 						subject : config.emailSubject,
-						text : 'Please download attached pdf with your adoptee details. Thank you!',
+						html : 'Dear Adopter, <br/><br/> Please find letter with hints (2015 Adopted a Family letter and hints.pdf) and list of your adopted households (Adoptee List.pdf). <br/> Thank you for your generosity. <br/><br/> Merry Christmas, <br/><br/>Kind Regards,<br/>Kimberly Wolff<br/>United Way of Greater Topeka',
 						files : [{
-							filename : 'adoptees.pdf',
-							content : buffer
-						}]
+									filename: '2015 Adopted a Family letter and hints.pdf',
+									path: 'server/content/2015 Adopted a Family letter.pdf'
+								},
+								{
+									filename : 'Adoptee List.pdf',
+									content : buffer
+								}]						
 					});
+					email.setHeaders({'Read-Receipt-To': emailTo});   
+					email.setHeaders({'X-Confirm-reading-to': emailTo}); 
+					email.setHeaders({'Disposition-Notification-To': emailTo}); 
 					sendgrid.send(email, function(err, json) {
 						if (err) {
 							console.error(err);

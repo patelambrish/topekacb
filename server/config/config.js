@@ -13,7 +13,7 @@ module.exports = {
     sendGridPassword: process.env.SENDGRID_PASSWORD,
     emailTo: 'ambrish.patel@se2.com',
     emailFrom: 'cb@unitedwaytopeka.org',
-    emailSubject: 'Christmas Bureau Adoption'
+    emailSubject: 'Christmas Bureau Adopted Family Information'
   },
   test: {
     rootPath: rootPath,
@@ -25,7 +25,7 @@ module.exports = {
     sendGridUser: process.env.SENDGRID_USERNAME,
     sendGridPassword: process.env.SENDGRID_PASSWORD,
     emailFrom: 'cb@unitedwaytopeka.org',
-    emailSubject: 'Christmas Bureau Adoption'
+    emailSubject: 'Christmas Bureau Adopted Family Information'
   },
   production: {
     rootPath: rootPath,
@@ -37,6 +37,6 @@ module.exports = {
     sendGridUser: process.env.SENDGRID_USERNAME,
     sendGridPassword: process.env.SENDGRID_PASSWORD,
     emailFrom: 'cb@unitedwaytopeka.org',
-    emailSubject: 'Christmas Bureau Adoption'
+    emailSubject: 'Christmas Bureau Adopted Family Information'
   }
 }
