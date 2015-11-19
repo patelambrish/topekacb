@@ -44,7 +44,8 @@ exports.getAdoptees = function(req, res) {
                     {'ssnLastFour': nameRegex},
                     {'householdMembers.wishList': nameRegex},
                     {'householdMembers.name': nameRegex},
-                    {'householdMembers.ssnLastFour': nameRegex}
+                    {'householdMembers.ssnLastFour': nameRegex},
+                    {'address.zip': searchFilters.name}
                 ]});
             }
         }
