@@ -72,7 +72,7 @@ module.exports = function(config) {
 
   passport.serializeUser(function(user, done) {
     if (user) {
-      done(null, user._id);
+      done(null, user._id.toString());
     }
   });
 
