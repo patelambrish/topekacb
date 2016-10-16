@@ -265,7 +265,7 @@
                   | &nbsp;Add new
       .panel-footer
         .btn-toolbar.text-right
-          button.btn.btn-primary(title="Ready For Match?", tabindex="0", confirm-click="update(adopteeForm, true, true)", confirm-default-click="update(adopteeForm, true, false)", confirm-popout="left", confirm-cancel-text="Data Not Complete", confirm-go-class="btn-success" data-ng-disabled="permission.readonly") Save and Next
-          button.btn.btn-primary(title="Ready For Match?", tabindex="0", confirm-click="update(adopteeForm, false, true)", confirm-default-click="update(adopteeForm, false, false)", confirm-popout="left", confirm-cancel-text="Data Not Complete", confirm-go-class="btn-success" data-ng-disabled="permission.readonly") Save
-          button.btn.btn-default(ng-click="cancel()"  data-ng-disabled="permission.readonly") Cancel
+          button.btn.btn-default(type="button", tabindex="-1", ng-click="cancel()", data-ng-disabled="permission.readonly") Cancel
+          button.btn.btn-primary(type="submit", title="Ready For Match?", confirm-click="update(adopteeForm, true, true)", confirm-default-click="update(adopteeForm, true, false)", confirm-popout="left", confirm-cancel-text="Data Not Complete", confirm-go-class="btn-success" data-ng-disabled="permission.readonly") Save and Next
+          button.btn.btn-primary(type="submit", title="Ready For Match?", confirm-click="update(adopteeForm, false, true)", confirm-default-click="update(adopteeForm, false, false)", confirm-popout="left", confirm-cancel-text="Data Not Complete", confirm-go-class="btn-success" data-ng-disabled="permission.readonly") Save
 div(site-directive, data-onsave="onsitechange(site)", ng-if="siteUndefined()")
