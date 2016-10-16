@@ -102,6 +102,14 @@ angular.module('app').
             html: true,
             placement: attrs.confirmPopout,
             trigger: 'manual'
+          }).on('shown.bs.popover', function () {
+            $document.find('.popover button:first-of-type').focus();
+          });
+
+          $document.on('keydown keypress', function(e) {
+            if (e.which == 27) { // 27 == escape
+              element.popover('hide');
+            }
           });
         }
 
@@ -110,8 +118,10 @@ angular.module('app').
           e.stopPropagation();
 
           if(attrs.confirmPopout) {
-            element.popover('show');
-            popoutHandlers();
+            angular.element('body').animate({scrollTop: element.offset().top}, 'fast', function () {
+              element.popover('show');
+              popoutHandlers();
+            });
             return;
           }
           
