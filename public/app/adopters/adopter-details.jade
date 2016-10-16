@@ -58,11 +58,11 @@
             .col-sm-3.col-md-4
               .form-group
                 label City
-                input.form-control(type="text", name="city", placeholder="City", tabindex="-1", ng-model="adopter.address.city")
+                input.form-control(type="text", name="city", placeholder="City", ng-model="adopter.address.city")
             .col-sm-2
               .form-group
                 label.control-label State
-                select.form-control(name="state", tabindex="-1", ng-model="adopter.address.state", ng-options="e for e in adopter.enums.state")
+                select.form-control(name="state", ng-model="adopter.address.state", ng-options="e for e in adopter.enums.state")
                   option(disabled value="") State
             .col-sm-3.col-md-2
               .form-group(ng-class="{'has-error': form.zip.$invalid && (submitted)}")
