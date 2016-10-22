@@ -27,6 +27,8 @@ angular.module('app').
   controller('adopteeListCtrl', function($scope, $filter, $location, Adoptee, cachedAdoptees, mvIdentity, mvNotifier) {
     var adoptees;
 
+    $scope.query = $location.search().q;
+
     $scope.permission = {
       delete: mvIdentity.isAuthorized('manager'),
       readonly: mvIdentity.isAuthorized('observer')
@@ -63,6 +65,12 @@ angular.module('app').
         $scope.adoptees = $filter('filter')(adoptees.data, query);
         $scope.applyPage(1);
       });
+
+      if (query) {
+        $location.search('q', query);
+      } else {
+        $location.search('q', null);
+      }
     };
 
     $scope.applyPage = function(page) {
@@ -99,7 +107,7 @@ angular.module('app').
       }
 
       adoptees = cachedAdoptees.query();
-      $scope.applyFilter();
+      $scope.applyFilter($scope.query);
     };
 
     $scope.refresh();
