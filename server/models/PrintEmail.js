@@ -8,7 +8,7 @@ var printEmailSchema = new Schema({
   html: { type: String },
   status: { type: String, enum: statusEnum, required: '{PATH} is required!'},
   jobType: { type: String, enum: jobType },
-  emailTo: String,
+  emailTo: [{ type: String }],
   createDate: Date,
   createdBy: { type: Schema.Types.ObjectId, ref: 'User'},
   updateDate: Date,

@@ -36,7 +36,7 @@ var householdMember = {
 };
 
 var householdTypes = ['Single',
-    'Adult Only',
+    'Adults Only',
     'Single Mom with Children',
     'Single Dad with Children',
     'Married Couple with Children',

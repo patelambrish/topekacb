@@ -187,7 +187,7 @@ exports.getAdopteeDups = function(req, res){
 exports.updateAdoptee = function(req, res){
       var update = req.body,
           id = update._id,
-          options = { upsert: true },
+          options = { upsert: true, new: true },
           userId = req.user ? req.user._id : null;
       if(!id) {
           id = new mongoose.Types.ObjectId();
@@ -256,7 +256,7 @@ exports.matchAdoptee = function(req, res){
                 res.send({error: "ERROR:  Adoptee status must be 'Not Matched'."});
             }else {
                 Adoptee.
-                    findByIdAndUpdate(id, update, {}).
+                    findByIdAndUpdate(id, update, {upsert: true, new: true}).
                     populate('_modifyUser', 'firstName lastName').
                     exec(function(err, adoptee) {
                         if(err) { res.status(400); return res.send({error:err.toString()});}

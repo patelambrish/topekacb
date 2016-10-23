@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
     statusEnum = ['In Process', 'Not Matched', 'Matched'],
     notifyEnum = ['Email', 'Fax', 'Pickup', 'Postal Mail'],
     householdEnum = [
-      'Single', 'Adult Only', 'Single Mom with Children', 'Single Dad with Children',
+      'Single', 'Adults Only', 'Single Mom with Children', 'Single Dad with Children',
       'Married Couple with Children', 'Adult with Children', 'Grandparents (only) with Children'
     ],
     genderEnum = ['Male', 'Female'],
@@ -34,6 +34,7 @@ var adopterSchema = new Schema({
   },
   phones: [phoneSchema],
   email: String,
+  email2: String,
   notifyMethods: [{ type: String, enum: notifyEnum }],
   criteria: {
     count: Number,

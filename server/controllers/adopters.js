@@ -128,15 +128,18 @@ exports.getAdopterById = function(req, res, next) {
 };
 
 exports.saveAdopter = function(req, res, next) {
+  console.log(req.body);
   var data = req.body,
     id = data._id,
     options = {
-      upsert: true
+      upsert: true,
+      new: true
     },
     userId = req.user ? req.user._id : null;
 
   delete data.enums;
   
+
   /* ensure adoptees are mapped to ids instead of objects
    * mongoose should handle this automatically via its internal type casting
    * but I must have done something wrong since that is not happening
@@ -159,6 +162,8 @@ exports.saveAdopter = function(req, res, next) {
     data.updatedBy = userId;
   }
   
+  console.log(id);
+
   Adopter.
   findByIdAndUpdate(id, data, options).
   populate('createdBy', 'firstName lastName').
@@ -167,6 +172,7 @@ exports.saveAdopter = function(req, res, next) {
   select('-__v').
   lean(true).
   exec(function(err, adopter) {
+    console.log(adopter);
     if(err) {
       return next(err);
     }
@@ -254,7 +260,7 @@ exports.removeAdoptee = function(req, res, next) {
       update.status = 'Not Matched';
     }
     Adopter.
-    findByIdAndUpdate(adopterId, update).
+    findByIdAndUpdate(adopterId, update, {upsert: true, new: true}).
     populate('createdBy', 'firstName lastName').
     populate('updatedBy', 'firstName lastName').
     populate('adoptees').

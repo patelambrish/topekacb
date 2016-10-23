@@ -135,22 +135,29 @@ exports.email = function(req, res, next) {
 				return next(err);
 			}
 
-			if (adopter) {
+			if (adopter && (adopter.email || adopter.email2)) {
 
 				var completeHtml = getAdopterHtml(adopter, templateData),
 				    printEmailRequest = {};
 				printEmailRequest.createDate = new Date();
 				printEmailRequest.createdBy = req.user._id;
 				printEmailRequest.jobType = 'Email';
-				printEmailRequest.emailTo = adopter.email;
+				printEmailRequest.emailTo = [];
+				if(adopter.email) {
+					printEmailRequest.emailTo.push(adopter.email);
+				}
+				if(adopter.email2) {
+					printEmailRequest.emailTo.push(adopter.email2);
+				}
+				adopter.email;
 				printEmailRequest.adopter = adopter._id;
 				printEmailRequest.status = 'Complete';
 				printEmailRequest.html = completeHtml;
-				var emailTo;
+				var emailTo =[];
 				if (config.emailTo) {
-					emailTo = config.emailTo;
+					emailTo.push(config.emailTo);
 				} else {
-					emailTo = adopter.email;
+					emailTo = printEmailRequest.emailTo;
 				}
 
 				pdf.create(completeHtml).toBuffer(function(err, buffer) {
@@ -169,9 +176,9 @@ exports.email = function(req, res, next) {
 									content : buffer
 								}]						
 					});
-					email.setHeaders({'Read-Receipt-To': emailTo});   
-					email.setHeaders({'X-Confirm-reading-to': emailTo}); 
-					email.setHeaders({'Disposition-Notification-To': emailTo}); 
+					email.setHeaders({'Read-Receipt-To': emailTo[0]});   
+					email.setHeaders({'X-Confirm-reading-to': emailTo[0]}); 
+					email.setHeaders({'Disposition-Notification-To': emailTo[0]}); 
 					sendgrid.send(email, function(err, json) {
 						if (err) {
 							console.error(err);
@@ -191,7 +198,7 @@ exports.email = function(req, res, next) {
 
 			} else {
 				res.send({
-					error : "Error: Adopter not found. Please try again."
+					error : "Error: Adopter not found or Adopter email address not available. Please try again."
 				});
 			}
 
