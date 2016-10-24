@@ -3,7 +3,7 @@ angular.module('app').
     return {
       setFlags: function(flags, value, exclusive) {
         var array = flags,
-            index;
+          index;
 
         if(!angular.isArray(array)) {
           array = (flags = []);
@@ -12,7 +12,7 @@ angular.module('app').
         if(exclusive) {
           array.length = 0;
         }
-        
+
         index = array.indexOf(value);
 
         if(index === -1) {
@@ -37,7 +37,7 @@ angular.module('app').
       }
 
       var fName = data.firstName || '',
-          lName = data.lastName || '';
+        lName = data.lastName || '';
 
       format = format || 'ltr';
 
@@ -64,4 +64,22 @@ angular.module('app').
         }
       }
     };
-  });
+  }).
+  directive('body', ['$document', function($document) {
+    function link() {
+      var rx = /INPUT|TEXTAREA/i;
+
+      $document.on('keydown keypress', function(e) {
+        if (e.which == 8) { // 8 == backspace
+          if (!rx.test(e.target.tagName) || e.target.disabled || e.target.readOnly) {
+            e.preventDefault();
+          }
+        }
+      });
+    }
+
+    return {
+      restrict: 'E',
+      link: link
+    };
+  }]);
