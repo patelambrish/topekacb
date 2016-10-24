@@ -32,7 +32,8 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
 	.when('/adoptees', {
 		templateUrl : '/partials/adoptees/adoptee-list',
 		controller : 'adopteeListCtrl',
-		resolve : routeRoleChecks.user
+		resolve : routeRoleChecks.user,
+		reloadOnSearch : false
 	}).when('/adoptees/:id', {
 		templateUrl : '/partials/adoptees/adoptee-details',
 		controller : 'adopteeDetailCtrl',
@@ -43,7 +44,8 @@ angular.module('app').config(function($routeProvider, $locationProvider) {
 	}).when('/adopters', {
 		templateUrl : '/partials/adopters/adopter-list',
 		controller : 'AdopterListCtrl',
-		resolve : routeRoleChecks.user
+		resolve : routeRoleChecks.user,
+		reloadOnSearch : false
 	}).when('/adopters/:id', {
 		templateUrl : '/partials/adopters/adopter-details',
 		controller : 'AdopterDetailCtrl',
