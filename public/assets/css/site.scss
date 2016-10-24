@@ -207,3 +207,13 @@ input[type=date] {
       @include transition-transform(0.35s ease);
   }
 }
+
+.btn-toolbar {
+  .popover {
+    // override bootstrap for proper style of popover inside toolbar
+    .btn-group, 
+    .input-group {
+      float: none;
+    }
+  }
+}
