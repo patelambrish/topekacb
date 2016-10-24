@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     entityEnum = ['Individual', 'Organization', 'Department'],
     stateEnum = ['KS', 'MO', 'NE', 'OK', 'CO'],
-    phoneEnum = ['Home', 'Mobile', 'Alternate', 'Fax'],
+    phoneEnum = ['Home', 'Work', 'Mobile', 'Alternate', 'Fax'],
     statusEnum = ['In Process', 'Not Matched', 'Matched'],
     notifyEnum = ['Email', 'Fax', 'Pickup', 'Postal Mail'],
     householdEnum = [
@@ -147,11 +147,11 @@ function generateAdopters(count) {
           zip: chance.zip()
         },
         phones: [{
-          name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
+          name: chance.weighted(phoneEnum, [4, 4, 4, 2, 1]),
           number: chance.phone(),
           contact: chance.first()
         }, {
-          name: chance.weighted(phoneEnum, [4, 4, 2, 1]),
+          name: chance.weighted(phoneEnum, [4, 4, 4, 2, 1]),
           number: chance.phone()
         }],
         email: chance.email(),
