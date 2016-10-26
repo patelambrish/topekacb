@@ -8,6 +8,7 @@
         a(href="/adopters/{{adoptee._adopterId._id}}") {{adoptee._adopterId.name}}
       small.pull-right(ng-switch="adoptee.site")
         img(src="/assets/image/antioch.png", ng-switch-when="A")
+        img(src="/assets/image/letshelp.png", ng-switch-when="L")
         img(src="/assets/image/deercreek.png", ng-switch-when="D")
         | &nbsp;{{sites[adoptee.site]}}
       span
