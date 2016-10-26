@@ -1,6 +1,7 @@
 angular.module('app').
   value('cbSites', {
     'L': 'Let\'s Help',
+    'D': 'Deer Creek',
     'A': 'Antioch',
     'O': 'Other'
   }).

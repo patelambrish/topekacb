@@ -9,6 +9,7 @@
       small.pull-right(ng-switch="adoptee.site")
         img(src="/assets/image/antioch.png", ng-switch-when="A")
         img(src="/assets/image/letshelp.png", ng-switch-when="L")
+        img(src="/assets/image/deercreek.png", ng-switch-when="D")
         | &nbsp;{{sites[adoptee.site]}}
       span
         a(ng-href="../api/adoptees/{{adoptee._id}}/form", target="_blank")
