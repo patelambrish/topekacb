@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
     notifyEnum = ['Email', 'Fax', 'Pickup', 'Postal Mail'],
     householdEnum = [
       'Single', 'Adults Only', 'Single Mom with Children', 'Single Dad with Children',
-      'Married Couple with Children', 'Adult with Children', 'Grandparents (only) with Children'
+      'Married Couple with Children', 'Adult with Children', 'Grandparents (only) with Children', 'Spanish Speaker'
     ],
     genderEnum = ['Male', 'Female'],
     ageEnum = ['0 - 7', '8 - 12', '13 - 18'],

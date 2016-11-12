@@ -10,16 +10,22 @@ exports.getAdoptees = function(req, res) {
     if(req.query.filter) {
         searchFilters= JSON.parse(req.query.filter);
     }
+    console.log(searchFilters);
     query = Adoptee.find({});
     if(searchFilters) {
-        if(searchFilters.households && searchFilters.households.length > 0) {
+        if(searchFilters.households && searchFilters.households.length > 0) {                      
             query = query.where('criteria.householdType').in([].concat(searchFilters.households));
+            console.log("Index = >", searchFilters.households.indexOf("Spanish Speaker"))
+            if(searchFilters.households.indexOf("Spanish Speaker") > 0) {
+              query = query.where('language').ne(null);
+            }
         }
         if(searchFilters.special && searchFilters.special.length > 0) {
             query = query.where('criteria.specialNeeds').in([].concat(searchFilters.special));
         }
         if(searchFilters.status) {
             query = query.where('status').equals(searchFilters.status);
+            console.log(query);
         }
         if(searchFilters.name && searchFilters.name.length > 0) {
             var lastName = searchFilters.name.split(' ')[1];
@@ -45,7 +51,8 @@ exports.getAdoptees = function(req, res) {
                     {'householdMembers.wishList': nameRegex},
                     {'householdMembers.name': nameRegex},
                     {'householdMembers.ssnLastFour': nameRegex},
-                    {'address.zip': searchFilters.name}
+                    {'address.zip': searchFilters.name},
+                    {'language': nameRegex}
                 ]});
             }
         }
