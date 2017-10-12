@@ -10,7 +10,7 @@ exports.getAdoptees = function(req, res) {
     if(req.query.filter) {
         searchFilters= JSON.parse(req.query.filter);
     }
-    console.log(searchFilters);
+   
     query = Adoptee.find({});
     if(searchFilters) {
         if(searchFilters.households && searchFilters.households.length > 0) {                      
@@ -28,19 +28,30 @@ exports.getAdoptees = function(req, res) {
             console.log(query);
         }
         if(searchFilters.name && searchFilters.name.length > 0) {
+            var phoneCheckRegEx = /((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}/;
             var lastName = searchFilters.name.split(' ')[1];
             var firstName = searchFilters.name.split(' ')[0];
             var tokens = searchFilters.name.split(' ').length;
             var lastNameRegex = new RegExp('^' + lastName, 'i');
             var firstNameRegex = new RegExp('^' + firstName, 'i');
             var nameRegex = new RegExp(searchFilters.name + '*', 'i');
-            if (lastName && firstName && tokens === 2) {
+            var queryExec = false;
+            if(phoneCheckRegEx.test(searchFilters.name)){
+                queryExec = true;
+                query = query.where({$or: [
+                    {'homePhone.number': searchFilters.name},
+                    {'cell1Phone.number': searchFilters.name},
+                    {'otherPhone.number': searchFilters.name}
+                ]});
+            }
+            if (lastName && firstName && tokens === 2 && !queryExec) {
+                queryExec = true;
                 query = query.where({$and: [
                     {'lastName': lastNameRegex},
                     {'firstName': firstNameRegex}
                 ]});
             }
-            if (tokens != 2) {
+            if (tokens != 2 && !queryExec) {
                 query = query.where({$or: [
                     {'lastName': nameRegex},
                     {'firstName': nameRegex},
@@ -81,7 +92,7 @@ exports.getAdoptees = function(req, res) {
         }
 
         if(req.query.start && req.query.limit) {
-            query = query.skip(req.query.start).limit(req.query.limit);
+            query = query.skip(parseInt(req.query.start)).limit(parseInt(req.query.limit));
         }
         query.
             populate('_createUser', 'firstName lastName').
