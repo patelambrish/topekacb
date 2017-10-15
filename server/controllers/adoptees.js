@@ -41,6 +41,7 @@ exports.getAdoptees = function(req, res) {
                 query = query.where({$or: [
                     {'homePhone.number': searchFilters.name},
                     {'cell1Phone.number': searchFilters.name},
+                    {'cell2Phone.number': searchFilters.name},
                     {'otherPhone.number': searchFilters.name}
                 ]});
             }
