@@ -16,7 +16,9 @@ var languages = [
     'Spanish/English spoken by'
 ];
 
-var sites = ['D', 'L', 'A', 'O'];
+//var sites = ['D', 'L', 'A', 'O'];
+var sites = ['E', 'PR', 'SS', 'JT','PT','TTI','TTII','TT'];
+
 
 var clothingSizeTypes = ['A', 'J', 'C'];
 var shoeSizeTypes = ['A', 'C'];
