@@ -31,6 +31,7 @@ module.exports = function(app) {
   app.get('/api/chartdata', adoptees.getAggregateHouseholdTypes);
   app.get('/api/chartdata/bar', adoptees.getAggregateAdoptedCounts);
   app.get('/api/stats/specialNeeds', adoptees.getAggregateSpecialNeeds);
+  app.get('/api/stats/age', adoptees.getAgeAggregation);
 
   app.get('/api/adopters', auth.requiresRole(['observer','user','manager']), adopters.getAdopters);
   app.get('/api/adopters/:id', auth.requiresRole(['observer','user','manager']), adopters.getAdopterById);

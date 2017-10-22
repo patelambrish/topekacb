@@ -82,4 +82,11 @@ angular.module('app').
       restrict: 'E',
       link: link
     };
-  }]);
+  }]).
+  filter('iso2UTC', function() {
+    return function(input) {
+        var output = new Date(input);
+        output = new Date(output.getTime() + (output.getTimezoneOffset() * 60000));
+        return output;
+    };
+});

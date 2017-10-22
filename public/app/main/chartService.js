@@ -19,3 +19,14 @@ angular.module('app').factory('BarChartService', function($resource) {
 
 	return BarChartResource;
 });
+
+angular.module('app').factory('AgeChartService', function($resource) {
+	var BarChartResource = $resource('/api/stats/age', {}, {
+		get : {
+			method : 'GET',
+			isArray : true
+		}
+	});
+
+	return BarChartResource;
+});

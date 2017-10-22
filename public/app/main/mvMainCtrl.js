@@ -15,8 +15,8 @@ directive('autoSlide', function() {
     }
   }
 }).
-controller('mvMainCtrl', ['$scope', '$http', 'mvNotifier', 'mvSharedContext', 'mvIdentity', 'MessageService', 'ChartService', 'BarChartService',
-function($scope, $http, mvNotifier, mvSharedContext, mvIdentity, MessageService, ChartService, BarChartService) {
+controller('mvMainCtrl', ['$scope', '$http', 'mvNotifier', 'mvSharedContext', 'mvIdentity', 'MessageService', 'ChartService', 'BarChartService','AgeChartService',
+function($scope, $http, mvNotifier, mvSharedContext, mvIdentity, MessageService, ChartService, BarChartService, AgeChartService) {
   var barChart = {
     type: 'ColumnChart',
     data: {
@@ -103,10 +103,22 @@ function($scope, $http, mvNotifier, mvSharedContext, mvIdentity, MessageService,
           return (item._id == "None" ? ["No Special Need", item.count] : [item._id, item.count]);
       });
 
-
+      
       config.data.unshift(['Special Needs', 'Households']);
-
       $scope.specialChart = config;
+    });
+
+    $http.get('/api/stats/age').
+    then(function(data) {
+      var chartArray = [],
+          collection = data.data,
+          config = angular.copy(pieChart);
+
+      config.data = collection.map(function(item) {
+        return ([item._id.type + '-' + item._id.status, item.count]);
+      });
+    config.data.unshift(['Age Group + Status', 'Members']);
+    $scope.ageChart = config;
     });
 
   ChartService.get().$promise.then(function(data) {

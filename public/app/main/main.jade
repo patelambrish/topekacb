@@ -14,6 +14,7 @@
               set true by the googlechart directive when google visualization fires chart ready event.
               all but the first slide then have the active class cleared. and since bootstrap operates
               outside of angular, its able to "override" the class binding.
+            div.item(google-chart, chart="ageChart", ng-class="{active: !ageChart.displayed}")
             div.item(google-chart, chart="specialChart", ng-class="{active: !specialChart.displayed}")
             div.item(google-chart, chart="householdChart", ng-class="{active: !householdChart.displayed}")
           a.left.carousel-control(href="", role="button", data-target=".carousel", data-slide="prev")

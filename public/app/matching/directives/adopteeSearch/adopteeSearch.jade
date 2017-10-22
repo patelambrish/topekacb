@@ -45,3 +45,12 @@ form(name="adopteeSearchForm", novalidate)
             a(href="", ng-click="applyAdopteeFilter({special: null})") Any Special Need
           li(ng-repeat="e in adopteeEnums.special", ng-class="{active: adopteeFilter.special == e}")
             a(href="", ng-click="applyAdopteeFilter({special: e})", ng-bind="e")
+      .btn-group.btn-group-sm
+        button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown", ng-class="{active: adopteeFilter.site}")
+          | {{adopteeFilter.site || 'Site'}}&nbsp;
+          i.fa.fa-caret-down      
+        ul.dropdown-menu(role="menu")
+          li(ng-class="{active: !adopteeFilter.site}")
+            a(href="", ng-click="applyAdopteeFilter({site: null})") Site
+          li(ng-repeat="e in adopteeEnums.site", ng-class="{active: adopteeFilter.site == e}")
+            a(href="", ng-click="applyAdopteeFilter({site: e})", ng-bind="e")      

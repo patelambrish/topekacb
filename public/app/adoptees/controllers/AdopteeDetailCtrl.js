@@ -36,7 +36,11 @@ angular.module('app').
           }
           else{
             $scope.adoptee = retVal;
-            $scope.adoptee.birthDate = $filter('date')($scope.adoptee.birthDate, 'yyyy-MM-dd');
+            console.log($scope.adoptee.birthDate);
+
+            $scope.adoptee.birthDate = $filter('date')($filter('iso2UTC')($scope.adoptee.birthDate), 'yyyy-MM-dd');
+            console.log($scope.adoptee.birthDate);
+            $scope.adoptee.intakeDate = $filter('date')($filter('iso2UTC')($scope.adoptee.intakeDate), 'yyyy-MM-dd');
           }
          });
     }
@@ -89,6 +93,7 @@ angular.module('app').
 
     //Expects adoptees to have consecutive numbers
     $scope.adopteeUpdate = function(){
+        //$scope.adoptee.birthDate = new Date($scope.adoptee.birthDate).toISOString();
         Adoptee.updateAdoptee($scope.adoptee).$promise.then(function (retVal) {
             if (retVal.error) {
                 mvNotifier.notify(retVal.error);
@@ -103,14 +108,16 @@ angular.module('app').
                         }
                         else {
                             $scope.adoptee = nextVal;
-                            $scope.adoptee.birthDate = $filter('date')($scope.adoptee.birthDate, 'yyyy-MM-dd');
+                            $scope.adoptee.birthDate = $filter('date')($filter('iso2UTC')($scope.adoptee.birthDate), 'yyyy-MM-dd');
+                            $scope.adoptee.intakeDate = $filter('date')($scope.adoptee.intakeDate, 'yyyy-MM-dd');
                             $location.path('/adoptees/' + nextVal._id);
                         }
                     });
                 }
                 else{
                     $scope.adoptee = retVal;
-                    $scope.adoptee.birthDate = $filter('date')($scope.adoptee.birthDate, 'yyyy-MM-dd');
+                    $scope.adoptee.birthDate = $filter('date')($filter('iso2UTC')($scope.adoptee.birthDate), 'yyyy-MM-dd');
+                    $scope.adoptee.intakeDate = $filter('date')($filter('iso2UTC')($scope.adoptee.intakeDate), 'yyyy-MM-dd');
                     $location.path('/adoptees');
                 }
             }

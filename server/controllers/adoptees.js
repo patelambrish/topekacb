@@ -3,7 +3,8 @@ var mongoose = require('mongoose'),
     AdopteeApplicationCounter = mongoose.model('AdopteeApplicationCounter'),
     fs = require('fs'),
     jade=require('jade'),
-    htmlUtil = require('../utilities/adopteeHtml');
+    htmlUtil = require('../utilities/adopteeHtml'),
+    moment=require('moment');
 
 exports.getAdoptees = function(req, res) {
     var searchFilters, query, queryName, sortBy, sortDir;
@@ -25,7 +26,9 @@ exports.getAdoptees = function(req, res) {
         }
         if(searchFilters.status) {
             query = query.where('status').equals(searchFilters.status);
-            console.log(query);
+        }
+        if(searchFilters.site) {
+            query = query.where('site').equals(searchFilters.site);
         }
         if(searchFilters.name && searchFilters.name.length > 0) {
             var phoneCheckRegEx = /((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}/;
@@ -67,9 +70,16 @@ exports.getAdoptees = function(req, res) {
                     {'language': nameRegex}
                 ]});
             }
+            if(moment(searchFilters.name, 'MM/DD/YYYY').isValid()) {
+                var inDate = moment(searchFilters.name,'MM/DD/YYYY').format('YYYY-MM-DD');
+                query.where({$or:[
+                    {'intakeDate': inDate},
+                    {'birthDate': inDate}
+                ]});
+            }            
         }
         if(searchFilters.childAges && searchFilters.childAges.length > 0){
-            var zeroToSeven = [0, 1, 2, 3, 4, 5, 6, 7];
+            var zeroToSeven = [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1, 2, 3, 4, 5, 6, 7];
             var eightToTwelve = [8, 9, 10, 11, 12];
             var thirteenToEighteen = [13, 14, 15, 16, 17, 18];
             var childAges = [];
@@ -184,6 +194,31 @@ exports.getAggregateSpecialNeeds = function(req, res) {
   });
 };
 
+exports.getAgeAggregation = function(req, res) {
+  Adoptee.aggregate([
+    { $unwind: "$householdMembers" },
+    {
+      $project: {
+        members: { $sum: 1 },
+        status: "$status",
+        type: {
+          $cond: {
+            if: { $lt: ["$householdMembers.age", 18] },
+            then: "Children",
+            else: "Adult"
+          }
+        },
+        age: "$householdMembers.age"
+      }
+    },
+    {
+      $group: { _id: { type: "$type", status: "$status" }, count: { $sum: 1 } }
+    }
+  ]).exec(function(err, collection) {
+    res.send(collection);
+  });
+};
+
 exports.getAggregateHouseholdTypes = function(req, res){
   Adoptee.aggregate({$match: {status:{$in: ['Not Matched', 'Matched']}, 'criteria.householdType': {$exists:true, $ne: ""}}},{$group : { _id: "$criteria.householdType", count: {$sum: 1 }}}).exec(function(err,collection){
         res.send(collection);
@@ -207,7 +242,7 @@ exports.updateAdoptee = function(req, res){
       var update = req.body,
           id = update._id,
           options = { upsert: true, new: true },
-          userId = req.user ? req.user._id : null;
+          userId = req.user ? req.user._id : null;     
       if(!id) {
           id = new mongoose.Types.ObjectId();
           update.createDate = new Date();
