@@ -27,7 +27,7 @@ function getAdopterHtml(adopter, templateData) {
 }
 
 exports.getAdopters = function(req, res, next) {
-  var searchFilters, nameFilter, entityFilter, householdFilter, specialFilter, statusFilter, 
+  var searchFilters, nameFilter, entityFilter, householdFilter, specialFilter, statusFilter, membersFilter,
       sort =  req.query.sort,
       start = parseInt(req.query.start, 10) || 0,
       limit = parseInt(req.query.limit, 10) || 0,
@@ -42,6 +42,7 @@ exports.getAdopters = function(req, res, next) {
       householdFilter = searchFilters.household;
       specialFilter = searchFilters.special;
       statusFilter = searchFilters.status;
+      membersFilter = searchFilters.members;
 
       if(nameFilter) {
         query.or([
@@ -49,6 +50,14 @@ exports.getAdopters = function(req, res, next) {
           {org: new RegExp(nameFilter, 'i')},
           {dept: new RegExp(nameFilter, 'i')}
         ]);
+      }
+
+      if(membersFilter) {
+        if(membersFilter !== ">=6"){
+           query = query.where('criteria.memberCount').equals(membersFilter);
+        } else {
+          query = query.where('criteria.memberCount').gte(6);
+        }
       }
 
       if(entityFilter) {

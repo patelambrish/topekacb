@@ -45,6 +45,18 @@ form(name="adopterSearchForm", novalidate)
             a(href="", ng-click="applyAdopterFilter({household: null})") Any Household
           li(ng-repeat="e in adopterEnums.household", ng-class="{active: adopterFilter.household == e}")
             a(href="", ng-click="applyAdopterFilter({household: e})", ng-bind="e")
+      
+      .btn-group.btn-group-sm
+        button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown", ng-class="{active: adopterFilter.members}")
+          | {{adopterFilter.members || 'Members'}}&nbsp;
+          i.fa.fa-caret-down
+        ul.dropdown-menu(role="menu")
+          li(ng-class="{active: !adopterFilter.members}")
+            a(href="", ng-click="applyAdopterFilter({members: null})") Members
+          li(ng-repeat="e in adopterEnums.members", ng-class="{active: adopterFilter.members == e}")
+            a(href="", ng-click="applyAdopterFilter({members: e})", ng-bind="e")
+
+
       .btn-group.btn-group-sm
         button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown", ng-class="{active: adopterFilter.special}")
           | {{adopterFilter.special || 'Special Needs'}}&nbsp;
