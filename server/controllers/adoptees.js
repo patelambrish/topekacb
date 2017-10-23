@@ -198,8 +198,7 @@ exports.getAgeAggregation = function(req, res) {
   Adoptee.aggregate([
     { $unwind: "$householdMembers" },
     {
-      $project: {
-        members: { $sum: 1 },
+      $project: {        
         status: "$status",
         type: {
           $cond: {
@@ -212,7 +211,7 @@ exports.getAgeAggregation = function(req, res) {
       }
     },
     {
-      $group: { _id: { type: "$type", status: "$status" }, count: { $sum: 1 } }
+      $group: { _id: { type: "$type", status: "$status" }, count: {$sum: 1} }
     }
   ]).exec(function(err, collection) {
     res.send(collection);

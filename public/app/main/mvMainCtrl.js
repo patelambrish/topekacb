@@ -108,17 +108,18 @@ function($scope, $http, mvNotifier, mvSharedContext, mvIdentity, MessageService,
       $scope.specialChart = config;
     });
 
-    $http.get('/api/stats/age').
-    then(function(data) {
+    $http.get("/api/stats/age").then(function(data) {
       var chartArray = [],
-          collection = data.data,
-          config = angular.copy(pieChart);
+        collection = data.data,
+        config = angular.copy(pieChart);
 
-      config.data = collection.map(function(item) {
-        return ([item._id.type + '-' + item._id.status, item.count]);
-      });
-    config.data.unshift(['Age Group + Status', 'Members']);
-    $scope.ageChart = config;
+      if (collection) {
+        config.data = collection.map(function(item) {
+          return [item._id.type + "-" + item._id.status, item.count];
+        });
+        config.data.unshift(["Age Group + Status", "Members"]);
+        $scope.ageChart = config;
+      }
     });
 
   ChartService.get().$promise.then(function(data) {
