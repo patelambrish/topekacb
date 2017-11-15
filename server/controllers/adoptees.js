@@ -24,6 +24,15 @@ exports.getAdoptees = function(req, res) {
         if(searchFilters.special && searchFilters.special.length > 0) {
             query = query.where('criteria.specialNeeds').in([].concat(searchFilters.special));
         }
+
+        if(searchFilters.members) {
+            if(searchFilters.members !== ">=12"){
+               query = query.where('householdMembers').count(searchFilters.members);
+            } else {
+              query = query.where('householdMembers').gte(12);
+            }
+          }
+
         if(searchFilters.status) {
             query = query.where('status').equals(searchFilters.status);
         }

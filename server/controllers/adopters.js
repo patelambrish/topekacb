@@ -53,10 +53,10 @@ exports.getAdopters = function(req, res, next) {
       }
 
       if(membersFilter) {
-        if(membersFilter !== ">=6"){
+        if(membersFilter !== ">=12"){
            query = query.where('criteria.memberCount').equals(membersFilter);
         } else {
-          query = query.where('criteria.memberCount').gte(6);
+          query = query.where('criteria.memberCount').gte(12);
         }
       }
 

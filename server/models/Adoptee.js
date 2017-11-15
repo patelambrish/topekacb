@@ -62,6 +62,7 @@ var adopteeStates = [
 ];
 var genders = ["Male", "Female"];
 var specialNeedsEnum = ["Senior (60+)", "Veteran", "Disabled", "Homebound"];
+var membersEnum = ['1','2','3','4','5','6','7','8','9','10','11','>=12'];
 
 var adopteeSchema = mongoose.Schema({
   firstName: { type: String, required: "{PATH} is required!" },
@@ -122,7 +123,8 @@ adopteeSchema.static("getEnumValues", function() {
     shoeSizeType: shoeSizeTypes,
     special: specialNeedsEnum,
     status: adopteeStates,
-    site: sites
+    site: sites,
+    members: membersEnum
   };
 });
 var Adoptee = mongoose.model("Adoptee", adopteeSchema);
