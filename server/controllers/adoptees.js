@@ -24,13 +24,10 @@ exports.getAdoptees = function(req, res) {
         if(searchFilters.special && searchFilters.special.length > 0) {
             query = query.where('criteria.specialNeeds').in([].concat(searchFilters.special));
         }
-
+        
         if(searchFilters.members) {
-            if(searchFilters.members !== ">=12"){
-               query = query.where('householdMembers').count(searchFilters.members);
-            } else {
-              query = query.where('householdMembers').gte(12);
-            }
+            var cnt = parseInt(searchFilters.members);
+            query = query.where({householdMembers : {$exists:true}, $where:'this.householdMembers.length==' + cnt});
           }
 
         if(searchFilters.status) {

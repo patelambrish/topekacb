@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
     genderEnum = ['Male', 'Female'],
     ageEnum = ['0 - 7', '8 - 12', '13 - 18'],
     specialEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'],
-    membersEnum = ['1','2','3','4','5','6','7','8','9','10','11','>=12'],
+    membersEnum = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'],
     sizeEnum = ['NB', '3M', '6M', '12M', '18M', '24M', '2T', '3T', '4T', 'XS', 'S', 'M', 'L', 'XL'];
 
 var phoneSchema = new Schema({

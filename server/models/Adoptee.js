@@ -62,7 +62,7 @@ var adopteeStates = [
 ];
 var genders = ["Male", "Female"];
 var specialNeedsEnum = ["Senior (60+)", "Veteran", "Disabled", "Homebound"];
-var membersEnum = ['1','2','3','4','5','6','7','8','9','10','11','>=12'];
+var membersEnum = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'];
 
 var adopteeSchema = mongoose.Schema({
   firstName: { type: String, required: "{PATH} is required!" },
