@@ -15,7 +15,3 @@ require('./server/config/express')(app, config);
 require('./server/config/passport')(config);
 
 require('./server/config/routes')(app);
-
-app.listen(config.port);
-
-console.log('Listening on port ' + config.port + '...');

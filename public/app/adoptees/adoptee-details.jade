@@ -82,8 +82,9 @@
           .row
             .col-sm-4
               .form-group
-                label(for="adoptee.homePhone.number") Home Phone
-                input.form-control(name="adoptee.homePhone.number", type="phone", placeholder="Home phone number" ng-model="adoptee.homePhone.number")
+                label.checkbox-inline
+                input(name="adopteeisOkToText", type="checkbox", ng-model="adoptee.isOkToText")
+                |  OK to send Text Messages
             .col-sm-4
               .form-group
                 label(for="adoptee.cell1Phone.number") Cell Phone 1
@@ -129,43 +130,7 @@
             .col-sm-3
                 .form-group
                     label(for="adoptee.agent.agentPhone") Agent Phone
-                    input.form-control(name="adoptee.agent.agentPhone", type="phone", placeholder="Agent Phone", ng-model="adoptee.agent.agentPhone")
-        fieldset(ng-disabled="siteUndefined() || permission.readonly")
-          legend Additional Information
-          .row
-            .col-sm-3
-              .form-group
-                label.checkbox-inline
-                  input(name="adoptee.isDiabetic", type="checkbox", ng-model="adoptee.isDiabetic")
-                  | Diabetic
-            .col-sm-9
-          .row
-            .col-sm-3
-              .form-group
-                label.checkbox-inline
-                  input(name="adoptee.isAllergic", type="checkbox", ng-model="adoptee.isAllergic")
-                  | Has Allergies
-            .col-sm-9
-              .form-group(ng-hide="!adoptee.isAllergic")
-                input.form-control(name="adoptee.reactionFoods", type="text", placeholder="Reaction Foods", ng-model="adoptee.reactionFoods")
-          .row
-            .col-sm-3
-              .form-group
-                label.checkbox-inline
-                    input(name="adoptee.isPetOwner", type="checkbox", ng-model="adoptee.isPetOwner")
-                    | Pet Owner
-            .col-sm-9
-                .form-group(ng-hide="!adoptee.isPetOwner")
-                    input.form-control(name="adoptee.petTypes", type="text", placeholder="Pet Types", ng-model="adoptee.petTypes")
-            .row
-            .col-sm-6
-              .form-group
-                select.form-control(name="adoptee.language", ng-model="adoptee.language", ng-options="l for l in enums.language")
-                  option(disabled, value="") Language
-                p.help-block For non-English-speaking households
-            .col-sm-6(ng-hide="adoptee.language != 'Spanish/English spoken by'")
-              .form-group
-                input.form-control(name="adoptee.englishSpeaker", type="text", placeholder="English speaker", ng-model="adoptee.englishSpeaker")
+                    input.form-control(name="adoptee.agent.agentPhone", type="phone", placeholder="Agent Phone", ng-model="adoptee.agent.agentPhone")       
         fieldset(ng-disabled="siteUndefined() || permission.readonly")
           legend Household Characteristics
           .row

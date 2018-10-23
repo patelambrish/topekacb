@@ -134,13 +134,13 @@ body
           tr
             td.label Phone:
             td
-              - if (homePhone) {
-                span.label Home:
-                - if(homePhone.name) {
-                  | #{homePhone.name} -
+              - if (true) {
+                span.label OK to send Text Message?:
+                - if(isOkToText) {
+                  | Yes
                 -}
-                - if(homePhone.number) {
-                  | #{homePhone.number}
+                - if(!isOkToText) {
+                  | No
                 -}
               -}
               - if (cell1Phone) {
@@ -176,44 +176,6 @@ body
           tr
             td.label Email:
             td #{email}
-      h3 Additional Information
-      table
-        tr
-          td.label Diabetic?
-          td
-            - if(isDiabetic === true) {
-             | Yes
-            - }
-            - else {
-             | No
-            -}
-        tr
-          td.label Pet Owner?
-          td
-            - if(isPetOwner === true) {
-             | Yes
-            - }
-            - else {
-             | No
-            -}
-        tr
-          td.label Allergic?
-          td
-            - if(isAllergic === true) {
-             | Yes
-            - }
-            - else {
-             | No
-            -}
-        tr
-          td.label Language
-          td
-            - if(language) {
-             | #{language} #{englishSpeaker}
-            - }
-            - else {
-             | Not Available
-            -}        
       h3 Household Characteristics
       table(class="full-width")
         tr(class="align-left")

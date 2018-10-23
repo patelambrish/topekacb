@@ -19,15 +19,17 @@ module.exports = function(app, config) {
 	app.use(bodyParser());
 	app.use(session({
 		secret : 'Topeka unicorns',
-		store : new MongoStore({
-			mongooseConnection : mongoose.connection
-		}),
 		saveUninitialized : true,
 		resave : true,
 		cookie : {
 			maxAge : 60 * 60 * 1000
 		},
-		rolling : true
+		rolling : true,
+		store : new MongoStore({
+			mongooseConnection : mongoose.connections[0],
+			collection: 'sessions',
+			auto_reconnect: true
+		})
 	}));
 	app.use(passport.initialize());
 	app.use(passport.session());
@@ -40,6 +42,10 @@ module.exports = function(app, config) {
 		} else {
 			next();
 		}
+	});
+	mongoose.connection.on('open',function() {		
+		app.listen(config.port);
+		console.log('Listening on port ' + config.port + '...');
 	});
 };
 

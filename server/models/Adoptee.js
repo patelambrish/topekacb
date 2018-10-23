@@ -43,13 +43,14 @@ var householdMember = {
 };
 
 var householdTypes = [
-  "Single",
-  "Adults Only",
-  "Single Mom with Children",
-  "Single Dad with Children",
-  "Married Couple with Children",
-  "Adult with Children",
-  "Grandparents (only) with Children"
+  "Couple w/children 17 & under",
+  "Couple w/adult children 18 & over",
+  "Single parent w/adult children 18 & over",
+  "Single Mom w/children 17 & under",
+  "Multiple Adults (no children)",
+  "Single Dad w/children 17 & under",
+  "Grandparents w/children 17 & under",
+  "Single Person"
 ];
 var states = ["KS"];
 
@@ -61,7 +62,7 @@ var adopteeStates = [
   "Pulled For View/Update"
 ];
 var genders = ["Male", "Female"];
-var specialNeedsEnum = ["Senior (60+)", "Veteran", "Disabled", "Homebound"];
+var specialNeedsEnum = ["Senior (60+)", "Veteran", "Disabled", "Homebound", "Pet - Dog", "Pet - Cat"];
 var membersEnum = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'];
 
 var adopteeSchema = mongoose.Schema({
@@ -103,6 +104,7 @@ var adopteeSchema = mongoose.Schema({
   isDiabetic: { type: Boolean },
   isAllergic: { type: Boolean },
   reactionFoods: { type: String },
+  isOkToText: { type: Boolean },
   isPetOwner: { type: Boolean },
   petTypes: { type: String },
   householdMembers: [householdMember],

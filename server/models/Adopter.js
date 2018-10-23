@@ -7,12 +7,18 @@ var mongoose = require('mongoose'),
     statusEnum = ['In Process', 'Not Matched', 'Matched'],
     notifyEnum = ['Email', 'Fax', 'Pickup', 'Postal Mail'],
     householdEnum = [
-      'Single', 'Adults Only', 'Single Mom with Children', 'Single Dad with Children',
-      'Married Couple with Children', 'Adult with Children', 'Grandparents (only) with Children', 'Spanish Speaker'
+      "Couple w/children 17 & under",
+      "Couple w/adult children 18 & over",
+      "Single parent w/adult children 18 & over",
+      "Single Mom w/children 17 & under",
+      "Multiple Adults (no children)",
+      "Single Dad w/children 17 & under",
+      "Grandparents w/children 17 & under",
+      "Single Person"
     ],
     genderEnum = ['Male', 'Female'],
     ageEnum = ['0 - 7', '8 - 12', '13 - 18'],
-    specialEnum = ['Senior (60+)', 'Veteran', 'Disabled', 'Homebound'],
+    specialEnum = ["Senior (60+)", "Veteran", "Disabled", "Homebound", "Pet - Dog", "Pet - Cat"],
     membersEnum = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'],
     sizeEnum = ['NB', '3M', '6M', '12M', '18M', '24M', '2T', '3T', '4T', 'XS', 'S', 'M', 'L', 'XL'];
 
