@@ -12,6 +12,8 @@ angular.module('app').
     'Tenn Town I': 'Tenn Town I',
     'Tenn Town II': 'Tenn Town II',
     'Tyler Towers': 'Tyler Towers',
+    'TRM': 'TRM',
+    'Other': 'Other'
   }).
   factory('cbCurrentSite', function(cbSites) {
     var currentSite;

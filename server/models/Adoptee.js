@@ -22,7 +22,9 @@ var sites = [
   "Polk Towers",
   "Tenn Town I",
   "Tenn Town II",
-  "Tyler Towers"
+  "Tyler Towers",
+  "TRM",
+  "Other"
 ];
 
 var clothingSizeTypes = ["A", "J", "C"];
