@@ -176,6 +176,17 @@ body
           tr
             td.label Email:
             td #{email}
+      h3 Additional Information
+      table
+        tr
+          td.label Language
+          td
+            - if(language) {
+             | #{language} #{englishSpeaker}
+            - }
+            - else {
+             | Not Available
+            -}  
       h3 Household Characteristics
       table(class="full-width")
         tr(class="align-left")

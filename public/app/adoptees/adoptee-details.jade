@@ -130,7 +130,18 @@
             .col-sm-3
                 .form-group
                     label(for="adoptee.agent.agentPhone") Agent Phone
-                    input.form-control(name="adoptee.agent.agentPhone", type="phone", placeholder="Agent Phone", ng-model="adoptee.agent.agentPhone")       
+                    input.form-control(name="adoptee.agent.agentPhone", type="phone", placeholder="Agent Phone", ng-model="adoptee.agent.agentPhone")
+        fieldset(ng-disabled="siteUndefined() || permission.readonly")
+          legend Additional Information
+            .row
+              .col-sm-6
+                .form-group
+                  select.form-control(name="adoptee.language", ng-model="adoptee.language", ng-options="l for l in enums.language")
+                    option(disabled, value="") Language
+                  p.help-block For non-English-speaking households
+              .col-sm-6(ng-hide="adoptee.language != 'Spanish/English spoken by'")
+                .form-group
+                  input.form-control(name="adoptee.englishSpeaker", type="text", placeholder="English speaker", ng-model="adoptee.englishSpeaker")       
         fieldset(ng-disabled="siteUndefined() || permission.readonly")
           legend Household Characteristics
           .row
