@@ -17,7 +17,7 @@ module.exports = {
   },
   test: {
     rootPath: rootPath,
-    db: process.env.MONGOHQ_URL,
+    db: process.env.MONGODB_URI,
     port: process.env.PORT || 80,
     faceBookClientID : process.env.FACEBOOK_CLIENT_ID,
     faceBookClientSecret : process.env.FACEBOOK_CLIENT_SECRET,
@@ -29,7 +29,7 @@ module.exports = {
   },
   production: {
     rootPath: rootPath,
-    db: process.env.MONGOHQ_URL,
+    db: process.env.MONGODB_URI,
     port: process.env.PORT || 80,
     faceBookClientID : process.env.FACEBOOK_CLIENT_ID,
     faceBookClientSecret : process.env.FACEBOOK_CLIENT_SECRET,
