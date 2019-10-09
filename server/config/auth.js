@@ -43,7 +43,9 @@ exports.requiresApiLogin = function(req, res, next) {
 };
 
 exports.requiresRole = function(roles) {
+  
 	return function(req, res, next) {
+    console.log('Authenticated', req.isAuthenticated());
 		var isAuthorized = false, i=0;
 		if (!req.isAuthenticated()) {
 			res.status(401);
