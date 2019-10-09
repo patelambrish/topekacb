@@ -72,11 +72,13 @@ module.exports = function(config) {
 
   passport.serializeUser(function(user, done) {
     if (user) {
+      console.log('serialize user' , user);
       done(null, user._id.toString());
     }
   });
 
   passport.deserializeUser(function(id, done) {
+    console.log('deserialize user ',id);
     User.findOne({
       _id : id
     }).exec(function(err, user) {
