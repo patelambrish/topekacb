@@ -12,7 +12,8 @@ module.exports = function(app, config) {
 	app.set('views', config.rootPath + '/server/views');
 	app.set('view engine', 'jade');
 	app.use(compress());
-	app.use(logger('dev'));
+  app.use(logger('dev'));
+  app.use(express.static(config.rootPath + '/public'));
 	app.use(cookieParser());
 	app.use(bodyParser());
 	app.use(session({
@@ -32,7 +33,7 @@ module.exports = function(app, config) {
 	}));
 	app.use(passport.initialize());
 	app.use(passport.session());
-	app.use(express.static(config.rootPath + '/public'));
+	
 	app.use('*', function(req, res, next) {
 		var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 		if (env =='production' && req.headers['x-forwarded-proto'] != 'https') {
