@@ -46,6 +46,7 @@ exports.requiresRole = function(roles) {
   
 	return function(req, res, next) {
     console.log('Authenticated', req.isAuthenticated());
+    console.log(req);
 		var isAuthorized = false, i=0;
 		if (!req.isAuthenticated()) {
 			res.status(401);
