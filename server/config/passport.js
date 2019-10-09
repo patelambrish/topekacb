@@ -82,6 +82,8 @@ module.exports = function(config) {
     User.findOne({
       _id : id
     }).exec(function(err, user) {
+      console.log('Found user by id: ', user);
+      console.log('Error encountered', err);
       if (user) {
         return done(null, user);
       } else {
