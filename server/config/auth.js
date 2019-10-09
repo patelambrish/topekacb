@@ -14,17 +14,20 @@ exports.authenticate = function(req, res, next) {
 		req.logIn(user, function(err) {
 			if (err) {
 				return next(err);
-			}
-			res.send({
-				success : true,
-				user : {
-					username : user.username,
-					firstName : user.firstName,
-					lastName : user.lastName,
-					id : user._id,
-					roles : user.roles
-				}
-			});
+      }
+      req.session.save(() => {
+        res.send({
+          success : true,
+          user : {
+            username : user.username,
+            firstName : user.firstName,
+            lastName : user.lastName,
+            id : user._id,
+            roles : user.roles
+          }
+        });
+      })
+
 		})
 	})
 	auth(req, res, next);
