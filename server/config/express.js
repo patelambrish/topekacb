@@ -21,7 +21,8 @@ module.exports = function(app, config) {
 		resave : true,
 		cookie : {
       maxAge : 60 * 60 * 1000,
-      secure:true
+      secure:true,
+      httpOnly: false
 		},
 		rolling : true,
 		store : new MongoStore({
