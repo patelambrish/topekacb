@@ -43,7 +43,7 @@ exports.requiresRole = function(roles) {
 	return function(req, res, next) {
 		var isAuthorized = false, i=0;
 		if (!req.isAuthenticated()) {
-			res.status(403);
+			res.status(401);
 			res.end();
 		} else {
 			for(i=0;i<roles.length;i++){
