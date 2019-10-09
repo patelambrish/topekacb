@@ -1,4 +1,4 @@
-angular.module('app', ['ngResource', 'ngRoute', 'newrelic-timing','googlechart','textAngular']);
+angular.module('app', ['ngResource', 'ngRoute','googlechart','textAngular']);
 
 angular.module('app').config(function($routeProvider, $locationProvider) {
 	var routeRoleChecks = {

@@ -1,5 +1,3 @@
-var newrelic = require('newrelic');
-
 var express = require('express'),
 	logger = require('morgan'),
 	bodyParser = require('body-parser'),
@@ -22,7 +20,8 @@ module.exports = function(app, config) {
 		saveUninitialized : true,
 		resave : true,
 		cookie : {
-			maxAge : 60 * 60 * 1000
+      maxAge : 60 * 60 * 1000,
+      secure:true
 		},
 		rolling : true,
 		store : new MongoStore({
@@ -34,7 +33,6 @@ module.exports = function(app, config) {
 	app.use(passport.initialize());
 	app.use(passport.session());
 	app.use(express.static(config.rootPath + '/public'));
-	app.locals.newrelic = newrelic;
 	app.use('*', function(req, res, next) {
 		var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 		if (env =='production' && req.headers['x-forwarded-proto'] != 'https') {
