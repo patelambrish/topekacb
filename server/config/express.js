@@ -17,11 +17,10 @@ module.exports = function(app, config) {
 	app.use(bodyParser());
 	app.use(session({
 		secret : 'Topeka unicorns',
-		saveUninitialized : true,
+		saveUninitialized : false,
 		resave : true,
 		cookie : {
       maxAge : 60 * 60 * 1000,
-      secure:true,
       httpOnly: false
 		},
 		rolling : true,
