@@ -137,7 +137,7 @@ exports.getAdopterById = function(req, res, next) {
 };
 
 exports.saveAdopter = function(req, res, next) {
-  console.log(req.body);
+  //console.log(req.body);
   var data = req.body,
     id = data._id,
     options = {
@@ -171,7 +171,7 @@ exports.saveAdopter = function(req, res, next) {
     data.updatedBy = userId;
   }
   
-  console.log(id);
+  //console.log(id);
 
   Adopter.
   findByIdAndUpdate(id, data, options).
@@ -181,7 +181,7 @@ exports.saveAdopter = function(req, res, next) {
   select('-__v').
   lean(true).
   exec(function(err, adopter) {
-    console.log(adopter);
+    //console.log(adopter);
     if(err) {
       return next(err);
     }

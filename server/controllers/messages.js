@@ -1,7 +1,7 @@
 var Message = require('mongoose').model('Message');
 
 exports.getMessage = function(req, res) {
-  console.log(req.params.type);
+  //console.log(req.params.type);
   Message.findOne({ type: req.params.type }).exec(function(err, msg) {
     res.send(msg);
   });

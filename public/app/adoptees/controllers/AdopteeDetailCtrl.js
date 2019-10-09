@@ -36,10 +36,10 @@ angular.module('app').
           }
           else{
             $scope.adoptee = retVal;
-            console.log($scope.adoptee.birthDate);
+            //console.log($scope.adoptee.birthDate);
 
             $scope.adoptee.birthDate = $filter('date')($filter('iso2UTC')($scope.adoptee.birthDate), 'yyyy-MM-dd');
-            console.log($scope.adoptee.birthDate);
+            //console.log($scope.adoptee.birthDate);
             $scope.adoptee.intakeDate = $filter('date')($filter('iso2UTC')($scope.adoptee.intakeDate), 'yyyy-MM-dd');
           }
          });

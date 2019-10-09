@@ -72,18 +72,18 @@ module.exports = function(config) {
 
   passport.serializeUser(function(user, done) {
     if (user) {
-      console.log('serialize user' , user);
+      //console.log('serialize user' , user);
       done(null, user._id.toString());
     }
   });
 
   passport.deserializeUser(function(id, done) {
-    console.log('deserialize user ',id);
+    //console.log('deserialize user ',id);
     User.findOne({
       _id : id
     }).exec(function(err, user) {
-      console.log('Found user by id: ', user);
-      console.log('Error encountered', err);
+      //console.log('Found user by id: ', user);
+      //console.log('Error encountered', err);
       if (user) {
         return done(null, user);
       } else {

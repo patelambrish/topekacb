@@ -11,7 +11,7 @@ function isValidPassword(pwd) {
 }
 
 exports.getUsers = function(req, res) {
-	console.log(req.query);
+	//console.log(req.query);
 	User.find({}, {
 		username : 1,
 		firstName : 1,
