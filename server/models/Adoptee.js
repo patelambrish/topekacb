@@ -45,13 +45,10 @@ var householdMember = {
 };
 
 var householdTypes = [
-  "Couple w/children 17 & under",
-  "Couple w/adult children 18 & over",
-  "Single parent w/adult children 18 & over",
-  "Single Mom w/children 17 & under",
+  "Couple w/children",
+  "Single Parent w/children",
+  "Grandparents w/children",
   "Multiple Adults (no children)",
-  "Single Dad w/children 17 & under",
-  "Grandparents w/children 17 & under",
   "Single Person"
 ];
 var states = ["KS"];
