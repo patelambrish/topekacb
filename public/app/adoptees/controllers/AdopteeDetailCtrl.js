@@ -12,6 +12,9 @@ angular.module('app').
         $scope.adoptee = new Adoptee({
             site: cbCurrentSite.get(),
             householdMembers: [],
+            criteria: {
+              specialNeeds: []
+            },
             address: {
               city: 'Topeka',
               state: 'KS'
