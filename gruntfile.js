@@ -1,8 +1,11 @@
+const sass = require('node-sass');
+
 module.exports = function(grunt) {
     grunt.initConfig({
         sass: {
             dev: {
                 options: {
+                    implementation: sass,
                     style: 'compact',
                     compass: false,
                     precision: 8
@@ -17,3 +20,4 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-sass');
     grunt.registerTask('default', ['sass:dev']);
 }
+
