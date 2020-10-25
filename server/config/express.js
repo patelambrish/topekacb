@@ -38,10 +38,12 @@ module.exports = function(app, config) {
 			next();
 		}
 	});
-	db.once('open',function() {		
+	app.listen(config.port);
+	console.log('Listening on port ' + config.port + '...');
+	/*db.once('open',function() {		
 		app.listen(config.port);
 		console.log('Listening on port ' + config.port + '...');
-	});
+	});*/
 	/*mongoose.connection.on('connected',function() {		
 		app.listen(config.port);
 		console.log('Listening on port ' + config.port + '...');
