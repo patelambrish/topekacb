@@ -139,7 +139,7 @@ function createSampleAdoptees() {
       if (count === 0) {
         return generateAdoptees(4000);
       } else {
-        throw new Error("db already has " + count + " adoptees.");
+        console.log("db already has " + count + " adoptees.");
       }
     });
 }

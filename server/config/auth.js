@@ -3,33 +3,33 @@ var passport = require('passport');
 exports.authenticate = function(req, res, next) {
 	req.body.username = req.body.username.toLowerCase();
 	var auth = passport.authenticate('local', function(err, user) {
-		if (err) {
-			return next(err);
-		}
-		if (!user) {
-			res.send({
-				success : false
-			})
-		}
-		req.logIn(user, function(err) {
 			if (err) {
 				return next(err);
-      }
-      req.session.save(() => {
-        res.send({
-          success : true,
-          user : {
-            username : user.username,
-            firstName : user.firstName,
-            lastName : user.lastName,
-            id : user._id,
-            roles : user.roles
-          }
-        });
-      })
-
+			}
+			if (!user) {
+				res.send({
+					success : false
+				});
+			}
+			req.logIn(user, function(err) {
+				if (err) {
+					return next(err);
+				}
+				req.session.save(function(err) {
+					console.log(err);
+					res.send({
+					success : true,
+					user : {
+							username : user.username,
+							firstName : user.firstName,
+							lastName : user.lastName,
+							id : user._id,
+							roles : user.roles
+							}
+					});
+				});
+			});
 		})
-	})
 	auth(req, res, next);
 };
 

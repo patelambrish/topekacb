@@ -5,15 +5,15 @@ var express = require('express'),
 	session = require('express-session'),
 	passport = require('passport'),
 	mongoose = require('mongoose'),
-	MongoStore = require('connect-mongostore')(session),
+	MongoStore = require('connect-mongo')(session),
 	compress = require('compression');
 
 module.exports = function(app, config) {
 	app.set('views', config.rootPath + '/server/views');
 	app.set('view engine', 'jade');
 	app.use(compress());
-  app.use(logger('dev'));
-  app.use(express.static(config.rootPath + '/public'));
+  	app.use(logger('dev'));
+  	app.use(express.static(config.rootPath + '/public'));
 	app.use(cookieParser());
 	app.use(bodyParser());
 	app.use(session({
@@ -21,15 +21,11 @@ module.exports = function(app, config) {
 		saveUninitialized : false,
 		resave : true,
 		cookie : {
-      maxAge : 60 * 60 * 1000,
-      httpOnly: false
+      		maxAge : 60 * 60 * 1000,
+      		httpOnly: true
 		},
 		rolling : true,
-		store : new MongoStore({
-			mongooseConnection : mongoose.connections[0],
-			collection: 'sessions',
-			auto_reconnect: true
-		})
+		store: new MongoStore({ url: config.db })
 	}));
 	app.use(passport.initialize());
 	app.use(passport.session());
@@ -42,9 +38,13 @@ module.exports = function(app, config) {
 			next();
 		}
 	});
-	mongoose.connection.on('open',function() {		
+	db.once('open',function() {		
 		app.listen(config.port);
 		console.log('Listening on port ' + config.port + '...');
 	});
+	/*mongoose.connection.on('connected',function() {		
+		app.listen(config.port);
+		console.log('Listening on port ' + config.port + '...');
+	});*/
 };
 

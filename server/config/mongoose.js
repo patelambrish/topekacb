@@ -29,18 +29,19 @@ module.exports = function(config) {
         return adopteeModel.createSampleAdoptees();
       }).
       then(function(data) {
-        sampleAdoptees = data.filter(function(a) {
-          return a.status === 'Not Matched';
-        });
-        sampleAdoptees.length = Math.floor(sampleAdoptees.length * 0.88);
-        console.log('Creating sample matches from a pool of ' + sampleAdoptees.length + ' adoptees...');
-        sampleAdopters.forEach(function(adopter) {
-          adopterModel.createSampleMatch(adopter, sampleAdoptees);
-        });
-        process.stdout.write('\n');
-        console.log('Successfully completed sample matching.');
+        if(data) {
+          sampleAdoptees = data.filter(function(a) {
+            return a.status === 'Not Matched';
+          });
+          sampleAdoptees.length = Math.floor(sampleAdoptees.length * 0.88);
+          console.log('Creating sample matches from a pool of ' + sampleAdoptees.length + ' adoptees...');
+          sampleAdopters.forEach(function(adopter) {
+            adopterModel.createSampleMatch(adopter, sampleAdoptees);
+          });
+          process.stdout.write('\n');
+          console.log('Successfully completed sample matching.');
+        }        
       });
-
     adopteeApplicationCounterModel.initializeAdopteeApplicationCounter();
     messageModel.createMessages();
   }

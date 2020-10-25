@@ -81,7 +81,7 @@ function createSampleAdopters() {
       if(count === 0) {
         return generateAdopters(1500);
       } else {
-        throw new Error('db already has ' + count + ' adopters.');
+        console.log('db already has ' + count + ' adopters.');
       }
     });
 }
