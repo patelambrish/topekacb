@@ -145,6 +145,7 @@ exports.saveAdopter = function(req, res, next) {
       new: true
     },
     userId = req.user ? req.user._id : null;
+    data.status = data.status ? data.status : "In Process";
 
   delete data.enums;
   
