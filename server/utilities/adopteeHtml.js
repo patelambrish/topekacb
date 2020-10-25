@@ -1,4 +1,4 @@
-var fs = require('fs'), jade = require('jade');
+var fs = require('fs'), jade = require('pug');
 exports.getAdopteeHtml = function(adoptee, templatedata) {
 
 	var fn = jade.compile(templatedata);

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
     PrintEmail = mongoose.model('PrintEmail'),
     fs = require('fs'),
-    jade = require('jade'),
+    jade = require('pug'),
     htmlUtil = require('../utilities/adopteeHtml'),
     Adopter = mongoose.model('Adopter');
 
