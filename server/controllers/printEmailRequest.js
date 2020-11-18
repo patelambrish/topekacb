@@ -90,7 +90,7 @@ exports.updatePrintEmailRequest = function(req, res, next) {
 exports.print = function(req, res, next) {
 	var requestId = req.params.id;
 	console.log("requestId: " + requestId);
-	fs.readFile('server/views/adopteePrint.jade', 'utf8', function(err, templateData) {
+	fs.readFile('server/views/adopteePrint.pug', 'utf8', function(err, templateData) {
 		PrintEmail.findById(requestId).exec(function(err, printEmailRequest) {
 			if (err) {
 				console.log(err);
