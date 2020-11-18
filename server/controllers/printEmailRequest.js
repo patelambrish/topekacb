@@ -13,7 +13,9 @@ var config = require('../config/config')[env];
 
 console.log(config.sendGridUser);
 console.log(config.sendGridPassword);
-var sendgrid = require('sendgrid')(config.sendGridUser, config.sendGridPassword);
+var sendgrid = require('@sendgrid/mail');//(config.sendGridUser, config.sendGridPassword);
+
+sendgrid.setApiKey(config.sendGridAPIKey);
 
 function getAdopterHtml(adopter, templateData) {
 	var completeHtml = '',
@@ -128,7 +130,7 @@ exports.print = function(req, res, next) {
 
 exports.email = function(req, res, next) {
 	var adopterId = req.params.id;
-	fs.readFile('server/views/adopteePrint.jade', 'utf8', function(err, templateData) {
+	fs.readFile('server/views/adopteePrint.pug', 'utf8', function(err, templateData) {
 		Adopter.findById(adopterId).populate('adoptees').exec(function(err, adopter) {
 			if (err) {
 				console.log(err);
@@ -153,29 +155,55 @@ exports.email = function(req, res, next) {
 				printEmailRequest.adopter = adopter._id;
 				printEmailRequest.status = 'Complete';
 				printEmailRequest.html = completeHtml;
+				//console.log(completeHtml);
 				var emailTo =[];
 				if (config.emailTo) {
 					emailTo.push(config.emailTo);
 				} else {
 					emailTo = printEmailRequest.emailTo;
 				}
-
-				pdf.create(completeHtml).toBuffer(function(err, buffer) {
-
-					var email = new sendgrid.Email({
+				/*pdf.create(html, options).toFile('./businesscard.pdf', function(err, res) {
+					if (err) return console.log(err);
+					console.log(res); // { filename: '/app/businesscard.pdf' }
+				  });*/
+				var filepath = './'+adopter._id+'.pdf';
+				pdf.create(completeHtml).toFile(filepath,function(err, response) {
+					attachment = fs.readFileSync(filepath).toString("base64");
+					var email = {
 						to : emailTo,
 						from : config.emailFrom,
 						subject : config.emailSubject,
 						html : 'Dear Adopter, <br/><br/> Thank you so much for adopting a family this year through the community Christmas Bureau. With your generosity we will be able to make sure our community friends have Christmas for their family. <br/><br/> To help you with what to do next please attached find an informational letter along with a list of your family or families you have adopted for this holiday season. <br/><br/> If you have any questions or comments please do not hesitate to contact the Christmas Bureau staff at (785) 228-5120 or cb@unitedwaytopeka.org. <br/><br/> Thank you again and Merry Christmas to you and your family. <br/><br/>Brett Martin<br/>Christmas Bureau<br/>United Way of Greater Topeka.',
-						files : [{
+						attachments : [{
 									filename : 'Adoptee List.pdf',
-									content : buffer
+									content : attachment
 								}]						
+					};
+//					email.setHeaders({'Read-Receipt-To': emailTo[0]});   
+//					email.setHeaders({'X-Confirm-reading-to': emailTo[0]}); 
+//					email.setHeaders({'Disposition-Notification-To': emailTo[0]});
+
+					//ES6
+					sendgrid
+					.send(email)
+					.then(() => {
+						fs.unlinkSync(filepath);
+						PrintEmail.create(printEmailRequest, function(err, newRequest) {
+							if (err) {
+								console.log(err);
+								return next(err);
+							}
+							res.status(200);
+							res.send(newRequest);
+						});							
+					}, error => {
+						console.error(error);
+						fs.unlinkSync(filepath);
+						if (error.response) {
+						console.error(error.response.body)
+						}
 					});
-					email.setHeaders({'Read-Receipt-To': emailTo[0]});   
-					email.setHeaders({'X-Confirm-reading-to': emailTo[0]}); 
-					email.setHeaders({'Disposition-Notification-To': emailTo[0]}); 
-					sendgrid.send(email, function(err, json) {
+/*					sendgrid.send(email, function(err, json) {
 						if (err) {
 							console.error(err);
 							return next(err);
@@ -189,7 +217,7 @@ exports.email = function(req, res, next) {
 							res.status(200);
 							res.send(newRequest);
 						});
-					});
+					}); */
 				});
 
 			} else {

@@ -100,7 +100,7 @@ body
                    | #{ph.number}
                  -}
                  br
-               td
+              td
                  span.label Delivery Method:
                   - if(adopter.notifyMethods && adopter.notifyMethods[0]) {
                   | #{adopter.notifyMethods[0]}
@@ -111,8 +111,8 @@ body
         - }
       td
         div(class="align-right")
-          img(src="http://topekacb.org/assets/image/uw-logo.png" width="100")
-          img(src="http://topekacb.org/assets/image/cb-logo-green.png" width="80")
+          img(src="https://topekacb-prod.herokuapp.com/assets/image/uw-logo.png" width="100")
+          img(src="https://topekacb-prod.herokuapp.com/assets/image/cb-logo-green.png" width="80")
   //div.page-header
     h2 #{lastName}, #{firstName} #{middleInitial}
       small.pull-right Application Number: #{applicationNumber}
