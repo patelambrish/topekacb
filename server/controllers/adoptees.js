@@ -2,7 +2,7 @@ var mongoose = require('mongoose'),
     Adoptee = mongoose.model('Adoptee'),
     AdopteeApplicationCounter = mongoose.model('AdopteeApplicationCounter'),
     fs = require('fs'),
-    jade=require('jade'),
+    jade=require('pug'),
     htmlUtil = require('../utilities/adopteeHtml'),
     moment=require('moment');
 

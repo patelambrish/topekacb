@@ -4,15 +4,9 @@ angular.module('app').
     'D': 'Deer Creek',
     'A': 'Antioch',
     'O': 'Other' */
-    'Echo Ridge': 'Echo Ridge',
-    'Pine Ridge': 'Pine Ridge',
-    'State Street': 'State Street',
-    'Jackson Towers': 'Jackson Towers',
-    'Polk Towers': 'Polk Towers',
-    'Tenn Town I': 'Tenn Town I',
-    'Tenn Town II': 'Tenn Town II',
-    'Tyler Towers': 'Tyler Towers',
-    'TRM': 'TRM',
+    'Deer Creek': 'Deer Creek',
+    'CRC/Avondale': 'CRC/Avondale',
+    'Salvation Army': 'Salvation Army',    
     'Other': 'Other'
   }).
   factory('cbCurrentSite', function(cbSites) {

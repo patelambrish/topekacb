@@ -7,10 +7,11 @@ var express = require('express'),
 	mongoose = require('mongoose'),
 	MongoStore = require('connect-mongo')(session),
 	compress = require('compression');
+	path = require('path');
 
 module.exports = function(app, config) {
-	app.set('views', config.rootPath + '/server/views');
-	app.set('view engine', 'jade');
+	app.set('views', path.join(config.rootPath, 'server/views'));
+	app.set('view engine', 'pug');
 	app.use(compress());
   	app.use(logger('dev'));
   	app.use(express.static(config.rootPath + '/public'));
@@ -32,6 +33,7 @@ module.exports = function(app, config) {
 	
 	app.use('*', function(req, res, next) {
 		var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+		res.set('Cache-Control', 'no-store');
 		if (env =='production' && req.headers['x-forwarded-proto'] != 'https') {
 			return res.redirect(['https://', req.get('Host'), req.url].join(''));
 		} else {

@@ -45,7 +45,7 @@ form(name="adopteeSearchForm", novalidate)
             a(href="", ng-click="applyAdopteeFilter({special: null})") Any Special Need
           li(ng-repeat="e in adopteeEnums.special", ng-class="{active: adopteeFilter.special == e}")
             a(href="", ng-click="applyAdopteeFilter({special: e})", ng-bind="e")
-       .btn-group.btn-group-sm
+      .btn-group.btn-group-sm
         button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown", ng-class="{active: adopteeFilter.members}")
           | {{adopteeFilter.members || 'Members'}}&nbsp;
           i.fa.fa-caret-down

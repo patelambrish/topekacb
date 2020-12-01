@@ -15,16 +15,10 @@ var languages = ["Spanish", "Spanish/English spoken by"];
 
 //var sites = ['D', 'L', 'A', 'O'];
 var sites = [
-  "Echo Ridge",
-  "Pine Ridge",
-  "State Street",
-  "Jackson Towers",
-  "Polk Towers",
-  "Tenn Town I",
-  "Tenn Town II",
-  "Tyler Towers",
-  "TRM",
-  "Other"
+  'Deer Creek',
+  'CRC/Avondale',
+  'Salvation Army',    
+  'Other'
 ];
 
 var clothingSizeTypes = ["A", "J", "C"];
@@ -102,6 +96,8 @@ var adopteeSchema = mongoose.Schema({
   },
   isDiabetic: { type: Boolean },
   isAllergic: { type: Boolean },
+  isMealsOnWheelsBene: { type: Boolean },
+  hasPersonalTransportation: { type: Boolean },
   reactionFoods: { type: String },
   isOkToText: { type: Boolean },
   isPetOwner: { type: Boolean },

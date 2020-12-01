@@ -133,15 +133,27 @@
                     input.form-control(name="adoptee.agent.agentPhone", type="phone", placeholder="Agent Phone", ng-model="adoptee.agent.agentPhone")
         fieldset(ng-disabled="siteUndefined() || permission.readonly")
           legend Additional Information
-            .row
-              .col-sm-6
-                .form-group
-                  select.form-control(name="adoptee.language", ng-model="adoptee.language", ng-options="l for l in enums.language")
-                    option(disabled, value="") Language
-                  p.help-block For non-English-speaking households
-              .col-sm-6(ng-hide="adoptee.language != 'Spanish/English spoken by'")
-                .form-group
-                  input.form-control(name="adoptee.englishSpeaker", type="text", placeholder="English speaker", ng-model="adoptee.englishSpeaker")       
+          .row
+            .col-sm-6
+              .form-group
+                select.form-control(name="adoptee.language", ng-model="adoptee.language", ng-options="l for l in enums.language")
+                  option(disabled, value="") Language
+                p.help-block For non-English-speaking households
+            .col-sm-6(ng-hide="adoptee.language != 'Spanish/English spoken by'")
+              .form-group
+                input.form-control(name="adoptee.englishSpeaker", type="text", placeholder="English speaker", ng-model="adoptee.englishSpeaker")       
+          .row
+            .col-sm-12
+              .form-group
+                label.checkbox-inline
+                  input(name="isMealsOnWheelsBene", type="checkbox", ng-model="adoptee.isMealsOnWheelsBene")
+                  |  Someone in household currently receive Meals on Wheels
+          .row
+            .col-sm-12
+              .form-group
+                label.checkbox-inline
+                  input(name="hasPersonalTransportation", type="checkbox", ng-model="adoptee.hasPersonalTransportation")
+                  |  Has access to personal transportation (not the bus)              
         fieldset(ng-disabled="siteUndefined() || permission.readonly")
           legend Household Characteristics
           .row
@@ -194,41 +206,6 @@
                   .form-group
                     select.form-control(name="householdMember.gender", ng-model="householdMember.gender", ng-options="g | limitTo:1 for g in enums.gender")
                       option(disabled, value="") Gender
-            .col-sm-4
-              .row
-                .col-sm-4
-                    label Shirt
-                .col-sm-4
-                    label Pants
-                .col-sm-4
-                    label Shoe
-              .row
-                .col-sm-4
-                  .form-group
-                    select.form-control(name="householdMember.shirtSizeType", ng-model="householdMember.shirtSizeType", ng-options="szt for szt in enums.clothingSizeType")
-                      option(disabled, value="") Shirt
-                  .form-group
-                    input.form-control(name="householdMember.shirtSize", type="string", placeholder="Size", ng-model="householdMember.shirtSize")
-                .col-sm-4
-                  .form-group
-                    select.form-control(name="householdMember.pantSizeType", ng-model="householdMember.pantSizeType" ng-options="pzt for pzt in enums.clothingSizeType")
-                      option(disabled, value="") Pants
-                  .form-group
-                    input.form-control(name="householdMember.pantSize", type="string", placeholder="Size", ng-model="householdMember.pantSize")
-                .col-sm-4
-                  .form-group
-                    select.form-control(name="householdMember.shoeSizeType", ng-model="householdMember.shoeSizeType" ng-options="szt for szt in enums.shoeSizeType")
-                      option(disabled, value="") Shoe
-                  .form-group
-                    input.form-control(name="householdMember.shoeSize", type="string", placeholder="Size", ng-model="householdMember.shoeSize")
-            .col-sm-3
-              .row
-                .col-sm-12
-                    label Wishlist
-              .row
-                .col-sm-12
-                    .form-group
-                        textarea.form-control(name="householdMember.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="householdMember.wishList")
             .col-sm-1
               .row
                 .col-sm-12
