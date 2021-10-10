@@ -33,6 +33,7 @@ module.exports = function(app, config) {
 	
 	app.use('*', function(req, res, next) {
 		var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+		res.set('Cache-Control', 'no-store');
 		if (env =='production' && req.headers['x-forwarded-proto'] != 'https') {
 			return res.redirect(['https://', req.get('Host'), req.url].join(''));
 		} else {

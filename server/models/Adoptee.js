@@ -15,16 +15,10 @@ var languages = ["Spanish", "Spanish/English spoken by"];
 
 //var sites = ['D', 'L', 'A', 'O'];
 var sites = [
-  "Echo Ridge",
-  "Pine Ridge",
-  "State Street",
-  "Jackson Towers",
-  "Polk Towers",
-  "Tenn Town I",
-  "Tenn Town II",
-  "Tyler Towers",
-  "TRM",
-  "Other"
+  'Deer Creek',
+  'CRC/Avondale',
+  'Salvation Army',    
+  'Other'
 ];
 
 var clothingSizeTypes = ["A", "J", "C"];
