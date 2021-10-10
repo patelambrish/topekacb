@@ -11,7 +11,8 @@ module.exports = {
     faceBookCallbackURL : 'http://localhost:3030/auth/facebook/callback',
     sendGridUser: process.env.SENDGRID_USERNAME,
     sendGridPassword: process.env.SENDGRID_PASSWORD,
-    emailTo: 'ambrish.patel@se2.com',
+    sendGridAPIKey: process.env.SENDGRID_API_KEY,
+    emailTo: 'ambrishkpatel@gmail.com',
     emailFrom: 'cb@unitedwaytopeka.org',
     emailSubject: 'Christmas Bureau Adopted Family Information'
   },
@@ -24,6 +25,7 @@ module.exports = {
     faceBookCallbackURL : 'http://topekacb-test.herokuapp.com/auth/facebook/callback',
     sendGridUser: process.env.SENDGRID_USERNAME,
     sendGridPassword: process.env.SENDGRID_PASSWORD,
+    sendGridAPIKey: process.env.SENDGRID_API_KEY,
     emailFrom: 'cb@unitedwaytopeka.org',
     emailSubject: 'Christmas Bureau Adopted Family Information'
   },
@@ -36,6 +38,7 @@ module.exports = {
     faceBookCallbackURL : 'https://topekacb.org/auth/facebook/callback',
     sendGridUser: process.env.SENDGRID_USERNAME,
     sendGridPassword: process.env.SENDGRID_PASSWORD,
+    sendGridAPIKey: process.env.SENDGRID_API_KEY,
     emailFrom: 'cb@unitedwaytopeka.org',
     emailSubject: 'Christmas Bureau Adopted Family Information'
   }
