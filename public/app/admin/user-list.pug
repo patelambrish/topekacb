@@ -107,9 +107,8 @@
                 div(class="col-sm-8")
                   div(class="checkbox" data-ng-repeat="r in roles | orderBy:'name'")
                     label
-                      input(type="checkbox"                        
-                        data-ng-model="r.selected" value="{{r.value}}") 
-                      {{r.name}}
+                      input(type="checkbox" data-ng-model="r.selected" value="{{r.value}}") 
+                      | {{r.name}}
               div(class="form-group")
                 label(class="col-sm-4 control-label") Active 
                   span(title="Required" class="required-field") *

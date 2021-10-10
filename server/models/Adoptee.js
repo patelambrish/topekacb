@@ -96,6 +96,8 @@ var adopteeSchema = mongoose.Schema({
   },
   isDiabetic: { type: Boolean },
   isAllergic: { type: Boolean },
+  isMealsOnWheelsBene: { type: Boolean },
+  hasPersonalTransportation: { type: Boolean },
   reactionFoods: { type: String },
   isOkToText: { type: Boolean },
   isPetOwner: { type: Boolean },
