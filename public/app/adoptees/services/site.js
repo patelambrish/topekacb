@@ -4,8 +4,8 @@ angular.module('app').
     'D': 'Deer Creek',
     'A': 'Antioch',
     'O': 'Other' */
-    'Deer Creek': 'Deer Creek',
-    'CRC/Avondale': 'CRC/Avondale',
+    'Echo Ridge': 'Echo Ridge',
+    'CRC/Lundgren': 'CRC/Lundgren',
     'Salvation Army': 'Salvation Army',    
     'Other': 'Other'
   }).

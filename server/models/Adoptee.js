@@ -15,8 +15,8 @@ var languages = ["Spanish", "Spanish/English spoken by"];
 
 //var sites = ['D', 'L', 'A', 'O'];
 var sites = [
-  'Deer Creek',
-  'CRC/Avondale',
+  'Echo Ridge',
+  'CRC/Lundgren',
   'Salvation Army',    
   'Other'
 ];
