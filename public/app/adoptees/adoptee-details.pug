@@ -206,6 +206,41 @@
                   .form-group
                     select.form-control(name="householdMember.gender", ng-model="householdMember.gender", ng-options="g | limitTo:1 for g in enums.gender")
                       option(disabled, value="") Gender
+            .col-sm-4
+              .row
+                .col-sm-4
+                    label Shirt
+                .col-sm-4
+                    label Pants
+                .col-sm-4
+                    label Shoe
+              .row
+                .col-sm-4
+                  .form-group
+                    select.form-control(name="householdMember.shirtSizeType", ng-model="householdMember.shirtSizeType", ng-options="szt for szt in enums.clothingSizeType")
+                      option(disabled, value="") Shirt
+                  .form-group
+                    input.form-control(name="householdMember.shirtSize", type="string", placeholder="Size", ng-model="householdMember.shirtSize")
+                .col-sm-4
+                  .form-group
+                    select.form-control(name="householdMember.pantSizeType", ng-model="householdMember.pantSizeType" ng-options="pzt for pzt in enums.clothingSizeType")
+                      option(disabled, value="") Pants
+                  .form-group
+                    input.form-control(name="householdMember.pantSize", type="string", placeholder="Size", ng-model="householdMember.pantSize")
+                .col-sm-4
+                  .form-group
+                    select.form-control(name="householdMember.shoeSizeType", ng-model="householdMember.shoeSizeType" ng-options="szt for szt in enums.shoeSizeType")
+                      option(disabled, value="") Shoe
+                  .form-group
+                    input.form-control(name="householdMember.shoeSize", type="string", placeholder="Size", ng-model="householdMember.shoeSize")
+            .col-sm-3
+              .row
+                .col-sm-12
+                    label Wishlist
+              .row
+                .col-sm-12
+                    .form-group
+                        textarea.form-control(name="householdMember.wishList", type="textarea", rows="3", placeholder="Wish list", ng-model="householdMember.wishList")
             .col-sm-1
               .row
                 .col-sm-12
