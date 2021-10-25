@@ -177,7 +177,12 @@ exports.email = function(req, res, next) {
 						attachments : [{
 									filename : 'Adoptee List.pdf',
 									content : attachment
-								}]						
+								},
+								{
+									filename: 'Adopters FAQ.pdf',
+									path: 'server/content/Adopter FAQ 2021.pdf'
+								}
+							]						
 					};
 //					email.setHeaders({'Read-Receipt-To': emailTo[0]});   
 //					email.setHeaders({'X-Confirm-reading-to': emailTo[0]}); 
