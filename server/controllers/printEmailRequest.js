@@ -169,6 +169,7 @@ exports.email = function(req, res, next) {
 				var filepath = './'+adopter._id+'.pdf';
 				pdf.create(completeHtml).toFile(filepath,function(err, response) {
 					attachment = fs.readFileSync(filepath).toString("base64");
+					var faq = fs.readFileSync("server/content/Adopter FAQ 2021.pdf").toString("base64");
 					var email = {
 						to : emailTo.filter((x, i) => i === emailTo.indexOf(x)),
 						from : config.emailFrom,
@@ -180,7 +181,7 @@ exports.email = function(req, res, next) {
 								},
 								{
 									filename: 'Adopters FAQ.pdf',
-									path: 'server/content/Adopter FAQ 2021.pdf'
+									content: faq
 								}
 							]						
 					};
