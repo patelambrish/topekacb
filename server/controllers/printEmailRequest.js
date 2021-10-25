@@ -174,7 +174,7 @@ exports.email = function(req, res, next) {
 						to : emailTo.filter((x, i) => i === emailTo.indexOf(x)),
 						from : config.emailFrom,
 						subject : config.emailSubject,
-						html : 'Dear Adopter, <br/><br/> Thank you so much for adopting a family this year through the community Christmas Bureau. With your generosity we will be able to make sure our community friends have Christmas for their family. <br/><br/> To help you with what to do next please attached find an informational letter along with a list of your family or families you have adopted for this holiday season. <br/><br/> If you have any questions or comments please do not hesitate to contact the Christmas Bureau staff at (785) 228-5120 or cb@unitedwaytopeka.org. <br/><br/> Thank you again and Merry Christmas to you and your family. <br/><br/>Brett Martin<br/>Christmas Bureau<br/>United Way of Greater Topeka.',
+						html : 'Dear Adopter, <br/><br/> Thank you for adopting a family or individual this holiday season! We appreciate your willingness to help a neighbor in need. <br/><br/> Attached are two important documents for your review. The Adoptee List will have your individual or family information including contact information and their wish lists items. The Adopters FAQ are some general guidelines and expectations that should answer most of your questions about participating in Christmas Bureau. <br/><br/> If you have any questions or comments please do not hesitate to contact the Christmas Bureau staff at (785) 228-5120 or cb@unitedwaytopeka.org. <br/><br/>Christmas Bureau<br/>United Way of Greater Topeka.',
 						attachments : [{
 									filename : 'Adoptee List.pdf',
 									content : attachment
