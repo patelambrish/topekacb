@@ -141,19 +141,7 @@
                 p.help-block For non-English-speaking households
             .col-sm-6(ng-hide="adoptee.language != 'Spanish/English spoken by'")
               .form-group
-                input.form-control(name="adoptee.englishSpeaker", type="text", placeholder="English speaker", ng-model="adoptee.englishSpeaker")       
-          .row
-            .col-sm-12
-              .form-group
-                label.checkbox-inline
-                  input(name="isMealsOnWheelsBene", type="checkbox", ng-model="adoptee.isMealsOnWheelsBene")
-                  |  Someone in household currently receive Meals on Wheels
-          .row
-            .col-sm-12
-              .form-group
-                label.checkbox-inline
-                  input(name="hasPersonalTransportation", type="checkbox", ng-model="adoptee.hasPersonalTransportation")
-                  |  Has access to personal transportation (not the bus)              
+                input.form-control(name="adoptee.englishSpeaker", type="text", placeholder="English speaker", ng-model="adoptee.englishSpeaker") 
         fieldset(ng-disabled="siteUndefined() || permission.readonly")
           legend Household Characteristics
           .row
