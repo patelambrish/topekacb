@@ -1,12 +1,12 @@
 angular.module('app').
   value('cbSites', {
-   /*  'L': 'Let\'s Help',
-    'D': 'Deer Creek',
-    'A': 'Antioch',
-    'O': 'Other' */
     'Echo Ridge': 'Echo Ridge',
-    'CRC/Lundgren': 'CRC/Lundgren',
-    'Salvation Army': 'Salvation Army',    
+    'Jackson Towers':'Jackson Towers',
+    'Plaza West': 'Plaza West', 
+    'Polk Towers': 'Polk Towers',
+    'Tenn Town 1': 'Tenn Town 1',
+    'Tenn Town 2': 'Tenn Town 2',
+    'Tyler Towers': 'Tyler Towers',  
     'Other': 'Other'
   }).
   factory('cbCurrentSite', function(cbSites) {
