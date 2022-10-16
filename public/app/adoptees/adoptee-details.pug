@@ -105,11 +105,11 @@
           .row
             .col-sm-4.col-sm-offset-4
               .form-group
-                label(for="adoptee.otherPhone.number") Other Phone
+                label(for="adoptee.otherPhone.number") Backup Contact Phone
                 input.form-control(name="adoptee.otherPhone.number", type="phone", placeholder="Other phone number", ng-model="adoptee.otherPhone.number")
             .col-sm-4
               .form-group
-                label(for="adoptee.otherPhone.name") Other Phone Contact
+                label(for="adoptee.otherPhone.name") Backup Contact Name
                 input.form-control(name="adoptee.otherPhone.name", type="phone", placeholder="Other contact", ng-model="adoptee.otherPhone.name")
         fieldset(ng-disabled="siteUndefined() || permission.readonly")
           legend Email

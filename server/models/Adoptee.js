@@ -16,8 +16,12 @@ var languages = ["Spanish", "Spanish/English spoken by"];
 //var sites = ['D', 'L', 'A', 'O'];
 var sites = [
   'Echo Ridge',
-  'CRC/Lundgren',
-  'Salvation Army',    
+  'Jackson Towers',
+  'Plaza West', 
+  'Polk Towers',
+  'Tenn Town 1',
+  'Tenn Town 2',
+  'Tyler Towers',  
   'Other'
 ];
 
