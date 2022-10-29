@@ -10,9 +10,10 @@ var pdf = require('html-pdf');
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var config = require('../config/config')[env];
-
-console.log(config.sendGridUser);
-console.log(config.sendGridPassword);
+console.log("=====================================");
+console.log("Sendgrid User" + config.sendGridUser);
+console.log("Sendgrid Password" + config.sendGridPassword);
+console.log("Sendgrid APIKey" + config.sendGridAPIKey);
 var sendgrid = require('@sendgrid/mail');//(config.sendGridUser, config.sendGridPassword);
 
 sendgrid.setApiKey(config.sendGridAPIKey);
@@ -169,12 +170,13 @@ exports.email = function(req, res, next) {
 				var filepath = './'+adopter._id+'.pdf';
 				pdf.create(completeHtml).toFile(filepath,function(err, response) {
 					attachment = fs.readFileSync(filepath).toString("base64");
-					var faq = fs.readFileSync("server/content/Adopter FAQ 2021.pdf").toString("base64");
+					var faq = fs.readFileSync("server/content/Adopter FAQ 2022.pdf").toString("base64");
+					var costTable = fs.readFileSync("server/content/2022 Family Cost Table.pdf").toString("base64");
 					var email = {
 						to : emailTo.filter((x, i) => i === emailTo.indexOf(x)),
 						from : config.emailFrom,
 						subject : config.emailSubject,
-						html : 'Dear Adopter, <br/><br/> Thank you for adopting a family or individual this holiday season! We appreciate your willingness to help a neighbor in need. <br/><br/> Attached are two important documents for your review. The Adoptee List will have your individual or family information including contact information and their wish lists items. The Adopters FAQ are some general guidelines and expectations that should answer most of your questions about participating in Christmas Bureau. <br/>If you have any questions or comments please do not hesitate to contact the Christmas Bureau staff at (785) 228-5120 or cb@unitedwaytopeka.org.<br/><br/> Christmas Bureau<br/>United Way of Greater Topeka.',
+						html : 'Dear Adopter, <br/><br/> Thank you for adopting a family or individual this holiday season! We appreciate your willingness to help a neighbor in need. <br/><br/> Attached are important documents for your review. The Adoptee List will have your individual or family information including contact information and their wish lists items. The Adopters FAQ and Family Cost Table are some general guidelines and expectations that should answer most of your questions about participating in Christmas Bureau. <br/>If you have any questions or comments please do not hesitate to contact the Christmas Bureau staff at (785) 228-5120 or cb@unitedwaytopeka.org.<br/><br/> Christmas Bureau<br/>United Way of Greater Topeka.',
 						attachments : [{
 									filename : 'Adoptee List.pdf',
 									content : attachment
@@ -182,6 +184,10 @@ exports.email = function(req, res, next) {
 								{
 									filename: 'Adopters FAQ.pdf',
 									content: faq
+								},
+								{
+									filename: 'Family Cost Table.pdf',
+									content: costTable
 								}
 							]						
 					};
