@@ -168,10 +168,11 @@ exports.email = function(req, res, next) {
 					console.log(res); // { filename: '/app/businesscard.pdf' }
 				  });*/
 				var filepath = './'+adopter._id+'.pdf';
-				pdf.create(completeHtml).toFile(filepath,function(err, response) {
+				pdf.create(completeHtml).toBuffer(function(err, response) {
 					console.log(response);
 					console.log(err);
-					attachment = fs.readFileSync(response.filename).toString("base64");
+					//attachment = fs.readFileSync(response.filename).toString("base64");
+					attachment = response.toString("base64");
 					//attachment = Buffer.from(completeHtml).toString("base64");
 					var faq = fs.readFileSync("server/content/Adopter FAQ 2022.pdf").toString("base64");
 					var costTable = fs.readFileSync("server/content/2022 Family Cost Table.pdf").toString("base64");
@@ -202,7 +203,7 @@ exports.email = function(req, res, next) {
 					sendgrid
 					.send(email)
 					.then(() => {
-						fs.unlinkSync(filepath);
+						//fs.unlinkSync(filepath);
 						PrintEmail.create(printEmailRequest, function(err, newRequest) {
 							if (err) {
 								console.log(err);
