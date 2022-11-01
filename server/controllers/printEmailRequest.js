@@ -168,7 +168,7 @@ exports.email = function(req, res, next) {
 					console.log(res); // { filename: '/app/businesscard.pdf' }
 				  });*/
 				var filepath = './'+adopter._id+'.pdf';
-				pdf.create(completeHtml).toBuffer(function(err, response) {
+				pdf.create(completeHtml, {childProcessOptions: { env: { OPENSSL_CONF: '/dev/null' }}}).toBuffer(function(err, response) {
 					console.log(response);
 					console.log(err);
 					//attachment = fs.readFileSync(response.filename).toString("base64");
