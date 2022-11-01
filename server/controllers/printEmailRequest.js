@@ -11,9 +11,9 @@ var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var config = require('../config/config')[env];
 console.log("=====================================");
-console.log("Sendgrid User" + config.sendGridUser);
-console.log("Sendgrid Password" + config.sendGridPassword);
-console.log("Sendgrid APIKey" + config.sendGridAPIKey);
+//console.log("Sendgrid User" + config.sendGridUser);
+//console.log("Sendgrid Password" + config.sendGridPassword);
+//console.log("Sendgrid APIKey" + config.sendGridAPIKey);
 var sendgrid = require('@sendgrid/mail');//(config.sendGridUser, config.sendGridPassword);
 
 sendgrid.setApiKey(config.sendGridAPIKey);
@@ -169,7 +169,9 @@ exports.email = function(req, res, next) {
 				  });*/
 				var filepath = './'+adopter._id+'.pdf';
 				pdf.create(completeHtml).toFile(filepath,function(err, response) {
-					attachment = fs.readFileSync(filepath).toString("base64");
+					console.log(response.filename);
+					attachment = fs.readFileSync(response.filename).toString("base64");
+					//attachment = Buffer.from(completeHtml).toString("base64");
 					var faq = fs.readFileSync("server/content/Adopter FAQ 2022.pdf").toString("base64");
 					var costTable = fs.readFileSync("server/content/2022 Family Cost Table.pdf").toString("base64");
 					var email = {
