@@ -17,13 +17,14 @@ exports.updateMessage = function(req, res) {
 
   Message.findOne({_id: messageUpdates._id}).then((curMsg) => {
     curMsg.value = messageUpdates.value;
-  	curMsg.save(function(err){
-  		if(err) { res.status(400); return res.send({reason:err.toString()});}
+  	curMsg.save().then(()=>{  		
     	res.send({
     		_id: curMsg._id,
     		type: curMsg.type,
     		value: curMsg.value
     	});
-  	})
+  	}).catch((err)=> {
+      if(err) { res.status(400); return res.send({reason:err.toString()});}
+    })
   });
 };

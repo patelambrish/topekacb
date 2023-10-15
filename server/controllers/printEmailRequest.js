@@ -106,13 +106,14 @@ exports.print = function(req, res, next) {
 					printEmailRequest.updateUser = req.user._id;
 					printEmailRequest.html = completeHtml;
 
-					printEmailRequest.save(function(err) {
+					printEmailRequest.save().then(()=> {
+						res.status(200);
+						res.send(completeHtml);
+					}).catch((err) => {
 						if (err) {
 							console.log(err);
 							return next(err);
 						}
-						res.status(200);
-						res.send(completeHtml);
 					});
 				} else {
 					res.send("Error: Adopter not found. Please try again.");

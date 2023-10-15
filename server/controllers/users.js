@@ -86,13 +86,7 @@ exports.updateUser = function(req, res) {
 			curUser.salt = encrypt.createSalt();
 			curUser.hashed_pwd = encrypt.hashPwd(curUser.salt, userUpdates.password);
 		}
-		curUser.save(function(err) {
-			if (err) {
-				res.status(400);
-				return res.send({
-					reason : err.toString()
-				});
-			}
+		curUser.save().then(()=> {			
 			res.send({
 				_id : curUser._id,
 				username : curUser.username,
@@ -102,6 +96,13 @@ exports.updateUser = function(req, res) {
 				facebook : curUser.facebook,
 				roles : curUser.roles
 			});
-		})
+		}).catch((err) => {
+			if (err) {
+				res.status(400);
+				return res.send({
+					reason : err.toString()
+				});
+			}
+		});
 	});
 };
