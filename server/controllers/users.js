@@ -36,16 +36,7 @@ exports.createUser = function(req, res, next) {
 		});
 	}
 	userData.hashed_pwd = encrypt.hashPwd(userData.salt, userData.password);
-	User.create(userData, function(err, user) {
-		if (err) {
-			if (err.toString().indexOf('E11000') > -1) {
-				err = new Error('Duplicate Username');
-			}
-			res.status(400);
-			return res.send({
-				reason : err.toString()
-			});
-		}
+	User.create(userData).then((user) => {
 		res.send({
 			_id : user._id,
 			username : user.username,
@@ -56,6 +47,16 @@ exports.createUser = function(req, res, next) {
 			roles : user.roles
 		});
 
+	}).catch((err) => {
+		if (err) {
+			if (err.toString().indexOf('E11000') > -1) {
+				err = new Error('Duplicate Username');
+			}
+			res.status(400);
+			return res.send({
+				reason : err.toString()
+			});
+		}
 	});
 };
 
