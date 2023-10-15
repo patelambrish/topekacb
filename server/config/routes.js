@@ -61,8 +61,10 @@ module.exports = function(app) {
   app.post('/login', auth.authenticate);
 
   app.post('/logout', function(req, res) {
-    req.logout();
-    res.end();
+    req.logout(function(err) {
+      if (err) { console.log(err); return next(err); }
+      res.redirect('/');
+    });
   });
 
   app.all('/api/*', function(req, res) {

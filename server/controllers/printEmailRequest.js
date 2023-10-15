@@ -39,7 +39,7 @@ function getAdopterHtml(adopter, templateData) {
 
 exports.getPrintEmailRequests = function(req, res, next) {
 
-	PrintEmail.find({}).populate('adopter', 'name org').populate('createdBy', 'firstName lastName').populate('updatedBy', 'firstName lastName').select('-html').exec(function(err, collection) {
+	PrintEmail.find({}).populate('adopter', 'name org').populate('createdBy', 'firstName lastName').populate('updatedBy', 'firstName lastName').select('-html').then((collection) => {
 		res.send(collection);
 	});
 
@@ -52,11 +52,7 @@ exports.createPrintEmailRequest = function(req, res, next) {
 	data.createDate = new Date();
 	data.createdBy = userId;
 
-	Adopter.findById(data.adopter).exec(function(err, ad) {
-		if (err) {
-			console.log(err);
-			return next(err);
-		}
+	Adopter.findById(data.adopter).then((ad) => {
 		if (!ad) {
 			res.send({
 				error : "Error: Adopter not found. Please try again."
@@ -65,6 +61,11 @@ exports.createPrintEmailRequest = function(req, res, next) {
 			PrintEmail.create(data, function(err, peReq) {
 				res.send(peReq);
 			});
+		}
+	}).catch((err)=>{
+		if (err) {
+			console.log(err);
+			return next(err);
 		}
 	});
 };
@@ -77,14 +78,15 @@ exports.updatePrintEmailRequest = function(req, res, next) {
 	update.updateDate = new Date();
 	update.updateUser = userId;
 
-	PrintEmail.findByIdAndUpdate(id, update).exec(function(err, printEmailReq) {
+	PrintEmail.findByIdAndUpdate(id, update).then((printEmailReq) => {
+		return res.send(printEmailReq);
+	}).catch((err) => {
 		if (err) {
 			res.status(400);
 			return res.send({
 				error : err.toString()
 			});
 		}
-		return res.send(printEmailReq);
 	});
 };
 
@@ -92,18 +94,9 @@ exports.print = function(req, res, next) {
 	var requestId = req.params.id;
 	console.log("requestId: " + requestId);
 	fs.readFile('server/views/adopteePrint.pug', 'utf8', function(err, templateData) {
-		PrintEmail.findById(requestId).exec(function(err, printEmailRequest) {
-			if (err) {
-				console.log(err);
-				return next(err);
-			}
+		PrintEmail.findById(requestId).then((printEmailRequest) => {
 			var adopter = printEmailRequest.adopter;
-			Adopter.findById(printEmailRequest.adopter).populate('adoptees', '-image').exec(function(err, completeAdopter) {
-				if (err) {
-					console.log(err);
-					return next(err);
-				}
-
+			Adopter.findById(printEmailRequest.adopter).populate('adoptees', '-image').then((completeAdopter) => {
 				if (completeAdopter) {
 
 					var completeHtml = getAdopterHtml(completeAdopter, templateData);
@@ -124,7 +117,17 @@ exports.print = function(req, res, next) {
 				} else {
 					res.send("Error: Adopter not found. Please try again.");
 				}
+			}).catch((err) => {
+				if (err) {
+					console.log(err);
+					return next(err);
+				}
 			});
+		}).catch((err) => {
+			if (err) {
+				console.log(err);
+				return next(err);
+			}
 		});
 	});
 };
@@ -132,12 +135,7 @@ exports.print = function(req, res, next) {
 exports.email = function(req, res, next) {
 	var adopterId = req.params.id;
 	fs.readFile('server/views/adopteePrint.pug', 'utf8', function(err, templateData) {
-		Adopter.findById(adopterId).populate('adoptees').exec(function(err, adopter) {
-			if (err) {
-				console.log(err);
-				return next(err);
-			}
-
+		Adopter.findById(adopterId).populate('adoptees').then((adopter) => {
 			if (adopter && (adopter.email || adopter.email2)) {
 
 				var completeHtml = getAdopterHtml(adopter, templateData),
@@ -242,6 +240,11 @@ exports.email = function(req, res, next) {
 				});
 			}
 
+		}).catch((err) => {
+			if (err) {
+				console.log(err);
+				return next(err);
+			}
 		});
 	});
 };
@@ -249,13 +252,13 @@ exports.email = function(req, res, next) {
 exports.preview = function(req, res, next) {
 
 	var reqId = req.params.id;
-	PrintEmail.findById(reqId).exec(function(err, req) {
+	PrintEmail.findById(reqId).then((req) => {
+		res.status(200);
+		res.send(req.html);
+	}).catch((err)=>{
 		if (err) {
 			console.log(err);
 			return next(err);
 		}
-		res.status(200);
-		res.send(req.html);
 	});
 };
-

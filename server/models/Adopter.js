@@ -77,7 +77,7 @@ mongoose.model('Adopter', adopterSchema);
 function createSampleAdopters() {
   var Adopter = mongoose.model('Adopter');
 
-  return Adopter.count().exec().then(function(count) {
+  return Adopter.count().exec().then((count) => {
       if(count === 0) {
         return generateAdopters(1500);
       } else {
@@ -122,14 +122,14 @@ function generateAdopters(count) {
 
   console.log('generating sample adopters...');
 
-  return User.find({}).select('_id').exec().then(function(userPool) {
+  return User.find({}).select('_id').exec().then((userPool) => {
     var chance = new Chance(),
         data = [], adopter, entity, householdCount, 
         i = 1;
 
     for(; i <= count; i++) {
       if(i % 500 === 0) {
-        process.stdout.write(chance.pad(i,4) + ' adopters generated.\033[0G');
+        process.stdout.write(chance.pad(i,4) + ' adopters generated.');
       }
 
       // pick entity (individual, dept, org) with the greater proportion to individuals
@@ -183,7 +183,7 @@ function generateAdopters(count) {
     process.stdout.write('\n');
     console.log('Saving sample adopters...');
     
-    promise = Adopter.create(data).then(function() {
+    promise = Adopter.create(data).then(() => {
       console.log('Successfully created ' + data.length + ' sample adopters.');
       return data;
     });

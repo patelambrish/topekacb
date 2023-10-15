@@ -131,9 +131,8 @@ var Adoptee = mongoose.model("Adoptee", adopteeSchema);
 function createSampleAdoptees() {
   var Adoptee = mongoose.model("Adoptee");
 
-  return Adoptee.count()
-    .exec()
-    .then(function(count) {
+  return Adoptee.count()    
+    .then((count) => {
       if (count === 0) {
         return generateAdoptees(4000);
       } else {
@@ -154,9 +153,8 @@ function generateAdoptees(count) {
   console.log("generating sample adoptees...");
 
   return User.find({})
-    .select("_id")
-    .exec()
-    .then(function(userPool) {
+    .select("_id")    
+    .then((userPool)=> {
       var chance = new Chance(),
         data = [],
         adoptee,
@@ -366,14 +364,15 @@ function startOrphanedUpdateChecking() {
     Adoptee.find({
       status: "Pulled For View/Update",
       modifyDate: { $lt: thirtyMinutesAgo }
-    }).exec(function(err, collection) {
-      if (err) {
-        console.log(err);
-      } else {
+    }).then((collection) => {
+       
         collection.forEach(function(a) {
           console.log("Updating status for " + a.firstName + " " + a.lastName);
           Adoptee.update({ _id: a._id }, { status: "In Process" }, {}).exec();
-        });
+        });      
+    }).catch((err) => {
+      if (err) {
+        console.log(err);
       }
     });
   }, 300000); //every five minutes

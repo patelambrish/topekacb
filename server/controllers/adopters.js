@@ -79,7 +79,7 @@ exports.getAdopters = function(req, res, next) {
   }
 
   Adopter.count(query).exec().
-  then(function(count) {
+  then((count) => {
     if(sort) {
       query = query.sort(sort);
     }
@@ -103,7 +103,7 @@ exports.getAdopters = function(req, res, next) {
       createdBy: 1,
       updatedBy: 1
     }).
-    exec(function(err, collection) {
+    then((collection) => {
       if(err) {
         return next(err);
       }
@@ -123,7 +123,7 @@ exports.getAdopterById = function(req, res, next) {
   populate('adoptees').
   select('-__v').
   lean(true).
-  exec(function(err, adopter) {
+  then((adopter) => {
     if(err) {
       return next(err);
     }
@@ -181,31 +181,33 @@ exports.saveAdopter = function(req, res, next) {
   populate('adoptees').
   select('-__v').
   lean(true).
-  exec(function(err, adopter) {
-    //console.log(adopter);
-    if(err) {
-      return next(err);
-    }
+  then((adopter) => {
     if(adopter) {
       adopter.enums = Adopter.getEnumValues();
       res.send(adopter);
     } else {
       res.status(404).send('Not Found');
     }
+  }).catch((err) => {
+      //console.log(adopter);
+      if(err) {
+        return next(err);
+      }
   });
 };
 
 exports.deleteAdopter = function(req, res, next) {
   Adopter.
   findByIdAndRemove(req.params.id).
-  exec(function(err, adopter) {
-    if(err) {
-      return next(err);
-    }
+  then((adopter) => {
     if(adopter) {
       res.status(200).send('OK');
     } else {
       res.status(404).send('Not Found');
+    }
+  }).catch((err)=>{
+    if(err) {
+      return next(err);
     }
   });
 };
@@ -220,16 +222,17 @@ exports.print = function(req, res, next) {
     findById(req.params.id).
     populate('adoptees').
     select('-__v').
-    exec(function(err, adopter) {
-      if(err) {
-        return next(err);
-      }
+    then((adopter) => {
       if(adopter) {
         var completeHtml = getAdopterHtml(adopter, templateData);
         res.status(200); 
         res.send(completeHtml);
       } else {
         res.status(404).send('Not Found');
+      }
+    }).catch((err) => {
+      if(err) {
+        return next(err);
       }
     });
   });
@@ -251,7 +254,7 @@ exports.removeAdoptee = function(req, res, next) {
       };
     
   Adoptee.findByIdAndUpdate(adopteeId, update).exec().
-  then(function(adoptee) {
+  then((adoptee) => {
     return Adopter.findById(adopterId).exec();
   }).
   then(function(adopter) {
@@ -276,15 +279,16 @@ exports.removeAdoptee = function(req, res, next) {
     populate('adoptees').
     select('-__v').
     lean(true).
-    exec(function(err, adopter) {
-      if(err) {
-        return next(err);
-      }
+    then((adopter) => {
       if(adopter) {
         adopter.enums = Adopter.getEnumValues();
         res.send(adopter);
       } else {
         res.status(404).send('Not Found');
+      }
+    }).catch((err) => {
+      if(err) {
+        return next(err);
       }
     });
   });

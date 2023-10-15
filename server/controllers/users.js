@@ -19,7 +19,7 @@ exports.getUsers = function(req, res) {
 		active : 1,
 		facebook : 1,
 		roles : 1
-	}).exec(function(err, collection) {
+	}).then((collection) => {
 		res.send(collection);
 	});
 };
@@ -69,7 +69,7 @@ exports.updateUser = function(req, res) {
 
 	User.findOne({
 		_id : userUpdates._id
-	}).exec(function(err, curUser) {
+	}).then((curUser) => {
 		curUser.firstName = userUpdates.firstName;
 		curUser.lastName = userUpdates.lastName;
 		curUser.username = userUpdates.username;

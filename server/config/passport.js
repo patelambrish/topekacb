@@ -8,7 +8,7 @@ module.exports = function(config) {
       }, {
         active : true
       }]
-    }).exec(function(err, user) {
+    }).then((user) => {
       if (user && user.authenticate(password)) {
         return done(null, user);
       } else {
@@ -81,7 +81,7 @@ module.exports = function(config) {
     //console.log('deserialize user ',id);
     User.findOne({
       _id : id
-    }).exec(function(err, user) {
+    }).then((user) => {
       //console.log('Found user by id: ', user);
       //console.log('Error encountered', err);
       if (user) {

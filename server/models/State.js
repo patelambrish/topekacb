@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
     state = mongoose.model('State', stateSchema);
 
 function createStates() {
-  state.find({}).exec(function(err, collection) {
+  state.find({}).then((collection) => {
     if(collection.length === 0) {
       state.create({ "name": "Alabama", "abbreviation": "AL" });
       state.create({ "name": "Alaska", "abbreviation": "AK" });

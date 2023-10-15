@@ -2,7 +2,7 @@ var Message = require('mongoose').model('Message');
 
 exports.getMessage = function(req, res) {
   //console.log(req.params.type);
-  Message.findOne({ type: req.params.type }).exec(function(err, msg) {
+  Message.findOne({ type: req.params.type }).then((msg) => {
     res.send(msg);
   });
 };
@@ -15,7 +15,7 @@ exports.updateMessage = function(req, res) {
     return res.end();
   }
 
-  Message.findOne({_id: messageUpdates._id}).exec(function(err, curMsg) {
+  Message.findOne({_id: messageUpdates._id}).then((curMsg) => {
     curMsg.value = messageUpdates.value;
   	curMsg.save(function(err){
   		if(err) { res.status(400); return res.send({reason:err.toString()});}

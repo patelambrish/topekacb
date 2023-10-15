@@ -134,12 +134,14 @@ exports.getAdoptees = function(req, res) {
               '_modifyUser': 1,
               '_adopterId': 1
             }).
-            exec(function(err, collection) {
+            then((collection) => { 
+                res.send({data: collection, totalCount: count});
+            }).
+            catch((err) => {
                 if (err) {
                     res.status(400);
                     return res.send({error: err.toString()});
                 }
-                res.send({data: collection, totalCount: count});
             });
     });
 };
@@ -149,14 +151,15 @@ exports.getAdopteeById = function(req, res) {
     Adoptee.findOne({_id: req.params.id}).
         populate('_adopterId', 'name').
         select('-image').
-        exec(function (err, adoptee) {
-          if(err) { res.status(400); return res.send({error:err.toString()});}
+        then((adoptee) => {         
           if (adoptee.status == "In Process") {
               Adoptee.
                   update({_id: adoptee._id}, {status: "Pulled For View/Update", _modifyUser: userId, modifyDate: new Date()}, {}).
                   exec();
           }
           res.send(adoptee);
+    }).catch ((err) => {
+        if(err) { res.status(400); return res.send({error:err.toString()});}
     });
 };
 
@@ -165,8 +168,7 @@ exports.getNextAdoptee = function(req, res) {
     Adoptee.findOne({applicationNumber: {$gte : req.body.nextNumber}}).
         populate('_adopterId', 'name').
         select('-image').
-        exec(function (err, adoptee) {
-        if(err) { res.status(400); return res.send({error:err.toString()});}
+        then((adoptee) => {       
         if (adoptee) {
             if (adoptee.status == "In Process") {
                 Adoptee.
@@ -178,11 +180,13 @@ exports.getNextAdoptee = function(req, res) {
         else {
             res.send({});
         }
+    }).catch((err) => {
+        if(err) { res.status(400); return res.send({error:err.toString()});}
     });
 };
 
 exports.getAggregateSpecialNeeds = function(req, res) {
-  Adoptee.count({'criteria.specialNeeds': []}, function(err, count) {
+  Adoptee.count({'criteria.specialNeeds': []}).then((count) => {
     Adoptee.
       aggregate([{
         $project: { 'criteria.specialNeeds': 1 }
@@ -194,9 +198,9 @@ exports.getAggregateSpecialNeeds = function(req, res) {
           count: { $sum: 1 }
         }
       }]).
-      exec(function(err, collection) {
+      then((collection) => {
         res.send([{_id: 'None', count: count}].concat(collection));
-      });
+      }).catch ((err) => {});
   });
 };
 
@@ -219,26 +223,26 @@ exports.getAgeAggregation = function(req, res) {
     {
       $group: { _id: { type: "$type", status: "$status" }, count: {$sum: 1} }
     }
-  ]).exec(function(err, collection) {
+  ]).then((collection) => {
     res.send(collection);
   });
 };
 
 exports.getAggregateHouseholdTypes = function(req, res){
-  Adoptee.aggregate([{$match: {status:{$in: ['Not Matched', 'Matched']}, 'criteria.householdType': {$exists:true, $ne: ""}}},{$group : { _id: "$criteria.householdType", count: {$sum: 1 }}}]).exec(function(err,collection){
+  Adoptee.aggregate([{$match: {status:{$in: ['Not Matched', 'Matched']}, 'criteria.householdType': {$exists:true, $ne: ""}}},{$group : { _id: "$criteria.householdType", count: {$sum: 1 }}}]).then((collection) => {
         res.send(collection);
     });
 };
 
 exports.getAggregateAdoptedCounts = function(req, res){
-  Adoptee.aggregate([{$match: {status:{$in: ['Not Matched', 'Matched']}}},{$group : { _id: "$status", count: {$sum: 1 }}}]).exec(function(err,collection){
+  Adoptee.aggregate([{$match: {status:{$in: ['Not Matched', 'Matched']}}},{$group : { _id: "$status", count: {$sum: 1 }}}]).then((collection) => {
         res.send(collection);
   });
 };
 
  Adoptee.aggregate([{$group : { _id: "$status", count: {$sum: 1 }}}])
 exports.getAdopteeDups = function(req, res){
-  Adoptee.find({"status": "Possible Duplicate"}).exec(function(err,collection){
+  Adoptee.find({"status": "Possible Duplicate"}).then((collection) => {
         res.send(collection);
   });
 };
@@ -275,12 +279,13 @@ exports.updateAdoptee = function(req, res){
       });
       query.
           select("-image").
-          exec(function(err, collection){
+          then((collection) => {
               if (collection && collection.length > 0){
                 collection.forEach(function(item){
                   Adoptee.
                     update({_id: item._id}, {status : "Possible Duplicate", _modifyUser: userId, modifyDate : new Date()}, {}).
-                    exec();
+                    exec().
+                    then(()=>{});
                 });
                 update.status = "Possible Duplicate";
               }
@@ -288,9 +293,11 @@ exports.updateAdoptee = function(req, res){
                 findByIdAndUpdate(id, update, options).
                 populate('_createUser', 'firstName lastName').
                 populate('_modifyUser', 'firstName lastName').
-                exec(function(err, adoptee) {
-                  if(err) { res.status(400); return res.send({error:err.toString()});}
+                then((adoptee) => {
+                  
                   return res.send(adoptee);
+                }).catch((err) => {
+                    if(err) { res.status(400); return res.send({error:err.toString()});}
                 });
       });
 };
@@ -309,43 +316,46 @@ exports.matchAdoptee = function(req, res){
     }
     Adoptee.findOne({_id: id}).
         select('-image').
-        exec(function (err, adoptee) {
-            if(err) { res.status(400); return res.send({error:err.toString()});}
+        then((adoptee) => {            
             if (adoptee.status != "Not Matched") {
                 res.send({error: "ERROR:  Adoptee status must be 'Not Matched'."});
             }else {
                 Adoptee.
                     findByIdAndUpdate(id, update, {upsert: true, new: true}).
                     populate('_modifyUser', 'firstName lastName').
-                    exec(function(err, adoptee) {
-                        if(err) { res.status(400); return res.send({error:err.toString()});}
+                    then((adoptee) => {                        
                         return res.send(adoptee);
+                    }).catch((err) => {
+                        if(err) { res.status(400); return res.send({error:err.toString()});}
                     });
             }
+        }).catch((err) => {
+            if(err) { res.status(400); return res.send({error:err.toString()});}
         });
 };
 
 exports.deleteAdoptee = function(req, res){
     Adoptee.findOne({_id : req.params.id}).
         select('-image').
-        exec(function(err, adoptee){
-            if(err) { res.status(400); return res.send({error:err.toString()});}
+        then((adoptee) => {
+            
             if (adoptee._adopterId){
                 return res.send({error: "Adoptee cannot be deleted while matched with an adopter."})
             }else {
                 Adoptee.
                     findByIdAndRemove(req.params.id).
-                    exec(function (err, adoptee) {
+                    then((adoptee) => {
+                        return res.send(adoptee);
+                    }).catch((err)=> {
                         if (err) {
                             res.status(400);
                             return res.send({error: err.toString()});
                         }
-                        return res.send(adoptee);
                     });
             }
-    })
-
-};
+    }).catch((err)=> {
+        if(err) { res.status(400); return res.send({error:err.toString()});}
+    })};
 
 exports.getEnums = function(req, res) {
     res.send(Adoptee.getEnumValues());
@@ -356,18 +366,23 @@ exports.print = function(req, res) {
     fs.readFile('server/views/adopteePrint.jade', 'utf8', function (err, templateData) {
         Adoptee.findOne({_id: req.params.id}).
             populate('_adopterId').
-            exec(function (err, adoptee) {
+            then((adoptee) => {
                 adoptee.adopter = adoptee._adopterId;
                 var html = htmlUtil.getAdopteeHtml(adoptee, templateData);
                 res.status(200);
                 res.send(html);
+            }).catch((err) => {
+                if (err) {
+                    res.status(400);
+                    return res.send({error: err.toString()});
+                }
             });
     });
 };
 
 exports.getForm = function(req, res) {
     Adoptee.findOne({_id: req.params.id})
-     .exec(function(err, adoptee){
+     .then((adoptee) => {
        if (adoptee.image)
        {
          var decodedImage = new Buffer(adoptee.image, 'base64');
@@ -380,5 +395,3 @@ exports.getForm = function(req, res) {
        res.end();
      });
 };
-
-

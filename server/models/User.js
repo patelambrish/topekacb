@@ -27,15 +27,18 @@ userSchema.methods = {
 var User = mongoose.model('User', userSchema);
 
 function createDefaultUsers() {
-  User.find({}).exec(function(err, collection) {
+  User.find({}).then((collection) => {
+    console.log("Creating Users");
     if(collection.length === 0) {
       var salt, hash;
       salt = encrypt.createSalt();
       hash = encrypt.hashPwd(salt, 'ambrish');
-      User.create({firstName:'Ambrish',lastName:'Patel',username:'ambrish.patel@27global.com', salt: salt, hashed_pwd: hash, roles: ['user'], active: true});
+      User.create({firstName:'Ambrish',lastName:'Patel',username:'callambrish@yahoo.com', salt: salt, hashed_pwd: hash, roles: ['user'], active: true});
+      console.log("First User Created");
+      User.create({firstName:'Ambrish',lastName:'Patel',username:'ambrishkpatel@gmail.com', salt: salt, hashed_pwd: hash, roles: ['user'], active: true});
     }
-  })
-  console.log('Users Created');
+    console.log('Users Created');
+  });  
 }
 
 exports.createDefaultUsers = createDefaultUsers;

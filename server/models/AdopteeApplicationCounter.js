@@ -9,7 +9,7 @@ var adopteeApplicationCounterSchema = mongoose.Schema({
 var AdopteeApplicationCounter = mongoose.model('AdopteeApplicationCounter', adopteeApplicationCounterSchema);
 
 function initializeAdopteeApplicationCounter() {
-  AdopteeApplicationCounter.find({}).exec(function(err, collection) {
+  AdopteeApplicationCounter.find({}).then((collection) => {
     if(collection.length === 0) {
       AdopteeApplicationCounter.create({
         _id: 'adopteeApplication',
