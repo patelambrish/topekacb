@@ -103,7 +103,7 @@ exports.getAdoptees = function(req, res) {
             query = query.where('householdMembers.age').in(childAges);
         }
     }
-    Adoptee.count(query, function(err, count){
+    Adoptee.count(query).then((count) => {
         if(req.query.sort) {
             query = query.sort(req.query.sort);
         }
@@ -154,8 +154,8 @@ exports.getAdopteeById = function(req, res) {
         then((adoptee) => {         
           if (adoptee.status == "In Process") {
               Adoptee.
-                  update({_id: adoptee._id}, {status: "Pulled For View/Update", _modifyUser: userId, modifyDate: new Date()}, {}).
-                  exec();
+                  findByIdAndUpdate(adoptee._id, {status: "Pulled For View/Update", _modifyUser: userId, modifyDate: new Date()}, {}).
+                  then(()=>{});
           }
           res.send(adoptee);
     }).catch ((err) => {
@@ -172,8 +172,8 @@ exports.getNextAdoptee = function(req, res) {
         if (adoptee) {
             if (adoptee.status == "In Process") {
                 Adoptee.
-                    update({_id: adoptee._id}, {status: "Pulled For View/Update", _modifyUser: userId, modifyDate: new Date()}, {}).
-                    exec();
+                    findByIdAndUpdate(adoptee._id, {status: "Pulled For View/Update", _modifyUser: userId, modifyDate: new Date()}, {}).
+                    then(()=>{});
             }
             res.send(adoptee);
         }
@@ -283,8 +283,7 @@ exports.updateAdoptee = function(req, res){
               if (collection && collection.length > 0){
                 collection.forEach(function(item){
                   Adoptee.
-                    update({_id: item._id}, {status : "Possible Duplicate", _modifyUser: userId, modifyDate : new Date()}, {}).
-                    exec().
+                    findByIdAndUpdate(item._id, {status : "Possible Duplicate", _modifyUser: userId, modifyDate : new Date()}, {}).
                     then(()=>{});
                 });
                 update.status = "Possible Duplicate";

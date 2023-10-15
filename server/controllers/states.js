@@ -1,7 +1,7 @@
 var State = require('mongoose').model('State');
 
 exports.getStates = function(req, res) {
-    State.find({}).exec(function(err, collection) {
+    State.find({}).then((collection) => {
         res.send(collection);
     })
 };

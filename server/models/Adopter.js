@@ -77,7 +77,7 @@ mongoose.model('Adopter', adopterSchema);
 function createSampleAdopters() {
   var Adopter = mongoose.model('Adopter');
 
-  return Adopter.count().exec().then((count) => {
+  return Adopter.count().then((count) => {
       if(count === 0) {
         return generateAdopters(1500);
       } else {
@@ -100,18 +100,18 @@ function createSampleMatch(adopter, adopteePool) {
     matchCount = matchedAdoptees.length; 
     
     matchedAdopteeIds.forEach(function(id) {
-      Adoptee.update({ _id: id }, {
+      Adoptee.findByIdAndUpdate(id, {
         _adopterId: adopter._id,
         status: 'Matched'
-      }).exec();
+      });
     });
     
-    Adopter.update({ _id: adopter._id }, {
+    Adopter.findByIdAndUpdate(adopter._id, {
       adoptees: matchedAdopteeIds,
       status: householdCount === matchCount ? 'Matched' : 'Not Matched'
-    }).exec();
+    }).then(()=>{});
 
-    process.stdout.write('Adopter ' + adopter._id + ' matched with ' + chance.pad(matchCount,3) + ' out of ' + chance.pad(householdCount,3) + ' adoptees\033[0G');
+    process.stdout.write('Adopter ' + adopter._id + ' matched with ' + chance.pad(matchCount,3) + ' out of ' + chance.pad(householdCount,3) + ' adoptees');
   }
 }
 
@@ -122,7 +122,7 @@ function generateAdopters(count) {
 
   console.log('generating sample adopters...');
 
-  return User.find({}).select('_id').exec().then((userPool) => {
+  return User.find({}).select('_id').then((userPool) => {
     var chance = new Chance(),
         data = [], adopter, entity, householdCount, 
         i = 1;

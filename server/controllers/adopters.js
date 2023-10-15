@@ -78,7 +78,7 @@ exports.getAdopters = function(req, res, next) {
     }
   }
 
-  Adopter.count(query).exec().
+  Adopter.count(query).
   then((count) => {
     if(sort) {
       query = query.sort(sort);
@@ -104,13 +104,14 @@ exports.getAdopters = function(req, res, next) {
       updatedBy: 1
     }).
     then((collection) => {
-      if(err) {
-        return next(err);
-      }
       res.send({
         data: collection,
         totalCount: count
       });
+    }).catch((err)=>{
+      if(err) {
+        return next(err);
+      }
     });
   });
 };
@@ -253,9 +254,11 @@ exports.removeAdoptee = function(req, res, next) {
         _modifyUser: userId
       };
     
-  Adoptee.findByIdAndUpdate(adopteeId, update).exec().
+  Adoptee.findByIdAndUpdate(adopteeId, update).
   then((adoptee) => {
-    return Adopter.findById(adopterId).exec();
+    Adopter.findById(adopterId).then((adopter) => {
+      return adopter;
+    });
   }).
   then(function(adopter) {
     var update = {

@@ -257,7 +257,7 @@ function generateAdoptees(count) {
       for (; i <= count; i++) {
         if (i % 500 === 0) {
           process.stdout.write(
-            chance.pad(i, 4) + " adoptees generated.\033[0G"
+            chance.pad(i, 4) + " adoptees generated."
           );
         }
 
@@ -368,7 +368,7 @@ function startOrphanedUpdateChecking() {
        
         collection.forEach(function(a) {
           console.log("Updating status for " + a.firstName + " " + a.lastName);
-          Adoptee.update({ _id: a._id }, { status: "In Process" }, {}).exec();
+          Adoptee.findByIdAndUpdate (a._id, { status: "In Process" }, {}).then(()=>{});
         });      
     }).catch((err) => {
       if (err) {
