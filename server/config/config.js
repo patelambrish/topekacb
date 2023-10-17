@@ -13,7 +13,7 @@ module.exports = {
     sendGridPassword: process.env.SENDGRID_PASSWORD,
     sendGridAPIKey: process.env.SENDGRID_API_KEY,
     emailTo: 'ambrishkpatel@gmail.com',
-    emailFrom: 'cb@unitedwaytopeka.org',
+    emailFrom: 'CB@UWKawValley.org',
     emailSubject: 'Christmas Bureau Adopted Family Information'
   },
   test: {
@@ -26,7 +26,7 @@ module.exports = {
     sendGridUser: process.env.SENDGRID_USERNAME,
     sendGridPassword: process.env.SENDGRID_PASSWORD,
     sendGridAPIKey: process.env.SENDGRID_API_KEY,
-    emailFrom: 'cb@unitedwaytopeka.org',
+    emailFrom: 'CB@UWKawValley.org',
     emailSubject: 'Christmas Bureau Adopted Family Information'
   },
   production: {
@@ -39,7 +39,7 @@ module.exports = {
     sendGridUser: process.env.SENDGRID_USERNAME,
     sendGridPassword: process.env.SENDGRID_PASSWORD,
     sendGridAPIKey: process.env.SENDGRID_API_KEY,
-    emailFrom: 'cb@unitedwaytopeka.org',
+    emailFrom: 'CB@UWKawValley.org',
     emailSubject: 'Christmas Bureau Adopted Family Information'
   }
 }
