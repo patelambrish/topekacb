@@ -179,7 +179,7 @@ exports.email = function(req, res, next) {
 						to : emailTo.filter((x, i) => i === emailTo.indexOf(x)),
 						from : config.emailFrom,
 						subject : config.emailSubject,
-						html : 'Dear Adopter, <br/><br/> Thank you for adopting a family or individual this holiday season! We appreciate your willingness to help a neighbor in need. <br/><br/> Attached are important documents for your review. The Adoptee List will have your individual or family information including contact information and their wish lists items. The Adopters FAQ and Family Cost Table are some general guidelines and expectations that should answer most of your questions about participating in Christmas Bureau. <br/>If you have any questions or comments please do not hesitate to contact the Christmas Bureau staff at (785) 273-4804 or cb@unitedwaytopeka.org.<br/><br/> Christmas Bureau<br/>United Way of Greater Topeka.',
+						html : 'Dear Adopter, <br/><br/> Thank you for adopting a family or individual this holiday season! We appreciate your willingness to help a neighbor in need. <br/><br/> Attached are important documents for your review. The Adoptee List will have your individual or family information including contact information and their wish lists items. The Adopters FAQ and Family Cost Table are some general guidelines and expectations that should answer most of your questions about participating in Christmas Bureau. <br/>If you have any questions or comments please do not hesitate to contact the Christmas Bureau staff at (785) 273-4804 or cb@uwkawvalley.org.<br/><br/> Christmas Bureau<br/>United Way of Kaw Valley.',
 						attachments : [{
 									filename : 'Adoptee List.pdf',
 									content : attachment
