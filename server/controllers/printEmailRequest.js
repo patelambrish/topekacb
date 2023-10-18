@@ -173,8 +173,8 @@ exports.email = function(req, res, next) {
 					//attachment = fs.readFileSync(response.filename).toString("base64");
 					attachment = response.toString("base64");
 					//attachment = Buffer.from(completeHtml).toString("base64");
-					var faq = fs.readFileSync("server/content/Adopter FAQ 2022.pdf").toString("base64");
-					var costTable = fs.readFileSync("server/content/2022 Family Cost Table.pdf").toString("base64");
+					var faq = fs.readFileSync("server/content/2023 Adopter FAQ.pdf").toString("base64");
+					var costTable = fs.readFileSync("server/content/2023 Family Cost Table.pdf").toString("base64");
 					var email = {
 						to : emailTo.filter((x, i) => i === emailTo.indexOf(x)),
 						from : config.emailFrom,
