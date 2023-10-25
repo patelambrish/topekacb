@@ -58,9 +58,7 @@ exports.createPrintEmailRequest = function(req, res, next) {
 				error : "Error: Adopter not found. Please try again."
 			});
 		} else {
-			PrintEmail.create(data, function(err, peReq) {
-				res.send(peReq);
-			});
+			PrintEmail.create(data).then(peReq => {res.send(peReq);});
 		}
 	}).catch((err)=>{
 		if (err) {
@@ -203,13 +201,14 @@ exports.email = function(req, res, next) {
 					.send(email)
 					.then(() => {
 						//fs.unlinkSync(filepath);
-						PrintEmail.create(printEmailRequest, function(err, newRequest) {
+						PrintEmail.create(printEmailRequest).then(newRequest => {
+							res.status(200);
+							res.send(newRequest);
+						}).catch(err=>{
 							if (err) {
 								console.log(err);
 								return next(err);
 							}
-							res.status(200);
-							res.send(newRequest);
 						});							
 					}, error => {
 						console.error(error);
