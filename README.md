@@ -9,7 +9,7 @@ Support of the Topeka United Way's Christmas Bureau
 
 2.  Download and install node.js
 
-3.  Open a command window, navigate to TopekaCB and run node server.js.  Run the package load command:
+3.  Open a command window, navigate to TopekaCB and Run the package load command:
 
     npm install
 
