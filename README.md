@@ -3,8 +3,6 @@ topekacb
 
 Support of the Topeka United Way's Christmas Bureau
 
-[More information on this project] (http://nxidis.github.io/topekacb/)
-
 **Prepare the environment:**
 
 1.  Download and install MongoDB (this guide is helpful...http://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/)
@@ -27,4 +25,4 @@ Support of the Topeka United Way's Christmas Bureau
 
 **Helpful extras**
 
-You can download and use Robomongo to view your database (http://robomongo.org/)
+Check config.js and make sure you create environment variables for SENDGRID for email functionality.
