@@ -15,7 +15,10 @@ var languages = ["Spanish", "Spanish/English spoken by"];
 
 //var sites = ['D', 'L', 'A', 'O'];
 var sites = [
+  'Breakthrough',
   'Echo Ridge',
+  'Equiventure',
+  'JAAA',
   'Jackson Towers',
   'Plaza West', 
   'Polk Towers',

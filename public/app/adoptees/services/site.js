@@ -1,6 +1,9 @@
 angular.module('app').
   value('cbSites', {
+    'Breakthrough':'Breakthrough',
     'Echo Ridge': 'Echo Ridge',
+    'Equiventure': 'Equiventure',
+    'JAAA': 'JAAA',
     'Jackson Towers':'Jackson Towers',
     'Plaza West': 'Plaza West', 
     'Polk Towers': 'Polk Towers',
