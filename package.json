@@ -7,8 +7,8 @@
     "postinstall": "grunt"
   },
   "engines": {
-    "node": "20.9.0",
-    "npm": "6.14.8"
+    "node": "v20.9.0",
+    "npm": "8.6.0"
   },
   "repository": {
     "type": "git",
