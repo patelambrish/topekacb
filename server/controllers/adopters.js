@@ -125,14 +125,15 @@ exports.getAdopterById = function(req, res, next) {
   select('-__v').
   lean(true).
   then((adopter) => {
-    if(err) {
-      return next(err);
-    }
     if(adopter) {
       adopter.enums = Adopter.getEnumValues();
       res.send(adopter);
     } else {
       res.status(404).send('Not Found');
+    }
+  }).catch(err => {
+    if(err) {
+      return next(err);
     }
   });
 };
