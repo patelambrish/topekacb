@@ -11,7 +11,9 @@ var mongoose = require('mongoose'),
       "Single Parent w/children",
       "Grandparents w/children",
       "Multiple Adults (no children)",
-      "Single Person"
+      "Single Person",
+      "Spanish speaking family - Translation Support NOT REQUIRED",
+      "Spanish speaking family - Translation Support REQUIRED"
     ],
     genderEnum = ['Male', 'Female'],
     ageEnum = ['0 - 7', '8 - 12', '13 - 18'],
