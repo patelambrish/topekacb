@@ -27,9 +27,8 @@ exports.getAdoptees = function(req, res) {
         
         if(searchFilters.members) {
             var cnt = parseInt(searchFilters.members);
-            query = query.where({householdMembers : {$exists:true}, $where:'this.householdMembers.length==' + cnt});
-          }
-
+            query = query.where({householdMembers : {$exists:true}, householdMembers: {$size: cnt}});
+        }
         if(searchFilters.status) {
             query = query.where('status').equals(searchFilters.status);
         }
