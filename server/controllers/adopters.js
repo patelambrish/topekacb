@@ -258,42 +258,39 @@ exports.removeAdoptee = function(req, res, next) {
   Adoptee.findByIdAndUpdate(adopteeId, update).
   then((adoptee) => {
     Adopter.findById(adopterId).then((adopter) => {
-      return adopter;
-    });
-  }).
-  then(function(adopter) {
-    var update = {
-        adoptees: adopter.adoptees || [],
-        status: adopter.status,
-        updateDate: new Date(),
-        updatedBy: userId
-      },
-      arr = update.adoptees,
-      index = arr.indexOf(adopteeId);
-    if(index !== -1) {
-      arr.splice(index, 1);
-    }
-    if(arr.length === 0 || arr.length !== adopter.criteria.count) {
-      update.status = 'Not Matched';
-    }
-    Adopter.
-    findByIdAndUpdate(adopterId, update, {upsert: true, new: true}).
-    populate('createdBy', 'firstName lastName').
-    populate('updatedBy', 'firstName lastName').
-    populate('adoptees').
-    select('-__v').
-    lean(true).
-    then((adopter) => {
-      if(adopter) {
-        adopter.enums = Adopter.getEnumValues();
-        res.send(adopter);
-      } else {
-        res.status(404).send('Not Found');
+      var update = {
+          adoptees: adopter.adoptees || [],
+          status: adopter.status,
+          updateDate: new Date(),
+          updatedBy: userId
+        },
+        arr = update.adoptees,
+        index = arr.indexOf(adopteeId);
+      if(index !== -1) {
+        arr.splice(index, 1);
       }
-    }).catch((err) => {
-      if(err) {
-        return next(err);
+      if(arr.length === 0 || arr.length !== adopter.criteria.count) {
+        update.status = 'Not Matched';
       }
+      Adopter.
+      findByIdAndUpdate(adopterId, update, {upsert: true, new: true}).
+      populate('createdBy', 'firstName lastName').
+      populate('updatedBy', 'firstName lastName').
+      populate('adoptees').
+      select('-__v').
+      lean(true).
+      then((adopter) => {
+        if(adopter) {
+          adopter.enums = Adopter.getEnumValues();
+          res.send(adopter);
+        } else {
+          res.status(404).send('Not Found');
+        }
+      }).catch((err) => {
+        if(err) {
+          return next(err);
+        }
+      });
     });
   });
 };
