@@ -17,7 +17,7 @@
   "author": "Topeka Christmas Bureau Development Team (using MEAN Skeleton by Joe Eames)",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "@sendgrid/mail": "7.4.0",
+    "@sendgrid/mail": "8.1.1",
     "body-parser": "~1.19.0",
     "bower": "^1.8.8",
     "chance": "^1.1.7",
